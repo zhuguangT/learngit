@@ -2,9 +2,20 @@
 {$hjtj_bt}
 <table  class="single">
   <tr class="noborder">
-    <td style="width:9%"></td><td style="width:10%"></td><td style="width:9%"></td>
-    <td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td>
-    <td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td>
+    <td style="width:9%"></td>
+    <td style="width:10%"></td>
+    <td style="width:9%"></td>
+    <td style="width:8%"></td>
+    <td style="width:8%"></td>
+
+    <td style="width:8%"></td>
+    <td style="width:8%"></td>
+    <td style="width:8%"></td>
+    <td style="width:8%"></td>
+    <td style="width:8%"></td>
+
+    <td style="width:8%"></td>
+    <td style="width:8"></td>
   </tr>
   <tr>
     <td>检验项目</td>
@@ -12,7 +23,7 @@
     <td>检验地点</td>
     <td colspan="2"><input type="text" name="td7" value="$arow[td7]" /></td>
     <td colspan="1">检验方法</td>
-    <td colspan="3">{$arow['td1']}</td>
+    <td colspan="4">{$arow['td1']}</td>
   </tr>
   <tr>
     <td nowrap="nowrap">方法依据</td>
@@ -20,11 +31,11 @@
     <td>仪器型号</td>
     <td colspan="2">{$arow['td5']}</td>
     <td nowrap="nowrap">仪器编号</td>
-    <td colspan="3">{$arow['yq_bh']}</td>
+    <td colspan="4">{$arow['yq_bh']}</td>
   </tr>
   <tr>
     <td class="change_qx blue_a" title="点击选择曲线">回归方程</td>
-    <td colspan="10">
+    <td colspan="11">
       {$arow['quxian']}
       &nbsp;&nbsp;&nbsp;&nbsp;截距a={$arow['CA']} 斜率b={$arow['CB']} 相关系数r={$arow['CR']}
       <input type="hidden" name = "CA" id="qa" value="$arow[CA]" />
@@ -35,7 +46,7 @@
     <td>计算公式</td>
     <td colspan="3" class="noright right">氨态氮（以N计，%）= </td>
     <td colspan="3" class="noborder">m×10<sup>-3</sup> <hr /> (m<sub>0</sub>×25/V<sub>1</sub>)×(50/100)</td>
-    <td colspan="4" class="noleft left">×100</td>
+    <td colspan="5" class="noleft left">×100</td>
   </tr>
   <tr>
     <td>序号</td>
@@ -49,11 +60,12 @@
     <td>氧化铝含量</td>
     <td>计算结果（10%Al<sub>2</sub>O<sub>3</sub>%计）（{$arow['unit']}）</td>
     <td>报告结果（10%Al<sub>2</sub>O<sub>3</sub>%计）（{$arow['unit']}）</td>
+    <td>质控结果(%)</td>
   </tr>
   {$aline}
   <tr>
     <td>备注</td>
-    <td colspan="10"><textarea name="td30" >{$arow['td30']}</textarea></td>
+    <td colspan="11"><textarea name="td30" >{$arow['td30']}</textarea></td>
   </tr>
   
 </table>
