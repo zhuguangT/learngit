@@ -4,63 +4,63 @@ $hjtj_bt
 <input type="hidden" name="td6" value="$arow[td6]" />
 <table class="single" >
 	<tr class="noborder">
-		<td style="width:10%"></td><td style="width:15%"></td><td style="width:10%"></td>
+		<td style="width:8%"></td><td style="width:12%"></td><td style="width:8%"></td><td style="width:8%"></td>
 		<td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
 		<td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
 	</tr>
 	<tr align="center">
-		<td colspan="2">样品名称</td>
+		<td colspan="3">样品名称</td>
 		<td colspan="3"><input type="text" name="td8" class="inputl" value="{$arow['td8']}" /></td>
 		<td colspan="3">检验项目</td>
 		<td colspan="3">{$arow['assay_element']}</td>
 	</tr>
 	<tr>
-		<td colspan="2">检验地点</td>
+		<td colspan="3">检验地点</td>
 		<td colspan="3"><input type="text" name="td7" class="inputl" value="{$arow['td7']}" /></td>
 		<td colspan="3">检验方法</td>
 		<td colspan="3">{$arow['td1']}</td>
 	</tr>
 	<tr>
-		<td colspan="2">天平型号</td>
+		<td colspan="3">天平型号</td>
 		<td colspan="3">{$arow['td5']}</td>
 		<td colspan="3">天平编号</td>
 		<td colspan="3">{$arow['yq_bh']}</td>
 	</tr>
 	<tr>
-		<td colspan="11">标准溶液校对</td>
+		<td colspan="12">标准溶液校对</td>
 	</tr>
 	<tr>
-		<td colspan="2">标准溶液名称</td>
+		<td colspan="3">标准溶液名称</td>
 		<td colspan="3"><input type="text" name="td10" class="inputl" value="{$arow['td10']}" /></td>
 		<td colspan="3">标准溶液浓度 mol/L</td>
 		<td colspan="3"><input type="text" name="td11" class="inputl" value="{$arow['td11']}" /></td>
 	</tr>
 		<tr>
-		<td colspan="2">标准样品名称</td>
+		<td colspan="3">标准样品名称</td>
 		<td colspan="3"><input type="text" name="td12" class="inputl" value="{$arow['td12']}" /></td>
 		<td colspan="3">标准样品浓度</td>
 		<td colspan="3"><input type="text" name="td13" class="inputl" value="{$arow['td13']}" /></td>
 	</tr>
 	<tr>
-		<td colspan="2">标准样品体积（mL）</td>
+		<td colspan="3">标准样品体积（mL）</td>
 		<td colspan="3"><input type="text" name="td14" class="inputl" value="{$arow['td14']}" /></td>
 		<td colspan="3">耗用标准溶液体积</td>
 		<td colspan="3"><input type="text" name="td15" class="inputl" value="{$arow['td15']}" /></td>
 	</tr>
 	<tr>
-		<td colspan="2">标准样品测定结果（mg/mL）</td>
+		<td colspan="3">标准样品测定结果（mg/mL）</td>
 		<td colspan="3"><input type="text" name="td19" class="inputl" value="{$arow['td19']}" /></td>
 		<td colspan="3">质控结果 %</td>
 		<td colspan="3"><input type="text" name="td20" class="inputl" value="{$arow['td20']}" /></td>
 	</tr>
 	<tr>
-		<td colspan="11">标准溶液</td>
+		<td colspan="12">标准溶液</td>
 	</tr>
 	<tr class='auto'>
-		<td colspan="11"><input type="text" name="td16" class="inputl" value="{$arow['td16']}" />=<input type="text" name="td17" id='c_v' class="inputl" value="{$arow['td17']}" /> mol/L</td>
+		<td colspan="12"><input type="text" name="td16" class="inputl" value="{$arow['td16']}" />=<input type="text" name="td17" id='c_v' class="inputl" value="{$arow['td17']}" /> mol/L</td>
 	</tr>
 	<tr>
-		<td colspan="2">样品处理方式</td>
+		<td colspan="3">样品处理方式</td>
 		<td colspan="9"><input type="text" name="td18" class="inputl" value="{$arow['td18']}" /></td>
 	</tr>
 	<tr id="jsgs_">
@@ -76,11 +76,12 @@ $hjtj_bt
 		<td>V-V<sub>0</sub>(mL)</td>
 		<td>计算结果<br/>({$arow['unit']})</td>
 		<td colspan="2">报告结果<br/>({$arow['unit']})</td>
+		<td >质控结果<br/>(%)</td>
 	</tr>
 	$aline
 	<tr>
 		<td align="center">备注</td>
-		<td colspan="10"><textarea name="td30">$arow[td30]</textarea></td>
+		<td colspan="11"><textarea name="td30">$arow[td30]</textarea></td>
 	</tr>
 </table>
 
