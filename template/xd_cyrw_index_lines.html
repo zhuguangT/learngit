@@ -1,0 +1,36 @@
+<!--下达采样任务中的批次站点模板 xd_cyrw_index_lines.html-->
+<style>
+table{border-collapse: 0 !important;}
+</style>
+<div name='$group_name'>
+	<!--<table>-->
+	<thead>
+		<tr gr_name="{$group_name}" style="border-bottom:0px;font-weight:bold;height:40px;">
+            <th align="left" style="border-bottom:0px;text-align:left;width:25%"><label style="font-weight:bold;"><input type='checkbox' {$group_name_checked} leixing="group" group_id="$rs_sites[gr_id]" value='$group_name' />{$group_name}</label></th>
+            <th style="border-bottom:0px;width:10%"><span style="font-weight:bold;color:blue;cursor:pointer;" onclick="qckb_value_modify('$group_name','group_value','{$rs_sites['gr_sort']}','$url_group_name')" water_type="$group_water_type">检测项目设定</span></th>
+            <th style="border-bottom:0px;width:15%">现场平行样<span class='xcpx_tishi'></span></th>
+            <th style="border-bottom:0px;width:20%">全程序空白样</th>
+            <th style="border-bottom:0px;width:15%" class="cy_user">采样人</th>
+            <th style="border-bottom:0px;width:15%" class="action-buttons">
+				<!-- <span class="widget-toolbar" style="width:100%;height:100%;line-height:40px;clear:both;text-align:center;padding-right:0px;"> -->
+					<!--修改批次--><a class="green" href="#"><i class="icon-edit bigger-130" onclick="qckb_value_modify('$group_name','group_modify','{$rs_sites['gr_sort']}','$url_group_name')" title='修改批次“{$group_name}”的信息及站点'></i></a>
+                    <!--删除批次--><a class="red" href="#"><i class="icon-remove-sign bigger-130" onclick="gotoif('$rooturl/site/site_delete.php?action=xd_cyrw&pi=1&site_type={$_GET[site_type]}&sgname={$url_group_name}&fid={$fzx_id}','确定删除 {$group_name} 中全部的站点吗?');" title="删除 {$group_name}"></i></a>
+                    <!--添加批次--><!--<span onclick="qckb_value_modify('$group_name','group_add','{$rs_sites['gr_sort']}','$url_group_name')" style="cursor:pointer;" title="添加新批次"><img src="$rooturl/img/add.jpg" height="20px" style="vertical-align:middle;" /></span> -->
+			         <!--折叠    --><!-- <a class="zheDie" group="$group_name" href="#" style="height:100%;line-height:40px;vertical-align:middle;color:#E2E2E2;float:right;height:100%;border-width:1px;border-style:none none none solid;">&nbsp;&nbsp;&nbsp;<i class="1 icon-chevron-up bigger-125"></i>&nbsp;&nbsp;&nbsp;</a> -->
+				<!-- </span> -->
+			</th>
+		</tr>
+	</thead>
+	<tr gr_name="{$group_name}" >
+        <td  style="box-sizing:content-box;margin:0px;padding:0px;border:none;height:0px;" colspan="3"></td>
+        <td rowspan="$site_num" style="min-width:176px;">
+        	<label><input type='checkbox' {$qckb_checked} name="{$group_name}[qckb]" group_name="{$group_name}" value='' {$disabled} />检测全程序空白样<span style="color:blue;" onclick="qckb_value_modify('$group_name','qckb','','$url_group_name')" name="{$group_name}[qckb_num]"  value='$qckb_value_num'>(默认)</span></label>
+        	<br /><label style="margin-left:-38px;"><input type='checkbox' name="{$group_name}[snkb]" group_name="{$group_name}" value='yes' {$disabled} {$snkb_checked}/>同时检测室内空白</label>
+		</td>
+        <td class="cy_user" rowspan="$site_num" style="min-width:90px;max-width:5%;"><select name="{$group_name}[cy_user]" {$disabled} gr_name="{$group_name}">$option_user</select><br />
+        <select name="{$group_name}[cy_user2]" {$disabled} gr_name="{$group_name}"><option value=''>请选择..</option>$option_user2</select></td>
+        <td style="margin:0;padding:0px;border:0px;height:0;";></td>
+	</tr>
+	$site_lines
+	<!--</table>-->
+</div>

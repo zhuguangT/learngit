@@ -1,0 +1,54 @@
+<h1>浊度分析原始记录表（2）</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:12%"></td><td style="width:18%"></td><td style="width:14%"></td>
+		<td style="width:14%"></td><td style="width:14%"></td><td style="width:14%"></td>
+		<td style="width:14%"></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="4">分析方法：{$arow['td2']}</td>
+		<td class="left" colspan="3">分析日期：<input class="date_Ymd" type="text" name="td31" value="{$arow['td31']}" /></td>
+	</tr>
+	<tr>
+		<td class="left" colspan="2">样品类别：{$arow['water_type']}</td>
+		<td class="left" colspan="5">仪器名称及编号：{$arow['td4']} {$arow['yq_bh']}</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="4">标准溶液名称：<input type="text" name="td9" value="{$arow['td9']}" /></td>
+		<td class="left" colspan="3">配制日期：<input type="text" name="td10" size="10" value="{$arow['td10']}" /></td> 
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="2">测定范围：<input type="text" name="td11" size="5" value="{$arow['td11']}" />{$arow['unit']}</td>
+		<td class="left" colspan="5">计算公式：C（{$arow['unit']}）=仪器显示×稀释倍数</td>
+	</tr>
+	<tr >
+		<td>序号</td>
+		<td>{$zhanming}</td>
+		<td>仪器显示<br />（{$arow['unit']}）</td>
+		<td>稀释倍数</td>
+		<td>含量 C （{$arow['unit']}）</td>
+		<td>平均值（{$arow['unit']}）</td>
+		<td>相对偏差<br>（％）</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td>备注</td>
+		<td colspan="6"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+	</table>
+<script type="text/javascript">
+	function jsgs(){
+		if($.isNumeric(vs['vd2'])){
+			xs_bs = parseFloat(vs['vd2']);
+		}else{
+			xs_bs = 1;
+			vs['vd2'] = ('-'==vs['vd2']) ? '-' : '';
+		}
+		if($.isNumeric(vs['vd27'])){
+			vs['vd0'] = jsws(vs['vd27']*xs_bs);
+		}else{
+			vs['vd0'] = '';
+		}
+	}
+</script>

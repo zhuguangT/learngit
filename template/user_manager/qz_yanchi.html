@@ -1,0 +1,24 @@
+<h1 align="center">复核，校核延迟签字统计表</h1>
+<p class="center">
+        年份选择:
+        <select name="year" id="year" onchange="redirect()">
+        $optionY
+        </select>
+        月份选择:
+        <select name="month" id="month" onchange="redirect()">
+        $optionM
+        </select>
+        规定天数:<input type="text" value="$qixian" id="qixian" oninput="this.value=this.value.replace(/[^\d]/g,'');" onfocus="this.value=''" name="qixian" onblur="redirect();"size="10" placeholder="默认为2天" title="规定校核人，复核人在其校核，复核的人签字后的多少天内要签字" />
+        <label style="display:block_inline;cursor:pointer;"><input type="checkbox" name="zhoumoZt" style="cursor:pointer;" value='' $checked onclick="redirect();" />排除周六日</label>
+</p>
+<table class="table table-striped table-bordered table-hover center" align="center" style="width:18cm;text-align:center;">
+<tr>
+	<th>人员名单</th>
+
+	<th>共签字（次）</th>
+	<th>延迟签字（次）</th>
+	<th width='130px'>延迟率</th>
+	<th width='130px'>操作</th>
+</tr>
+$lines
+</table>

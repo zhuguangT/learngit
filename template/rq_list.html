@@ -1,0 +1,90 @@
+<style type="text/css">
+	span,li{text-align:center}
+	.chosen-single div{padding-right:5px}
+	#rq_name_chosen{width:200px;}
+</style>
+<script>
+$(document).ready(function() {
+$(".chosen-select").chosen();
+$("#rq_name_chosen").css("width","200px");}
+
+);
+	function del_rq(t,id)
+	{
+		if(confirm("确定要删除吗？"))
+		{
+			if(id=="")
+			$(t).parent().parent().remove();
+
+			else
+			$.get('rq_list.php?ajax=1',{action:'del',id:id},function(data){
+			
+				if(data=='1')
+				$(t).parent().parent().remove();
+			},'html');
+			var xh=$(t).parent().parent().children('td').eq(0).html();
+			$("#tab tr:gt("+xh+")").each(function(){
+			var xh=$(this).children('td').eq(0).html();
+			var newxh=parseInt(xh)-1;
+			$(this).children('td').eq(0).html(newxh);
+		});
+		}
+		else
+			return false;
+	}
+</script>
+<h3 class="header smaller center title">采样容器列表</h3>
+<div class="widget-box no-border">
+  <div class="widget-header header-color-blue4 center">
+	<div class="widget-toolbar">
+		容器名称搜索<select id="rq_name" class="chosen-select" name="rq_name"><option value="全部">全部</option>$rq_name_option</select>&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-xs btn-primary" type="button" name="add_rq_info" id="add_rq_info">添加容器信息</button>
+	</div>
+  </div>
+  <div class="widget-body">
+<table class="table table-striped table-bordered table-hover center" style="text-align:center;table-layout:fixed" id="tab">
+	<tr>
+		<td width="6%">序号</td>
+		<td width="14%">容器名称</td>
+		<td width="8%">容器规格</td>
+		<td width="6%">采样默认数量</td>
+		<td width="25%">保存剂</td>
+		<td width="35%">检测项目</td>
+		<td width="12%">操作</td>
+	</tr>
+	$rq_line
+</table>
+</div>
+</div>
+<script>
+	//添加容器信息
+$("#add_rq_info").click(
+function(){
+
+	$.get('rq_modi.php?ajax=1',{action:'click_add'},function(data){
+		if(data=='1'){
+			window.location.href="rq_modi.php";
+		}else{
+			alert('本实验室没有启用的检测项目');
+			return false;
+		}
+	},'html');
+		
+		
+}
+);
+//根据 容器名称筛选
+$("#rq_name").change(function(){
+var rq_name=$("#rq_name").val();
+if(rq_name=="全部")
+{
+	
+	$("#tab tr").show();
+}
+else
+{
+	$("#tab tr:gt(0)").hide();
+	$("."+rq_name).show();
+}
+	
+});
+</script>

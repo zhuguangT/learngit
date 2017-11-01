@@ -1,0 +1,188 @@
+<style>
+table.caiyang{
+    border-collapse: collapse;
+    margin-left: auto; margin-right: auto;
+    color: #000;
+}
+table.caiyang td{
+    padding: 0px;
+}
+table.caiyang td.canclick{
+    background:#cfc;
+}
+td {FONT-FAMILY: 宋体,arial; FONT-SIZE: 9pt; LINE-HEIGHT: 120%}
+table.caiyang td.noborder{
+    border:0px;
+}
+table.caiyang td,table.caiyang th{
+    border: 1px solid black;
+    background-color: #FFFFFF;
+    padding:4px;
+}
+table.caiyang input{
+    color: #000;
+    background-color: #ddd;
+    margin: 0px;
+    padding: 2px;
+}
+table.caiyang textarea{
+    width: 100%;
+    min-height: 50px;
+    text-align: left;
+}
+</style>
+<script type="text/javascript" src="$rooturl/js/lims/hyd.js"></script>
+<script type="text/javascript">
+/*无水处理*/
+$(document).ready(function(){
+	$("#yin").dblclick(function(){
+			$("select[name$='[status]']").css({display:"none"});
+	});
+	$(document).ready(function(){ $(".chosen-select").chosen();
+	});
+});
+function show_wus(id){
+	//alert($("input[name$='[cy_beizhuw]']")[id].width());
+	var objDiv = document.getElementById ("ctt"+id);
+	objDiv.style.display = "block";
+}
+function hide_wus(id){
+	var objDiv = document.getElementById ("ctt"+id);
+	objDiv.style.display = "none";
+	if(objDiv.value=="-1"){ 
+		var objj=document.getElementById ("cttt"+id).value;
+		f=objj.replace(/\(无水\)/g,'');
+		var ob=document.getElementById ("cttt"+id).value +="\(无水)";
+	}else{
+		var objj=document.getElementById ("cttt"+id).value;
+		f=objj.replace(/\(无水\)/g,'');
+		var ob=document.getElementById ("cttt"+id).value=f;
+	}
+}
+
+function yanzheng(){//保存验证
+	var tt="";
+	var d="";
+	var dd="";
+	if(d!=""){f=d.replace(/,/g,'').length;alert("序号"+d+"为无水站点，共"+f+"个");return $("form").submit();
+	}
+}
+function time(zhi){
+	var zhiCl   = zhi.value.replace(/[^\d\- :]/g,"");//只能输入数字
+	var maoArr  = zhiCl.match(/:/g);//匹配“:”
+	var wei     = zhiCl.substring((zhiCl.length-1));//取出最后一个数字
+	zhi.value   = zhiCl;  
+	if(zhiCl.length>5){
+		zhiCl=zhiCl.substring(0,5);
+		zhi.value=zhiCl;
+	}
+	document.onkeydown = function (e) {
+	　　var theEvent = window.event || e;
+	　　var code = theEvent.keyCode || theEvent.which;
+		if(code!=8){//如果按得是删除键不做任何处理
+
+			if(zhiCl.length=='2'){
+				zhi.value = zhiCl+":";
+			}
+		}
+　　}
+}
+
+/*
+function check_date(t){
+	var date=t.value.replace(/\s+/g,"");
+	if(t.value.match(/\d{4}\-{1}\d{2}\-{1}\d{2}/)==null&&date!=''){
+		alert("采样日期格式错误！");
+		window.setTimeout(function () { $(t).val(t.value).focus();},0); 
+				return false;
+	}
+}*/
+function check_time(t){
+	var time=t.value.replace(/\s+/g,"");
+	if(t.value.match(/\d{2}\:{1}\d{2}/)==null&&time!=''){ 
+		alert("采样时间格式错误！正确格式00:00");
+		window.setTimeout(function () { $(t).val("").focus();},0);
+				return false;
+	}
+}
+//修改瓶子
+function xiuping(ping){
+  var cid =  $(ping).attr('cid');
+  $('body').css("overflow","hidden")
+  $("#cover"+cid).show();
+}
+
+function guanbi(aa){
+  $('body').css("overflow","auto")
+  var cid =  $(aa).attr('cid');
+  $("#cover"+cid).css("display","none");
+}
+function pingajax(aa){
+  var cid = $(aa).attr('cid');
+  var cyd_id = $(aa).attr('cyd_id');
+  var tj = document.getElementById("cyrec");
+  tj.action="./cy_record_save.php?ajax=1&flag=pingzi&cid="+cid;
+  tj.submit();
+}
+</script>
+<div class='body_css'  id="yin">
+<div style="max-width:98%;margin:0 auto;">$tuiHuiTiShi</div>
+<center class="no_print">$dayin</center>
+<form name="cyrec" id='cyrec' action="cy_record_save.php" method="post" id="cy_record_form">
+<!--<input type="hidden" name="current_user" value='登陆的人' />变量line_qz中-->
+<input type="hidden" name="cy_user" value="{$cyd['cy_user']}" />
+<input type="hidden" name="ajax" value="1"/>
+<input type="hidden" name="cy_flag" value="{$cyd['cy_flag']}" />
+<input type="hidden" name="cyd_id" id="cyd_id" value="{$_GET['cyd_id']}" />
+<input type="hidden" name="cyd[save_flag]" value="1" />
+
+<table  style="width:98%;" class="caiyang center" id='cyj1'>
+ 	<caption style="font-size:24px; line-height:48px; ">
+		采样记录表  
+	</caption>
+  <tr align="center">
+    <td rowspan="2" width='2%'>序号</td>
+	<td rowspan="2" width='18%'>站点名称</td>
+	<td rowspan="2" width='6%'>水样类别</td>
+	<td rowspan="2" width='6%'>采样日期</td>
+	<td rowspan="2" width='4%'>采样<br/>时间</td>
+    {$cy_record_bt_str}
+    <td colspan="$xc_jcxm_total" width='14%'>现场测定记录</td>
+    <td rowspan="2" width='8%'>样品状态</td>
+	<td colspan='2' width='16%'>样品容器数量</td>
+    <td rowspan="2" width="70px" >保存条件</td>
+  </tr>
+  <tr>
+    $xc_jcxm
+    $rq_fenlei_td
+  </tr>
+	{$cy_record_lines}
+  <tr align="center" height="60px">
+  	<td colspan="2">备注：</td>
+    <td colspan={$cols_num} style="padding:0px"><textarea style="width:99%;height:45px;text-align:left" name="cyd[cy_note]" id='cy_note' >{$cyd['cy_note']}</textarea>
+    </td>
+  </tr>
+</table>
+<br/>
+<table width='98%'>
+<tr align='left'><td width='3%'>&nbsp;</td><td><p>说明：采样依据：LZJ/ZZ78《采样工作管理规定》</p></td></tr>
+<tr align='left'><td width='3%'>&nbsp;</td><td><p>现场项目检测依据：$fastr</p></td></tr>
+<tr align='left'><td width='3%'>&nbsp;</td><td><p>现场项目检测仪器：$yistr</p></td></tr>
+</table>
+$line_qz
+
+$huiTuiButton
+<script type="text/javascript">
+$('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+	$(this).prev().focus();});
+$('.timepicker1').timepicker({
+	minuteStep: 1,
+	showSeconds: true,
+	showMeridian: false
+}).next().on(ace.click_event, function(){
+	$(this).prev().focus();
+});
+$("#cyjl").enter_sheet_input();
+</script>
+</form>
+</div>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="utf-8" />
+	<title>化验单打印</title>
+	<meta name="keywords" content="LIMS" />
+	<meta name="description" content="LIMS" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="{$rooturl}/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="{$rooturl}/css/ace.min.css" />
+	<link rel="stylesheet" href="{$rooturl}/css/lims/main.css" />
+	<link rel="stylesheet" href="{$rooturl}/css/lims/hyd.css" />
+	<link rel="stylesheet" href="{$rooturl}/css/lims/print.css" />
+	<link rel="stylesheet" href="{$rooturl}/css/jquery.confirm.css" />
+	<link rel="stylesheet" href="{$rooturl}/css/font-awesome.min.css" />
+	<script type="text/javascript" src="{$rooturl}/js/jquery.js"></script>
+	<script type="text/javascript"> var trade_global = {$trade_global};</script>
+	<script type="text/javascript" src="{$rooturl}/js/jquery.confirm.min.js?v=2.0"></script>
+	<script type="text/javascript" src="{$rooturl}/js/lims/hyd.js?v={$global['hyd']['v']}"></script>
+	<!-- pdf.js -->
+	<script src="{$rooturl}/js/pdfjs/pdf.js"></script>
+	<script src="{$rooturl}/js/pdfjs/pdf.worker.js"></script>
+	<script src="{$rooturl}/js/pdfjs/pdfJs.js"></script>
+	<style type="text/css">
+		body {
+			/*background-color: #DEDEDE;*/
+		}
+		.disabled { cursor: not-allowed}
+		.assay_form .site_name { font-size: 12px; }
+		.tool_bar { margin-top: 20px;}
+		.tool_bar { position: fixed; top: 20px; width: 100%; z-index: 20; margin-top: 20px;}
+		.printArea { /*margin-top: 100px;*/}
+		.page { position:relative; margin:20px auto; padding: 0; page-break-before:auto; page-break-after:always; border:1px solid #CCC; }
+		.A4_Vertical{ width:760px; height:1088px; }
+		.A4_Horizontal{ width:1088px; height:760px; }
+		.page .pageContent { position:relative; margin: 0; padding: 0; overflow:hidden; background-color:#FFF; }
+		.A4_Vertical .pageContent{ width:680px; height:1008px; }
+		.A4_Horizontal .pageContent{ width:1008px; height:680px; }
+		.page .printMargins { background:#FFF; margin: 0; padding:40px; }
+		.page .shadow { position:absolute; top:4px; left:4px; width:100%; height:100%; background:#EEE; z-index:-10; }
+		@media print {
+			body,div{
+				margin: 0;
+				padding: 0;
+			}
+			#h_100,
+			.col-md-3,
+			.bs-docs-header,
+			.bs-docs-footer,
+			.tool_bar,
+			.page .shadow{ display:none; }
+			/*.A4_Vertical,.A4_Horizontal{
+				margin: 0;
+			}*/
+			.printArea,
+			.page { margin: 0 10px; border:none; }
+		}
+	</style>
+</head>
+<body>
+	<!-- <div class="bs-docs-header">
+		<div class="container">
+			<h1>原始记录打印</h1>
+			<p>在这个页面你可以批量打印您的原始记录</p>
+		</div>
+	</div>
+	<div class="container bs-docs-container">
+		<div class="row">
+			<div class="col-md-9"> -->
+				{loop $print_data $key $data}
+				<div id="hydRow_{$data['tid']}" class="print_box" data-tid="{$data['tid']}" data-index="{$key}">
+					<div class="printArea">
+						<div class="hyd_data"></div>
+						<div class="pdf_data"></div>
+					</div>
+					<!-- 化验单arow数据 -->
+					<script class="arow_data" data-tid="{$data['tid']}" type="text/template">{$data['data']}</script>
+					<!-- 直接进行打印时需要的数据 -->
+					<script class="print_data" type="text/template">{$data['print_html']}</script>
+					<!-- json格式的数据行内内容 -->
+					<script class="lines_data" type="text/template">{$data['lines_data']}</script>
+					<!-- plan表单模板内容 -->
+					<script class="plan_template" type="text/template">{$data['plan_tpl']}</script>
+					<!-- line行内容模板 -->
+					<script class="line_template" type="text/template">{$data['line_tpl']}</script>
+					<!-- 需要执行的js -->
+					<script class="extrajs_temp" type="text/template">{$data['extrajs']}</script>
+				</div>
+				{/loop}
+			<!-- </div>
+			<div class="col-md-3">
+				<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top"> -->
+					<div class="tool_bar center">
+						<div class="btn-group">
+							<button class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+								<span class="show_button">仅显示原始记录</span>
+								<span class="icon-caret-down icon-on-right"></span>
+							</button>
+							<ul class="dropdown-menu dropdown-primary">
+								<li class="show_hyd" style="display:none;"><a href="#">仅显示原始记录</a></li>
+								<li class="divider"></li>
+								<li class="show_pdf disabled tooltip-error" data-placement="top" data-rel="tooltip" data-original-title="没有关联的PDF图谱">
+									<a href="#">仅显示PDF图谱</a>
+								</li>
+								<li class="divider"></li>
+								<li class="show_all disabled tooltip-error" data-placement="top" data-rel="tooltip" data-original-title="没有关联的PDF图谱">
+									<a href="#">原始记录&PDF图谱</a>
+								</li>
+							</ul>
+						</div>
+						<div class="btn-group">
+							<button class="btn btn-sm btn-primary btnPrint"><i class="icon-print bigger-110"></i>打印</button>
+							<button class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+								<span class="icon-caret-down icon-only smaller-90"></span>
+							</button>
+							<ul class="dropdown-menu dropdown-primary pull-right">
+								<li><a class="setWidth" data-add="A4_Vertical" data-rm="A4_Horizontal" href="javascript:void(0);">设置纵版</a></li>
+								<li class="divider"></li>
+								<li><a class="setWidth" data-add="A4_Horizontal" data-rm="A4_Vertical" href="javascript:void(0);">设置横版</a></li>
+							</ul>
+						</div>
+					</div>
+					<!-- <ul id="step_rows" class="nav bs-docs-sidenav">
+						<li><a>共打印（<strong class="red" id="hyd_total">0</strong>）页</a></li>
+					</ul>
+					<a class="back-to-top" href="#top">返回顶部</a>
+				</nav>
+			</div>
+		</div>
+	</div>
+	<footer class="bs-docs-footer" role="contentinfo">
+		<div class="container has_not_more"></div>
+	</footer> -->
+	<script type="text/javascript">
+			var alert_obj = $.alert({
+				icon: 'icon icon-spinner icon-spin',
+				title: '原始记录表数据加载中。。。',
+				content: ''
+			});
+		$(document).ready(function(){
+			/***************************/
+			var b = $(window),
+			c = $(document.body);
+			c.scrollspy({ target: ".bs-docs-sidebar" });
+			b.on("load", function() { c.scrollspy("refresh"); });
+			$(".bs-docs-container [href=#]").click(function(a) { a.preventDefault(); });
+			setTimeout(function() {
+				var b = $(".bs-docs-sidebar");
+				b.affix({
+					offset: {
+						top: function() {
+							var c = b.offset().top,
+							d = parseInt(b.children(0).css("margin-top")),
+							e = $(".bs-docs-nav").height();
+							return this.top = c - e - d
+						},
+						bottom: function() {
+							return this.bottom = $(".bs-docs-footer").outerHeight(!0)
+						}
+					}
+				})
+			},100);
+			/***************************/
+			// 化验单内容格式化
+			// 页面内容格式化
+			var assay_form_format = function(){
+				var timestamp = new Date().getTime();
+				// 获取随机数
+				var random = Math.ceil(Math.random()*timestamp);
+				$(".assay_form").each(function(i){
+					// $(this).find("h1").html($(this).find("h1").html()+$(this).attr("data"));
+					var that = $(this);
+					that.prop("data",random+i);
+					that.prop("style","width: 100%;");
+					that.prop("id",that.prop("id")+random+i);
+					that.find(".blue_a").removeClass("blue_a");
+					that.find("button,input[type!=text]").remove();
+					that.find("form[name^=shehe_]").prop("name","shehe_"+random+i);
+					that.find("form[name^=as_form_]").prop("name","as_form_"+random+i);
+					that.find("form[name^=sc_form_]").prop("name","sc_form_"+random+i);
+					that.find("div[id^=assay_form_]").prop("id","assay_form_"+random+i).attr("data",random+i);
+					that.find("div[id^=quxian_form_]").prop("id","quxian_form_"+random+i).attr("data",random+i);
+					that.find("input[type=text],select").each(function(){ $(this).replaceWith($(this).val()); });
+				});
+				// 增加"以下空白"
+				$(".print_box").each(function(n){
+					$(this).find(".assay_form:last table.single tr:gt(3)").each(function(n){
+						if( !$(this).find("td:first").length ){
+							return true;
+						}
+						var current_html = $(this).find("td:first").html();
+						if( null != current_html && '' != current_html ){
+							current_html = current_html.replace( /[\s]/g, "" );
+						}
+						if( '' == current_html ){
+							$(this).find("td:eq(1)").html("<span>以下空白</span>");
+							return false;
+						}
+					});
+				});
+			};
+			var init_nav = function(){
+				// 初始化导航
+				window.print_arows = {};
+				$("#hyd_total").html(0);
+				$("#step_rows li:gt(0)").remove();
+				$(".page").each(function(index){
+					if($(this).parents("[class$=_data]").is("[style*=none]")){
+						return true;
+					}
+					// 当前页码
+					var pageNum = parseInt(index)+1;
+					var pageNum = ( pageNum > 9 ) ? pageNum : '0'+String(pageNum);
+					$(this).prop("id","hydItem_"+index);
+					var tid = $(this).parents(".print_box").data("tid")
+					if( typeof print_arows[tid] == "undefined" ){
+						print_arows[tid] = $.parseJSON($(".arow_data[data-tid="+tid+"]").html());
+					}
+					var arow = print_arows[tid];
+					if(!$("#step_rows a[href='#hydRow_"+arow['id']+"']").length){
+						var step_rows = '<li id="nav_rows_'+arow['id']+'"><a href="#hydRow_'+arow['id']+'">'+arow['assay_element']+'（ 共 <span class="hydRowOpen">0</span>/<span class="hydRowCount">0</span> 页）</a><ul class="nav"></ul></li>';
+						$("#step_rows").append(step_rows);
+					}
+					$("#hyd_total").html(parseInt($("#hyd_total").html())+1);
+					var items_c = parseInt($("#nav_rows_"+arow['id']+" .hydRowCount").html());
+					$("#nav_rows_"+arow['id']+" [class^=hydRow]").html(items_c+1);
+					var page_type = $(this).parents("div[class$=_data]").is(".hyd_data") ? '化验单'+pageNum : 'PDF图谱'+pageNum;
+					$("#nav_rows_"+arow['id']+" ul").append('<li><a href="#hydItem_'+index+'"><i class="glyphicon glyphicon-eye-open"></i>&nbsp;'+page_type+'（'+arow['id']+'）</a></li');
+				});
+				$("body").scrollspy('refresh');
+				// 显示/隐藏原始记录
+				$("#step_rows .glyphicon").unbind("click");
+				$("#step_rows .glyphicon").toggle(function(){
+					$(this).removeClass("glyphicon-eye-open").addClass("glyphicon-eye-close");
+					$($(this).parents("a").attr("href")).hide();
+					var hydRowOpen = $(this).parents("[id^=nav_rows_]").find(".hydRowOpen");
+					$("body").scrollspy('refresh');
+					hydRowOpen.html(parseInt(hydRowOpen.html())-1);
+					$("#hyd_total").html(parseInt($("#hyd_total").html())-1);
+					//找出当前化验单的位置
+					var index = $(this).parents("a").index($("a[href^='#hydItem_']"));
+					//如果存在下一张化验单，则跳入下一个位置
+					if($(".page").eq(index+1).length){
+						window.location.hash="#"+$(".page").eq(index+1).attr("id");
+					}
+				},function(){
+					$($(this).parents("a").attr("href")).show();
+					$(this).removeClass("glyphicon-eye-close").addClass("glyphicon-eye-open");
+					$("body").scrollspy('refresh');
+					var hydRowOpen = $(this).parents("[id^=nav_rows_]").find(".hydRowOpen");
+					hydRowOpen.html(parseInt(hydRowOpen.html())+1);
+					$("#hyd_total").html(parseInt($("#hyd_total").html())+1);
+				});
+				$("[id^=nav_rows_]").click(function(){
+					$(this).find(".glyphicon-eye-close").trigger("click");
+				});
+			};
+			// 定义分页模板
+			window.page_tpl = '<div class="page #A4_type#"><div class="printMargins"><div class="pageContent">#PAGE#</div></div><div class="shadow"></div></div>';
+			// 如果是直接显示打印内容的则隐藏tool_bar
+			if( "" != $(".print_data").html() ){
+				$(".tool_bar").remove();
+				$(".printArea .hyd_data").html(page_tpl.replace("#A4_type#","A4_Vertical").replace("#PAGE#",$("#print_data").html()));
+				assay_form_format();
+				return false;
+			}
+			// 检查是否含有图谱
+			window.pdf_load = false;
+			var load_PDF = function(){};
+			var hyd_pdf = $.parseJSON('{$hyd_pdf}');
+			if( !hyd_pdf.length ){
+				// 如果没有图谱则显示提示信息
+				$('[data-rel=tooltip]').tooltip();
+				$(".printArea .pdf_data").remove();
+			}else{
+				// 如果存在图谱则定义加载图谱的方法
+				$(".show_pdf,.show_all").removeClass("disabled");
+				var load_PDF = function(){
+					// 图谱已经加载过之后直接显示内容即可
+					if( true == window.pdf_load ){
+						$(".printArea .pdf_data").show();
+					}else{
+						window.pdf_load = true;
+						// 图谱未加载时请求加载
+						var last_pid = Object.keys(hyd_pdf)[Object.keys(hyd_pdf).length-1];
+						for( var i=0;i<hyd_pdf.length;i++){
+							var pdf_url =trade_global.rooturl + '/huayan/view_pdf.php?ajax=1&handle=see&pid=' + hyd_pdf[i]['pid'];
+							var reBack = false;
+							if( hyd_pdf[i]['pid'] == last_pid ){
+								var reBack = function(num){
+									init_nav();
+								}
+							}
+							$(".print_box[data-tid="+hyd_pdf[i]['tid']+"] .pdf_data").append('<div class="hydPDF"></div>').find(".hydPDF:last").pdfView(pdf_url,reBack);
+						};
+					}
+				};
+				$(".printArea .pdf_data").hide();
+			}
+			// PDF END
+			// A4纸宽高配置
+			var A4_type_confing = {
+				'A4_Vertical':{"height": 1008, "name": "A4_Vertical"},
+				'A4_Horizontal':{"height": 680, "name": "A4_Horizontal"}
+			};
+			// 显示原始记录表并且进行分页
+			var assay_form_init = function(print_box,A4_type){
+				if( typeof print_box == "undefined" ){
+					return false;
+				}
+				print_box.find(".hyd_data").empty();
+				var plan_template = print_box.find(".plan_template").html();
+				var line_template = print_box.find(".line_template").html();
+				var lines = $.parseJSON(print_box.find(".lines_data").html());
+				( !lines ) && ( lines = [] );
+				if( typeof A4_type != "undefined"){
+					var className = A4_type_confing[A4_type];
+				}else{
+					// 判断页面是的宽度，默认纵版
+					if( plan_template.indexOf("width:26cm") < 0 ){
+						var className = A4_type_confing['A4_Vertical'];
+					}else{
+						var className = A4_type_confing['A4_Horizontal'];
+					}
+					// plan_template = plan_template.replace(/width:(.+)cm(;?)/g,"width:100%;");
+				}
+				// 临时增加一个div存放分页过程中的数据用来获取行高，分页结束后销毁
+				if( $("body #assay_form_cache").length ){
+					$("body #assay_form_cache").empty();
+				}else{
+					$("body").append('<div id="assay_form_cache"></div>');
+				}
+				// 分页模板
+				var page_tpl = window.page_tpl.replace("#A4_type#",className['name']);
+				// 获取默认plan高度
+				var mr_plan_height = $("#assay_form_cache").html(page_tpl.replace("#PAGE#",plan_template)).find(".assay_form").prop("style","width: 100%;").height();
+				// 获取每一行的默认行高
+				var mr_line_height = $("#assay_form_cache").html('<table>'+line_template+'</table>').find("td:first").height();
+				// 每页应有的数据行数 = (总高度-plan模板的高度)/默认行高
+				var lineNum = Math.floor( (className['height'] - mr_plan_height) / mr_line_height );
+				// 填充原始记录数据
+				var pageIndex = -1;
+				// 最大行数，因为可能需要在末页增加空白行
+				var max_line_num = lines.length + lineNum;
+				for (var i = 0; i < max_line_num; i++) {
+					if( i < lines.length ){
+						// 数据行没有显示完毕时显示数据行
+						$("#assay_form_cache").html(page_tpl.replace("#PAGE#",'<table><tr>'+lines[i]+'</tr></table>'));
+					}else{
+						// 数据行显示完毕后插入空白行进行填充
+						$("#assay_form_cache").html(page_tpl.replace("#PAGE#",'<table><tr>'+line_template+'</tr></table>'));
+					}
+					// 将要插入数据行的行高
+					var line_height = $("#assay_form_cache table tr td").height();
+					// 当前打印页的剩余高度
+					var last_height = className['height'] - print_box.find(".hyd_data .assay_form:eq("+pageIndex+")").height();
+					// 剩余高度不足一行数据的高度时,进行分页处理
+					if( pageIndex == -1 || last_height <= line_height ){
+						if( i >= lines.length  ){
+							// 数据行显示完毕后不再进行分页，直接结束
+							break;
+						}else{
+							pageIndex++;
+							// 数据行未显示完毕时，增加新的一页
+							print_box.find(".hyd_data").append(page_tpl.replace("#PAGE#",plan_template)).find(".assay_form").prop("style","width: 100%;");
+							// 第二页开始隐藏表头中部分数据以节约打印空间
+							console.log(pageIndex)
+							console.log(max_line_num)
+							if( pageIndex >= 1 ){
+								var hide_height = 0;
+								print_box.find(".assay_form:eq(0) .print_hide").each(function(){
+									hide_height += $(this).height();
+								});
+								max_line_num += hide_height/mr_line_height;
+								print_box.find(".assay_form:gt(0) .print_hide").remove();
+							}
+							console.log(max_line_num)
+						}
+					}
+					if( i < lines.length ){
+						// 数据行没有显示完毕时显示数据行
+						print_box.find(".assay_form:last table.single tr:last").before('<tr>'+lines[i]+'</tr>');
+					}else{
+						// 数据行显示完毕后插入空白行进行填充
+						print_box.find(".assay_form:last table.single tr:last").before('<tr>'+line_template+'</tr>');
+					}
+				};
+				eval(print_box.find(".extrajs_temp").html());
+				// 销毁缓存数据div
+				$("#assay_form_cache").remove();
+			};
+			// hyd END
+			// 显示原始记录表，PDF图谱
+			$(".tool_bar li[class^=show]").not(".disabled").on("click",function(){
+				if($(this).is(".show_hyd")){
+					// 只显示原始记录
+					$(".printArea .hyd_data").show();
+					$(".printArea .pdf_data").hide();
+				}else if($(this).is(".show_pdf")){
+					// 只显示PDF图谱
+					load_PDF();
+					$(".printArea .pdf_data").show();
+					$(".printArea .hyd_data").hide();
+				}else if($(this).is(".show_all")){
+					load_PDF();
+					$(".printArea .hyd_data").show();
+					$(".printArea .pdf_data").show();
+				}
+				// 更改提示内容
+				$(".tool_bar .show_button").html($(this).find("a").html());
+				// 全部显示
+				$(".tool_bar li[class^=show]").show();
+				// 隐藏当前
+				$(this).hide();
+				init_nav();
+			});
+			// 执行打印操作
+			$(".btnPrint").unbind("click").click(function(){
+				// 浏览器不支持纵版页面和横版页面一起打印
+				if( $(".A4_Horizontal").length && $(".A4_Vertical").length ){
+					var error_msg = "浏览器不支持纵版页面和横版页面一起打印，请分别进行打印！";
+					$.alert({
+						//icon: 'icon icon-spinner icon-spin',
+						title: '温馨提示',
+						content: error_msg
+					});
+					$(".show_all").addClass("disabled").unbind("click");
+					$(".show_all").attr("data-original-title",error_msg).tooltip();
+					return false;
+				}else{
+					window.print();
+				}
+			});
+			// 设置纵横版
+			$(".setWidth").unbind("click").click(function(){
+				// 当前切换的纵横版类型
+				var A4_type = $(this).data("add");
+				// 更改纵横版式之后重新进行分页处理
+				$(".print_box").each(function(){
+					assay_form_init($(this),A4_type);
+				});
+				// 页面内容格式化
+				assay_form_format();
+				// 同步修改系统配置中的纵横版
+				$.get("ahlims.php?app=print&act=set_with&ajax=1&tid={$_GET['tid']}&A4_type="+A4_type,function(data){
+					console.log(data);
+				});
+				// PDF文件纵横版设置
+				if( !$(".hydPDF .page").length ){
+					return true;
+				}
+				var firstPdf = $(".hydPDF .page:first");
+				var w = firstPdf.find("canvas").width();
+				var h = firstPdf.find("canvas").height();
+				if( firstPdf.is("."+A4_type)){
+					$(".hydPDF .page canvas").width(w).height(h);
+				}else{
+					$(".hydPDF .page canvas").width(h).height(w);
+				}
+				$(".hydPDF .page").removeClass().addClass("page " + A4_type);
+			});
+			// 页面初始化
+			// 加载打印化验单
+			$(".print_box").each(function(){
+				assay_form_init($(this));
+			});
+			assay_form_format();
+			init_nav();
+			alert_obj.close();
+		});
+	</script>
+</body>
+</html>

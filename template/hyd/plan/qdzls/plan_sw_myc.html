@@ -1,0 +1,63 @@
+<h1>贾第鞭毛虫和隐孢子虫检验原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:8%"></td>
+		<td style="width:17%"></td>
+		<td style="width:15%"></td>
+		<td style="width:15%"></td>
+		<td style="width:15%"></td>
+		<td style="width:15%"></td>
+		<td style="width:15%"></td>
+	</tr>
+	<tr>
+		<td colspan="2">检验方法依据</td>
+		<td colspan="2">{$arow['td2']}</td>
+		<td>检验方法</td>
+		<td colspan="2">{$arow['td1']}</td>
+	</tr>
+	<tr>
+		<td colspan="2">操作质量控制日期</td>
+		<td colspan="5">
+			<input type="text" class="date_Ymd" name="td9" id="td9" value="{$arow['td9']}" />
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">隐孢子虫回收率</td>
+		<td><input type="text" class="inputc" name="td10" value="{$arow['td10']}" /></td>
+		<td colspan="2">贾第鞭毛虫回收率</td>
+		<td colspan="2"><input type="text" class="inputc" name="td11" value="{$arow['td11']}" /></td>
+	</tr>
+	<tr>
+		<td rowspan='2'>序号</td>
+		<td rowspan='2'>样品编号</td>
+		<td rowspan='2'>取样体积(L)</td>
+		<td colspan="4">井形载玻片</td>
+	</tr>
+	<tr>
+		<td> 隐孢子虫（个）</td>
+		<td> 隐孢子虫<br />（{$arow['unit']}）</td>
+		<td> 贾第鞭毛虫（个）</td>
+		<td> 贾第鞭毛虫<br />（{$arow['unit']}）</td>
+	</tr>
+	 {$aline}
+	    <tr>
+	    <td>备注</td>
+	    <td colspan="6"><textarea name="td30" cols='88%'>{$arow['td30']}</textarea></td>
+	  </tr>
+</table>
+<script type="text/javascript">
+function jsgs(){
+	var unit = '{$arow['unit']}';//个/10L
+	var r	 = parseInt(unit.split('/')[1]);
+	$.isNumeric(r) && unit.split('/')[1].replace(r,'')=='L' || (r=1);
+	vs['vd0'] = jsws(vs['vd3']/vs['vd1']*r);
+	if(parseFloat(vs['vd0']) == 0 ){
+		vs['vd0'] = '未检出';
+	}
+	vs['vd5'] = jsws(vs['vd4']/vs['vd1']*r);
+	if(parseFloat(vs['vd5']) == 0 ){
+		vs['vd5'] = '未检出';
+	}
+}
+</script>

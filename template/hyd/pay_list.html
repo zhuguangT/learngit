@@ -1,0 +1,801 @@
+<link rel="stylesheet" href="{$rooturl}/js/table-master/bootstrap-table.css" />
+<link rel="stylesheet" href="{$rooturl}/css/bootstrap-editable.css" />
+<link rel="stylesheet" href="{$rooturl}/css/lims/hyd.css" />
+<script src="{$rooturl}/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/lims/hyd.js?v={$global['hyd']['v']}"></script>
+<script type="text/javascript" src="{$rooturl}/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-table.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-table-cookie.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-table-editable.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-editable.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/x-editable/ace-editable.min.js"></script>
+<div class="outerBox">
+	<div class="widget-box transparent" style="margin:0;">
+		<div class="widget-header center">
+			<h3 class="header smaller title" style="color:#000;">化验任务列表</h3>
+			<div class="widget-toolbar no-border">
+				<!-- {if $u['admin'] || $u['system_admin']} -->
+				<a data-action="settings" href="#">
+					<i class="icon-cog"></i>
+				</a>
+				<!-- {/if} -->
+				<!-- <a href="#" data-action="collapse">
+					<i class="icon-chevron-up"></i>
+				</a> -->
+			</div>
+		</div>
+	</div>
+	<div id="toolbar" class="header-color-blue4" style="padding-top:10px;">
+		<input type="hidden" name="fzx" value="{$fzx_id}" />
+		<input type="hidden" name="is_xmfb" value="{$_GET['is_xmfb']}" />
+		<table style="max-width:900px">
+			<tr>
+				<td>任务性质：{echo PublicApp::get_select('site_type',$global['site_type'],true,true);}</td>
+				<td>采样日期：
+					{echo PublicApp::get_select('year');}
+					{echo PublicApp::get_select('month');}
+				</td>
+				<td class="cyd_bh_list">采样批次：{echo $this->get_cyd_bh_list($fzx_id);}</td>
+			</tr>
+			<tr>
+				<td>分析人员：{echo PublicApp::get_select('uid',$users_list,true,true);}</td>
+				<td>化验项目：{echo PublicApp::get_select('vid',$this->get_jcxmByUid($_GET['uid']),true);}</td>
+				<td>任务状态：{echo PublicApp::get_select('status',$hyd_status,false,true);}</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div id="toolbar2" style="padding-left:10px;padding-right:150px;">
+	<button id="dy_hyd" class="btn btn-primary" disabled style="height:30px;padding:0 10px;"><i class="glyphicon glyphicon-print"></i>打印</button>
+	<button id="zr_hyd" class="btn btn-primary" disabled style="height:30px;padding:0 10px;"><i class="glyphicon glyphicon-upload"></i>载入</button>
+	<button id="hb_hyd" class="btn btn-primary" disabled style="height:30px;padding:0 10px;"><i class="glyphicon glyphicon-resize-small"></i>合并</button>
+	<button id="cf_hyd" class="btn btn-primary" disabled style="height:30px;padding:0 10px;"><i class="glyphicon glyphicon-resize-full"></i>拆分</button>
+	<!-- <button id="th_hyd" class="btn btn-primary" disabled style="height:30px;padding:0 10px;"><i class="glyphicon glyphicon-tags"></i>退回</button> -->
+	<!-- <button id="sc_hyd" class="btn btn-primary" disabled style="height:30px;padding:0 10px;"><i class="glyphicon glyphicon-remove"></i>刪除</button> -->
+	<a href="javascript:void();" class="glyphicon glyphicon-question-sign tooltip-info" data-rel="tooltip" title="批量操作功能只对允许被操作的化验单有效，即使不允许被操作的化验单被选中！"></a>
+</div>
+<table id="bootstrapTable" class="table center"></table>
+<div id="pay_list_setting" class="modal fade" data-backdrop="static">
+	<div class="modal-content" style="width:800px;margin:0 auto;overflow:auto;">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="关闭窗口">&times;</button>
+			<h3 class="center">化验任务列表设置</h3>
+		</div>
+		<div class="modal-body">
+			<div style="text-align:right;margin-bottom:10px;">
+				<button type="button" class="btn btn-xs btn-primary add_group">新建分组</button>
+			</div>
+			<table class="table table-striped table-bordered table-hover center">
+				<tbody>
+				<tr>
+					<th style="width:30%">分组名称</th>
+					<th style="width:70%">分组人员</th>
+				</tr>
+				</tbody>
+				<tbody class="hyy_group">
+				</tbody>
+			</table>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" aria-hidden="true">确定</button>
+			<button type="button" class="btn btn-sm" data-dismiss="modal" aria-hidden="true" title="关闭窗口">关闭</button>
+		</div>
+	</div>
+</div>
+<script id="hyy_group_temp" type="text/template">
+	<tr data-id="{set_id}" data-newid="">
+		<td style="text-align:center;" class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
+			<span data-name="name" data-value="{name}">{name}</span>
+			<a href="javascript:void(0)" class="group_del red" data-rel="tooltip" title="删除分组"><i class="icon-remove bigger-130"></i></a>
+		</td>
+		<td style="text-align:left;"><span data-name="uids" data-value="{uids}">{userids}</span></td>
+	</tr>
+</script>
+<script type="text/javascript">
+// 定义本页面的cookieName
+var cookieName = "pay_list";
+// 如果URL传值中包含如下参数需要给Cookie赋值
+{loop array('cyd_id','fzx','is_xmfb','month','site_type','status','uid','vid','year') $value}
+{if isset($_GET[$value]) && !empty($_GET[$value]) && '全部' != $_GET[$value]}
+setCookie(cookieName + '.bs.table.{$value}', "{$_GET[$value]}");
+{/if}
+{/loop}
+// 检索内容
+{if isset($_GET['searchText']) && !empty($_GET['searchText']) && '全部' != $_GET['searchText']}
+setCookie(cookieName + '.bs.table.searchText', "{$_GET['searchText']}");
+{/if}
+// 如果是项目分包的化验单列表，则禁用批次检索
+if($("input[name=is_xmfb]").val() == '1'){
+	$("select[name=cyd_id]").val("全部").prop("disabled",true);
+}
+// 根据cookie初始化本页的检索数据
+$('#toolbar,#toolbar2').find('select[name]').not('[type=hidden]').each(function (i) {
+	var value = getCookie( cookieName + '.bs.table.' + $(this).attr('name') );
+	if( value && $(this).is("select") && $(this).find("[value='"+value+"']").length ){
+		$(this).val(value);
+	}
+});
+// 除年和月外的下拉表使用select2插件
+$("select").not("[name=year],[name=month]").select2();
+// 化验单列表设置
+$("[data-action=settings]").unbind("click").on("click",function(){
+	var set_modal	= $("#pay_list_setting"),
+		uids_obj	= {},
+		uids_data	= [];
+	$("select[name=uid] option").each(function(){
+		if( $.isNumeric($(this).attr("value")) ){
+			uids_obj[$(this).attr("value")] = $(this).html();
+			uids_data.push({id: $(this).attr("value"), text: $(this).html()});
+		}
+	});
+	var group_editable_init = function(){
+		set_modal.find(".hyy_group .group_del").unbind("click").on("click",function(){
+			var group = $(this).parents("tr");
+			var set_id = group.data("id");
+			var group_name = group.find("[data-name=name]").data("value");
+			$.confirm({
+				content: '你确定要删除【<strong class="red">'+group_name+'</strong>】吗？',
+				confirm: function(){
+					if( 'add' == set_id ){
+						$(this).parents("tr").remove();
+						$("select[name=uid] option[value='"+group_name+"']").remove();
+					}else{
+						$.ajax({
+							type: 'post',
+							dataType: 'json',
+							data: {set_id: set_id},
+							url: 'ahlims.php?app=pay_list&act=setting_del&ajax=1',
+							success: function(data){
+								if(data.error=='0'){
+									group.remove();
+									$("select[name=uid] option[value='"+group_name+"']").remove();
+								}else{
+									return alert_error(data.content);
+								}
+							},error: function(data){
+								return alert_error(data.responseText);
+							}
+						});
+					}
+				}
+			});
+		});
+		set_modal.find(".hyy_group [data-name]").not(".editable").each(function(){
+			if( 'name' == $(this).data("name") ){
+				var params = { type: 'text', source: false, select2: false }
+			}else{
+				var params = { type: 'select2', source: uids_data, select2: { width: '400px', allowClear: true, multiple: "multiple", placeholder: '--请选择--' } }
+			}
+			$(this).unbind("click").editable({
+				mode: 'inline',
+				showbuttons: true,
+				type: params.type,
+				source: params.source,
+				select2: params.select2,
+				value : $(this).data("value"),
+				validate: function(value) {
+					var name = $(this).data("name");
+					if( '#新建分组#' == value ){
+						return '请修改分组名称！';
+					}else if( '' == value ){
+						return '分组' + ( 'name' == name ? '名称' : '成员' ) + '不能为空！'; 
+					}
+				},
+				url: function(params){
+					var name = $(this).data("name");
+					var d = new $.Deferred;//回调延迟的对象
+					var params_data = {
+						set_type: 'hyy_group',
+						name: $(this).data("name"),
+						uids: params.value,
+						set_id: $(this).parents("tr").data("id")
+					};
+					var group_name = $(this).parents("tr").find("[data-name=name]");
+					var group_uids = $(this).parents("tr").find("[data-name=uids]");
+					if( 'name' == name ){
+						params_data['name'] = params.value;
+						params_data['uids'] = $(this).parents("tr").find("[data-name=uids]").data("value");
+					}else{
+						params_data['uids'] = params.value;
+						params_data['name'] = $(this).parents("tr").find("[data-name=name]").data("value");
+					}
+					$.ajax({
+						type: 'post',
+						dataType: 'json',
+						data: params_data,
+						url: 'ahlims.php?app=pay_list&act=setting_save&ajax=1',
+						success: function(data){
+							if(data.error=='0'){
+								if( params_data['name'] != group_name.data("value") ){
+									$("select[name=uid] option[value="+group_name.data("value")+"]").prop("value",params_data['name']).html(params_data['name']);
+									group_name.data("value",params_data['name']);
+								}
+								if( params_data['uids'] != group_uids.data("value") ){
+									group_uids.data("value",params_data['uids']);
+								}
+								if( 'add' == group_name.parents("tr").data("id") ){
+									group_name.parents("tr").attr("data-newid",data.set_id);
+									set_modal.find(".add_group").trigger("click");
+								}
+								d.resolve();
+							}else{
+								return d.reject(data.content);
+							}
+						},error: function(data){
+							return d.reject(data.responseText);
+						}
+					});
+					return d.promise();
+				}
+			});
+		});
+	}
+	set_modal.find(".add_group").unbind("click").on("click",function(){
+		var set_id = 'add',
+			group_name = '#新建分组#',
+			group_uids = '--点击选择分组人员--';
+		if( set_modal.find("[data-id=add][data-newid!='']").length ){
+			var new_group = set_modal.find("[data-id=add][data-newid!='']");
+			set_id = new_group.data("newid");
+			group_name = new_group.find("[data-name=name]").data("value");
+			group_uids = new_group.find("[data-name=uids]").data("value");
+			new_group.remove();
+			$("select[name=uid] option[value='"+group_name+"']").remove();
+		}else if( set_modal.find("tr[data-id=add]").length ){
+			return false;
+		}
+		var html_str = '';
+		var temp = $("#hyy_group_temp").html();
+		html_str += temp
+				.replace(/{set_id}/g,set_id)
+				.replace(/{name}/g,group_name)
+				.replace(/{uids}/g,'')//新建分组时里面是没有人的
+				.replace(/{userids}/g,group_uids);
+		set_modal.find(".modal-body table tbody.hyy_group").append(html_str);
+		$("select[name=uid] option").each(function(i){
+			if( $.isNumeric($(this).attr("value")) ){
+				$($(this)).before('<option value="'+group_name+'">'+group_name+'</option>');
+				return false;
+			}
+		});
+		group_editable_init();
+	});
+	$.ajax({
+		type: 'post',
+		data: {ajax: 1},
+		dataType: 'json',
+		url: 'ahlims.php?app=pay_list&act=pay_list_setting&ajax=1',
+		success: function(data){
+			var html_str = '';
+			var temp = $("#hyy_group_temp").html();
+			// 循环遍历分组信息
+			for (var i = 0; i < data.content.length; i++) {
+				var userid_data = [];
+				var uids_uids = data.content[i]['uids'].split(",");
+				for ( uid in uids_uids ) {
+					if( typeof uids_obj[uid] != "undefined" ){
+						userid_data.push(uids_obj[uid]);
+					}
+				};
+				data.content[i]['userids'] = userid_data.join(",");
+				html_str += temp
+						.replace(/{set_id}/g,data.content[i]['id'])
+						.replace(/{name}/g,data.content[i]['name'])
+						.replace(/{uids}/g,data.content[i]['uids'])
+						.replace(/{userids}/g,data.content[i]['userids']);
+			};
+			set_modal.find(".modal-body table tbody.hyy_group").html(html_str);
+			group_editable_init();
+			set_modal.modal("show");
+		},error: function(data){
+			alert_error(data.responseText);
+		}
+	});
+});
+// 年月切换时需要更新批次信息
+$("#toolbar").find("select[name=year],select[name=month]").unbind("change").on("change",function () {
+	$("#toolbar select[name=cyd_id]").val("全部").trigger("change");
+	$.ajax({
+		type: 'get',
+		data: {
+			year: $("#toolbar select[name=year]").val(),
+			month: $("#toolbar select[name=month]").val()
+		},
+		dataType: 'text',
+		url: 'ahlims.php?app=pay_list&act=get_cyd_bh_list&ajax=1',
+		success: function(data){
+			if( '' == data ){
+				$("#toolbar .cyd_bh_list").empty();
+			}else{
+				$("#toolbar .cyd_bh_list").html('采样批次：' + data);
+				$("#toolbar select[name=cyd_id]").select2();
+				$("#toolbar select[name=cyd_id]").unbind("change").on("change",function () {
+					payListTable.bootstrapTable("refresh", {silent: true, url: get_url()});
+				});
+			}
+		},error: function(data){
+			return alert_error(data.responseText);
+		}
+	});
+});
+// 人员切换时更新项目为本化验员的检测项目
+$("#toolbar").find("select[name=uid]").unbind("change").on("change",function () {
+	$.ajax({
+		type: 'get',
+		dataType: 'json',
+		data: {uid: $("#toolbar select[name=uid]").val()},
+		url: 'ahlims.php?app=pay_list&act=get_jcxmByUid&ajax=1',
+		success: function(data){
+			var that = "#toolbar select[name=vid]";
+			$(that).empty();
+			$(that).append('<option value="全部">全部</option>');
+			$.each(data['data'],function(i){
+				$(that).append('<option value="'+data['data'][i]['id']+'">'+data['data'][i]['text']+'</option>');
+			});
+			var value = getCookie( cookieName + '.bs.table.vid' );
+			if( value && $(this).is("select") && $(this).find("[value="+value+"]").length ){
+				$(that).val(value);
+			}
+			$(that).select2();
+		},error: function(data){
+			alert_error(data.responseText);
+		}
+	});
+})//.trigger("change");
+// 检索条件更改后进行数据更新
+$("#toolbar,#toolbar2").find("input[name],select[name]").on("change",function () {
+	payListTable.bootstrapTable("refresh", {silent: true, url: get_url()});
+});
+//获取最新的URL地址
+var get_url = function(){
+	params = [];
+	$('#toolbar,#toolbar2').find('input[name],select[name]').each(function (i) {
+		params[i] = $(this).attr('name') + '=' + $(this).val();
+		setCookie(cookieName + '.bs.table.' + $(this).attr('name'), $(this).val());
+	});
+	params_str = params.join('&');
+	return 'ahlims.php?ajax=1&app=pay_list&act=pay_list&'+params_str;
+}
+//.editable的click事件绑定
+var editClickEvents = {
+	'click .editable':function(e, value, row, index){
+		//如果已注册editable方法事件则不再重复注册
+		if( $(this).parents("td").find("span.editable-click").length ){
+			return false;
+		}
+		var index = $(this).parents("tr").attr("data-index");	//数据id
+		var n = $(this).parents("tr").find("td").index($(this).parents("td"));		//当前列所在位置
+		var editableTitle = $("#bootstrapTable thead tr th:eq("+n+")").text();		//当前列数据名称
+		var field = $("#bootstrapTable thead tr th:eq("+n+")").attr("data-field");	//当前数据参数名称
+		//通过参数匹配关联数据id
+		var field_value = {userid: 'uid', userid2: 'uid2'}
+		//注册editable即点即改功能
+		$(this).editable({
+			type: 'select2',
+			title: '修改'+editableTitle,
+			showbuttons: true,
+			select2: {
+				// allowClear: true,
+				placeholder: '--请选择--'
+			},
+			value : row[field_value[field]],
+			source: function(){
+				var options = [];
+				$("select[name=uid] option").each(function(){
+					if( $.isNumeric($(this).attr("value")) ){
+						options.push({id: $(this).attr("value"), text: $(this).html()});
+					}
+				});
+				return options;
+			},url: function(params){
+				var d = new $.Deferred;//回调延迟的对象
+				eval("var prop = {'tid[]': row.id, "+field_value[field]+":params.value};");
+				$.ajax({
+					type: 'post',
+					data: prop,
+					dataType: 'json',
+					url: 'ahlims.php?app=pay_list&act=modi_pay_user&ajax=1',
+					success: function(data){
+						if(data.error=='0'){
+							d.resolve();
+						}else{
+							return d.reject(data.content);
+						}
+					},error: function(data){
+						return d.reject(data.responseText);
+					}
+				});
+				return d.promise();
+			}
+		});
+		$(this).trigger("click");
+	}
+}
+//使用js激活bootstrapTable样式
+var payListTable = $('#bootstrapTable').bootstrapTable({
+	cookie: "true",
+	cookieIdTable: cookieName,
+	cache: false,
+	url: get_url(),
+	height: get_height(),
+	uniqueId: 'id',
+	toolbar: "#toolbar2",
+	toolbarAlign: "left",
+	toolbarClass: "header-color-blue4",
+	showColumns: true,
+	showRefresh: true,
+	minimumCountColumns: 3,
+	clickToSelect:true,
+	pagination: true,
+	sidePagination: 'server',
+	pageSize:25,
+	pageList: [25, 50, 100, '全选'],
+	search: true,
+	formatSearch: function () {
+		return '请输入要搜索的信息';
+	},
+	columns: [
+		{
+			width: '50px',
+			field: 'checkbox',
+			checkbox: true
+		},
+		{
+			width: '6%',
+			field: 'xuhao',
+			title: '序号'
+		},
+		{
+			width: '7%',
+			field: 'id',
+			title: '化验单号'
+		},
+		{
+			width: '16%',
+			field: 'assay_element',
+			title: '化验项目',
+			sortable: true,
+			cellStyle: function cellStyle(value, row, index) {
+				return {
+					css: { 'padding': '0' }
+				};
+			},
+			formatter: function(value, row, index){
+				if( true == row.canView ){
+					var onclick = ( '未开始' == row.over ) ? 'onclick="return false;"' : '';
+					value = '<a class="view_pay" href="assay_form.php?tid='+row.id+'" '+onclick+'>'+value+'</a>';
+				}
+				var assay_element = [
+					value,
+					'（'+row.row_data.already+'/'+row.row_data.total+'）',
+					( '' == row.xmfb_msg ? '' : '（'+row.xmfb_msg+'）' )
+				].join('');
+				// 此处的html属性必须使用单引号
+				// row.row_data.bar_code = '<b class=\'red\'>化验单（'+row.id+'）</b><br />'+row.row_data.bar_code;
+				return '<div style="margin:0;padding:0;padding-left:2rem;text-align:left;"><span class="assay_element tooltip-info" style="cursor: pointer;" data-original-title="化验单号：'+row.id+'" data-rel="popover" data-content="'+row.row_data.bar_code+'" data-animation="true" data-placement="right" data-trigger="hover focus">'+assay_element+'</span></div>';
+			},
+			events: {
+				'click .assay_element': function (e, value, row, index) {
+					if( '未开始' != row.over ){
+						window.location.href = 'assay_form.php?tid='+row.id;
+					}else{
+						$.confirm({
+							content: '你确定要开始化验吗？',
+							confirm: function(){
+								window.location.href = 'assay_form.php?tid='+row.id;
+							}
+						});
+					}
+				}
+			}
+		},
+		{
+			width: '7%',
+			field: 'cy_date',
+			title: '采样日期',
+			sortable: true
+		},
+		{
+			width: '7%',
+			field: 'jcwc_date',
+			title: '要求完成日期',
+			sortable: true
+		},
+		{
+			width: '7%',
+			field: 'userid',
+			title: '主测',
+			sortable: true,
+			events: editClickEvents,
+			formatter: function(value, row, index){
+				( !value ) && ( value = '无' );
+				( '' != row.sign_01 ) && ( value = row.sign_01 );
+				return !row.canDel ? value : '<span class="editable tooltip-info blue" data-rel="tooltip" title="修改主测化验员">'+value+'</span>';
+			}
+		},
+		{
+			width: '7%',
+			field: 'userid2',
+			title: '辅测',
+			sortable: true,
+			events: editClickEvents,
+			formatter: function(value, row, index){
+				( !value ) && ( value = '无' );
+				if( '' != row.sign_01 ){
+					if( '' != row.sign_012 ){
+						value = row.sign_012;
+					}else{
+						value = (row.userid == row.sign_01) ? row.userid2 : row.userid;
+						( !value ) && ( value = '无' );
+						value = '<span style="color:#a0a0a0 !important" data-rel="tooltip" title="未签字">'+value+'</span>';
+					}
+				}
+				return !row.canDel ? value : '<span class="editable tooltip-info blue" data-rel="tooltip" title="修改辅测化验员">'+value+'</span>';
+			}
+		},
+		{
+			width: '7%',
+			field: 'sign_02',
+			title: '校核',
+			sortable: true,
+			events: false,
+			formatter: function(value, row, index){
+				return value ? value : '-';
+			}
+		},
+		{
+			width: '7%',
+			field: 'sign_03',
+			title: '复核',
+			sortable: true,
+			events: false,
+			formatter: function(value, row, index){
+				return value ? value : '-';
+			}
+		},
+		{
+			width: '7%',
+			field: 'over',
+			title: '化验状态',
+			sortable: true,
+			formatter: function(value, row, index){
+				//化验单是否是被退回的 如果是 突出显示
+				var pay_status = '';
+				var column_json = ( '' == row.json ) ? {} : $.parseJSON(row.json);
+				if( null != column_json && typeof column_json['退回'] != "undefined" && column_json['退回'].length ){
+					//被退回的单子如果已经复核就不需要再红色显示了
+					pay_status = '&nbsp;<strong class="'+( '' == row.sign_02 ? 'red' : '' )+'">(被退回)</strong>';
+				}
+				return row.over + pay_status;
+			}
+		},
+		{
+			width: '12%',
+			field: 'option',
+			title: '操作',
+			cellStyle: function cellStyle(value, row, index) {
+				return {
+					css: {},
+					classes: 'visible-md visible-lg hidden-sm hidden-xs action-buttons'
+				};
+			},
+			formatter: function(value, row, index){
+				// #0分隔符#1style样式#2绑定事件class#3颜色class#4title内容#5图标
+				if(row.printed=='1'){
+					var pr_color='red';
+					var pr_title ='化验单已打印'
+				}else{
+					var pr_color='blue';
+					var pr_title ='打印化验单'
+				}
+				var but_tpl = '#0<a #1 class="#2_'+row.id+' tooltip-info #3" data-rel="tooltip" title="#4" href="javascript:void('+row.id+')"><i class="icon-#5 bigger-130"></i></a>';
+				return '<div style="white-space:nowrap;text-align:left;padding-left:3rem;">'
+					+ but_tpl.replace("#0",'').replace("#1",'').replace("#2",'print_').replace("#3",pr_color).replace("#4",pr_title).replace("#5",'print')
+					+ ( ( true == row.canDel ) ?
+						but_tpl.replace("#0",' | ').replace("#1",'').replace("#2",'del_').replace("#3",'red').replace("#4",'删除化验单').replace("#5",'remove')
+						: but_tpl.replace("#0",' | ').replace("#1",'style="cursor: not-allowed;color:#ccc"').replace("#2",'not-allowed').replace("#3",'tooltip-error').replace("#4",'已经签字！').replace("#5",'remove')
+					) + '</div>';
+			},
+			events: {
+				'click a[class^=print]': function (e, value, row, index) {
+					window.open('ahlims.php?app=print&act=print_hyd&ajax=1&tid='+row.id);
+				},
+				'click a[class^=del_]': function (e, value, row, index) {
+					$.confirm({
+						content: '你确定要删除化验单【<strong class="red">'+row.id+'</strong>】【<strong class="red">'+row.assay_element+'</strong>】吗？',
+						confirm: function(){
+							$.ajax({
+								type: 'post',
+								dataType: 'json',
+								data: {'tid[]': row.id},
+								url: 'ahlims.php?app=pay_list&act=del_pay_by_id&ajax=1',
+								success: function(data){
+									if( '0' == data.error ){
+										// payListTable.bootstrapTable('removeByUniqueId', row.id);
+										payListTable.bootstrapTable("refresh", {silent: true, url: get_url()});
+									}else{
+										alert_error(data.content,'danger');
+									}
+								},error: function(data){
+									alert_error(data.responseText);
+								}
+							});
+						}
+					});
+				}
+			} // events End
+		}
+	],
+	onLoadSuccess: function(data){
+		// tooltip
+		$('[data-rel="tooltip"]').tooltip();
+		$('[data-rel=popover]').popover({html:true});
+		// 有时候表格高度渲染失败
+		setTimeout(function () {
+            payListTable.bootstrapTable('resetView');
+        }, 200);
+		//设置滚动条快速滑动。
+		$(window.parent.document.body).find("#full-top").click(function () {
+			payListTable.bootstrapTable('scrollTo', 0);
+		});
+		$(window.parent.document.body).find("#full-btm").click(function () {
+			payListTable.bootstrapTable('scrollTo', 'bottom');
+		});
+	}
+});
+// 重置表格高度
+$(window).resize(function () {
+	payListTable.bootstrapTable('resetView', { height: get_height() });
+});
+// 当化验单被选中时批量操作按钮才可操作
+payListTable.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', function () {
+	$("#toolbar2 button").prop('disabled', !payListTable.bootstrapTable('getSelections').length);
+	var selections = getIdSelections();
+});
+
+
+// 批量打印化验单
+$("#dy_hyd").unbind("click").click(function () {
+	var ids = getIdSelections();
+	if( ids.length > 50 ){
+		alert_error("同时打印太多原始记录会导致浏览器崩溃，请选择最多选中30张！");
+		return false;
+	}
+	window.open("ahlims.php?app=print&tid="+ids.join(","));
+});
+// 批量合并化验单
+$("#hb_hyd").unbind("click").click(function () {
+	var ids = getIdSelections();
+	var alert_obj = $.alert({
+		icon: 'icon icon-spinner icon-spin',
+		title: '原始记录表数据合并中。。。',
+		content: ''
+	});
+	$.ajax({
+		type: 'post',
+		dataType: 'json',
+		data: {"ids": ids},
+		url: 'ahlims.php?app=pay_list&act=piliang_hb&ajax=1',
+		success: function(data){
+			if( !parseInt(data.data.count) ){
+				return alert_ok("没有可合并的化验单！",alert_obj);
+			}
+			var msg = '<strong style="font-size: 16px;">'+data.data.tids.length+'张原始记录合并为'+data.data.count+'个!</strong><div style="text-align:left;">分别是：<br />'+data.data.data.join('<br />');
+			alert_obj.backgroundDismiss = true;
+			alert_obj.setContent('<div class="alert alert-success">'+msg+'</div>');
+			$(alert_obj.$el).find('div.title').html('<i class="icon-ok green bigger-130"></i> '+'合并成功');
+			alert_obj.confirm = function(){
+				payListTable.bootstrapTable("checkBy", {field:"id", values:data.data.tids});
+			}
+			// 刷新数据
+			payListTable.bootstrapTable("refresh", {silent: true, url: get_url()});
+		},error: function(data){
+			alert_obj.close();
+			alert_error(data.responseText);
+		}
+	});
+	//多合一化验单不允许拆分
+	/*var dhy_len = 0;//asF.find(".hydzk[data-dhy!=0]").length;
+	if(dhy_len>0){
+		return alert_error("本张化验单，暂不支持拆分！");
+	}else{
+		if($("#assay_form_chaifen").length==0){
+			$("body").append('<div id="assay_form_chaifen"></div>');
+		}
+		var url =trade_global.rooturl+'/huayan/assay_chaifen.php?hyd_id='+ids[0];
+		$.get(url+'&action=chaifen&ajax=1',function(data){
+			$("#assay_form_chaifen").html(data);
+			$("#modal_chaifen").modal('show');
+		});
+	}*/
+});
+// 批量拆分化验单
+$("#cf_hyd").unbind("click").click(function () {
+	var ids = getIdSelections();
+	var alert_obj = $.alert({
+		icon: 'icon icon-spinner icon-spin',
+		title: '原始记录表数据拆分中。。。',
+		content: ''
+	});
+	$.ajax({
+		type: 'post',
+		dataType: 'json',
+		data: {"ids": ids},
+		url: 'ahlims.php?app=pay_list&act=piliang_cf&ajax=1',
+		success: function(data){
+			if( !parseInt(data.data.count) ){
+				return alert_ok("没有可拆分的化验单！",alert_obj);
+			}
+			var msg = '<strong style="font-size: 16px;">'+data.data.count+'张原始记录拆分为'+data.data.tids.length+'个!</strong><div style="text-align:left;">分别是：<br />'+data.data.data.join('<br />');
+			alert_obj.backgroundDismiss = true;
+			alert_obj.setContent('<div class="alert alert-success">'+msg+'</div>');
+			$(alert_obj.$el).find('div.title').html('<i class="icon-ok green bigger-130"></i> '+'拆分成功');
+			// 刷新数据
+			payListTable.bootstrapTable("refresh", {silent: true, url: get_url()});
+			alert_obj.confirm = function(){
+				payListTable.bootstrapTable("checkBy", {field:"id", values:data.data.tids});
+			}
+		},error: function(data){
+			alert_obj.close();
+			alert_error(data.responseText);
+		}
+	});
+});
+// 批量退回化验单
+$("#th_hyd").unbind("click").click(function () {
+	// code
+});
+// 批量删除化验单
+$("#sc_hyd").unbind("click").click(function () {
+	var ids = getIdSelections();
+	payListTable.bootstrapTable('remove', {
+		field: 'id',
+		values: ids
+	});
+	$('#sc_hyd').prop('disabled', true);
+	setTimeout(function () {
+		payListTable.bootstrapTable('resetView');
+	}, 200);
+});
+// 批量载入化验单
+$("#zr_hyd").unbind("click").click(function(){
+	var ids = getIdSelections();
+	var alert_obj = $.alert({
+		//icon: 'icon icon-spinner icon-spin',
+		title: '原始记录表数据载入中。。。',
+		content: ''
+	});
+	$.ajax({
+		type: 'post',
+		dataType: 'json',
+		data: {"s": ids},
+		url: 'ahlims.php?app=pay_list&act=piliang_zr&ajax=1',
+		success: function(data){
+			if( !parseInt(data.data.count) ){
+				return alert_ok("没有数据载入！",alert_obj);
+			}
+			var msg = '<strong style="font-size: 16px;">'+data.data.data.length+'张原始记录自动载入数据'+data.data.count+'个!</strong><div style="text-align:left;">分别是：<br />'+data.data.data.join('<br />');
+			alert_obj.backgroundDismiss = true;
+			alert_obj.setContent('<div class="alert alert-success">'+msg+'</div>');
+			$(alert_obj.$el).find('div.title').html('<i class="icon-ok green bigger-130"></i> '+'载入成功');
+			alert_obj.confirm = function(){
+				payListTable.bootstrapTable("checkBy", {field:"id", values:data.data.tids});
+			}
+			// 刷新数据
+			payListTable.bootstrapTable("refresh", {silent: true, url: get_url()});
+		},error: function(data){
+			alert_obj.close();
+			alert_error(data.responseText);
+		}
+	});
+});
+function getIdSelections() {
+	return $.map(payListTable.bootstrapTable('getSelections'), function (row) {
+		return row.id
+	});
+}
+function get_height(){
+	var height = $(window).height() - $('.pay-list-header').outerHeight(true) - $(".outerBox").height();
+	return height < 300 ? 300 : height;
+}
+</script>

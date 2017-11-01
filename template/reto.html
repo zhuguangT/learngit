@@ -1,0 +1,26 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+  <head>
+	<title>跳转中</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="refresh" content="{$seconds};url={$auto_url}" />
+	<link rel="stylesheet" type="text/css" href="{$rooturl}/css/bootstrap.min.css">
+	<style type="text/css">
+	<!--
+		#box{width:500px;height:100px;margin:0 auto;text-align:center;}
+	-->
+	</style>
+  </head>
+  <body style="padding-top:200px;">
+	<div id="box" class="alert alert-{$alert_style}">
+		<strong>&nbsp;{$reto_content}</strong>
+		<p>页面将在 [<span id="sec_time"></span>] 秒后自动跳转，请稍候。。。</p>
+		<p><i class="icon-hand-right bigger-130"></i>&nbsp;&nbsp;&nbsp;<a href="{$auto_url}">如果页面没有跳转，请点击这里</a></p>
+	</div>
+	<script type="text/javascript">
+		var seconds = '{$seconds}';
+		sec_time.innerHTML = seconds;
+		setInterval("sec_time.innerHTML=parseInt(sec_time.innerHTML)-1",1000);
+	</script>
+  </body>
+</html>

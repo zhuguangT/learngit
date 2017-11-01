@@ -1,0 +1,61 @@
+<h3 class="header smaller center title">{$_GET['wz_type']}列表</h3>
+<div class="widget-box no-border">
+  <div class="widget-header header-color-blue4 center">
+    <div class="widget-toolbar">
+      <form name="bzwz_list" action="bzwz_list.php">
+      <input type="hidden" name="wz_type" value="{$_GET['wz_type']}" />
+
+      <!-- {$_GET['wz_type']}详细分类:
+      <select id="wz_type_subdivide" name="wz_type_subdivide" style="min-width:100px"> 
+        $wz_type_subdivide_selected
+        <option value='全部'>全部</option>
+        $wz_type_subdivide_line
+      </select>&nbsp;&nbsp; -->
+      {$_GET['wz_type']}生产厂家：
+      <select name="manufacturer" id="manufacturer" style="min-width:150px" class="chosen-select">
+        <option value='全部'>全部</option>
+        $manufacturer_select
+      </select>
+      {$_GET['wz_type']}名称:
+      <select id="wz_name" name="wz_name" style="min-width:150px" class="chosen-select">
+        $wz_name_selected
+        <option value='全部'>全部</option>
+        <option value="{$_GET['wz_name']}">$wz_name</option>
+        $ryline
+      </select>&nbsp;&nbsp;
+
+      物质状态:
+      <select name="_wz_type">$_wz_types</select>
+
+      <button class="btn btn-primary btn-sm" type="button" onclick="if(this.value!='新增全部') location='bzwz.php?action=新增&wz_type='+wz_type.value; else alert('请先选择一种标准物质类别,然后再点击!');">新增$_GET[wz_type]</button>
+      <br />
+      选择台账打印年份:
+      <select name="year">$yearOption $select_year</select>     
+      <button class="btn btn-primary btn-sm" type="button" onclick="print_taizhang(this.form,'打印台账')">打印台账</button>
+      <button class="btn btn-primary btn-sm" type="button" onclick="print_taizhang(this.form,'汇总台账')">汇总台账</button>
+      <button class="btn btn-primary btn-sm" type="button" onclick="window.open('bzwz_rubbish.php?wz_type=$_GET[wz_type]');"> {$_GET['wz_type']}回收站</button>
+    </form>
+    </div>
+  </div>
+  <div class="widget-body">
+    <table class="table table-striped table-bordered table-hover center">
+        <thead>
+            <th style="width:6%">序号</th>
+            <th style="width:15%">{$_GET['wz_type']}编号</th>
+            <th style="width:15%">{$_GET['wz_type']}管理编号</th>
+            <th style="width:15%">{$_GET['wz_type']}名称</th>
+            <!-- $wz_type_subdivide_title -->
+            <th style="width:10%">生产厂家</th>
+            <th style="width:10%">有效日期</th>
+            <th style="width:15%">数量</th>
+            <td style='width:10%'>使用方法</td>
+            <th style="width:15%">操作员</th>
+            <th style="width:20%">操&nbsp;&nbsp;&nbsp;&nbsp;作</th>
+        </thead>
+
+        <tbody>
+             $lines
+        </tbody>
+    </table>
+  </div>
+</div>

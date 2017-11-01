@@ -1,0 +1,64 @@
+<!--用户组添加页面-->
+<script type="text/javascript">
+$(function(){
+	$("#g_name").focus();
+	$("#g_name").keyup(function(){
+                this.value    = this.value.replace(/[\'"\\\<> ]/g,'');
+                if(this.value.length<'10'){
+                        $("#g_name_tixing").text('');
+                }
+        }).keydown(function(){
+                if(this.value.length>='10'){
+                        $("#g_name_tixing").text(' *最多只能输入10个字符');
+                }else{
+                        $("#g_name_tixing").text('');
+                }
+        });
+	$(".bianse").mouseover(function(){
+		$(this).css({"color":"#008000","font-weight":"bold","cursor":"pointer"});
+	}).mouseout(function(){
+		if(!$(this).children("input:checked").val()){
+			$(this).css({"color":"#000","font-weight":"nomal"});
+		}
+		
+	});
+	//ajax验证 用户组重名的情况
+        $("#g_name").blur(function(){
+                var gr_name     = $(this).val();
+                if(gr_name){
+                        $.getJSON("$rooturl/user_manage/user_manage_group_save.php?action=ajax&ajax=1",
+                        {gr_name:gr_name},
+                        function(json){
+                                $("#g_name_tixing").text(json.tixing);
+                        });
+                }
+        });
+});
+</script>
+<form name='aa' method="POST" action=user_manage_group_save.php style="margin:0 auto;text-align:center;"> 
+<h3 class="header smaller center title">用户组添加页面</h3>
+<table class="table table-bordered   center " style="width:80%;text-align:left;">
+  <tr>
+	<td align='middle'  nowrap>用户组名称</td>
+	<td align="left">
+		<span style="position:relative;">
+			<input name='g_name' id='g_name' class=inputl value='' maxLength="10" placeholder='不能为空' required/>
+			<span id="g_name_tixing" style="color:red;position:absolute;left:160px;width:300px;text-align:left;height:25px;line-height:25px;"></span>
+		</span>
+	</td>
+  </tr>
+  <tr>
+	<td align='middle'  nowrap>组内成员</td>
+	<td align="left">
+		$checkboxUser
+	</td>
+  </tr>
+  <tr>
+	<td align='middle' style="" nowrap>用户组权限</td>
+	<td align="left">
+		$checkboxQx
+	</td>
+  </tr>
+</table>
+<input class="btn btn-xs btn-primary" type="submit" name='submit' value="添加" />
+</form>

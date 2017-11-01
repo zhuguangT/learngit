@@ -1,0 +1,33 @@
+<script type="text/javascript" src="$rooturl/js/jquery-2.1.0.js"></script>
+<center>$xzbtn
+	$xiazai
+</center>
+<center>
+<table style='width:23cm;border-collapse:collapse;text-align:center;'>
+<tr>
+<td width='60%' align='left' colspan='4'><font face='宋体' size='3px'>国家城市供水水质监测网</font>•<font face='隶书' size='4px'>兰州监测站</font></small></td>
+
+</tr>
+</table><hr style='width:28cm;'/>
+<SPAN style="TEXT-DECORATION: underline"><font size='6px' face='宋体'><B>设备台账</B></font></span>
+<font size='4px' face='宋体'>
+    <table style='width:28cm;border-collapse:collapse;text-align:center;' border='1px' cellpadding="0" cellspacing="0" align='center'>
+        <tr height='40px' height='40px'>
+            {$ttou}
+        </tr>
+        {$thang}
+    </table>
+</font>
+</center>
+
+<script>
+	function xiazai(ab){
+		var ziduan = $(ab).attr('ziduan');
+		window.open("$rooturl/yiqi/taizhang.php?ziduan="+ziduan);
+	}
+	function dayin(){
+		$("#dayin").hide();
+		$("#xiazai").hide();
+		window.print();
+	}
+</script>

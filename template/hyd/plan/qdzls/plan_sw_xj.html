@@ -1,0 +1,42 @@
+<!-- 微生物、细菌 -->
+<h1>{$arow['assay_element']}检验原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:20%"></td>
+    <td style="width:25%"></td>
+    <td style="width:25%"></td>
+    <td style="width:15%"></td>
+    <td style="width:15%"></td>
+  </tr>
+  <tr>
+    <td>检验方法依据</td>
+    <td>{$arow['td2']}</td>
+    <td>检验方法</td>
+    <td colspan="2">{$arow['td1']}</td>
+  </tr>
+  <tr >
+    <td>水样体积(mL)</td>
+    <td><input type="text" class="inputc" name="td9"   value="{$arow['td9']}" /></td>
+    <td>稀释倍数</td>
+    <td colspan="2"><input type="text" class="inputc" name="td10" value="{$arow['td10']}" /></td>
+  </tr>
+  <tr> 
+    <td>培养温度、时间</td>
+    <td><input type="text" class="inputc" name="td11" value="{$arow['td11']}" /></td>
+    <td>培养基名称</td>
+    <td colspan="2"><input type="text" class="inputc" name="td12" value="{$arow['td12']}" /></td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>{$zhanming}</td>
+    <td>{$arow['assay_element']}({$arow['unit']})</td>
+    <td>平均值({$arow['unit']})</td>
+    <td>相对偏差（％）</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="4"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>

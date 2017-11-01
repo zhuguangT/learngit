@@ -1,0 +1,39 @@
+<h3 class="header smaller center title">单项质控表列表</h3>
+<div class="widget-box no-border">
+  <div class="widget-header header-color-blue4 center">
+  <div class="widget-toolbar">
+    <form method="get" action="$rooturl/zkb/danxiang_zk/dx_zk_list.php">
+      任务性质:<select name="site_type" onchange="this.form.submit()"> 
+        <option value="{$_GET['site_type']}">{$_GET['site_type']}</option>$_site_types<option value="全部">全部</option> </select>
+      年份选择:<select name="year" onchange="this.form.submit()">
+        <option value="{$_GET['year']}">{$_GET['year']}</option> $year_list </select>
+      月份选择:<select name="month" onchange="this.form.submit()">
+        <option value="{$_GET['month']}">{$_GET['month']}</option> $month_list </select>
+    </form>
+  </div>
+  </div>
+  <div class="widget-body">
+  <form method="post" action="$rooturl/zkb/danxiang_zk/baogao_list.php">
+  <table class="table table-striped table-bordered table-hover center">
+    <thead>
+      <tr>
+        <th class="center" style="width:30%">批次</th>
+        <th class="center" style="width:25%">采样单号</th>
+        <th class="center" style="width:25%">采样日期</th>
+        <th class="center" style="width:20%">查看</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      $lines
+    </tbody>
+    <tr>
+      <td colspan="4" align="center">
+        <input class="btn btn-xs btn-primary" type="submit" value="查看多项">
+      </td></tr>
+  </table>
+  <input type="hidden" name="year" value="$_GET[year]">
+  <input type="hidden" name="month" value="$_GET[month]">
+  </form>
+  </div>
+</div>

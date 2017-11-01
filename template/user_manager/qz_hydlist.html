@@ -1,0 +1,53 @@
+<script>
+function tiaozhuan(tid){
+	if(tid!='')window.open("$rooturl/huayan/assay_form.php?tid="+tid);
+}
+</script>
+<style>
+.lianjie:hover{text-decoration:underline;}
+.lianjie{cursor:pointer;color:blue;}
+</style>
+<div style="$huayan_style">
+<h1 align="center">$_GET[year]年$_GET[month] $name  ($leibie)化验任务列表</h1>
+<table class="table table-striped table-bordered table-hover center" align="center" style="width:18cm;text-align:center;">
+<tr>
+	<td>序号</td>
+    <td>化验单号</td>
+	<td>项目名称</td>
+	<td>采样日期</td>
+	<td>化验人</td>
+	<td>要求完成日期</td>
+	<td>化验员签字日期</td>
+</tr>
+$hyLines
+</table>
+</div>
+<div style="$shenhe_style">
+<h1 align="center">$_GET[year]年$_GET[month] $name 校核 ($leibie)化验单列表</h1>
+<table class="table table-striped table-bordered table-hover center" align="center" style="width:18cm;text-align:center;">
+<tr>
+	<td>序号</td>
+     <td>化验单号</td>
+	<td>项目名称</td>
+	<td>采样日期</td>
+	<td>化验人</td>
+	<td>化验员签字日期</td>
+	<td>校核日期</td>
+</tr>
+$jhLines
+</table>
+<h1 align="center">$_GET[year]年$_GET[month] $name 复核 ($leibie)化验单列表</h1>
+<table class="table table-striped table-bordered table-hover center" align="center" style="width:18cm;text-align:center;">
+<tr>
+	<td>序号</td>
+        <td>化验单号</td>
+	<td>项目名称</td>
+	<td>采样日期</td>
+	<td>化验人</td>
+	<td>校核人</td>
+	<td>校核日期</td>
+	<td>复核日期</td>
+</tr>
+$fhLines
+</table>
+</div>

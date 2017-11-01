@@ -1,0 +1,144 @@
+<!-- 滤膜法 -->
+<h1>{$arow['assay_element']}分析原始记录表</h1>
+{$hjtj_bt}
+<table   class="single" >
+  <tr class="noborder">
+    <td style="width:8%"></td><td style="width:16%"></td><td style="width:8%"></td>
+    <td style="width:8%"></td><td style="width:6%"></td><td style="width:6%"></td>
+    <td style="width:6%"></td><td style="width:6%"></td><td style="width:6%"></td>
+    <td style="width:6%"></td><td style="width:4%"></td><td style="width:5%"></td>
+    <td style="width:5%"></td>
+  </tr>
+  <tr>
+     <td>检测项目</td>
+     <td>{$arow['assay_element']}</td>
+     <td>检测依据</td>
+     <td colspan="6">{$arow['td2']}</td>
+     <td colspan="2">检出限({$arow['unit']})</td>
+     <td colspan="2">{$arow['td3']}</td>
+  </tr>
+<tr >
+    <td>培养基</td>
+    <td><input type="text" name="td12"  value="{$arow['td12']}" /></td>
+    <td>培养温度(℃)</td>
+    <td colspan="2"><input type="text"  name="td13"   value="{$arow['td13']}" /></td>
+    <td colspan="2">培养时间(h)</td>
+    <td colspan="2"><input type="text"  name="td14" value="{$arow['td14']}" /></td>
+    <td colspan="2">取样体积(mL)</td>
+    <td colspan="2"><input type="text" name="td17" id='tj' value="{$arow['td17']}" /></td>
+</tr>
+<tr>
+    <td rowspan="2" colspan="1">序号</td>
+    <td rowspan="2" colspan="1">{$zhanming}</td>
+    <td rowspan="2" colspan="1">接种日期</td>
+    <td rowspan="2" colspan="1">观察日期</td>
+    <td rowspan="1" colspan="6">粪大肠阳性管数</td>
+    <td rowspan="2" colspan="1">含量({$arow['unit']})</td>
+    <td rowspan="2">平均值({$arow['unit']})</td>
+    <td rowspan="2">相对偏差(%)</td>
+    </tr>
+    <tr>
+    <td width="70">100(mL)</td>
+    <td width="70">50(mL)</td>
+    <td width="70">10(mL)</td>
+    <td width="70">1(mL)</td>
+    <td width="70">0.1(mL)<br />
+    <td width="70">0.05(mL)<br />
+</tr>
+{$aline}
+<tr>
+  <td>备注</td>
+  <td colspan="12"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+//   function jsgs(){
+//     //运算函数在lib.js
+//     var i = 0;
+//     var fei_00 = 0;
+//     var jg_sum = 0;
+//     var is_emp = true;
+//     var jg_obj = Array();
+//     var vid = "{$arow[vid]}";
+//     var unit_zh = 1000;
+//     var unit = "{$arow['unit']}";
+//     var unit_arr = unit.split('/');
+//     if(unit_arr[1]=='L'){
+//     	var unit_zh = 1000;
+//     }else if(unit_arr.length==2){
+//     	var unit_zh = parseInt(unit_arr[1]);
+//     }else{
+//     	var unit_zh = 1;
+//     }
+//     unit_zh = (isNaN(unit_zh)||unit_zh<=1)? 1 : unit_zh;
+//     var jsgs_unit_zh = (unit_zh>1) ? '*'+unit_zh:'';
+//     var __jsgs = "{$arow['assay_element']}菌落数("+unit+")=滤膜上生长的{$arow['assay_element']}菌落数"+jsgs_unit_zh+"/过滤水样量（mL）";
+//     $("#__jsgs").html(__jsgs);
+//     $("input[name=td28]").val(__jsgs);
+//   	var vd3   = parseFloat(vs['vd3']);
+//   	var vd4   = parseFloat(vs['vd4']);
+//   	var vd5   = parseFloat(vs['vd5']);
+//   	var vd6   = parseFloat(vs['vd6']);
+//   	var vd7   = parseFloat(vs['vd7']);
+//   	var vd8   = parseFloat(vs['vd8']);
+// 		if( ''!=vs['vd3'] && !isNaN(vd3) ){
+// 			var is_emp = (true==is_emp&&0==vd3) ? true : false;
+// 			jg_obj[i++] = accDiv( accMul(vd3,unit_zh),100);
+// 			if(vd3<200 && vd3!=0){
+// 				fei_00++;
+// 				jg_sum = parseFloat(jg_sum)+parseFloat(jg_obj[i-1]);
+// 			}
+// 		}
+// 		if( ''!=vs['vd8'] && !isNaN(vd8) ){
+// 			var is_emp = (true==is_emp&&0==vd8) ? true : false;
+// 			jg_obj[i++] = accDiv( accMul(vd8,unit_zh),50);
+// 			if(vd8<200 && vd8!=0){
+// 				fei_00++;
+// 				jg_sum = parseFloat(jg_sum)+parseFloat(jg_obj[i-1]);
+// 			}
+// 		}
+// 		if( ''!=vs['vd4'] && !isNaN(vd4) ){
+// 			var is_emp = (true==is_emp&&0==vd4) ? true : false;
+// 			jg_obj[i++] = accDiv( accMul(vd4,unit_zh),10);
+// 			if(vd4<200 && vd4!=0){
+// 				fei_00++;
+// 				jg_sum = parseFloat(jg_sum)+parseFloat(jg_obj[i-1]);
+// 			}
+// 		}
+// 		if( ''!=vs['vd5'] && !isNaN(vd5) ){
+// 			var is_emp = (true==is_emp&&0==vd5) ? true : false;
+// 			jg_obj[i++] = accDiv( accMul(vd5,unit_zh),1);
+// 			if(vd5<200 && vd5!=0){
+// 				fei_00++;
+// 				jg_sum = parseFloat(jg_sum)+parseFloat(jg_obj[i-1]);
+// 			}
+// 		}
+// 		if( ''!=vs['vd6'] && !isNaN(vd6) ){
+// 			var is_emp = (true==is_emp&&0==vd6) ? true : false;
+// 			jg_obj[i++] = accDiv( accMul(vd6,unit_zh),0.1);
+// 			if(vd6<200 && vd6!=0){
+// 				fei_00++;
+// 				jg_sum = parseFloat(jg_sum)+parseFloat(jg_obj[i-1]);
+// 			}
+// 		}
+// 		if( ''!=vs['vd7'] && !isNaN(vd7) ){
+// 			var is_emp = (true==is_emp&&0==vd7) ? true : false;
+// 			jg_obj[i++] = accDiv( accMul(vd7,unit_zh),0.5);
+// 			if(vd7<200 && vd7!=0){
+// 				fei_00++;
+// 				jg_sum = parseFloat(jg_sum)+parseFloat(jg_obj[i-1]);
+// 			}
+// 		}
+// 		if(is_emp == true){
+// 			vs['vd0']=vs['_vd0']=0;
+// 		}else if(fei_00>0){
+// 			vs['vd0']=vs['_vd0']=jsws(jg_sum/fei_00,0);
+// 		}else{
+// 			vs['vd0']=vs['_vd0']="";
+// 		}
+// }
+// $(document).ready(function(){
+//   //jsgs();
+// })
+</script>  

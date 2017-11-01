@@ -1,0 +1,81 @@
+<h1>{$arow['assay_element']}检验记录</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:15%"></td><td style="width:12%"><td style="width:13%"></td><td style="width:15%"></td>
+		<td style="width:15%"></td><td style="width:15%"></td><td style="width:15%"></td>
+	</tr>
+	<tr>
+		<td>检验项目</td>
+		<td colspan="3">{$arow['assay_element']}</td>
+		<td>检验地点</td>
+		<td colspan="2"><input type="text" class="inputc" name="td7"   value="{$arow['td7']}" /></td>
+	</tr>
+	<tr>
+		<td>检验方法</td>
+		<td colspan="3">{$arow['td1']}</td>
+		<td>方法依据</td>
+		<td colspan="2">{$arow['td2']}</td>
+	</tr>
+	<tr>
+		<td>仪器型号</td>
+		<td colspan="3">{$arow['td5']}</td>
+		<td>仪器编号</td>
+		<td colspan="2">{$arow['yq_bh']}</td>
+	</tr>
+	<tr>
+		<td colspan="2">培养基及名称</td>
+		<td colspan="3">培养温度、时间</td>
+		<td colspan="2">培养基空白</td>
+	</tr>
+	<tr>
+		<td colspan="2"><input type="text" class="inputc" name="td10"   value="{$arow['td10']}" /></td>
+		<td colspan="3"><input type="text" class="inputc" name="td8"   value="{$arow['td8']}" /></td>
+		<td colspan="2"><input type="text" class="inputc" name="td9"   value="{$arow['td9']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">计算公式<input type="hidden" name="td28" value="" /></td>
+		<td colspan="5" class="left jsgs_{$arow['id']}">{$arow['td28']}</td>
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td colspan="2">{$zhanming}</td>
+		<td>水样体积<br />（mL）</td>
+		<td>检出菌落（CFU）</td>
+		<td>菌落数（{$arow['unit']}）</td>
+		<td>报告结果（{$arow['unit']}）</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td>备注</td>
+		<td colspan="6"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<input type="hidden" name="has_zk7" value="1" />
+<script type="text/javascript">
+var vid = '{$arow['vid']}';
+var dw = '{$arow['unit']}';
+if(dw == 'CFU/mL'){
+	var jsgs_html = "菌落数（CFU/mL）=（1/取样体积）×检出菌落";
+	var zhi=1;
+}else if(dw == 'CFU/100mL'){
+	var jsgs_html = "菌落数（CFU/100mL）=（100/取样体积）×检出菌落";
+	var zhi=100;
+}else if(dw == 'CFU/L'){
+	var jsgs_html = "菌落数（CFU/L）=（1000/取样体积）×检出菌落";
+	var zhi=1000;
+}else{
+	var zhi=1;
+	var jsgs_html = '<span class="red">检测单位选择错误，请选择CFU/mL或者CFU/100mL</span>';
+}
+$(".jsgs_{$arow['id']}").html(jsgs_html);
+$("#assay_form_{$arow['id']} input[name=td28]").val(jsgs_html);
+function jsgs()
+{
+	if( !$.isNumeric(vs['vd1']) || !$.isNumeric(vs['vd3']) ){
+		vs['vd0'] = vs['vd27'] = '';
+	}else{
+		vs['vd0'] = vs['vd27'] = roundjs(accMul(accDiv(zhi,vs['vd1']),vs['vd3']),0);
+	}
+}
+</script>

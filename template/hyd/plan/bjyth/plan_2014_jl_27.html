@@ -1,0 +1,89 @@
+<h1>离子色谱法原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:6%;"></td><td style="width:8%;"></td><td style="width:8%;"></td>
+		<td style="width:13%;"></td><td style="width:13%;"></td><td style="width:13%;"></td>
+		<td style="width:13%;"></td><td style="width:13%;"></td><td style="width:13%;"></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="5">分析项目：F⁻，CL⁻，NO₃⁻-N，SO₄²⁻</td>
+		<td class="left" colspan="2">分析方法：{$arow['td2']}</td>
+		<td class="left" colspan="2">分析日期：<input type="text" name="td31" size="10" class="inputl" value="{$arow['td31']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="4">样品类别：{$arow['water_type']}</td>
+		<td class="left" colspan="3">仪器型号及编号：{$arow['td5']} {$arow['yq_bh']}</td>
+		<td class="left" colspan="2">进样体积：<input type="text" name="td9" class="inputl" size="4" value="{$arow['td9']}"> mL</td></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="9">
+			标准工作液浓度：
+			F⁻ <input type="text" name="td10" class="inputl" size="4" value="{$arow['td10']}"> {$arow['unit']}, 　
+			CL⁻ <input type="text" name="td11" class="inputl" size="4" value="{$arow['td11']}"> {$arow['unit']}, 　
+			NO₃⁻-N： <input type="text" name="td12" class="inputl" size="4" value="{$arow['td12']}"> {$arow['unit']},　
+			SO₄²⁻： <input type="text" name="td13" class="inputl" size="4" value="{$arow['td13']}"> {$arow['unit']}
+		</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="9">
+			曲线上限：
+			F⁻：<input type="text" name="td15" class="inputl" size="4" value="{$arow['td15']}"> {$arow['unit']}, 　
+			CL⁻： <input type="text" name="td16" class="inputl" size="4" value="{$arow['td16']}"> {$arow['unit']}, 　
+			NO₃⁻-N： <input type="text" name="td17" class="inputl" size="4" value="{$arow['td17']}"> {$arow['unit']}, 　
+			SO₄²⁻： <input type="text" name="td18" class="inputl" size="4" value="{$arow['td18']}"> {$arow['unit']}
+		</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="5">
+			曲线编号：<input type="text" name="td19" class="inputl" size="9" value="{$arow['td19']}">　
+			率定日期：<input type="text" name="td20" class="inputl" size="10" value="{$arow['td20']}"></td>
+		<td class="left" colspan="4">计算公式： {$arow['td28']}</td>
+	</tr>
+	<tr>
+		<td rowspan="2">序号</td>
+		<td rowspan="2" colspan="2">{$zhanming}</td>
+		<td colspan="4">分析结果</td>
+		<td rowspan="2">平均值/<br>理论浓度<br>（{$arow['unit']}）</td>
+		<td rowspan="2">相对偏差/<br>加标回收率<br>（％）</td>
+	</tr>
+	<tr>
+		<td>项目</td>
+		<td>读数<br />（ {$arow['unit']}）</td>
+		<td>稀释倍数 </td>
+		<td>含量<br />（ {$arow['unit']}）</td>
+	</tr>
+	{$aline}
+	<tr class="auto">
+		<td class="left" colspan="9">检出限
+			F⁻ = <input type="text" name="td14" class="inputl" size="5" value="{$arow['td14']}" /> {$arow['unit']}，
+			CL⁻ = <input type="text" name="td21" class="inputl" size="5" value="{$arow['td21']}" /> {$arow['unit']}，
+			NO₃⁻-N = <input type="text" name="td22" class="inputl" size="5" value="{$arow['td22']}" /> {$arow['unit']}，
+			SO₄²⁻ = <input type="text" name="td23" class="inputl" size="5" value="{$arow['td23']}" /> {$arow['unit']}
+		</td>
+	</tr>
+	<tr>
+		<td>备注：</td>
+		<td colspan="8"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	function jsgs(){
+		for (var i = 1; i <= 4; i++) {
+			eval("var vd1 = vs['vd"+(i*4-1)+"']");
+			eval("var vd2 = vs['vd"+(i*4)+"']");
+			if($.isNumeric(vd1) && $.isNumeric(vd2)){
+				eval("vs['vd"+(i*4+2)+"'] = jsws(vd1*vd2);");
+			}else{
+				eval("vs['vd"+(i*4+2)+"'] = '';");
+			}
+		};
+		var vid ='{$arow['vid']}';
+		switch(vid){
+			case '181': vs['vd0'] = vs['vd6'];break;
+			case '182': vs['vd0'] = vs['vd10'];break;
+			case '185': vs['vd0'] = vs['vd14'];break;
+			case '186': vs['vd0'] = vs['vd18'];break;
+		}
+	}
+</script>

@@ -1,0 +1,109 @@
+<h1>标准曲线原始记录表（1）</h1>
+<table> 
+	<tr>
+		<td style="text-align:left;text-indent:2em;">
+			环境条件：温度：<input class="inputl" type="text" name="td32" value="{$arow['td32']}" size="4" />℃；
+			相对湿度％RH：<input class="inputl" type="text" name="td33" value="{$arow['td33']}" size="8" />
+		</td>
+		<td style="text-align:right;padding-right:2em;"></td>
+	</tr>
+</table>
+<table class="single">
+	<tr class="noborder">
+		<td style="width:1.8cm"></td><td style="width:0.9cm"></td><td style="width:0.9cm"></td><td style="width:0.9cm"></td>
+		<td style="width:0.9cm"></td><td style="width:0.9cm"></td><td style="width:0.9cm"></td><td style="width:0.4cm"></td>
+		<td style="width:0.3cm"></td><td style="width:1.1cm"></td><td style="width:1.8cm"></td><td style="width:1.8cm"></td>
+		<td style="width:0.9cm"></td><td style="width:0.9cm"></td><td style="width:0.9cm"></td><td style="width:0.9cm"></td>
+	</tr>
+	<tr>
+		<td class="left" colspan="4">
+			分析项目：<span class="blue_a change_xm">{$arow['assay_element']}</span>
+		</td>
+		<td class="left" colspan="4">仪器名称及型号：</td>
+		<td colspan="8"><input type="text" name="td0" class="inputl" value="{$arow['td0']}"></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="4">比色皿规格：<input type="text" size="6" name="td1" class="inputr" value="{$arow['td1']}" />cm</td>
+		<td class="left" colspan="3">波长：<input type="text" size="4" name="td2" class="inputr" value="{$arow['td2']}" />nm</td>
+		<td class="left" colspan="4">定容体积：<input type="text" size="5" name="td3" class="inputr" value="{$arow['td3']}" />mL</td>
+		<td class="left" colspan="5">调零方法：<input type="text" size="18" name="td4" class="inputl" value="{$arow['td4']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="4">曲线编号：<input type="text" size="13" name="td5" class="inputl" value="{$arow['td5']}" /></td>
+		<td class="left" colspan="12">标准曲线率定日期：<input type="text" size="12" name="td31" class="inputl date_Ymd" value="{$arow['td31']}" /></td> 
+	</tr>
+	<tr class="auto">
+		<td colspan="16">
+			<span class="blue_a change_by">{$arow['td7']}</span>&nbsp;&nbsp;标准使用液的配制
+			<input type="hidden" name="td7" value="{$arow['td7']}" />
+		</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="9">
+			<span class="blue_a change_by">储备液浓度</span>：
+			<!-- noinputc -->
+			<input type="text" name="td8" class="inputl b" value="{$arow['td8']}" />µg/mL
+		</td>
+		<td class="left" colspan="7">
+			配制日期：<input type="text" size="12" name="td9" class="inputl date_Ymd" value="{$arow['td9']}" />
+		</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="3">中间液（1）稀释：</td>
+		<td class="left" colspan="6">取储备液： <input type="text" size="8" name="td10" class="inputl b" value="{$arow['td10']}" />mL</td>
+		<td class="left" colspan="3">稀释至： 	<input type="text" size="8" name="td11" class="inputl b" value="{$arow['td11']}" />mL</td>
+		<td class="left" colspan="4">			<input type="text" size="8" name="td12" class="noinputc" value="{$arow['td12']}" />µg/mL</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="3">中间液（2）稀释：</td>
+		<td class="left" colspan="6">取中间液（1）：	<input type="text" size="6" name="td13" class="inputl b" value="{$arow['td13']}" />mL</td>
+		<td class="left" colspan="3">稀释至：		<input type="text" size="8" name="td14" class="inputl b" value="{$arow['td14']}" />mL</td>
+		<td class="left" colspan="4">				<input type="text" size="8" name="td15" class="noinputc" value="{$arow['td15']}" />µg/mL</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="3">使用液稀释：</td>
+		<td class="left" colspan="6">取中间液（2）：	<input type="text" size="6" name="td16" class="inputl b" value="{$arow['td16']}" />mL</td>
+		<td class="left" colspan="3">稀释至：		<input type="text" size="8" name="td17" class="inputl b" value="{$arow['td17']}" />mL</td>
+		<td class="left" colspan="4">				<input type="text" size="8" name="td18" class="noinputc" value="{$arow['td18']}" />µg/mL</td>
+	</tr>
+	<tr>
+		<td colspan="5">标准液</td>
+		<td colspan="11">吸光度(E)</td>
+	</tr>
+	<tr >
+		<td colspan="2">mL</td>
+		<td colspan="3">{$arow['opp']}</td>
+		<td colspan="4">I</td>
+		<td colspan="2">II</td>
+		<td colspan="1">平均（1）</td>
+		<td colspan="2">空白（2）</td>
+		<td colspan="2">（1）-（2）</td>
+	</tr>
+	{loop $arow['sc_line'] $i $row}
+	<tr>
+		<td colspan="2">
+			<input type="hidden" name="sc_d_id[{$i}]" value="{$row['id']}" />
+			<input type="text" name="vd0[{$i}]" class="inputc hyd" value="{$row['vd0']}" />
+		</td>
+		<td colspan="3"><input type="text" name="vd1[{$i}]" class="noinputc" value="{$row['vd1']}" /></td>
+		<td colspan="4"><input type="text" name="vd2[{$i}]" class="inputc hyd" value="{$row['vd2']}" /></td>
+		<td colspan="2"><input type="text" name="vd3[{$i}]" class="inputc hyd" value="{$row['vd3']}" /></td>
+		<td colspan="1"><input type="text" name="vd4[{$i}]" class="noinputc" value="{$row['vd4']}" /></td>
+		<td colspan="2"><input type="text" name="vd5[{$i}]" class="inputc hyd" value="{$row['vd5']}" onclick="_aItem(this)"></td>
+		<td colspan="2"><input type="text" name="vd6[{$i}]" class="noinputc" value="{$row['vd6']}" /></td>
+	</tr>
+	{/loop}
+	<tr>
+		<td class="left noleft noright" colspan="5">回归方程：&nbsp;{$arow['quxian']}</td>
+		<td class="left noleft noright" colspan="5">斜率（b）：{$arow['CB']}</td>
+		<td class="left noleft noright" colspan="6">截距（a）：{$arow['CA']}</td>
+	</tr>
+	<tr>
+		<td class="left noleft noright" colspan="5">相关关系：&nbsp;A-{$arow['unit']}</td>
+		<td class="left noleft noright" colspan="11">相关系数（r）：{$arow['CR']}</td>
+	</tr>
+	<tr>
+		<td class="left" colspan="1">备注：</td>
+		<td colspan="15"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>

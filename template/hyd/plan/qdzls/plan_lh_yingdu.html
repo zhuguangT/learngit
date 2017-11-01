@@ -1,0 +1,45 @@
+<!-- 永久硬度和负硬度 永久硬度=总硬度-碳酸盐硬度 -->
+<h1>容量法检测$arow[assay_element]原始记录表</h1>
+{$hjtj_bt}
+<input type="hidden" name="yq_bh" value="{$arow['yq_bh']}" />
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:16%"></td><td style="width:20%"></td><td style="width:16%"></td>
+    <td style="width:16%"></td><td style="width:16%"></td><td style="width:16%"></td>
+    <td style="width:16%"></td><td style="width:16%"></td><td style="width:16%"></td>
+  </tr>
+  <tr>
+    <td colspan="1">检验方法依据</td>
+    <td colspan="5">{$arow['td2']}</td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>样品编号</td>
+    <td>总硬度</td>
+    <td>碳酸盐硬度</td>
+    <td>永久硬度</td>
+    <td>负硬度</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="5"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+function jsgs(){
+  var zongYD = (vs['vd3'].indexOf('<') > -1) ? 1.0 : vs['vd3']
+  console.log(zongYD)
+  if($.isNumeric(zongYD)&&$.isNumeric(vs['vd4'])){
+    var yingdu = accsub(parseFloat(zongYD),parseFloat(vs['vd4']));
+    if(yingdu>0){
+      vs['vd5'] = parseFloat(yingdu);
+      vs['vd6'] = '0';
+    }else{
+      vs['vd5'] = '0';
+      vs['vd6'] = Math.abs(yingdu);
+    }
+  }
+}
+</script> 

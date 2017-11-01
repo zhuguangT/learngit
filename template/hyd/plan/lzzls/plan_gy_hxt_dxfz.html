@@ -1,0 +1,314 @@
+
+<style type="text/css">
+	/*#assay_form_{$arow['id']} h1 {
+		font-size: 28px;
+	}
+	#assay_form_{$arow['id']} .single {
+		font-size: 12px;
+		line-height: 20px;
+	}
+	#assay_form_{$arow['id']} .single td{
+		height: 20px;
+	}*/
+</style>
+<h1>活性炭碘吸附值</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:11%"></td><td style="width:11%"></td><td style="width:7%"></td>
+		<td style="width:6%"></td><td style="width:7%"></td><td style="width:6%"></td>
+		<td style="width:7%"></td><td style="width:6%"></td><td style="width:7%"></td><td style="width:6%"></td>
+		<td style="width:7%"></td><td style="width:6%"></td><td style="width:7%"></td><td style="width:6%"></td>
+	</tr>
+	<tr align="center">
+		<td colspan="2">检验项目</td>
+		<td colspan="4">{$arow['assay_element']}</td>
+		<td colspan="4">样品名称</td>
+		<td colspan="4"><input type="text" name="td7" class="inputl" value="{$arow['td7']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">检验地点</td>
+		<td colspan="4"><input type="text" name="td8" class="inputl" value="{$arow['td8']}" /></td>
+		<td colspan="4">检验方法</td>
+		<td colspan="4">{$arow['td1']}</td>
+	</tr>
+	<tr>
+		<td colspan="2">天平型号</td>
+		<td colspan="4">{$arow['td5']}</td>
+		<td colspan="4">天平编号</td>
+		<td colspan="4">{$arow['yq_bh']}</td>
+	</tr>
+	<tr>
+		<td colspan="14">标准溶液（Na₂S₂O₃）</td>
+	</tr>
+	<tr>
+		<td colspan="2">基准溶液名称</td>
+		<td colspan="4">重铬酸钾（K₂Cr₂O₇）</td>
+		<td colspan="4">重铬酸钾浓度 C₁(mol/L)</td>
+		<td colspan="4"><input type="text" name="td9" class="inputl" value="{$arow['td9']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">标准溶液名称</td>
+		<td colspan="4">硫代硫酸钠（Na₂S₂O₃）</td>
+		<td colspan="4">重铬酸钾体积 V mL</td>
+		<td colspan="4"><input type="text" name="td10" class="inputl" value="{$arow['td10']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">耗用标准溶液体V₁（mL）</td>
+		<td colspan="4" class="auto">
+			<input type="text" size="6" name="td11" class="inputl" value="{$arow['td11']}" />
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="text" size="6" name="td12" class="inputl" value="{$arow['td12']}" />
+		</td>
+		<td colspan="4">空白耗用标准溶液体V₀（mL）</td>
+		<td colspan="4"><input type="text" name="td13" class="inputl" value="{$arow['td13']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="6">标准溶液浓度计算公式：</td>
+		<td colspan="8">C(Na₂S₂O₃，mol/L)=C₁×V/(V₁-V₀)</td>
+	</tr>
+	<tr>
+		<td colspan="6">标准溶液浓度C(Na₂S₂O₃ ，mol/L)</td>
+		<td colspan="2">
+			<input type="text" name="td14" class="noinputc" value="{$arow['td14']}" />
+		</td>
+		<td colspan="2">
+			<input type="text" name="td15" class="noinputc" value="{$arow['td15']}" />
+		</td>
+		<td colspan="2">平均值：</td>
+		<td colspan="2">
+			<input type="text" name="td16" class="noinputc" value="{$arow['td16']}" />
+		</td>
+	</tr>
+	<tr>
+		<td colspan="14">标准溶液（I₂）</td>
+	</tr>
+	<tr>
+		<td colspan="2">Na₂S₂O₃标准滴定溶液体积V₁(mL)</td>
+		<td colspan="4" class="auto">
+			<input type="text" size="6" name="td17" class="inputl" value="{$arow['td17']}" />
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="text" size="6" name="td18" class="inputl" value="{$arow['td18']}" />
+		</td>
+		<td colspan="4">空白耗用体积V₂（mL）</td>
+		<td colspan="4"><input type="text" name="td19" class="inputl" value="{$arow['td19']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">I₂标准溶液体积V₃（mL）</td>
+		<td colspan="4"><input type="text" name="td20" class="inputl" value="{$arow['td20']}" /></td>
+		<td colspan="4">空白试验中碘溶液体积V₄（mL）</td>
+		<td colspan="4"><input type="text" name="td21" class="inputl" value="{$arow['td21']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="6">标准溶液浓度C₁ (Na₂S₂O₃ ，mol/L)</td>
+		<td colspan="8"><input type="text" name="td22" class="noinputc" value="{$arow['td22']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="6">标准溶液浓度计算公式：</td>
+		<td colspan="8">C(1/2I₂，mol/L)=(V₁-V₂)×C1/(V₃-V₄)</td>
+	</tr>
+	<tr>
+		<td colspan="6">标准溶液浓度C(1/2I₂，mol/L)</td>
+		<td colspan="2">
+			<input type="text" name="td23" class="noinputc" value="{$arow['td23']}" />
+		</td>
+		<td colspan="2">
+			<input type="text" name="td24" class="noinputc" value="{$arow['td24']}" />
+		</td>
+		<td colspan="2">平均值：</td>
+		<td colspan="2">
+			<input type="text" name="td25" class="noinputc" value="{$arow['td25']}" />
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">计算公式</td>
+		<td colspan="4">C = C₂×V₃/V</td>
+		<td colspan="6">X = (C₁×V₁)-[(V1+V₂)/V]×C₂×V₃)×M</td>
+		<td colspan="2">E = X/m</td>
+	</tr>
+	<tr>
+		<td colspan="2">序号</td>
+		<td colspan="2">1</td>
+		<td colspan="2">2</td>
+		<td colspan="2">3</td>
+		<td colspan="2">4</td>
+		<td colspan="2">5</td>
+		<td colspan="2">6</td>
+	</tr>
+	{$aline}
+</table>
+<script type="text/template" class="extrajs_{$arow['id']}">
+var form = $("#assay_form_{$arow['id']}");
+var vd27 = form.find("input[name^='vd27[']").val();
+if(''!=vd27){
+	var vd27 = $.parseJSON(vd27);
+	for (var i = 39; i <= 60; i++) {
+		if( typeof vd27['vd'+i] != "undefined" ){
+			form.find("input[name^='vd"+i+"[']").val(vd27['vd'+i]);
+		}
+	}
+}else{
+	var vd27 = {};
+}
+	
+</script>
+<script type="text/javascript">
+eval($(".extrajs_{$arow['id']}").html());
+// 检测是否是合法数字并作出提示
+function check_is_num(obj){
+	var form = $("#assay_form_{$arow['id']}");
+	var obj = form.find("[name='"+obj+"']");
+	var value = obj.val();
+	if( '' == value || !$.isNumeric(value) ){
+		obj.parents("td").addClass("form-group has-error");
+		return false;
+	}else{
+		obj.parents("td").removeClass("form-group has-error");
+		return true;
+	}
+}
+// 表头标准溶液计算公式
+function bt_jsgs_{$arow['id']}(){
+	var form = $("#assay_form_{$arow['id']}");
+	// C(Na₂S₂O₃，mol/L)=C₁×V/(V₁-V₀)
+	if( !check_is_num("td9") ){ return false; }
+	var C1 = parseFloat(form.find("[name=td9]").val());
+	if( !check_is_num("td10") ){ return false; }
+	var V  = parseFloat(form.find("[name=td10]").val());
+	if( !check_is_num("td11") ){ return false; }
+	var V1_1 = parseFloat(form.find("[name=td11]").val());
+	if( !check_is_num("td12") ){ return false; }
+	var V1_2 = parseFloat(form.find("[name=td12]").val());
+	if( !check_is_num("td13") ){ return false; }
+	var V0 = parseFloat(form.find("[name=td13]").val());
+	// 计算C(Na₂S₂O₃，mol/L)
+	var C_1 = jsws(roundjs(C1*V/(V1_1-V0),6),4);
+	var C_2 = jsws(roundjs(C1*V/(V1_2-V0),6),4);
+	var C_avg = jsws(roundjs(accDiv(accAdd(C_1,C_2),2),6),4);
+	form.find("[name=td14]").val(C_1);
+	form.find("[name=td15]").val(C_2);
+	form.find("[name=td16]").val(C_avg);
+	form.find("[name=td22]").val(C_avg)
+	form.find("[name^='vd9[']").val(C_avg);
+	// C(1/2I₂，mol/L)=(V₁-V₂)×C1/(V₃-V₄)
+	if( !check_is_num("td17") ){ return false; }
+	var V1_1 = parseFloat(form.find("[name=td17]").val());
+	if( !check_is_num("td18") ){ return false; }
+	var V1_2 = parseFloat(form.find("[name=td18]").val());
+	if( !check_is_num("td19") ){ return false; }
+	var V2 = parseFloat(form.find("[name=td19]").val());
+	if( !check_is_num("td20") ){ return false; }
+	var V3 = parseFloat(form.find("[name=td20]").val());
+	if( !check_is_num("td21") ){ return false; }
+	var V4 = parseFloat(form.find("[name=td21]").val());
+	if( !check_is_num("td22") ){ return false; }
+	var C1 = parseFloat(form.find("[name=td22]").val());
+	// 计算C(1/2I₂，mol/L)
+	var C_1 = jsws(roundjs((V1_1-V2)*C1/(V3-V4),7),5);
+	var C_2 = jsws(roundjs((V1_2-V2)*C1/(V3-V4),7),5);
+	var C_avg = jsws(roundjs(accDiv(accAdd(C_1,C_2),2),7),5);
+	form.find("[name=td23]").val(C_1);
+	form.find("[name=td24]").val(C_2);
+	form.find("[name=td25]").val(C_avg);
+	form.find("[name^='vd21[']").val(C_avg);
+}
+// 表头计算标准溶液浓度
+$("#assay_form_{$arow['id']} .inputl[name^=td]").on("blur",function(){
+	bt_jsgs_{$arow['id']}();
+});
+function jsgs(c){
+	var isNumeric = true;
+	var form = $("#assay_form_{$arow['id']}");
+	form.find(".inputc[type=text][name^='vd']").each(function(){
+		if( !check_is_num($(this).attr("name")) ){
+			isNumeric = false;
+			return isNumeric;
+		}
+	});
+	if(!isNumeric){
+		return isNumeric;
+	}
+	// 平行样滤液浓度C=C2×C3/V
+	var js_ly_avg = function(vd){
+		return roundjs(vs['vd9']*vs[vd]/vs['vd17'],8);
+	}
+	var C_ly_11 = js_ly_avg('vd11');
+	var C_ly_12 = js_ly_avg('vd12');
+	vs['vd18'] = roundjs(accDiv(accAdd(C_ly_11,C_ly_12),2),6);
+	var C_ly_21 = js_ly_avg('vd13');
+	var C_ly_22 = js_ly_avg('vd14');
+	vs['vd19'] = roundjs(accDiv(accAdd(C_ly_21,C_ly_22),2),6);
+	var C_ly_31 = js_ly_avg('vd15');
+	var C_ly_32 = js_ly_avg('vd16');
+	vs['vd20'] = roundjs(accDiv(accAdd(C_ly_31,C_ly_32),2),6);
+	// 平行样E值(mg/g)
+	vs['vd51'] = roundjs(accDiv(accAdd(vs['vd45'],vs['vd46']),2),0);
+	vs['vd52'] = roundjs(accDiv(accAdd(vs['vd47'],vs['vd48']),2),0);
+	vs['vd53'] = roundjs(accDiv(accAdd(vs['vd49'],vs['vd50']),2),0);
+	// X = (C1*V1)-(V1+V2)/VC2V3)M
+	// M 碘摩尔质量[M(1/2I₂)=126.9g/mol]，单位为g/mol
+	var V3 = '';
+	vs['vd39'] = roundjs((vs['vd21']*vs['vd22']-accAdd(vs['vd22'],vs['vd23'])/vs['vd17']*vs['vd9']*vs['vd11'])*126.9,0);
+	vs['vd40'] = roundjs((vs['vd21']*vs['vd22']-accAdd(vs['vd22'],vs['vd23'])/vs['vd17']*vs['vd9']*vs['vd12'])*126.9,0);
+	vs['vd41'] = roundjs((vs['vd21']*vs['vd22']-accAdd(vs['vd22'],vs['vd23'])/vs['vd17']*vs['vd9']*vs['vd13'])*126.9,0);
+	vs['vd42'] = roundjs((vs['vd21']*vs['vd22']-accAdd(vs['vd22'],vs['vd23'])/vs['vd17']*vs['vd9']*vs['vd14'])*126.9,0);
+	vs['vd43'] = roundjs((vs['vd21']*vs['vd22']-accAdd(vs['vd22'],vs['vd23'])/vs['vd17']*vs['vd9']*vs['vd15'])*126.9,0);
+	vs['vd44'] = roundjs((vs['vd21']*vs['vd22']-accAdd(vs['vd22'],vs['vd23'])/vs['vd17']*vs['vd9']*vs['vd16'])*126.9,0);
+	// E = X/m
+	vs['vd45'] = roundjs(vs['vd39']/vs['vd3'],0);
+	vs['vd46'] = roundjs(vs['vd40']/vs['vd4'],0);
+	vs['vd47'] = roundjs(vs['vd41']/vs['vd5'],0);
+	vs['vd48'] = roundjs(vs['vd42']/vs['vd6'],0);
+	vs['vd49'] = roundjs(vs['vd43']/vs['vd7'],0);
+	vs['vd50'] = roundjs(vs['vd44']/vs['vd8'],0);
+	// lgE
+	vs['vd54'] = roundjs(Math.log(vs['vd51'])/Math.log(10),4);
+	vs['vd55'] = roundjs(Math.log(vs['vd52'])/Math.log(10),4);
+	vs['vd56'] = roundjs(Math.log(vs['vd53'])/Math.log(10),4);
+	// lgC
+	vs['vd57'] = roundjs(Math.log(vs['vd18'])/Math.log(10),4);
+	vs['vd58'] = roundjs(Math.log(vs['vd19'])/Math.log(10),4);
+	vs['vd59'] = roundjs(Math.log(vs['vd20'])/Math.log(10),4);
+	var check_x = $.isNumeric(vs['vd54']) && $.isNumeric(vs['vd55']) && $.isNumeric(vs['vd56']);
+	var check_y = $.isNumeric(vs['vd57']) && $.isNumeric(vs['vd58']) && $.isNumeric(vs['vd59']);
+	if( check_x && check_y ){
+		var y = [vs['vd54'],vs['vd55'],vs['vd56']];
+		var x = [vs['vd57'],vs['vd58'],vs['vd59']];
+		vs['vd60'] = '';
+		$.ajax({
+			url: "{$rooturl}/huayan/ahlims.php?app=quxian&act=get_abr",
+			type: "post",
+			data: {x:x,y:y}, 
+			dataType: 'json',
+			success: function(data){
+				if('0'==data.error){
+					var a = roundjs(data.content.a,4);
+					var b = roundjs(data.content.b,4);
+					var r = roundjs(data.content.R,4);
+					var quxian = 'lgE = '+b+'lgC+'+a+'    '+'r='+r;
+					form.find("input[name^='vd60[']").val(quxian);
+					var vd27 = $.parseJSON(form.find("input[name^='vd27[']").val());
+					vd27['vd60'] = quxian;
+					form.find("input[name^='vd27[']").val(JSON.stringify(vd27));
+					// C=0.02mol/L时的E值
+					vd0 = Math.pow(10,accAdd(Math.log(0.02)/Math.log(10)*b,a));
+					form.find("input[name^='vd0[']").val(vd0);
+				}else{
+					return false;
+				}
+			}
+		});
+	}
+	//重定义分量的json数据
+	var vd27 = form.find("input[name^='vd27[']").val();
+	if( '' == vd27 ){
+		var vd27 = {};
+	}else{
+		var vd27 = $.parseJSON(vd27);
+	}
+	for (var i = 39; i <= 59; i++) {
+		vd27['vd'+i] = vs['vd'+i];
+	}
+  	vs['vd27'] = JSON.stringify(vd27);
+}
+</script>

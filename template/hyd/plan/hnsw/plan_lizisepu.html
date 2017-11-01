@@ -1,0 +1,53 @@
+<h1>{$arow['assay_element']}分析原始记录表</h1>
+{$hjtj_bt}
+<table class="single">  
+  <tr class="noborder">
+    <td style="width:16%"></td><td style="width:20%"></td>
+    <td style="width:16%"></td><td style="width:16%"></td>
+    <td style="width:16%"></td><td style="width:16%"></td>
+  </tr>
+  <tr>
+    <td>检测项目</td>
+    <td>{$arow['assay_element']}</td>
+    <td>检测依据</td>
+    <td>{$arow['td2']}</td>
+    <td>检出限({$arow['unit']})</td>
+    <td>{$arow['td3']}</td>
+  </tr>
+  <tr>
+    <td>仪器名称</td>
+    <td>{$arow['td4']}</td>
+    <td>仪器型号</td>
+    <td>{$arow['td5']}</td>
+    <td>仪器编号</td>
+    <td>{$arow['yq_bh']}</td>
+  </tr>
+  <tr>
+    <td>标准溶液编号</td>
+    <td><input type="text" name="td12" value="{$arow['td12']}" /></td>
+    <td>标准使用液浓度</td>
+    <td><input type="text" name="td13" value="{$arow['td13']}" /></td>
+    <td>检测器</td>
+    <td><input type="text" name="td8"  value="{$arow['td8']}" /></td>
+  </tr>
+  <tr>
+    <td >抑制电流</td>
+    <td ><input type="text" name="td9" value="{$arow['td9']}" /></td>
+    <td>柱温</td>
+    <td><input type="text" name="td10" value="{$arow['td10']}" /></td>
+    <td>流速</td>
+    <td><input type="text" name="td11" value="{$arow['td11']}" /></td>
+  </tr>
+  <tr>
+    <td >序号</td>
+    <td>{$zhanming}</td>
+    <td colspan="2">含量({$arow['unit']})</td>
+    <td>平均值/理论浓度({$arow['unit']})</td>
+    <td>相对偏差/加标回收率(%)</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="5"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>

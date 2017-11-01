@@ -1,0 +1,54 @@
+<!-- 表头修改 -->
+<form action="./bt_modify.php" method="POST">
+<input type="hidden" name="tid" value="{$tid}" />
+<input type="hidden" name="fid" value="{$fid}" />
+<div class="bt_modi" id="bt_modi_{$tid}" style="margin:0 auto;padding:0;width:{$zongheng};">
+	{$plan}
+</div>
+</form>
+<script type="text/javascript">
+	var isTrue = false;
+	$("#bt_modi_{$tid} .bt_hidden").show();
+	$("#bt_modi_{$tid} .single").first().find("tr").each(function(){
+		var tdHtml = $(this).find("td:first").html();
+		if(true==isTrue || tdHtml=='序号'){
+			isTrue = true;
+			if(tdHtml!='备注'){
+				$(this).remove();
+			}else{
+				$(this).addClass("auto");
+				var btSetHtml = '<div>'
+				+'<span>打印行数：</span>'
+				+'<span><input type="text" class="inputc" size="10" name="lines" value="{$arow['lines']}" /></span>'
+				+'<span>纵横版：</span>'
+				+'<span>'
+				+'<label><input type="radio" class="ace" {$zong} name="zongheng" value="zong" /><span class="lbl">纵版</span></label>'
+				+'<label><input type="radio" class="ace" {$heng} name="zongheng" value="heng" /><span class="lbl">横版</span></label>'
+				+'</span>'
+				+'<span><button class="btn btn-primary btn-sm">保存</button></span>'
+				+'</div>';
+				$(this).find("td:first").remove();
+				var colspan = $(this).find("td:first").prop("colspan");
+				$(this).find("td:first").html(btSetHtml).prop("colspan",colspan+1).find("span").css("margin-right","20px");
+
+			}
+		}
+	})
+	//容量法的校正系数设置
+	var fanwei		= String($("#bt_modi_{$tid} .ddg_fw").val()).split(',');
+	var jiaozheng	= String($("#bt_modi_{$tid} .ddg_jz").val()).split(',');
+	for(var i=0;i<$("#bt_modi_{$tid} input.fanwei").length;i++){
+		$("#bt_modi_{$tid} .fanwei:eq("+i+")").val(fanwei[i]);
+		$("#bt_modi_{$tid} .jiaozheng:eq("+i+")").val(jiaozheng[i])
+	};
+	$("#bt_modi_{$tid} input.fanwei,#bt_modi_{$tid} input.jiaozheng").blur(function(){
+		var fw = ['','','','','','','','',''];
+		var jz = ['','','','','','','','',''];
+		for(var i=0;i<$("#bt_modi_{$tid} input.fanwei").length;i++){
+			fw[i]=$("#bt_modi_{$tid} .fanwei:eq("+i+")").val();
+			jz[i]=$("#bt_modi_{$tid} .jiaozheng:eq("+i+")").val();
+		}
+		$("#bt_modi_{$tid} .ddg_fw").val(fw.join(','));
+		$("#bt_modi_{$tid} .ddg_jz").val(jz.join(','));
+	})
+</script>

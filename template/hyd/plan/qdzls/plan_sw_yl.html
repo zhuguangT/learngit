@@ -1,0 +1,51 @@
+<!-- 余氯 -->
+<h1>余氯检验原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:12%"></td>
+    <td style="width:14%"></td>
+    <td style="width:13%"></td>
+    <td style="width:13%"></td>
+    <td style="width:12%"></td>
+    <td style="width:12%"></td>
+    <td style="width:12%"></td>
+    <td style="width:12%"></td>
+  </tr>
+  <tr>
+    <td colspan="2">检验方法依据</td>
+    <td colspan="2">{$arow['td2']}</td>
+    <td colspan="2">检验方法</td>
+    <td colspan="2">{$arow['td1']}</td>
+  </tr>
+  <tr>
+    <td colspan="2">标准系列配置日期</td>
+    <td colspan="2"><input type="text" class="inputc date_Ymd" name="td11" value="{$arow['td11']}" /></td>
+    <td colspan="2">标准比色管有效期</td>
+    <td colspan="2"><input type="text" class="inputc date_Ymd" name="td12" value="{$arow['td12']}" /></td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>{$zhanming}</td>
+    <td>取样体积（mL）</td>
+    <td>现场余氯浓度（{$arow['unit']}）</td>
+    <td>相当标准系列浓度（{$arow['unit']}）</td>
+    <td>样品浓度（{$arow['unit']}）</td>
+    <td>平均值（{$arow['unit']}）</td>
+    <td>相对偏差（％）</td>
+  </tr>
+    {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="7"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+  function jsgs(){
+    if($.isNumeric(vs['vd3'])){
+      vs['vd0'] = vs['vd4'] = vs['vd3'];
+    }else{
+      vs['vd0'] = vs['vd4'] = '';
+    }
+  }
+</script>

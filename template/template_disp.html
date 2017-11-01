@@ -1,0 +1,22 @@
+<!-- 在线修改模板的显示页面    -->
+<style type="text/css">
+.texttar {
+	background-color: #6699FF;
+	font-size: 14px;
+	font-weight: bold;
+}
+</style>
+<table class="texttar">
+<form action='template.php' method=POST>
+<input type=hidden name=action value=modi>
+<tr><td align=center><input type=submit value='修改'></td></tr>
+<tr><td>模板:<input type=text  size=80 name='name' value='$_GET[name]'></td></tr>
+<tr><td>注释:<input type=text size=80 name=note value='$note'><br>
+内容:<textarea  class="texttar"  name=data  cols="120" rows="$linecount"  >$lines</textarea>
+</td></tr>
+<tr><td align=center>
+<input type=submit value='修改'>
+</td></tr>
+</form>
+</table>
+

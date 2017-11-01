@@ -1,0 +1,79 @@
+<h1>贾第鞭毛虫和隐孢子虫检验记录</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:8%"></td><td style="width:8%"></td><td style="width:12%"></td>
+		<td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+		<td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+		<td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+	</tr>
+	<tr>
+		<td colspan="3">检验项目</td>
+		<td colspan="3">{$arow['assay_element']}</td>
+		<td colspan="3">检验地点</td>
+		<td colspan="3"><input type="text" name="td7" class="inputc" value="{$arow['td7']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="3">检验方法</td>
+		<td colspan="3">{$arow['td1']}</td>
+		<td colspan="3">检验依据</td>
+		<td colspan="3">{$arow['td2']}</td>
+	</tr>
+	<tr>
+		<td colspan="3">仪器型号</td>
+		<td colspan="3">{$arow['td4']}</td>
+		<td colspan="3">仪器编号</td>
+		<td colspan="3">{$arow['yq_bh']}</td>
+	</tr>
+	<tr>
+		<td colspan="3">磁珠分选试剂盒批号</td>
+		<td colspan="3"><input type="text" name="td8" class="inputc" value="{$arow['td8']}" /></td>
+		<td colspan="3">荧光染色试剂盒批号</td>
+		<td colspan="3"><input type="text" name="td9" class="inputc" value="{$arow['td9']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="3">计算公式</td>
+		<td colspan="4">总需要体积（mL）=沉淀物体积×10mL/0.5mL</td>
+		<td colspan="5">检验结果=[ ( X × V ) / ( 0.5 × V<sub>2</sub> ) ] × 10</td>
+	</tr>
+	<tr>
+		<td rowspan="2">序号</td>
+		<td colspan="2" rowspan="2">样品编号</td>
+		<td rowspan="2">水样体积<br/>(L)</td>
+		<td rowspan="2" colspan="2">滤芯编号</td>
+		<td rowspan="2">沉淀物体积V</td>
+		<td rowspan="2">总需要体积V<sub>2</sub>(mL)</td>
+		<td colspan="4">井型载玻片</td>
+	</tr>
+	<tr>
+		<td nowrap="nowrap"> 贾第鞭毛虫X<br />（个）</td>
+		<td nowrap="nowrap"> 贾第鞭毛虫<br />（{$arow['unit']}）</td>
+		<td nowrap="nowrap"> 隐孢子虫X<br />（个）</td>
+		<td nowrap="nowrap"> 隐孢子虫<br />（{$arow['unit']}）</td>
+	</tr>
+	 {$aline}
+	    <tr>
+	    <td colspan="1">备注</td>
+	    <td colspan="11"><textarea name="td30" cols='88%'>{$arow['td30']}</textarea></td>
+	  </tr>
+</table>
+<input type="hidden" name="has_zk7" value="1" />
+<script type="text/javascript">
+window.jsgs = function(){
+	if($.isNumeric(vs['vd1']) && $.isNumeric(vs['vd4'])){
+		vs['vd5']=accDiv(accMul(parseFloat(vs['vd4']),10),0.5);
+		if($.isNumeric(vs['vd4']) &&$.isNumeric(vs['vd7'])){
+			vs['vd11']=accMul(accDiv(accMul(parseFloat(vs['vd4']),parseFloat(vs['vd7'])),accMul(parseFloat(vs['vd1']),0.5)),10);
+		}else{
+			vs['vd11']='';
+		}
+		if($.isNumeric(vs['vd4']) &&$.isNumeric(vs['vd7'])){
+			vs['vd9']=accMul(accDiv(accMul(parseFloat(vs['vd4']),parseFloat(vs['vd8'])),accMul(parseFloat(vs['vd1']),0.5)),10);
+		}else{
+			vs['vd9']='';
+		}
+	}else{
+		vs['vd5'] = vs['vd11'] = vs['vd9'] = '';
+	}
+}
+</script>

@@ -1,0 +1,80 @@
+<h1>细菌/菌落总数分析原始记录表</h1>
+
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:11%"></td><td style="width:11%"></td><td style="width:11%"></td>
+		<td style="width:11%"></td><td style="width:11%"></td><td style="width:11%"></td>
+		<td style="width:11%"></td><td style="width:11%"></td><td style="width:12%"></td>
+	</tr>
+	<tr class="auto">
+		<td colspan="5" class="left">分析方法：<input type="text" name='td2' size='18' class="inputl" value="{$arow['td2']}" ></td>
+		<td colspan="2" rowspan='2'>培养温度：<br /><input type="text" name="td15" size="5" class="inputl" value="{$arow['td15']}">℃</td>
+		<td >培养时间</td><td><input type="text" name="td11" class='input-mask-date' value="{$arow['td11']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td colspan="2" class="left">样品类别：{$arow['water_type']}</td>
+		<td colspan="3" class="left">仪器名称及编号：{$arow['td4']} {$arow['yq_bh']}</td>
+		<td>观察时间</td><td><input type="text" name="td12" class='input-mask-date' value="{$arow['td12']}" /></td>
+	</tr>
+	<tr>
+		<td rowspan="2" >序号</td>
+		<td rowspan="2" colspan="2">{$zhanming}</td>
+		<td colspan="4">水样体积（mL）</td>
+		<td rowspan="2" colspan="2">菌量<br />（{$arow['unit']}）</td>
+	</tr>
+	<tr>
+		<td><input type="text" name="td13" class="inputl" value="{$arow['td13']}" /></td>
+		<td><input type="text" name="td7" class="inputl" value="{$arow['td7']}" /></td>
+		<td><input type="text" name='td8' class="inputl" value="{$arow['td8']}" /></td>
+		<td><input type="text" name="td9" class="inputl" value="{$arow['td9']}" /></td>
+	</tr>
+	{$aline}
+	<tr class="auto">
+		<td rowspan="2">备注</td>
+		<td colspan="3" rowspan="2"><textarea name="td30"  rows="2" cols="30">{$arow['td30']}</textarea></td>
+		<td rowspan="2" class="left">空白</td>
+		<td colspan="2"><input type="text" name="td22" size="10" class="inputc" value="{$arow['td22']}" onblur="btgs()" /></td>
+		<td colspan="2" class="left">平均值 <input type="text" name="td24" size="10" class="noinputc" value="{$arow['td24']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td colspan="2"> <input type="text" name="td23" size="10" class="inputc" value="{$arow['td23']}" onblur="btgs()" /></td>
+		<td colspan="2">相对偏差（％） <input type="text" name='td25' size="10" class="noinputc" value='{$arow['td25']}'></td>
+	</tr>
+</table>
+<script>
+	function jsgs(){
+		if($.isNumeric(vs['vd5'])&&$.isNumeric(vs['vd10']))
+		{
+		var jg=accAdd(vs['vd5'],vs['vd10'])/2;
+		}
+		if(!isNaN(jg))
+		{
+		vs['vd0']=vs['_vd0']=jg;
+		}
+		else
+		{
+		vs['vd0']=vs['_vd0']='';
+		}
+	}
+	function btgs()
+	{
+		var td22=$("input[name=td22]").val();
+		var td23=$("input[name=td23]").val();
+		if($.isNumeric(td22)&&parseInt(td22)!=td22)
+			ws=(td22.split("."))[1].length;
+		else
+			ws=0;
+		if($.isNumeric(td22)&&$.isNumeric(td23))
+		{
+			var td24=roundjs(accDiv(accAdd(td22,td23),2),ws);
+			var td25=roundjs((accsub(td22,td23)/accAdd(td22,td23)),2);
+		}
+		else
+		{
+			td25=td24='';
+		}
+		$("input[name=td24]").attr("value",td24);
+		$("input[name=td25]").attr("value",td25);
+	}
+</script>

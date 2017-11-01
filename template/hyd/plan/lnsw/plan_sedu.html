@@ -1,0 +1,86 @@
+<!-- pH值 电导率 使用这张表格 -->
+<h1>{$arow['assay_element']}测定原始记录表</h1>
+$hjtj_bt
+<table class="single">
+  <tr class="noborder">
+        <td style="width:6%"></td><td style="width:6%"></td><td style="width:6%"></td><td style="width:6%"></td>
+    <td style="width:6%"></td><td style="width:6%"></td><td style="width:6%"></td><td style="width:6%"></td>
+    <td style="width:6%"></td><td style="width:6%"></td><td style="width:5%"></td><td style="width:5%"></td>
+    <td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td>
+    <td style="width:5%"></td><td style="width:5%"></td>
+  </tr>
+  <tr>
+    <td colspan='2'>分析项目</td>
+    <td colspan='3'>{$arow['assay_element']}</td>
+    <td colspan='2'>检测依据</td>
+    <td colspan='3'>{$arow['td2']}<input type="hidden" name="td2" value="{$arow['td2']}" /></td>
+    <td >检出限</td>
+    <td colspan='2'>{$arow['td3']}<input type="hidden" name="td3" value="{$arow['td3']}" /></td>
+    <td colspan='2'>检测日期</td>
+    <td colspan='3'><input type="text" name="time_01" value="{$arow['time_01']}" /></td>
+  </tr>
+  <tr>
+    <td colspan='2'>比色皿规格</td>
+    <td colspan='4'><input type="text" name="td7" class="inputl" value="{$arow['td7']}" /></td>
+    <td colspan='2'>发色时间</td>
+    <td colspan='4'><input type="text" name="td8" class="inputl" value="{$arow['td8']}" /></td>
+    <td colspan='2'>取样体积</td>
+    <td colspan='4'><input type="text" name="td9" class="inputl" value="{$arow['td9']}" /></td>
+  </tr>
+  <tr>
+    <td colspan='3'>标准溶液名称</td>
+    <td colspan='6'><input type="text" name="td10" class="inputl" value="{$arow['td10']}" /></td>
+    <td colspan='3'>浓度</td>
+    <td colspan='6'><input type="text" name="td11" class="inputl" value="{$arow['td11']}" /></td>
+  </tr>
+  <tr>
+    <td rowspan='2' colspan='2'>标准系列值</td>
+    <td class="bzxl_yl">mL</td>
+  </tr>
+  <tr>
+    <td class="bzxl_hl">度</td>
+  </tr>
+  <tr>
+    <td colspan='3'>序号</td>
+        <td colspan="3">$zhanming</td>
+    <td colspan="6">相当标准溶液<br />（mL）</td>
+    <td colspan="6">含量<br />(度)</td>
+  </tr>
+  $aline
+  <tr>
+    <td>备注</td>
+    <td colspan="17"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+var bzxl_yl = '{$arow['td12']}';
+var bzxl_hl = '{$arow['td13']}';
+var yl_arr  = bzxl_yl.split(',');
+var hl_arr  = bzxl_yl.split(',');
+var yl_html=hl_html='';
+for(var i=0;i<15;i++){
+	if(i<yl_arr.length){
+		yl_html += '<td>'+yl_arr[i]+'</td>';
+	}else{
+		yl_html += '<td></td>';
+	}
+	if(i<hl_arr.length){
+		hl_html += '<td>'+hl_arr[i]+'</td>';
+	}else{
+		hl_html += '<td></td>';
+	}
+}
+$(".bzxl_yl").after(yl_html);
+$(".bzxl_hl").after(hl_html);
+function jsgs()
+{
+	var key = $.inArray(vs['vd3'],yl_arr);
+	if(key>=0){
+		if($.isNumeric(parseFloat(hl_arr[key]))){
+			vs['vd0'] = parseFloat(hl_arr[key]);
+		}
+	}
+}
+ 
+
+</script>

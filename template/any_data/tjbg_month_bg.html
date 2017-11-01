@@ -1,0 +1,75 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+<title>
+	水质月报明细
+</title>
+		
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name></x:Name><x:WorksheetOptions><x:Selected/><x:FreezePanes/><x:FrozenNoSplit/>
+	<x:SplitHorizontal>2</x:SplitHorizontal><x:TopRowBottomPane>2</x:TopRowBottomPane><x:ActivePane>2</x:ActivePane></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
+    <style type="text/css">
+    	tr{height: 31px;}
+        .td1
+        {
+            width: {$cy_date_width}px;
+        }
+		.td2{
+			width:{$site_width}px;
+		}
+		.td3{
+			width:{$water_type_width}px;
+		}
+		.td4{
+			width:{$vid_width}px
+		}
+        .gdtjContainer .tb tr
+        {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .gdtjContainer .tb td
+        {
+			white-space : normal;
+			border:0.5pt solid;
+            text-align: center;
+            font-weight: normal;
+            font-size: 10pt;
+			mso-height-source:auto;}
+		 .gdtjContainer .no_border td
+		{
+			border:0pt;
+		}
+    </style>
+</head>
+<body>
+    <div class="gdtjContainer">
+        <table class="tb"  style="margin:0 auto;width:1000px;border-collapse:collapse;font-size:10pt;text-align:center;font-family:宋体;"  border="0"  cellpadding="4">
+            <colgroup>
+				<col class="td1"/>
+				<col class="td2" />
+				<col class="td3"/>
+				<col  class="td4" span="{$cols1}" />
+               
+            </colgroup>
+			<thead style="display:table-header-group;" >
+				<tr>
+					<td align="center" style="font-weight:bold;font-size:14pt;font-family:宋体;border:0px solid;" colspan={$z_cols}>$title</td>
+				</tr> 
+				<tr align="center" style="mso-height-source:auto;">
+					<td >抽检<br style="mso-data-placement:same-cell;"/>日期</td><td style="font-size:10.5pt">取样点</td><td>水样<br style="mso-data-placement:same-cell;"/>类别</td>{$xm_name_td}
+				</tr>
+			</thead>
+			{$week_bg_line}
+
+			<tr class="no_border" >
+				<td colspan={$z_cols} style="text-align:left;font-size:11pt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>负责人：<span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>审核：<span style='mso-spacerun:yes;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>制表：</td>
+			</tr>
+			<tr class="no_border">
+				<td colspan={$z_cols} style="text-align:left;font-size:11pt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span>青岛市城市管理局服务热线：12319</td>
+			</tr>
+        </table>
+
+    </div>
+</body>
+</html>

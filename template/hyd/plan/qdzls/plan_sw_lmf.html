@@ -1,0 +1,75 @@
+<!-- 生物 滤膜法 -->
+<h1>{$arow['assay_element']}检验原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:15%"></td>
+    <td style="width:25%"></td>
+    <td style="width:15%"></td>
+    <td style="width:15%"></td>
+    <td style="width:15%"></td>
+    <td style="width:15%"></td>
+  </tr>
+  <tr>
+    <td>检验方法依据</td>
+    <td>{$arow['td2']}</td>
+    <td colspan="2">检验方法</td>
+    <td colspan="2">{$arow['td1']}</td>
+  </tr>
+  <tr >
+    <td>水样体积V(mL)</td>
+    <td><input type="text" class="inputc" name="td9" value="{$arow['td9']}" /></td>
+    <td colspan="2">稀释倍数</td>
+    <td colspan="2"><input type="text" class="inputc" name="td10" value="{$arow['td10']}" /></td>
+  </tr>
+  <tr> 
+    <td>培养温度、时间</td>
+    <td><input type="text" class="inputc" name="td11" value="{$arow['td11']}" /></td>
+    <td colspan="2">培养基名称</td>
+    <td colspan="2"><input type="text" class="inputc" name="td12" value="{$arow['td12']}" /></td>
+  </tr>
+  <tr> 
+    <td>计算公式</td>
+    <td class="noborder right">{$arow['assay_element']}({$arow['unit']}) = </td>
+    <td class="noborder">M<hr />V</td>
+    <td class="noleft left" id="unit_zh" colspan="3">×100</td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>{$zhanming}</td>
+    <td>菌落计数（复发酵、镜检）（M）（个）</td>
+    <td>{$arow['assay_element']}（{$arow['unit']}）</td>
+    <td>平均值（{$arow['unit']}）</td>
+    <td>相对偏差（％）</td>
+  </tr>
+    {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="12"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+  var vid = '{$arow['vid']}';
+  var unit_zh = 1000;
+  var unit = '{$arow['unit']}';
+  var unit_arr = unit.split('/');
+  if(unit_arr[1]=='L'){
+    var unit_zh = 1000;
+  }else if(unit_arr.length==2){
+    var unit_zh = parseInt(unit_arr[1]);
+  }else{
+    var unit_zh = 1;
+  }
+  $("#unit_zh").html('×'+unit_zh);
+  function jsgs(){
+    //运算函数在lib.js
+    //加 accAdd 减 accsub 乘 accMul 除 accDiv
+    if($.isNumeric(vs['vd3']) && $.isNumeric($("input[name=td9]").val())){
+      var M  = parseFloat(vs['vd3']);//菌落计数
+      var V  = parseFloat($("input[name=td9]").val());//取样体积
+      vs['vd0'] = accMul(unit_zh,accDiv(M,V));
+    }else{
+      vs['vd0'] = '';
+    }
+  }
+</script>

@@ -1,0 +1,105 @@
+<style>
+form{margin:0 auto;text-align: center;}
+.bar_code_create{width:100%;}
+.bar_code_create td{text-align: left;border:1px solid black;}
+legend{margin-left:20px;width:250px;}
+label{width:160px;height:33px;text-align:right;}
+select{width:50px;}
+.bar_code_make{width:auto;height:40px;line-height: 40px;}
+</style>
+<h3 class="header smaller center title">系统个性化配置</h3>
+<form action="view_settings_save.php" method="POST" name="view_settings">
+	<!--样品编号按年、按月编号的配置-->
+	<fieldset style='width:80%;margin:20px auto;padding:20px;border:2px solid #A8A8A8;'><legend><BLINK> 样品编号配置:</BLINK> </legend>
+		<table class="bar_code_create">
+			<tr>
+				<td rowspan='3'  width="130px">样品编号格式配置：</td>
+				<td width="60px" height='43px'>
+					组成结构
+				</td>
+				<td style="vertacal-align:middle;">
+					  <label class="bar_code_make" style="margin-left:60px;"><input type="checkbox" name="bar_code_make[]" value="site_type" $site_type_checked>任务类型 +</label> 
+					  <label class="bar_code_make"><input type="checkbox" name="bar_code_make[]" value="water_type" $water_type_checked>水样类型 +</label> 
+					  <label class="bar_code_make"><input type="checkbox" disabled checked>年份 +</label> 
+					  <input type="checkbox" name="bar_code_make[]" value="year" checked style="display:none;">
+					  <label class="bar_code_make"><input type="checkbox" disabled checked>月份 +</label>
+					  <input type="checkbox" name="bar_code_make[]" value="month" checked style="display:none;"> 
+					  <label class="bar_code_make"><input type="checkbox" name="bar_code_make[]" value="-" $fenge_checked>分隔符“-” +</label> 
+					  <label class="bar_code_make"><input type="checkbox" disabled checked>流水号</label>
+					  <input type="checkbox" name="bar_code_make[]" value="serial_num" checked style="display:none;">
+				</td>
+			</tr>
+			<tr>
+				<td width="60px">
+					任务类型<br>代表字母
+				</td>
+				<td>
+					 $bar_code_site_type
+				</td>
+			</tr>
+			<tr>
+				<td>
+					水样类型<br>代表字母
+				</td>
+				<td>
+					$bar_code_water_type
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">样品编号生成规则：</td>
+				<td>
+					<label><input type='radio' name='bar_code_create' value='mouth' {$bar_code_create_mouth} />按月生成</label>
+					<label><input type='radio' name='bar_code_create' value='year' {$bar_code_create_year} />按年生成</label>
+				</td>
+			</tr>
+		</table>
+	</fieldset><br />
+	<!--化验单数据什么时候能显示到数据报告上的配置-->
+	<fieldset style='width:80%;margin:20px auto;padding:20px;border:2px solid #A8A8A8;'><legend><BLINK> 报告查看数据限制:</BLINK> </legend>
+		<table class="bar_code_create">
+			<tr>
+				<td width="130px">报告可以查看数据状态：</td>
+				<td style="vertacal-align:middle;">
+					  <label class="bar_code_make" style="margin-left:60px;"><input type="checkbox" name="show_shuju[]" value="已开始" $begin_checked>已开始</label>
+					  <label class="bar_code_make" style="margin-left:60px;"><input type="checkbox" name="show_shuju[]" value="已完成" $finish_checked>已完成</label>
+					  <label class="bar_code_make" style="margin-left:60px;"><input type="checkbox" name="show_shuju[]" value="已校核" $jh_checked>已校核</label>
+					  <label class="bar_code_make" style="margin-left:60px;"><input type="checkbox" name="show_shuju[]" value="已复核" $fh_checked>已复核</label>
+					  <label class="bar_code_make" style="margin-left:60px;"><input type="checkbox" disabled checked>已审核</label>
+					  <input type="checkbox" name="show_shuju[]" value="已审核"  checked  style="display:none;">
+				</td>
+			</tr>
+		</table>
+	</fieldset><br />
+	<!--做全程序空白样时是否同时检测室内空白样的配置-->
+	<fieldset style='width:80%;margin:20px auto;padding:20px;border:2px solid #A8A8A8;'><legend><BLINK> 下达采样任务页面配置:</BLINK> </legend>
+		<table class="bar_code_create">
+			<tr>
+				<td width="330px">检测全程序空白样时是否同时检测室内空白：</td>
+				<td style="vertacal-align:middle;">
+					<label class="bar_code_make" style="margin-left:60px;"><input type="radio" name="xdcy[create_snkb]" value="no" $no_checked>默认不生成室内空白</label>
+					<label class="bar_code_make" style="margin-left:60px;"><input type="radio" name="xdcy[create_snkb]" value="yes" $yes_checked>默认生成室内空白</label>
+					
+				</td>
+			</tr>
+		</table>
+	</fieldset><br />
+	<input type="submit" name="submit" value="保存配置" />
+</form>
+<script type="text/javascript">
+$("select[parent]").each(function(){
+	$(this).attr("old_value",$(this).val());
+});
+//改变父水样类型，子水样类型跟着改变
+$("select[parent]").change(function(){
+	var parent_id	= $(this).attr("parent");
+	var old_value	= $(this).attr("old_value");
+	var parent_value= $(this).val();
+	$(this).attr("old_value",parent_value);
+	$("select[parent_id='"+parent_id+"']").each(function(){
+		var this_value	= $(this).val();
+		if(this_value == old_value){
+			$(this).val(parent_value);
+		}
+	});
+});
+</script>

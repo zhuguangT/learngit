@@ -1,0 +1,102 @@
+<h1>ICP-AES检验记录（工艺）</h1>
+{$hjtj_bt}
+<input type="hidden" name="td6" value="$arow[td6]" />
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+		<td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+		<td style="width:10%"></td><td style="width:10%"></td>
+	</tr>
+	<tr align="center">
+		<td colspan="2">检验项目</td>
+		<td colspan="3">{$arow['assay_element']}</td>
+		<td colspan="2">检验地点</td>
+		<td colspan="3"><input type="text" name="td7" class="inputl" value="{$arow['td7']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">检验方法</td>
+		<td colspan="3">{$arow['td1']}</td>
+		<td colspan="2">仪器名称及型号</td>
+		<td colspan="3">{$arow['td4']} {$arow['td5']}</td>
+	</tr>
+	<tr>
+		<td colspan="2" rowspan="3">仪器条件</td>
+		<td colspan="2">泵速（rpm）</td>
+		<td colspan="2"><input type="text" name="td9" class="inputl" value="{$arow['td9']}" /></td>
+		<td colspan="2">等离子体功率（W）</td>
+		<td colspan="2"><input type="text" name="td10" class="inputl" value="{$arow['td10']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">雾化器压力（Psi）</td>
+		<td colspan="2"><input type="text" name="td11" class="inputl" value="{$arow['td11']}" /></td>
+		<td colspan="2">CID温度（℃）</td>
+		<td colspan="2"><input type="text" name="td12" class="inputl" value="{$arow['td12']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">辅助气流量（L/min）</td>
+		<td colspan="2"><input type="text" name="td13" class="inputl" value="{$arow['td13']}" /></td>
+		<td colspan="2">光室温度（℉）</td>
+		<td colspan="2"><input type="text" name="td14" class="inputl" value="{$arow['td14']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">分析元素及所选谱线<br />（nm）</td>
+		<td colspan="8"><input type="text" name="td15" class="inputl" value="{$arow['td15']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2" rowspan="2"> 标准系列（mg/L）</td>
+		<td>空白</td>
+		<td>标准1</td>
+		<td>标准2</td>
+		<td>标准3</td>
+		<td>标准4</td>
+		<td>标准5</td>
+		<td>标准6</td>
+		<td>标准7</td>
+	</tr>
+	<tr>
+		<td><input type="text" name="td16" class="inputl" value="{$arow['td16']}" /></td>
+		<td><input type="text" name="td17" class="inputl" value="{$arow['td17']}" /></td>
+		<td><input type="text" name="td18" class="inputl" value="{$arow['td18']}" /></td>
+		<td><input type="text" name="td19" class="inputl" value="{$arow['td19']}" /></td>
+		<td><input type="text" name="td20" class="inputl" value="{$arow['td20']}" /></td>
+		<td><input type="text" name="td21" class="inputl" value="{$arow['td21']}" /></td>
+		<td><input type="text" name="td22" class="inputl" value="{$arow['td22']}" /></td>
+		<td><input type="text" name="td23" class="inputl" value="{$arow['td23']}" /></td>
+	</tr>
+	<tr align="center">
+		<td>序号</td>
+		<td colspan="2">{$zhanming}</td>
+		<td>试样重量m (g)</td>
+		<td>溶液体积 mL</td>
+		<td>浓度 (mg/L)</td>
+		<td>试样中的质量 (mg)</td>
+		<td>质量分数（%）</td>
+		<td>氧化铝含量（%） </td>
+		<td>计算结果（%）<br /> 10%氧化铝时的质量分数</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td align="center">备注</td>
+		<td colspan="9"><textarea name="td30">$arow[td30]</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	function jsgs(){
+		if($.isNumeric(vs['vd1'])&&$.isNumeric(vs['vd4']))
+		{
+			vs['vd5']=accDiv(accMul(parseFloat(vs['vd4']),parseFloat(vs['vd1'])),1000);
+		}
+		if($.isNumeric(vs['vd5'])&&$.isNumeric(vs['vd3']))
+		{
+			vs['vd6']=accDiv(accMul(vs['vd5'],parseFloat(vs['vd1'])),accMul(parseFloat(vs['vd3']),1000));
+		}
+		else{
+			vs['vd6']='';
+		}
+		if($.isNumeric(vs['vd6'])&&$.isNumeric(vs['vd7']))
+		{
+			var jg=accDiv(parseFloat(vs['vd6']),accMul(parseFloat(vs['vd7']),10));
+			vs['vd0']=jg*100;
+		}
+	}
+</script> 

@@ -1,0 +1,67 @@
+<h1>{$arow['assay_element']}分析原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+<tr class="noborder">
+  <td style="width:13%"></td>
+  <td style="width:20%"></td>
+  <td style="width:13%"></td>
+  <td style="width:23%"></td>
+  <td style="width:13%"></td>
+  <td style="width:9%"></td>
+  <td style="width:9%"></td>
+</tr>
+<tr>
+    <td >检测项目</td>
+    <td>{$arow['assay_element']}</td>
+    <td>检测依据</td>
+    <td><input type="text" name='td2' value="{$arow['td2']}"></td>
+    <td>检出限({$arow['unit']})</td>
+    <td colspan="2">{$arow['td3']}</td>
+  </tr>
+  <tr>   
+    <td>比色管规格(mL)</td>
+    <td><input type="text" name='td11' value="{$arow['td11']}" /></td>
+    <td>发色时间(min)</td>
+    <td><input type="text" name='td12' value="{$arow['td12']}" /></td>
+    <td>取样体积(mL)</td>
+    <td colspan="2"><input type="text" name='td6' id='td6' value="{$arow['td6']}" /></td>
+ 
+  </tr>
+  <tr>   
+    <td>标准溶液名称</td>
+    <td><input type="text" name='td14' value="{$arow['td14']}"></td>    
+    <td>浓度C(mg/L)</td>
+    <td><input type="text" name='td15' id='td15' value="{$arow['td15']}"></td>
+    <td>计算公式</td>
+    <td colspan="2">ρ=V<sub>1</sub>×C/V</td>
+ </tr>
+  <tr>
+    <td>序号</td>
+    <td>{$zhanming}</td>
+    <td>取样体积V(mL)</td>
+    <td>相当标准溶液V<sub>1</sub>(mL)</td>
+    <td>含量({$arow['unit']})</td>
+    <td>平均值/理论浓度({$arow['unit']})</td>
+    <td>相对偏差/加标回收率(%)</td>
+  </tr>
+ {$aline}
+
+<tr>
+<td>备注</td>
+<td colspan="6"><textarea name="td30">{$arow['td30']}</textarea>
+</tr>
+</table>
+
+<script language="javascript" type="text/javascript">
+function jsgs(){
+  var td15 = parseFloat($("#td15").val());
+  var td6  = parseFloat($("#td6").val());
+  vs['vd1'] = (''==vs['vd1'])?td6:vs['vd1'];
+  if(vs['vd2']!=''){
+    var f = parseFloat(td6/vs['vd1']);
+    vs['vd0'] = jsws(parseFloat(vs['vd2'])*td15*f/td6);
+  }else{
+    vs['vd0'] = "";
+  }
+}
+</script>

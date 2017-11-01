@@ -1,0 +1,55 @@
+<!-- 化验单合并与拆分 -->
+<style type="text/css">
+    label {display: block;cursor:pointer}
+</style>
+<div class="modal fade" id="modal_chaifen" style="width:800px;margin:0 auto;overflow:auto;" data-backdrop="static">
+  <form action="$rooturl/huayan/assay_chaifen.php" method="post" name="form_select" class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>化验单合并与拆分</h3>
+    </div>
+    <div class="modal-body">
+      <table  class="table table-bordered center" style="width:17cm">
+	    <tr>
+            <td>原始单号</td>
+            <td>样品编号</td>
+            <td>化验单[$hyd_01]</td>
+            <td>$hyd_002</td>
+            <td>含量</td>
+        </tr>
+		$lines
+	  </table>
+    </div>
+    <div class="modal-footer">
+        <input type="hidden" name="action" value="save" />
+        <input type="hidden" name="z_hyd"  value="$z_hyd" />
+        <input type="hidden" name="hyd_01" value="$hyd_01" />
+        <input type="hidden" name="hyd_02" value="$hyd_02" />
+        <a href="#" class="btn btn-primary btn-sm" id="sel_ok">确定</a>
+        <input class="btn btn-primary btn-sm" type="reset" value="复位">
+        <a href="#" class="btn btn-sm" data-dismiss="modal">取消</a>
+    </div>
+  </form>
+</div><!-- 化验单合并与拆分 end -->
+
+<script type="text/javascript">
+    var js_data = $.parseJSON('$js_data');//定义化验单数据的原始单号
+    $("input[type=radio].hyd_01").val('$hyd_01');
+    $("input[type=radio].hyd_02").val('$hyd_02');
+	$("#modal_chaifen").modal('show');
+    $("#sel_ok").click(function(){
+        var has_change = false;
+        $("#modal_chaifen input[type=radio]:checked").each(function(){
+            var name = $(this).attr('name');
+            if($(this).val()!=js_data[name]){
+                has_change = true;
+                return false;
+            }
+        })
+        if(has_change==true&&confirm('确定要拆分化验单吗？')){
+            form_select.submit();
+        }else{
+            $("#modal_chaifen").modal('hide');
+        }
+    });
+</script>

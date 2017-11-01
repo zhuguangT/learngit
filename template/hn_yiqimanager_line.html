@@ -1,0 +1,62 @@
+<!-- 计量仪器设备一览表行数据 -->
+<script>
+function px(obj,s_px){
+    var html = '',lock = $(obj).html();
+    if(lock.indexOf('type') == -1){
+        var old = $(obj).text();
+        html = '<input type="text" size=2 class="inputc" value="'+ old +'">';
+        $(obj).html(html);
+        $(obj).children('input').focus().select();
+        $(obj).children('input').blur(function(){
+        var id = $(obj).prev().val();
+        var px_id = $(this).val();
+    if(px_id ==s_px){
+         $(obj).html(px_id);
+        return;
+    }
+    $.post('./sdpx.php',{'id':id,'px_id':px_id,'s_px':s_px},function(data){
+            if(data == 'ok')
+                    location.reload();
+            else
+                    $(obj).html(px_id);
+    });
+    });
+    }
+}
+</script>
+
+<style type="text/css">
+.aa {
+	font-weight: normal;
+}
+</style>
+
+
+<input name=r id=r type=hidden value='$r'>
+<tr align=center  style="color:$color">
+<input type="hidden" name="" id="url_content" value="$url_content">
+<input type='hidden' name='id' value=$r[id]>
+ <td align=left>$xx</td>
+    <td><a href='hn_yiqiguanli.php?id=$r[id]&action=show' style="color:$color"><span class="aa">$r[yq_mingcheng]</span></a></td>
+    <td class='main_content'>$r[yq_sbbianhao]</td>
+    <td>$r[yq_xinghao]</td>
+    $type_label_line
+    <td>$r[yq_jiage]</td>
+    <td>$r[yq_sbglbh]</td>
+    <td>$r[yq_chucangbh]</td>
+    <td>$r[yq_zzcangjia]</td>
+    <td>$r[yq_state]</td>
+    <td>$r[yq_gouzhirq]</td>
+    <td class='main_content'>$yq_synx</td>
+    <td>$xcjd_riqi</td>
+    <td class='main_content'>$r[yq_guanlibm]</td>
+    <td>$r[yq_sbdidian]</td>
+    <td>$r[yq_fenlei]</td>
+    <td colspan=2 class="action-buttons">$operation</td>
+  </tr>
+  <script>
+  //解决main显示错误问题 如果是main页面调用 隐藏某些td
+  if($('#url_content').val()=='main'){
+      $('.main_content').hide();
+  }
+  </script>

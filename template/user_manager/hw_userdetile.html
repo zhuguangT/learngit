@@ -1,0 +1,34 @@
+<h1 align="center">{$user}的项目及方法</h1>
+<table class='table table-striped table-bordered table-hover center'  style="width:18cm">
+<tr align=center>
+<td>序号</td>
+<td>项目</td>
+<td>方法</td>
+<td>上岗证过期时间</td>
+<!--<td>操作</td>-->
+</tr>
+$lines
+</table>
+<div align="center"><input type='button' value='返回' class="btn btn-xs btn-primary"  onclick = "location.href='$rooturl/user_manage/hw_userwoke.php'"></div>
+<script type="text/javascript">
+$(".date_input").val();
+//日期插件 年-月-日
+$('.date-picker').datepicker({autoclose:true}).next().on(
+  ace.click_event, function(){
+  $(this).prev().focus();
+});
+function gengxin(ab){
+	var shijian = $(ab).val();
+	var fid = $(ab).attr('fid');
+	var uid = $(ab).attr('userid');
+	if(fid&&uid&&shijian){
+		$.post("users_ajax.php?ajax=1",{shijian:shijian,fid:fid,uid:uid,action:'uptime'},function(data){
+			if(data == 'ok'){
+				alert('修改成功');
+			}else{
+				alert('发生错误，请重试！');
+			}
+		},'html');
+	}
+}
+</script>

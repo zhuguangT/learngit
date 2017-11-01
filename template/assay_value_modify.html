@@ -1,0 +1,158 @@
+<!-- 新建化验项目页面 assay_value_new.html-->
+<style>
+.hand,.update{cursor:pointer;}
+table tr{height:25px;}
+.red{color:red;}
+table,table td{border:1px black solid;border-collapse: collapse;font-size:13px;}
+form{text-align:center;}
+</style>
+<script language="javascript">
+$(function(){
+	//把默认的select信息，用js默认好。 不用php是因为 需要在php中写好多个循环
+	$("input[moren='selected']").each(function(i,v){
+		$("select[name='"+$(this).attr("biaozhi")+"'] option[value='"+v.value+"']").attr("selected","true");
+	});
+});
+function verify( form ){
+    msg = '';
+    if( !form.value_C.value )
+        msg += "未填写:项目名称\t";
+    if( !form.jcx.value )
+        msg += "未填写:检出限\t";
+    if( msg ){
+        alert( msg );
+        return false;
+    }
+    return true;
+}
+</script>
+<span><a href="assay_value_list.php">&lt;&lt;&lt;返回化验项目列表</a></span>
+
+<h3 class="header smaller center title">化验项目[$rsValue[value_C]] 修改详细信息</h3>
+<div class="widget-box no-border">
+  <div class="widget-body">
+  <form method="POST" action="$rooturl/system_settings/assay_value/assay_value_save.php" onsubmit="return verify(this);">
+	$moRenInput
+	<input type="hidden" name="panduan" value="modify" title="assay_value_save.php页面通过这个来判断是哪个页面的提交" />
+	<input type="hidden" name='vid' value='$rsValue[id]' />
+	<input type="hidden" name='value_C' value='$rsValue[value_C]' />
+	<input type="hidden" name='fenlei' value='$rsValue[fenlei]' />
+	<table class="table table-striped table-bordered table-hover center">
+		<thead>
+			<tr align='center'style="font-weight:bold;">
+			<td>参数名</td>
+			<td colspan="5">参数值</td>
+		</tr>
+		</thead>
+
+		<tbody>
+			<tr>
+			<td align="center">项目名称:</td>
+			<td colspan="5">$rsValue[value_C]</td>
+		</tr>
+		<tr>
+             <td align="center">项目分类:</td>
+			 <td colspan="5">$rsValue[fenlei]	
+             </td>
+        </tr>
+		<tr>
+             <td align="center">本实验室是否化验:</td>
+             <td colspan="5">
+              <select name="act" style="width:118px;">
+                    <option value="1">是</option>
+					<option value="0">否</option>
+               </select>
+              </td>
+        </tr>
+		<tr>
+                        <td align="center">项目英文标识:</td>
+                        <td colspan="5">
+                                <input name="englishMark" value="$rsValue[englishMark]">
+                        </td>
+                </tr>
+                <tr>
+                        <td align="center">默认化验员:</td>
+                        <td colspan="5">
+				<select name="userid" class="inputSelect" style="min-width:74px;">
+					$userOption
+				</select>
+				<select name="userid2" class="inputSelect" style="min-width:74px;">
+                                        <option value="">无</option>
+					$user2Option
+                                </select>
+			</td>
+                </tr>
+		<tr>
+                        <td align="center">默认检出限:</td>
+                        <td colspan="5"><input name="jcx" value="$rsValue[jcx]" placeholder="不能为空" required /></td>
+                </tr>
+		<tr>
+			<td rowspan="2" align="center">默认修约位数<br />(结果值小数点后保留位数):</td>
+			<td>结果&lt;1</td>
+			<td>1&lt;结果&lt;10</td>
+    			<td>10&lt;结果&lt;100</td>
+			<td>100&lt;结果&lt;1000</td>
+			<td>结果&gt;1000</td>
+		</tr>
+		<tr>
+            <td align="center">
+				<select name="w1">
+					<option value='0'>0</option>
+        				<option value='1'>1</option>
+				        <option value='2'>2</option>
+				        <option value='3'>3</option>
+				        <option value='4'>4</option>
+				        <option value='5'>5</option>
+                 </select>
+			</td>
+			<td align="center">
+                                <select name="w2">
+                                        <option value='0'>0</option>
+                                        <option value='1'>1</option>
+                                        <option value='2'>2</option>
+                                        <option value='3'>3</option>
+                                        <option value='4'>4</option>
+                                        <option value='5'>5</option>
+                                </select>
+			</td>
+            <td align="center">
+				<select name="w3">
+                                        <option value='0'>0</option>
+                                        <option value='1'>1</option>
+                                        <option value='2'>2</option>
+                                        <option value='3'>3</option>
+                                        <option value='4'>4</option>
+                                        <option value='5'>5</option>
+                                </select>
+			</td>
+            <td align="center">
+                                <select name="w4">
+                                        <option value='0'>0</option>
+                                        <option value='1'>1</option>
+                                        <option value='2'>2</option>
+                                        <option value='3'>3</option>
+                                        <option value='4'>4</option>
+                                        <option value='5'>5</option>
+                                </select>
+			</td>
+            <td align="center">
+				<select name="w5">
+                                        <option value='0'>0</option>
+                                        <option value='1'>1</option>
+                                        <option value='2'>2</option>
+                                        <option value='3'>3</option>
+                                        <option value='4'>4</option>
+                                        <option value='5'>5</option>
+                                </select>
+			</td>
+        </tr>
+		</tbody>
+	</table>
+	<tr>
+		<td>
+		<input type="submit" name="submit" value="修改" />
+		</td>
+		</tr>
+	</form>
+  </div>
+</div>

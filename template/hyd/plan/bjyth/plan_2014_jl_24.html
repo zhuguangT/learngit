@@ -1,0 +1,103 @@
+<!-- 原子吸收分光光度法原始记录表 -->
+
+<H1>原子吸收分光光度法(火焰法)原始记录表</H1>
+{$hjtj_bt}
+<table class='single'>
+	<tr class="noborder">
+		<td style="width:9%"></td><td style="width:13%"></td><td style="width:13%"></td>
+		<td style="width:13%"></td><td style="width:13%"></td><td style="width:13%"></td>
+		<td style="width:13%"></td><td style="width:13%"></td>
+	</tr>
+	<tr>
+		<td colspan="2" class="left">分析项目：{$arow['assay_element']}</td>
+		<td class="left">分析方法</td><td colspan="2">{$arow['td2']}</td>
+		<td >分析日期</td><td colspan="2"><input type="text" id='time' name="td31" value="{$arow['td31']}" size="10" class="inputl hyd" /></td>
+	</tr>
+	<tr class="auto">
+		<td colspan="2" class="left">样品类别：{$arow['water_type']}</td>
+		<td colspan="4" class="left">仪器型号及编号：{$arow['td5']} {$arow['yq_bh']}</td>
+		<td class="left">检出限</td><td>{$arow['td3']} mg/L</td>
+	</tr>
+
+	<tr class="auto">
+		<td colspan="2" class="left">狭缝宽度：<input type="text" name="td9"  size="4" value="{$arow['td9']}" class="inputl" />nm</td>
+		<td colspan="2" class="left">工作灯电流：<input type="text" name="td10"  size="7" value="{$arow['td10']}" class="inputl" />mA</td>
+		<td colspan="2">波长：<input type="text" name="td11"  size="10" value="{$arow['td11']}" class="inputl" />nm</td>
+		<td colspan="2" class="left">火焰高度：<input type="text" name="td12"  size="8" value="{$arow['td12']}" class="inputl" />mm</td>
+	</tr>
+	<tr class="auto">
+		<td colspan="6" class="left">乙炔流量：<input type="text" name="td13"  size="10" value="{$arow['td13']}" class="inputl" />mL/min</td>
+		<td colspan="2" class="left">高压：<input type="text" name="td14"  size="10" value="{$arow['td14']}" class="inputl" />V</td>
+	</tr>
+	<tr>
+		<td colspan="3" class="left">标准工作溶液名称：{$arow['scby_name']}</td>
+		<td colspan="2">浓度：{$arow[' scby_nd']}</td>
+		<td colspan="3">配制日期：{$arow[' scby_date']}</td>
+	</tr>
+	<tr>
+		<td colspan="4" class="left">
+		<span class="blue_a change_qx">曲线编号：</span>{$arow['sc_bh']}　
+		<span class="blue_a view_qx">率定日期：</span>{$arow['sc_ldrq']}</td>
+		<td colspan="4" nowrap>计算公式：C（mg/L）=直读含量×稀释倍数</td>
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td colspan="2">{$zhanming}</td>
+		<td>直读含量（mg/L）</td>
+		<td>稀释倍数</td>
+		<td>含量C（{$arow['unit']}）</td>
+		<td width=10%>平均值<br/>（{$arow['unit']}）</td>
+		<td width=15%>相对偏差<br/>（％）</td>
+	</tr>
+	{$aline}
+	<tr class="auto">
+		<td class="left" colspan="2">空白试验</td>
+		<td >1：<input type="text" name="td20" size="5" class="inputl" onblur="btgs()" value="{$arow['td20']}" /></td>
+		<td >2：<input type="text" name="td21" size="5" class="inputl"  onblur="btgs()" value="{$arow['td21']}" /></td>
+		<td class="left" colspan="2">平均值：<input type="text" name="td22" size="10" class="noinputc" value="{$arow['td22']}" /></td>
+		<td class="left" colspan="2">相对偏差（％）=<input type="text" name="td14" size="9" class="noinputc" value="{$arow['td14']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="4">加标量：<input type="text" name="td15" size="10" class="inputl" value="{$arow['td15']}" />mL</td>
+		<td class="left" colspan="4">P%=<input type="text" name="td16" size="10" class="inputl" value="{$arow['td16']}" /></td>
+	</tr>
+
+	<tr>
+		<td nowrap>备注</td>
+		<td colspan="7"><textarea name="td30"  rows="2" cols="80">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+function jsgs(){
+	if(vs['vd27']!='' && vs['vd2']!=''){
+		vs['vd0']=vs['_vd0']=vs['vd2']*vs['vd27'];
+	}else{
+		vs['vd0']='';
+	}
+}
+function btgs(){
+	var v1=$("input[name='td20']").val();
+	var v2=$("input[name='td21']").val();
+	var wz=v1.indexOf(".");
+	if(wz!='-1'){
+		var cd=(v1.split("."))[1].length;
+	}else{
+		cd=1;
+	}
+	if(v1!='' && v2!=''){
+		var pj=(parseFloat(v1)+parseFloat(v2))/2;
+		var zhi=round((pj),cd);
+		if(!isNaN(zhi)){
+			$("input[name=td22]").val(zhi);
+		}
+		var pc=parseFloat((parseFloat(v1)-pj)*100/pj);
+		pc=Math.abs(pc);
+		if(pc!='0' && $.isNumeric(pc)){
+			var xdpc='±'+round(pc,1);
+		}else{
+			xdpc=0;
+		}
+		$("input[name=td14]").val(xdpc);
+	}
+}
+</script>

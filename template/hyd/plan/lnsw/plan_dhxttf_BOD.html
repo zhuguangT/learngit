@@ -1,0 +1,143 @@
+<!-- 电化学探头法检测五日生化需氧量原始记录表 -->
+<h1>$arow[assay_element]测定原始记录表</h1>
+<table style="width:100%">  
+  <tr>
+  <td style="width:50%;text-align:left;padding-left:10px;">
+    分析日期：<input type="text" class="date-picker" name="td31" id="td31" value="{$arow['td31']}" size="12" />
+  </td>
+  <td style="width:50%;text-align:right;padding-right:10px;">采样日期: {$arow['cy_date']}</td>
+  </tr>
+</table>
+<table class="single">
+  <tr class="noborder">
+    <td style="width:8%"></td><td style="width:20%"></td><td style="width:8%"></td>
+    <td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+    <td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+    <td style="width:8%"></td><td style="width:8%"></td>
+  </tr>
+  <tr>
+    <td>检测项目</td>
+    <td colspan="3">{$arow['assay_element']}</td>
+    <td>检测依据</td>
+    <td colspan="3">{$arow['td2']}<input type="hidden" name="td2" value="{$arow['td2']}" /></td>
+    <td>检出限({$arow['unit']})</td>
+    <td colspan="2">{$arow['td3']}</td>
+  </tr>
+  <tr>
+    <td>仪器名称</td>
+    <td colspan="3"><input type="text" name="td4" value="{$arow['td4']}" class="inputl" /></td>
+    <td>仪器型号</td>
+    <td colspan="3"><input type="text" name="td5" class="inputl" value="{$arow['td5']}" /></td>
+    <td colspan="3"></td>
+  </tr>
+  <tr class="auto">
+    <td>培养前</td>
+    <td nowrap colspan="2">
+    日期：<input type="text" class="date-picker" name="td13" value="{$arow['td13']}" size="10" />
+    时间：<div class="input-group bootstrap-timepicker" style="display:inline">
+          <input type="text" class="timepicker1" name="td14" value="{$arow['td14']}" size="8" /></div>
+    </td>
+    <td colspan="2">培养后</td>
+    <td nowrap colspan="3">
+    日期：<input type="text" class="date-picker" name="td18" value="{$arow['td18']}" size="10" />
+    时间：<div class="input-group bootstrap-timepicker" style="display:inline">
+          <input type="text" class="timepicker1" name="td19" value="{$arow['td19']}" size="8" /></div>
+    </td>
+    <td>ρ3</td>
+    <!-- 稀释水溶解氧 -->
+    <td colspan="2"><input type="text" name="td17" style="width:100%" value="{$arow['td17']}" class="kongbai_rjy" /></td>
+  </tr>
+  <tr>
+    <td>计算公式</td>
+    <td colspan="1">
+    f<sub>1</sub> = (Vt-Ve)/Vt</td>
+    <td colspan="2">
+    f<sub>2</sub> = Ve/Vt</td>
+    <td colspan="4">
+    	ρ = [(ρ<sub>1</sub>-ρ<sub>2</sub>)-f<sub>1</sub>*(ρ<sub>3</sub>-ρ<sub>4</sub>)]/f<sub>2</sub>
+    </td>
+    <td>ρ4</td>
+    <!-- 稀释水溶解氧 -->
+    <td colspan="2"><input type="text" name="td22" style="width:100%" value="{$arow['td22']}" class="kongbai_rjy" /></td>
+  </tr>  
+
+  <tr>
+    <td>序号</td>
+    <td>$zhanming</td>
+    <td>取样体积<br />Ve (mL)</td>
+    <td>定容体积<br />Vt (mL)</td>
+    <td>培养前溶<br />解氧浓度<br />ρ1</td>
+    <td>培养后溶<br />解氧浓度<br />ρ2</td>
+    <td>含量<br />ρ({$arow['unit']})</td>
+    <td>均值<br />({$arow['unit']})</td>
+    <td>平均值/理论浓度({$arow['unit']})</td>
+    <td>相对偏差/加标回收率(%)</td>
+    <td>水温℃</td>
+  </tr>
+    $aline
+  <tr>
+    <td align="center">备注</td>
+   <td colspan="14"><textarea name="td29">$arow[td29]</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+$(function (){
+	//$(".kongbai_rjy").attr('title','');
+	//$(".kongbai_rjy").popover({trigger: 'focus'});
+});
+function jsgs(){
+	get_kb();
+  //运算函数在lib.js
+  //加 accAdd 减 accsub 乘 accMul 除 accDiv
+  if($.isNumeric(vs['vd1']) && $.isNumeric(vs['vd3'])){
+    //f1 = (Vt-Ve)/Vt
+    var Ve = parseFloat(vs['vd1']);
+    var Vt = parseFloat(vs['vd3']);
+    var f1 = accDiv(accsub(Vt,Ve),Vt);
+    //f2 = Ve/Vt
+    var f2 = accDiv(Ve,Vt);
+    if(vs['vd1'] != vs['vd3']){
+      var p3 = parseFloat($("input[name=td17]").val());
+      var p4 = parseFloat($("input[name=td22]").val());
+      if(''==p3 || isNaN(p3)){
+        $("input[name=td17]").focus();return false;
+      }else if(''==p4 || isNaN(p4)){
+        $("input[name=td22]").focus();return false;
+      }
+      //f1*(p3-p4)  稀释水的溶解氧
+      var f1_3_4 = accMul(f1,accsub(p3,p4));
+    }else{
+      var f1_3_4 = 0;
+    }
+    //p1-p2
+    var p1_p2  = accsub(parseFloat(vs['vd8']),parseFloat(vs['vd12']));
+    //(p1_p2-f1_3_4)/f2
+    var jg = accDiv(accsub(p1_p2,f1_3_4),f2);
+    vs['vd0']=vs['vd26']=vs['vd27'] = jsws(jg);
+  }else{
+    vs['vd0']=vs['vd26']=vs['vd27'] = '';
+  }
+}
+//自动获取空白值
+function get_kb(){
+	var td17 = $("input[name=td17]").val();
+	var td22 = $("input[name=td22]").val();
+	if($.isNumeric(td17)&&$.isNumeric(td22)) return true;
+	var kb_obj = $("span.hydzk[data-zk='-2']");
+	if(kb_obj.length==1){
+		var kb_3 = kb_obj.parent().parent().find("input[name*='vd8[']").val();
+		var kb_4 = kb_obj.parent().parent().find("input[name*='vd12[']").val();
+	}else if(kb_obj.length==2){
+		var kb_3_0 = kb_obj.eq(0).parent().parent().find("input[name*='vd8[']").val();
+		var kb_3_1 = kb_obj.eq(1).parent().parent().find("input[name*='vd8[']").val();
+		var kb_4_0 = kb_obj.eq(0).parent().parent().find("input[name*='vd12[']").val();
+		var kb_4_1 = kb_obj.eq(1).parent().parent().find("input[name*='vd12[']").val();
+		var kb_3 = accDiv(accAdd(parseFloat(kb_3_0),parseFloat(kb_3_1)),2);
+		var kb_4 = accDiv(accAdd(parseFloat(kb_4_0),parseFloat(kb_4_1)),2);
+	}
+	if($.isNumeric(kb_3)&&$.isNumeric(kb_4)){
+		$("input[name=td17]").val(roundjs(parseFloat(kb_3),2));
+		$("input[name=td22]").val(roundjs(parseFloat(kb_4),2));
+	}
+}
+</script>

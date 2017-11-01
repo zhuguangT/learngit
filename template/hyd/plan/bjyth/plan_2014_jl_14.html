@@ -1,0 +1,57 @@
+<h1>化学需氧量原始记录表(2)</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:10%"></td><td style="width:18%"></td>
+		<td style="width:12%"></td><td style="width:12%"></td><td style="width:12%"></td>
+		<td style="width:12%"></td><td style="width:12%"></td><td style="width:12%"></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="4">分析方法：{$arow['td2']}</td>
+		<td class="left" colspan="4">分析日期：<input type="text" name="td31" size="10" value="{$arow['td31']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="2">样品类别：{$arow['water_type']}</td>
+		<td class="left" colspan="4">仪器名称及编号：{$arow['td4']} {$arow['yq_bh']}</td>
+		<td class="left" colspan="2">检出限：{$arow['td3']}（{$arow['unit']})</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="2">
+			取样体积：
+			<input type="text" name="td6" size="4" value="{$arow['td6']}" onblur="$('input[name^=\'vd27\']').blur();" />ml</td>
+		<td class="left" colspan="2">波长：<input type="text" name="td10" size="6" value="{$arow['td10']}"> nm </td>
+		<td class="left" colspan="4">计算公式： COD<sub>cr</sub>（{$arow['unit']}）= 仪器显示值×稀释倍数</td>
+	</tr>
+	<tr >
+		<td>序号</td>
+		<td>{$zhanming}</td>
+		<td>浓度范围</td>
+		<td>仪器显示值</td>
+		<td>稀释倍数</td>
+		<td>含量COD<sub>cr</sub>（{$arow['unit']}）</td>
+		<td>平均值（{$arow['unit']}）</td>
+		<td>相对偏差（％）</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td>备注</td>
+		<td colspan="7"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	function jsgs()
+	{
+		vs['vd1'] = parseFloat($("input[name=td6]").val());
+		if($.isNumeric(vs['vd2'])){
+			xs_bs = parseFloat(vs['vd2']);
+		}else{
+			xs_bs = 1;
+			vs['vd2'] = ('-'==vs['vd2']) ? '-' : '';
+		}
+		if($.isNumeric(vs['vd27'])){
+			vs['vd0'] = jsws(vs['vd27']*xs_bs);
+		}else{
+			vs['vd0'] = '';
+		}
+	}
+</script>

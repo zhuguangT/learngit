@@ -1,0 +1,70 @@
+<!-- 总α放射性检验记录 -->
+<h1>总α放射性检验记录</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:9%"></td><td style="width:9%"></td><td style="width:8%"></td><td style="width:8%"></td>
+		<td style="width:9%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+		<td style="width:9%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+	</tr>
+	<tr align="center">
+		<td colspan="1">检验地点</td>
+		<td colspan="3"><input type="text" name="td7" class="inputc" value="{$arow['td7']}" /></td>
+		<td colspan="1">检验方法</td>
+		<td colspan="3">{$arow['td1']}</td>
+		<td colspan="1">方法依据</td>
+		<td colspan="3">{$arow['td2']}</td>
+	</tr>
+	<tr>
+		<td colspan="1">仪器型号</td>
+		<td colspan="2">{$arow['td5']}</td>
+		<td colspan="1">仪器编号</td>
+		<td colspan="2">{$arow['yq_bh']}</td>
+		<td colspan="1" nowrap="nowrap">测量时间（s）</td>
+		<td colspan="2"><input type="text" name="td8" class="inputc"value="{$arow['td8']}" /></td>
+		<td colspan="1" nowrap="nowrap">水样体积V（L）</td>
+		<td colspan="2"><input type="text" name="td6" class="inputc"value="{$arow['td6']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="1">计算公式</td>
+		<td colspan="11">   总α放射性 Bq/L=[4W×(n<sub>x</sub>-n<sub>0</sub>)×1.02]/(F×ε<sub>i</sub>×V×S×δ)  δ=10mg/cm<sup>2</sup>，F=100%，S=3.1cm<sup>2</sup></td>
+	</tr>
+	<tr align="center">
+		<td>序号</td>
+		<td colspan="2">{$zhanming}</td>
+		<td colspan="2">灰化残渣含量W（g）</td>
+		<td>盘号</td>
+		<td>通道</td>
+		<td>n<sub>x</sub>-n<sub>0</sub><br />（S<sup>-1</sup>）</td>
+		<td>计数效率<br />ε<sub>i</sub></td>
+		<td>检验结果<br/>({$arow['unit']})</td>
+		<td>平均值({$arow['unit']})</td>
+		<td>质控结果（%）</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td align="center">备注</td>
+		<td colspan="11"><textarea name="td30">$arow[td30]</textarea></td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+function jsgs(){
+
+	var vd3_split = String(vs['vd3']).split('.');
+	if(vd3_split.length==2){
+		var diding_ws = vd3_split[1].length;
+	}else{
+		var diding_ws = 0;
+	}
+	var v = parseFloat($("input[name=td6]").val());
+	if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd6'])&&$.isNumeric(vs['vd7'])&&$.isNumeric(v)){
+		var pro =accMul(accMul(accMul(4,parseFloat(vs['vd3'])),parseFloat(vs['vd6'])),1.02);
+		var pro2=accMul(accMul(accMul(accMul(parseFloat(vs['vd7']),1),v),3.1),10);
+		vs['vd0'] =accDiv(pro*1000,pro2);
+	}
+	else{
+		vs['vd0'] = '';
+	}
+}
+</script> 

@@ -1,0 +1,146 @@
+<link rel="stylesheet" href="{$rooturl}/js/table-master/bootstrap-table.css" />
+<script type="text/javascript" src="{$rooturl}/js/lims/hyd.js?v={$global['hyd']['v']}"></script>
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-table.js"></script>
+<h3 class="header smaller center title">{$sc_list_header}</h3>
+<div id="custom-toolbar">
+	<form name="new_sc">
+		{$hub_info_select}
+		绘制日期：{echo PublicApp::get_select('year');}
+		{echo PublicApp::get_select('month');}
+		项目选择：{echo PublicApp::get_select('vid',$this->get_xm_list($sc_type),true);}
+		使用状态：{echo PublicApp::get_select('status',PublicApp::get_enum_list('standard_curve', 'status'),false,true);}
+		{if '1'==$sc_type}<button class="btn btn-primary btn-sm" type="button" id="new_quxian">新建曲线</button>{/if}
+	</form>
+</div>
+<table id="bootstrapTable" class="center">
+	<thead>
+	{if '1'==$sc_type}
+	<tr>
+		<th style="width:4%;" data-sortable="true" data-field="xuhao">序号</th>
+		<th style="width:6%;" data-sortable="true" data-field="td5">曲线编号</th>
+		<th style="width:12%" data-sortable="true" data-field="assay_element" data-align="left">项目名称</th>
+		<th style="width:20%" data-sortable="true" data-field="by_info" data-align="left">标液名称</th>
+		<th style="width:7%;" data-sortable="true" data-field="CA">截距（a）</th>
+		<th style="width:7%;" data-sortable="true" data-field="CB">斜率（b）</th>
+		<th style="width:8%;" data-sortable="true" data-field="CR">系数（r）</th>
+		<th style="width:8%;" data-sortable="true" data-field="userid">分析人员</th>
+		<th style="width:8%;" data-sortable="true" data-field="td31">绘制日期</th>
+		<th style="width:8%;" data-sortable="true" data-field="status">曲线状态</th>
+		<th style="width:12%" data-field="operate" data-formatter="operateFormatter" data-events="operateEvents" class="visible-md visible-lg hidden-sm hidden-xs action-buttons">操作</th>
+	</tr>
+	{elseif '2'==$sc_type}
+	<tr>
+		<th style="width:4%;" data-sortable="true" data-field="xuhao">序号</th>
+		<th style="width:15%" data-sortable="true" data-field="assay_element" data-align="left">项目名称</th>
+		<th style="width:21%" data-sortable="true" data-field="yq_info" data-align="left">仪器信息</th>
+		<th style="width:8%;" data-sortable="true" data-field="CA">截距（a）</th>
+		<th style="width:8%;" data-sortable="true" data-field="CB">斜率（b）</th>
+		<th style="width:8%;" data-sortable="true" data-field="CR">系数（r）</th>
+		<th style="width:8%;" data-sortable="true" data-field="userid">分析人员</th>
+		<th style="width:8%;" data-sortable="true" data-field="td31">率定日期</th>
+		<th style="width:8%;" data-sortable="true" data-field="status">曲线状态</th>
+		<th style="width:12%" data-field="operate" data-formatter="operateFormatter" data-events="operateEvents" class="visible-md visible-lg hidden-sm hidden-xs action-buttons">操作</th>
+	</tr>
+	{/if}
+	</thead>
+</table>
+<script type="text/javascript">
+//这是操作按钮
+function operateFormatter(value, row, index){
+	var operate = '';
+	if(true==row['canModi']){
+		//修改曲线和删除曲线
+		operate += '<a class="blue icon-edit bigger-130" href="javascript:void(0);" title="修改曲线"></a> |';
+		operate += '<a class="red icon-remove bigger-130" href="javascript:void(0);" title="删除曲线"></a>';
+	}else{
+		//查看曲线
+		operate = '<a class="blue icon-zoom-in bigger-130" href="javascript:void(0);" title="查看曲线"></a>';
+	}
+	return operate;
+}
+//这是绑定操作按钮事件
+window.operateEvents = {
+	//为查看和修改按钮绑定跳转至曲线数据页的事件
+	'click a.icon-zoom-in,a.icon-edit': function (e, value, row, index) {
+		var fzx_id = '&fzx_id=';
+		var sel_fzx_id = $("form[name=new_sc] select[name=fzx_id]");
+		if(sel_fzx_id.length){
+			fzx_id += sel_fzx_id.val();
+		}
+		location.href='{$rooturl}/huayan/ahlims.php?app=quxian&act=index&sc_type={$sc_type}&id='+row['id']+fzx_id;
+	},
+	//为删除按钮绑定删除曲线的事件
+	'click a.icon-remove': function (e, value, row, index) {
+		$.confirm({
+			content: '曲线删除后不可恢复，您确定要删除吗？',
+			confirm: function(){
+				$.ajax({
+					type: 'get',data: {id:row['id'],ajax:1},dataType: 'json',
+					url: '{$rooturl}/huayan/ahlims.php?app=quxian&act=delete_sc',
+					success: function(data){
+						if('1'==data.error){
+							$.alert({
+								title: '错误',
+								autoClose: false,
+								icon: 'icon-remove red bigger-130',
+								content: '<div class="alert alert-danger"><p style="text-align:left"><strong>错误信息：</strong></p>'+data.content+'</div>'
+							});
+							return false;
+						}else{
+							var href = location.href;
+							var content = '曲线删除成功！';
+							location.href='{$rooturl}/huayan/ahlims.php?app=public&act=reto&content='+content;
+						}
+					},error: function(data){
+						$.alert({
+							title: '错误',
+							autoClose: false,
+							icon: 'icon-remove red bigger-130',
+							content: '<div class="alert alert-danger"><p style="text-align:left"><strong>错误信息：</strong></p>'+data.responseText+'</div>'
+						});
+						return false;
+					}
+				});
+			}
+		});
+	}
+}
+//曲线数据请求链接
+var sc_request_url = '{$rooturl}/huayan/ahlims.php?ajax=1&app=quxian&act=sc_json_list&sc_type={$sc_type}&fzx_id={$fzx_id}';
+//使用js激活bootstrapTable样式
+var theTable = $('#bootstrapTable').bootstrapTable({
+	url: sc_request_url,
+	cache: false,
+	pagination: true,
+	pageSize: 25,
+	pageList: [10, 25, 50, 100, 200],
+	toolbar: "#custom-toolbar",
+	toolbarAlign: "center",
+	toolbarClass: "header-color-blue4",
+	search: true,
+	showColumns: true,
+	showRefresh: true,
+	minimumCountColumns: 3
+});
+//表单数据更改后自动更新曲线列表
+$("form[name=new_sc] select").change(function () {
+	var sel_fzx_id = $("form[name=new_sc] select[name=fzx_id]");
+	if(sel_fzx_id.length){
+		sc_request_url += '&fzx_id='+sel_fzx_id.val();
+	}
+	theTable.bootstrapTable('refresh', {
+		url: sc_request_url
+			+'&vid='+new_sc.vid.value
+			+'&year='+new_sc.year.value
+			+'&month='+new_sc.month.value
+			+'&status='+new_sc.status.value
+	});
+});
+//新建曲线
+$("#new_quxian").click(function(){
+	get_bzry_box(0,1,function(B){
+		var url = '{$rooturl}/huayan/ahlims.php?app=quxian&act=create_sc';
+		location.href=url+'&vid='+B.vid+'&wz_type='+B.wz_type+'&table_name='+B.table_name+'&bzry_id='+B.bzry_id;
+	});
+});
+</script>

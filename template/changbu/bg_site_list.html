@@ -1,0 +1,88 @@
+<style type='text/css'>
+	.clearfloat{clear:both} 
+</style>
+<form action="" method="post" id="xmform">
+<input type='hidden' id='water_type' name='water_type' value="{$water_type}" />
+<br/>
+<span id="close" style="position: absolute; top: 0px; left: 1250px; font-size:18px;">
+        <B><a href='javascript:guanbi()'>关闭</a></B>
+</span>
+<h3 class="header smaller center title">厂部默认站点设定</h3>
+<table  style="margin-top:20px;margin-bottom:35px;{$site_display}" class="table table-striped table-bordered table-hover">
+	<tr>
+		<td colspan="{$line_nums}" align='center'>
+			选择站点 <input type="button" class="btn btn-xs btn-primary" value="全选" onclick="qx(this,'sites[]')">
+		</td>
+	</tr>
+	{$group_site_str}
+</table>
+<div class="clearfloat"></div> 
+<input class="btn btn-primary" style="display:block;margin:0 auto;margin-top:4px" name="bao" type="button" value="保存" onclick='tijiao()'>
+</form>
+<script type="text/javascript">
+function tijiao()//保存操作的ajax
+{
+	var vid_num = $("input[type='checkbox']").is(':checked');
+	if(vid_num){
+		$.post("$rooturl/changbu/bg_site_save.php?ajax=1",$("#xmform").serializeArray(),
+		function(data){
+			if(data){
+				var water_type	= $("#water_type").val();
+				location.href = "?water_type="+water_type;
+			}else{
+				alert('保存失败，请联系系统管理员！');
+			}
+	   });
+	}else{
+		alert('请至少选择一个站点，然后再进行保存！');
+	}
+	
+}
+//点击站点或者取消勾选站点时判断是否要勾选批名
+function check_group(t){
+	var c=$(t).attr("class"); 
+	var c=parseInt(c);
+	var b=t.checked;
+	if(b){	
+		$('#'+c).prop('checked',true);
+	}
+	else{
+		var cl=$("input[class='"+c+"']:checked").length;
+		if(cl==0){
+			$("#"+c).prop('checked',false);
+		}
+	}
+}
+//选中或者取消所有站点
+function check_sites(t){
+	var id=t.id;
+	if(t.checked){
+		$('.'+id).prop("checked",true);
+	}else{
+		$('.'+id).prop("checked",false);
+	}
+}
+//项目的全选或者取消全选
+function qx(aButton,aItem){
+    with(aButton.form){
+        var v=$("input[name*='"+aItem+"']");
+		if(aItem=='sites[]'){
+			var v2=$("input[name*='group_name[]']");
+			for(i=0;i<v2.length;i++){
+				v2[i].checked=(aButton.value!='全选') ? false :true;
+				//获得目前批次的对象
+				var v3=$("input[name='sites["+v2[i].value+"][]']");
+				for(j=0;j<v3.length;j++){
+					v3[j].checked=(aButton.value!='全选') ? false :true;
+				}
+			}
+			aButton.value=(aButton.value=='全选') ? '取消全选' : '全选' ;
+		}else{
+			for(i=0;i<v.length;i++) {
+				v[i].checked=(aButton.value!='项目全选') ? false :true;
+			}
+			aButton.value=(aButton.value=='项目全选') ? '取消全选' : '项目全选' ;
+		}
+    }
+}
+</script>

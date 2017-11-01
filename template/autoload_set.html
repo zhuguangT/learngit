@@ -1,0 +1,208 @@
+<style type="text/css">
+	a{cursor:pointer}
+	span,li{text-align:center}
+	.chosen-single div{padding-right:5px}
+</style>
+<script>
+$(document).ready(function() {
+	$(".chosen-select").chosen();
+	load_height();	
+});
+//删除仪器载入信息
+function ajax_del(id,yq_id,t)
+{
+	if(confirm("确定要删除？"))
+	{
+		if(id)
+		{
+			$.get('autoload_set.php?ajax=1',{action:"del",id:id},function(data){
+				if(data==1)
+				{	
+					$(t).parent().parent().remove();
+					var yq_info=$(t).parent().parent().find("td:first").text();
+
+					$("#yq_info").append("<option value="+yq_id+">"+yq_info+"</option>");
+					$(".chosen-select").chosen();
+					$(".chosen-select").trigger("chosen:updated"); 
+				}else{
+					alert("删除错误！请联系管理员！");
+				}
+			},'html');
+		}
+		else
+		{
+			$(t).parent().parent().remove();
+		}
+		return true;
+	}
+	return false;
+}
+//保存新增加的仪器载入设置信息
+function add_load_set(c)//1
+{
+	var load_file_id=$("#add_load_file_"+c).val();
+	var yq_id=$("#hid_yq_id").val();
+	//var printer=$("#add_printer").val();
+	var load_way=$("#add_loadway_"+c).val();
+	if(load_file_id!='0'&&load_file_id){
+
+		$.get('autoload_set.php?ajax=1',{action:"save_set",storeroom_id:load_file_id,yq_id:yq_id,load_way:load_way},function(data){
+			if(data=="1"){
+				window.location.href="autoload_set.php";
+			}else if(data=="2"){
+				alert("虚拟打印机创建失败！请联系管理员！");
+			}else{
+				alert("添加失败！请联系管理员！");
+			}
+		},'html');
+	}
+	else{
+		alert("请选择载入文件");
+		return false;
+	}
+}
+//获得厂商、仪器的型号
+function get_change(t,name)
+{
+	//alert(t.value);//  t.value最后一个传过去的value
+	var len=t.id.split("_").pop();//得到是第几行
+	//alert(len);
+	if(name=='yq_type')
+	{
+		$(t).parent().next("td").next("td").text('');
+		$(t).parent().next("td").next("td").next("td").text('');
+		$(t).parent().next("td").next("td").next("td").next("td").text('');
+		var yq_type_id=t.value;
+		$.get('autoload_set.php?ajax=1',{action:"get_fac",yq_type_id:yq_type_id},function(data){
+		$("#add_fac_"+len).empty();
+		$("#add_fac_"+len).html("<option value='0'>请选择</option>"+data);
+		},'html');
+	}
+	else if(name=='fac')
+	{
+		$(t).parent().next("td").text('');
+		$(t).parent().next("td").next("td").text('');
+		$(t).parent().next("td").next("td").next().text('');
+		var fac_id=t.value;
+		var yq_type_id=$("#add_type_"+len).val();
+		if(t.value=='0')
+		{
+			$(t).parent().next("td").html('');
+		}
+		else
+		$.get('autoload_set.php?ajax=1',{action:"get_mode",fac_id:fac_id,yq_type_id:yq_type_id},function(data){
+		if(data)
+		{
+			$(t).parent().next("td").html("<select id=add_mode_"+len+" name=yq_mode"+len+" onchange=get_change(this,'mode')><option value='0'>请选择</option>"+data+"</select>");
+		}
+		},'html');
+	}
+	else if(name=='mode')
+	{
+		$(t).parent().next("td").text('');
+		$(t).parent().next("td").next("td").text('');
+		var fac_id=$("#add_fac_"+len).val();
+		var yq_type_id=$("#add_type_"+len).val();
+		if(t.value!='0')
+		{
+		$.get('autoload_set.php?ajax=1',{action:"get_loadway",fac_id:fac_id,yq_type_id:yq_type_id,yq_mode_name:t.value},function(data){
+		$(t).parent().next("td").html('');
+		$(t).parent().next("td").html("<select id=add_loadway_"+len+" name=load_way"+len+" onchange=get_change(this,'load_way')><option value='0'>请选择</option>"+data+"</select>");},'html');
+		}
+	}
+	else if(name=='load_way')
+	{
+		$(t).parent().next("td").text('');
+		$(t).parent().next("td").next("td").text('');
+		var fac_id=$("#add_fac_"+len).val();
+		var yq_type_id=$("#add_type_"+len).val();
+		var mode_name=$("#add_mode_"+len).val();
+		var load_way=$("#add_loadway_"+len).val();
+		if(t.value!='0')
+		{
+		$.get('autoload_set.php?ajax=1',{action:"get_load_file",fac_id:fac_id,yq_type_id:yq_type_id,yq_mode_name:mode_name,load_way:load_way},function(data){//json传过去的
+		$(t).parent().next("td").html('');
+		$(t).parent().next("td").next("td").html('');
+		if(data['message'])
+			$(t).parent().next("td").html("<select id=add_load_file_"+len+" name=load_file"+len+"><option value='0'>请选择</option>"+data.load_file_op+"</select>");
+			//$(t).parent().next("td").next("td").html("<select id=add_print_nums_"+len+" name=print_nums"+len+"><option value='0'>默认自增</option>"+data.print_name_op+"</select>");
+			$(t).parent().next("td").next("td").html(data.print_name_op);
+			},'json');
+		}
+	}
+		
+}
+</script>
+<h3 class="header smaller center title">仪器载入列表</h3>
+<div class="widget-box no-border">
+  <div class="widget-header header-color-blue4 center">
+	<div class="widget-toolbar">
+		仪器名称搜索<select id="yq_info" class="chosen-select" name="yq_info" style="width:500px"><option value="全部">全部</option>$yq_options</select>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+		<button class="btn btn-xs btn-primary" type="button"  id="add_load_info">添加仪器载入信息</button>
+	</div>
+  </div>
+  <div class="widget-body">
+<form method=post action=autoload_set.php name=autolaod>
+	<input type="hidden" name="hid_yq_info" value="" id="hid_yq_info">
+	<input type="hidden" name="hid_yq_id" value="" id="hid_yq_id">
+<table class="table table-striped table-bordered table-hover center" id="tab">
+	<tr align="center">
+	<td width="4%">序号</td>
+	<td width="14%">仪器名称</td>
+	<td width="12%">仪器种类</td>
+	<td width="14%">制造厂商</td>
+	<td width="12%">仪器型号</td>
+	<td width="6%">载入方式</td>
+	<td width="16%">载入文件</td>
+	<td width="10%">虚拟打印机名称</td>
+	<td width="12%">操作</td>
+	</tr>
+$lines
+</table>
+<div style="width:70%;height:40px;margin:0 auto;">&nbsp;</div>
+</form>
+</div>
+</div>
+<script>
+	//添加仪器载入信息
+$("#add_load_info").click(
+function(){
+	var yq_info=$("#hid_yq_info").val();
+	var yq_id  =$("#hid_yq_id").val();
+	if(yq_info=='全部'||yq_info=="")
+	{
+		alert('请先选择需要配置的仪器');
+		return false; 
+	}
+	else if($(".add_load_set").length){
+		return false;
+	}
+	{
+		$.get('autoload_set.php?ajax=1',{action:'add_load_info'},function(data){
+		var length=$(".add_load_set").length+1;
+		$('#tab tr').eq(0).after("<tr align='center' class='add_load_set'><td>"+length+"</td><td>"+yq_info+"</td><td><select name=yq_type"+length+" id=add_type_"+length+" onchange=get_change(this,'yq_type')>"+data.yq_type_op+"</select></td><td><select name=fac"+length+"  id=add_fac_"+length+" onchange=get_change(this,'fac')><option value='0'>请选择</option>"+data.factory_op+"</select></td><td></td><td></td><td></td><td></td><td><a class='btn btn-xs btn-primary' onclick=add_load_set("+length+")>保存</a>&nbsp;|&nbsp;<a class='btn btn-xs btn-primary' onclick=ajax_del('','',this)>删除</a></td></tr>");
+		},'json');//初始化代码只执行一次
+	}
+	load_height();
+}
+);
+//根据仪器名称筛选
+$("#yq_info").change(function(){
+var yq_info=$("#yq_info").find("option:selected").text();
+var yq_id=$("#yq_info").val();
+$("#hid_yq_info").val(yq_info);
+$("#hid_yq_id").val(yq_id);
+if(yq_info=="全部")
+{
+	$(".add_load_set").remove();
+	$("#tab tr").show();
+}
+else
+{
+	$(".add_load_set").remove();
+	$("#tab tr:gt(0)").hide();
+	$(".tr"+yq_id).show();
+}
+	
+});
+</script>

@@ -1,0 +1,71 @@
+<h1>分光光度法检验{$arow['assay_element']}原始记录</h1>
+{$hjtj_bt}
+<table  class="single">
+  <tr class="noborder">
+    <td style="width:12%"></td><td style="width:16%"></td><td style="width:12%"></td>
+    <td style="width:12%"></td><td style="width:12%"></td><td style="width:12%"></td>
+    <td style="width:12%"></td><td style="width:12%"></td>
+  </tr>
+  <tr>
+    <td>检验方法依据</td>
+    <td colspan="2">{$arow['td2']}</td>
+    <td>检验方法</td>
+    <td colspan="2">{$arow['td1']}</td>
+    <td>检出限（{$arow['unit']}）</td>
+    <td>{$arow['td3']}</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">仪器型号</td>
+    <td colspan="2">{$arow['td5']}</td>
+    <td nowrap="nowrap">仪器编号</td>
+    <td colspan="2">{$arow['yq_bh']}</td>
+    <td>取样体积V</td>
+    <td><input type="text" class="inputc" name="td9" value="{$arow['td9']}" /></td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap" >波长（nm）</td>
+    <td colspan="2"><input type="text" name="td11" value="{$arow['td11']}" /></td> 
+    <td nowrap="nowrap">比色皿规格</td>
+    <td colspan="2"><input type="text" name="td12" value="{$arow['td12']}" /></td>
+    <td>调零介质</td>
+    <td ><input type="text" name="td13" value="{$arow['td13']}" /></td>
+  </tr>
+  <tr>
+    <td>计算公式</td>
+    <td class="noborder"></td>
+    <td class="noborder" colspan="2">(E-E<sub>0</sub>/比色皿规格)×100</td>
+    <td class="noleft" colspan="5"></td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>站名</td>
+    <td>空白吸光度E<sub>0</sub></td>
+    <td>样品吸光度E</td>
+    <td>E-E<sub>0</sub></td>
+    <td>样品浓度（{$arow['unit']}）</td>
+    <td>平均值/<br />理论浓度<br />（{$arow['unit']}）</td>
+    <td>相对偏差<br />/加标回收率<br />（％）</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="8"><textarea name="td30" >{$arow['td30']}</textarea></td>
+  </tr>
+  
+</table>
+<script type="text/javascript">
+function jsgs(){
+      //运算函数在lib.js
+      var vid = $arow[vid];
+      var ddg_gg = parseFloat($("input[name=td12]").val());
+      if( $.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4']) ){
+        var vd3 = parseFloat(vs['vd3']);//E₀
+        var vd4 = parseFloat(vs['vd4']);//E
+        var gmd = vs['vd5'] = accsub(vd4,vd3);
+        var jg    = parseFloat(gmd/ddg_gg*100);
+        vs['vd0'] = vs['_vd0']= jsws(jg);
+      }else{
+        vs['vd5']=vs['vd0']=vs['_vd0']='';
+      }
+}
+</script>

@@ -1,0 +1,16 @@
+<form action='add_bzyp_save.php' method='post'>
+<h3 class="header smaller center title">添加实验室标样</h3>
+<div class="widget-box no-border">
+<div class="widget-body">
+<table class="table table-striped table-bordered table-hover center" style='table-layout:fixed'>
+<tr align="center">
+<td width="30%">标样编号</td>
+<td width="70%">本次质控项目</td>
+</tr>
+{$bzyp_lines}
+</table>
+<input type="hidden" name='cyd_id' id="cyd_id" value={$_GET[cyd_id]}>
+<center><input class="btn btn-xs btn-primary" type="submit" value="提交"/></center>
+</div>
+</div>
+</form>

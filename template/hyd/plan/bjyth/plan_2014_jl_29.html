@@ -1,0 +1,98 @@
+<h1>原子吸收分光光度法(石墨炉法)原始记录表</h1>
+{$hjtj_bt}
+<table class='single'>
+	<tr class="noborder">
+		<td style="width:17%"></td><td style="width:14%"></td><td style="width:14%"></td>
+		<td style="width:14%"></td><td style="width:14%"></td><td style="width:14%"></td>
+		<td style="width:13%"></td>
+	</tr>
+	<tr>
+		<td class="left" colspan="2">分析项目:{$arow['assay_element']}</td>
+		<td class="left" colspan="2">分析方法:{$arow['td2']}</td>
+		<td class="left">分析日期</td><td colspan="2"><input type="text" name="td31" value="{$arow['td31']}" size="10" /></td>
+	</tr>
+	<tr>
+		<td class="left" colspan="2">样品类别:{$arow['water_type']}</td>
+		<td class="left">仪器型号及编号</td><td colspan="2">{$arow['td4']} {$arow['yq_bh']}</td>
+		<td class="left" colspan="2">检出限:{$arow['td3']}μg/L</td>
+	</tr>
+		<t class="left"r><td>波长</td>
+		<td class="left">干燥温度</td>
+		<td class="left">干燥时间</td>
+		<td class="left">灰化温度</td>
+		<td class="left">灰化时间</td>
+		<td class="left">原子化温度</td>
+		<td class="left">原子化时间</td></tr>
+	<tr class="auto" >
+		<td class="left"><input type="text" name="td26"  size="4" value="{$arow['td26']}" /> nm</td>
+		<td class="left"><input type="text" name="td7"  size="4" value="{$arow['td7']}" /> ℃</td>
+		<td class="left"><input type="text" name="td8"  size="4" value="{$arow['td8']}" /> s</td>
+		<td class="left"><input type="text" name="td9"  size="4" value="{$arow['td9']}" /> ℃</td>
+		<td class="left"><input type="text" name="td10"  size="4" value="{$arow['td10']}" /> s</td>
+		<td class="left"><input type="text" name="td11"  size="4" value="{$arow['td11']}" /> ℃</td>
+		<td class="left"><input type="text" name="td12"  size="4" value="{$arow['td12']}" /> s</td>
+	</tr>
+	<tr>
+		<td class="left">标准工作溶液名称</td><td><input type="text" name="td13"  size="4" value='{$arow['td13']}' /></td>
+		<td class="left">浓度</td><td><input type="text" name="td23" size="4" value="{$arow['td23']}" /></td>　　
+		<td class="left">配制日期</td><td colspan="2"><input type="text" name="td14" size="10" value="{$arow['td14']}" /></td>
+	</tr>
+	<tr>
+		<td class="left">标准曲线编号</td><td><input type="text" name="td15" size="10" value="{$arow['td15']}" /></td>　
+		<td class="left">率定日期</td><td><input type="text" name="td16" size="10" value="{$arow['td16']}" /></td>
+		<td class="left" colspan="3">计算公式:C（ {$arow['unit']})=仪器读数×稀释倍数/1000</td>
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td>{$zhanming}</td>
+		<td>仪器读数（μg/L）</td>
+		<td>稀释倍数</td>
+		<td>含量（ {$arow['unit']}）</td>
+		<td>平均值<br>（ {$arow['unit']}）</td>
+		<td>相对偏差<br>（％）</td>
+	</tr>
+	{$aline}
+	<tr class="auto">
+		<td>空白实验</td>
+		<td>1 <input type="text" name="td22" size="7" value="{$arow['td22']}" onblur="btgs()" /></td>
+		<td>2 <input type="text" name="td23" size="7" value="{$arow['td23']}" onblur="btgs()" /></td>
+		<td class="left" colspan="2">平均值 <input type="text" name="td24" size="7" class="noinputc" value="{$arow['td24']}" /></td>
+		<td class="left" colspan="2">相对偏差（%） <input type="text" name='td25' size="7" class="noinputc" value='{$arow['td25']}'></td>
+	</tr>
+	<tr class="auto">
+		<td colspan="2">加标量：<input type="text" name="td17" size="10" value="{$arow['td17']}" /> mL</td>
+		<td colspan="5">P%= <input type="text" name="td18" size="50" value="{$arow['td18']}" /></td>
+	</tr>
+	<tr>
+		<td>备注</td>
+		<td colspan="6"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	function jsgs(){
+		if($.isNumeric(vs['vd27']) && $.isNumeric(vs['vd2'])){
+			vs['vd0'] = jsws((vs['vd27']*vs['vd2'])/1000);
+		}else{
+			vs['vd0'] = '';
+		}
+	}
+	function btgs(){
+		var td22=$("input[name=td22]").val();
+		var td23=$("input[name=td23]").val();
+		if($.isNumeric(td22)&&parseInt(td22)!=td22)
+			ws=(td22.split("."))[1].length;
+		else
+			ws=0;
+		if($.isNumeric(td22)&&$.isNumeric(td23))
+		{
+			var td24=roundjs(accDiv(accAdd(td22,td23),2),ws);
+			var td25=roundjs((accsub(td22,td23)/accAdd(td22,td23)),2);
+		}
+		else
+		{
+			td24=td25='';
+		}
+		$("input[name=td24]").attr("value",td24);
+		$("input[name=td25]").attr("value",td25);
+	}
+</script>

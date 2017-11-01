@@ -1,0 +1,151 @@
+<style>
+#content h2,#content form{text-align:center;padding:30px 0;MARGIN-RIGHT: auto; MARGIN-LEFT: auto;width:80%;}
+#content table{text-align:center;margin:0 auto;width:100%;border-collapse:collapse;border-spacing:0;}
+#content table td{border:black solid 1px;padding-left:30px;}
+.group_sites_old{float:left;margin:1px 0px 1px 1px;height:43px;width:130px;border:1px #D7D7D7 solid;text-align:left;opacity:1;cursor:pointer;}
+.group_sites_old{float:none;background-color:#F4F4F4;}
+</style>
+$close
+<h2> {$title}</h2>
+<form name='group_add' method="POST" action="group_add_save.php" onsubmit="return submitTest();">
+<input type="hidden" name="site_type" value="{$site_type}" />
+<input type="hidden" name="action" value="{$_GET['action']}" />
+	<table>
+		<tr>
+			<td align=right style="width:30%;">显示位置:</td>
+			<td align=left>
+				<label><input type="radio" name="sort" value="1"/>于页面最上层</label>&nbsp;&nbsp;&nbsp;<label>
+				<input type="radio" name="sort" checked value="{$_GET['sort']}"/>于&nbsp;&nbsp;<span class='sort_span'>{$_GET['group_name']}</span>&nbsp;&nbsp;之后</label>
+				<select name="sort_select" class="chosen">{$group_option}</select>
+			</td>
+		</tr>
+		<tr>
+                        <td align=right>批次名称:</td>
+                        <td align=left>
+				<input type="text" size="60" name="group_name" value="{$this_group_name}" required placeholder="不能为空" /><span style="color:red;font-weight:bold;" id="tishi_group_name"></span>
+				<input type="hidden" name="group_name_old" value="{$this_group_name}" />
+			</td>
+                </tr>
+		<tr>
+                        <td align=right>批内站点:(<span id="sum_sites" >$i</span>个)</td>
+                        <td align=left id="group_sites">{$site_label}<br /><input type="button" id="button_site_add" value="点击添加批内站点" /></td>
+                </tr>
+	</table>
+	<br /><input type="submit" name="submit" value="确认添加批次" />
+</form>
+<fieldset id="fieldset_site_add" style="display:none;width:80%;margin:0 auto;border:2px dashed #A8A8A8;" align="center">
+	<legend style="width:auto;margin-left:30px;border:0px;"><BLINK>批内站点添加：</BLINK> </legend>
+	<div class="site_content">
+		数据加载中......<br /><br />
+	</div>
+</fieldset>
+<script  type="text/javascript">
+function submitTest(){
+	if($("#tishi_group_name").html()!=''){
+		alert('采样批次名称已存在，请重新命名');
+		return false;
+	}
+	var sites	= $("label.group_sites,label.group_sites_old").length;
+	if(!sites){
+		alert('批内站点不能为空');
+		return false;
+	}
+	if('{$_GET['action']}'=='group_add' || '{$_GET['action']}'=='group_modify'){
+		//获取POST信息
+                var options = {
+                        //type:'post',
+                        dataType: "json",
+                        success:function(result){
+                                if(result.jieGuo=='yes'){
+					//刷新页面
+					if('{$_GET['action']}'=='group_add'){
+						$("#content").html('批次添加中......');
+					}else{
+						$("#content").html('批次修改中......');
+					}
+					location.reload();
+                                }else{
+                                        alert('修改失败，请重试');
+                                }
+                        },
+                        timeout:10000
+                };
+                $("form[name='group_add']").ajaxSubmit(options);//ajax提交
+                return false;
+	}
+}
+$(function(){
+	$(".chosen").chosen();//可搜索下拉菜单
+        $("#close").click(function(){
+                //隐藏父级元素的覆盖层（下达采样任务页面）
+                $("#mask,#qckb_value_modify").css("display","none");
+		$("#content").html('加载中......');
+        }).mouseover(function(){
+                $(this).css({"opacity":"1"});
+        }).mouseout(function(){
+                $(this).css({"opacity":"0.8"});
+        });
+	//点击 批次下拉菜单，自动选中对应的单选框
+	$("select[name='sort_select']").change(function(){
+		var select_text	= $(this).find("option:selected").text();
+		$("span.sort_span").text(select_text);
+		$("input[name='sort']:eq(1)").val(this.value).prop("checked",true);
+	}).next("div").click(function(){
+		$("input[name='sort']").prop("checked",true);
+	});
+	//检查 采样批次名称是否有重复
+	$("input[name='group_name']").keyup(function(){
+		this.value=this.value.replace(/[\'"\\\<>]/g,'');
+		var repeat	= $("select[name='sort_select'] option[label='"+this.value+"']").text();
+		if(repeat!=''){
+			if("{$_GET['action']}"=='group_modify' && "{$_GET['group_name']}"==this.value){//批次修改时，原批次名称无需提示
+				$("#tishi_group_name").html('');
+			}else{
+				$("#tishi_group_name").html(' *此采样批次已存在');
+			}
+		}else{
+			$("#tishi_group_name").html('');
+		}
+	}).blur(function(){
+		var repeat      = $("select[name='sort_select'] option[label='"+this.value+"']").text();
+                if(repeat!=''){
+			if("{$_GET['action']}"=='group_modify' && "{$_GET['group_name']}"==this.value){//批次修改时，原批次名称无需提示
+                        	$("#tishi_group_name").html('');
+                        }else{
+				$("#tishi_group_name").html(' *此采样批次已存在');
+			}
+                }else{
+                        $("#tishi_group_name").html('');
+			//批名更改时，对应更改 添加新站点里面的批名
+			var str = "<option value='"+$(this).val()+"' selected>"+$(this).val()+"</option>";
+                	$("#tabs-2 select[name='group_name']").append(str);
+			$("form[name='playlist'] input[name='group_name']").val($(this).val());
+                }
+	});
+	//点击添加批内站点 显示站点添加区域
+	$("#button_site_add").click(function(){
+		var display	= $("#fieldset_site_add").css("display");
+		if(display=='none'){
+			$(this).val('点击隐藏站点添加窗口');
+		}else{
+			$(this).val('点击显示站点添加窗口');
+		}
+		$("#fieldset_site_add").toggle('2');//.css({"display":"block"});
+		//站点添加窗口只加载一次
+		if(!$("div.site_content:contains('添加新站点')").html()){
+			var lianJie = "$rooturl/xd_cyrw/site_add.php?site_type=$site_type";
+			$("div.site_content").load(lianJie);
+		}
+		
+	});
+	//批次表格中  已选站点 取消选择时，要将其从表中删除掉
+        $("#group_sites").on("click","label.group_sites input",
+                function(){
+                        $(this).parent().remove();
+                        var sum_sites   = $("#sum_sites").text();
+                        $("#sum_sites").text(sum_sites - 1);
+                        $("label[group_id] input[value='"+this.value+"']").attr("checked",false).parent("label").css("background-color","#fff");
+                }
+        );
+});
+</script>

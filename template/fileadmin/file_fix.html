@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="main.css" type="text/css"/>
+<style>
+.tablelv { border:1px #0CF solid; border-collapse:collapse; width:1250px;margin:auto}
+.tablelv *{ color:#363636}
+.tablelv tr td{ font-size:12px; height:20px; line-height:20px; border:1px solid #00CCFF}
+a{text-decoration:none}
+a:hover{color:red}
+input{background:#AACCFF}
+
+</style>
+<script>
+window.onload=function(){
+	var inp = document.getElementsByTagName("input");
+	zhuru(inp);
+	document.getElementById("sub").onclick=function(){	
+		var name = document.getElementById("name").value;
+		if(name.replace(/[ ]/g,"")==''){
+			alert("名字不能为空");
+			return false;
+		}else{
+		}
+	}
+}
+function zhuru(obj){
+	var len = obj.length -1;
+	for(var i=0;i<len;i++){
+		if(obj[i].type=='text'){
+			obj[i].onblur=function(){
+				var str = this.value;
+				str= str.replace(/'/g,"‘");
+				str= str.replace(/"/g,"“");
+				this.value = str.replace(/;/g,"；"); 
+			}
+		}
+	}
+}
+
+
+</script>
+<table class="table table-striped table-bordered table-hover center" style="width:600px">
+<h3 class="header smaller center title">文件管理</h3>
+<form method=post action="adddeal.php">
+<tr align=center>
+<td>名称_fix</td>
+<td><input type=text name=name  id="name" value="$_GET[name]" onblur="check1(this.value)" ></td>
+<td>状态_fix</td>
+<td><input type=text name='namebak' id="note" value="$_GET[namebak]" onblur="check2(this.value)"></td>
+<input type=hidden name='id' value="$id">
+<input type="hidden" name="pid"  value="$pid"/>
+</tr>
+<tr align=center>
+<td colspan=4><input class='btn btn-xs btn-primary' type=submit name="fix" id="sub" value='提交'></td>
+</tr>
+</from>
+</table>

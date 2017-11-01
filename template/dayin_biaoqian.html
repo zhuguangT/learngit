@@ -1,0 +1,85 @@
+<style>
+select{width:70px;}
+.bt{text-align: center;}
+table td{padding:1px !important;}
+</style>
+<style media="print" type="text/css">
+    .no-print{display:none;}
+    table td{padding:1px !important;}
+    select{border: none;text-align: center;}
+</style>
+<h3 class="header smaller center title">标签打印设置界面</h3>
+<form action="$rooturl/cy/dayinbq_save.php" method="post" style="margin-bottom:80px;">
+<input type="hidden" name="cyd_id" value="{$_GET[cyd_id]}" >
+<div border="10px solid;">
+	<p class="bt"><span style="max-width:316px;display:inline-block;display: -moz-box;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">采样批次：{$cy_arr[group_name]}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   采样时间：{$cy_arr[cy_date]}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;采样人：{$cy_arr[cy_user]} {$cy_arr[cy_user2]} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 状态：{$global[status][$cy_arr[status]]}</p>
+	<table  style="width:23cm" class="table  table-bordered  center">
+		<thead>
+		<tr>
+			<th style="min-width:35px;width:10%;">序号</th>
+			<th style="min-width:150px;width:30%;">站点</th>
+			<th style="min-width:100px;width:20%;">样品编号</th>
+			<th style="min-width:75px;width:20%;padding:0px;">打印数量<br />
+			<select id="sel" class="no-print" old_val='' style="height:28px;">
+				<option value="">默认</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+				<option value="11">11</option>
+				<option value="12">12</option>
+				<option value="13">13</option>
+				<option value="14">14</option>
+				<option value="15">15</option>
+				<option value="0">0</option>
+			</select>
+			</th>
+			<th style="min-width:200px;width:20%;">备注</th>
+	  	</tr>
+	  	</thead>
+		{$site_code_lines}
+	</table>
+	<center id="float-button" >
+		<div id='loading_html' style='display:none;'>&nbsp;<img src="$rooturl/img/loading.gif" style="height:24px;width:60px;" /></div>
+		<div id="content_tixing" style="background-color:#62A8D1;height:30px;line-height:24px;padding:3px 0;margin:10px 0;width:23cm;font-weight:bold;display:none;"></div>
+		<div>
+			$anniu
+		</div>
+	</center>
+</div>
+</form>
+<!-- 弹出层 -->
+<div id="cover" class="modal" style='position:fixed;display:none;background-color:rgba(15, 15, 15, 0.7);width:100%;height:100%;left:0px;top:0px;' align='center'>
+  <div style='position:fixed;width:28%;min-width:425px;min-height:125px;height:19%;background-color:white;left:35%;top:20%;text-align:cneter;'>
+  	<h3 class="header smaller center title">样品编号修改</h3>
+    <h5 id='yztishi'></h5>
+    <form name='f1'>
+      请输入新的标样编号:<input type='text' name='newbar' id='newbar' value='' onBlur='yzcode(this)'>
+          顺延个数:<select name='jia' id='jia'>
+          </select><br/>
+          <br/>
+        <input type='button' value='确定' onclick='fa()'>&nbsp;&nbsp;&nbsp;<input type='button' value='关闭' onclick='guanbi()'>
+    </form>
+  </div>
+</div>
+<script language="JavaScript">
+	//打印编码对照表
+	if("{$_GET['print']}"=='print'){
+		window.print();
+		window.close();
+	}
+	function bianhao(aa){
+		var cyd_id = $(aa).attr('cyd_id');
+		location = "$rooturl/cy/dayin_biaoqian.php?cyd_id="+cyd_id+"&bianhao=xinbianhao";
+	}
+	function ys(aa){
+		var cyd_id = $(aa).attr('cyd_id');
+		location = "$rooturl/cy/cy_ys.php?cyd_id="+cyd_id;
+	}
+</script>

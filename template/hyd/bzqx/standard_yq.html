@@ -1,0 +1,59 @@
+<style type="text/css">
+	.assay_form iframe.view_pdf{
+		margin:0;
+		margin-top: 30px;
+		padding:0;
+		width: 100%;
+		border: none;
+	}
+</style>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#quxian_form_{$arow['id']} .single").first().find("tr").each(function(){
+		var str = $(this).find("td").first().html();
+		if(str=="序号"){
+			$(this).remove();
+		}else if(str=="备注"){
+			$(this).addClass("auto");
+			var qx_data_html = "";
+			qx_data_html += '<span style="margin-right:2.5cm;">a = <input type="text" size="6" name="CA" value="{$arow['CA']}" /></span>';
+			qx_data_html += '<span style="margin-right:2.5cm;">b = <input type="text" size="6" name="CB" value="{$arow['CB']}" /></span>';
+			qx_data_html += '<span style="margin-right:2.5cm;">r = <input type="text" size="6" name="CR" value="{$arow['CR']}" /></span>';
+			//qx_data_html += 't= <input type="hidden" size="6" name="CT" value="{$arow['CT']}" />';
+			$(this).find("td:eq(0)").html("参数");
+			$(this).find("td:eq(1)").html(qx_data_html);
+		}
+	});
+	var form_add_html = '<input type="hidden" name="td1" value="{$arow['td1']}" />'
+	+'<input type="hidden" name="td2" value="{$arow['td2']}" />'
+	+'<input type="hidden" name="td3" value="{$arow['td3']}" />'
+	+'<input type="hidden" name="td4" value="{$arow['td4']}" />'
+	+'<input type="hidden" name="td5" value="{$arow['td5']}" />'
+	+'<input type="hidden" name="unit" value="{$arow['unit']}" />'
+	+'<input type="hidden" name="yq_bh" value="{$arow['yq_bh']}" />';
+	$("#quxian_form_{$arow['id']} form[name=sc_form_{$arow['id']}]").append(form_add_html);
+	//将标题更改为曲线记录表
+	$("#quxian_form_{$arow['id']} h1").html($("#quxian_form_{$arow['id']} h1").html().replace("原始记录","曲线原始记录"));
+	{if true === $arow['canModi'] && intval($_GET['tid'])}
+	$(".sc_print_{$arow['id']}").after('&nbsp;<button class="btn btn-primary btn-sm sc_copy_hyd_{$arow['id']}" data-tid="{echo intval($_GET['tid'])}"><i class="icon-copy bigger-130"></i>复制化验单表头数据</button>');
+	{/if}
+	$.ajax({
+		type: 'get',dataType:'json',
+		data: {ajax:1,id:'{$arow['id']}'},
+		url: trade_global.rooturl+'/huayan/ahlims.php?app=quxian&act=getPdfIds',
+		success: function(data){
+			for(var i=0;i<data.length;i++){
+				var pdf_src = trade_global.rooturl+'/huayan/view_pdf.php?ajax=1&pid='+data[i]+'&handle=see';
+				$("#quxian_form_{$arow['id']}").append('<iframe class="view_pdf" style="min-height:'+($(window).height()-20)+'px;" src="'+pdf_src+'"></iframe>');
+			}
+			$("#sc_bd_box_{$arow['id']}").scroll(function(){
+				$(this).find(".view_pdf").each(function(){
+					if(Math.abs($(this).offset().top) < 30){
+						$("#sc_bd_box_{$arow['id']}").scrollTop($("#sc_bd_box_{$arow['id']}").scrollTop()+$(this).offset().top-10);
+					}
+				});
+			});
+		},error: function(data){}
+	});
+})
+</script>

@@ -1,0 +1,66 @@
+<!--  设置每种样品类型中每个项目的检验方法和一些相关信息 -->
+<script src=".www/newlims/js/jquery-2.1.0.min.js"></script>
+<script src=".www/newlims/js/jquery-2.1.0.js"></script>
+<script   language="JavaScript">  
+hide('head');hide('menu');hide('bottom');hide('debug');
+$(function(){
+	//把默认的select信息，用js默认好。 不用php是因为 需要在php中写好多个循环
+	$("input[moren='selected']").each(function(i,v){
+		$("select[name='"+$(this).attr("biaozhi")+"'] option[value='"+v.value+"']").attr("selected","true");
+	});
+});
+function jshow(a){
+		//var c1 = document.getElementById('c1').value;
+		var b1="1";
+		alert(b1);
+		alert(c1);
+		location.href="cheshi.php?ffx="+a+'&ffx='+c1;
+		}
+function show(a){
+		var type =document.getElementById('c1').value;
+		 if(type!='')
+			alert(type);
+		else
+		 alert('请填写');
+	} 
+</script>
+<form method="POST" action="" onsubmit="return verify(this);">
+<table width="1000" align="center" border="1" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+   <tr align="center" >
+    <td colspan="15"  height="50" >新建检验方法</td> 
+   </tr>
+   
+   <tr align="center"  >
+    <td   colspan="2">检验方法名称</td>
+    <td>选择模板</td> 	
+	<td>默认人员</td>
+	<td>默认人员2</td>
+	<td>默认单位</td>
+	<td>默认检出限</td>
+	<td><1</td>
+	<td>1~10</td>
+	<td>10~100</td>
+	<td>100~1000</td>
+	<td>>1000</td>
+	<td colspan="3">操作</td>
+   </tr>
+   <tr align="center" >
+    <td colspan="2">
+	<select name="userid" id="c1" class="inputSelect"   onchange ="show(this.value)" style="min-width:74px;">
+	$userOption
+	</select>
+    </td><!--  $rs_hy_user[hyd_bg_id]$mr_bgline-->
+	<td>$ffmb</td>
+	<td>$mr_user</td>
+	<td>$mr_user2</td>
+    <td>$mr_dw</td>
+	<td><input name="jcx" type="text" size="6"  value="$mr_arr[jcx]" /></td>
+	<td>$mrw1_line</td>
+	<td>$mrw2_line</td>
+	<td>$mrw3_line</td>
+	<td>$mrw4_line</td>
+	<td>$mrw5_line</td>
+    <td colspan="3"><input  type="submit" name="Submit" value="提交" /></td>
+   </tr>   
+</form>
+</table>

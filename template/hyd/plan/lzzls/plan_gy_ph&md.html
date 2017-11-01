@@ -1,0 +1,58 @@
+<!-- PH -->
+<h1>PH值、密度检验原始记录（工艺）</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:16%"></td><td style="width:20%"></td><td style="width:16%"></td>
+		<td style="width:16%"></td><td style="width:16%"></td><td style="width:16%"></td>
+	</tr>
+	<tr>
+		<td>检验项目</td>
+		<td colspan="2"><input type="text" class="inputc" name="td7"   value="{$arow['td7']}" /></td>
+		<td>检验地点</td>
+		<td colspan="2"><input type="text" class="inputc" name="td7"   value="{$arow['td7']}" /></td>
+	</tr>
+	<tr>
+		<td>检验方法</td>
+		<td colspan="2">{$arow['td1']}</td>
+		<td>方法依据</td>
+		<td colspan="2">{$arow['td2']}</td>
+	</tr>
+	<tr>
+		<td>仪器型号</td>
+		<td colspan="2">{$arow['td5']}</td>
+		<td>仪器编号</td>
+		<td colspan="2">{$arow['yq_bh']}</td>
+	</tr>
+	<tr>
+		<td colspan="6">校正用标准缓冲溶液</td>
+	</tr>
+	<tr class="auto">
+		<td colspan="1">甲</td>
+		<td colspan="5">苯二甲酸氢钾 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pH=<input type="text" class="inputc" name="td8"   value="{$arow['td8']}" />（<input type="text" class="inputc" name="td9"   value="{$arow['td9']}" />℃）</td>
+	</tr>
+	<tr class="auto">
+		<td colspan="1">乙</td>
+		<td colspan="5">磷酸二氢钾和磷酸氢二钠 pH=<input type="text" class="inputc" name="td10"   value="{$arow['td10']}" />（<input type="text" class="inputc" name="td11"   value="{$arow['td11']}" />℃）</td>
+	</tr>
+	<tr class="auto">
+		<td colspan="1">丙</td>
+		<td colspan="5">硼酸钠&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pH=<input type="text" class="inputc" name="td12"   value="{$arow['td12']}" />（<input type="text" class="inputc" name="td13"   value="{$arow['td13']}" />℃）</td>
+	</tr>
+	<tr>
+		<td colspan="6">检验结果</td>
+	</tr>
+	<tr class="auto">
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td>{$zhanming}</td>
+		<td colspan="2">样品温度（℃）</td>
+		<td colspan="2">检验结果（{$arow['unit']}）</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td>备注</td>
+		<td colspan="5"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>

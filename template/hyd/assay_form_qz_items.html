@@ -1,0 +1,28 @@
+<div id="hydItem_{$tid}" class="widget-box assay_form_item" data="{$tid}" style="width:27cm">
+	<div class="widget-header">
+		<!-- 隐藏批次名称，因为委托任务的批次名称时委托单位，不允许看到 -->
+		<!-- ：{$arow['group_name']} -->
+		<h5 class="smaller">化验单号：【{$tid}】 项目名称：【{$arow['assay_element']}】 【{$arow['cyd_bh']}】</h5>
+		<span class="widget-toolbar">
+			<button class="view_hyd_{$tid} btn btn-minier btn-primary" title="查看化验单">
+				<i class="icon-hand-right bigger-130"></i> 查看化验单
+			</button>
+			<button class="hyd_print_{$tid} btn btn-minier btn-primary">
+				<i class="icon-print bigger-130" title="化验单号:{$tid},采样单号:{$arow['cyd_id']},化验项目编号:{$arow['vid']},表格号:{$arow['table_name']}"></i>
+				打印
+			</button>
+			<button class="pdf_files_{$tid} btn btn-minier btn-primary" title="查看附件">
+				<i class="icon-folder-open bigger-130"></i> 查看附件
+			</button>
+			<button class="tui_Hui_{$tid} btn btn-minier btn-primary" title="{$arow['assay_element']}【{$assay_element}:{$tid}】退回" >
+				<i class="icon-reply icon-only bigger-130"></i> 退回化验单
+			</button>
+			<button class="collapse_{$tid} btn btn-minier btn-primary" data-action="collapse">
+				&nbsp;&nbsp;&nbsp;<i class="icon-chevron-up bigger-130"></i>&nbsp;&nbsp;&nbsp;
+			</button>
+		</span>
+	</div>
+	<div class="widget-body">
+		$assay_form
+	</div>
+</div>

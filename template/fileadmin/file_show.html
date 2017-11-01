@@ -1,0 +1,126 @@
+<style>
+.tablelv { border:1px #0CF solid; border-collapse:collapse; width:1250px;margin:auto}
+.tablelv *{ color:#363636}
+.tablelv tr td{ font-size:12px; height:20px; line-height:20px; border:1px solid #00CCFF;}
+a{text-decoration:none}
+a:hover{color:red}
+input{background:#AACCFF}
+.can_modify{cursor:pointer;}
+@media print {
+	.noprint{display:none;}
+	table{width:100% !important;font-size: 18px;}
+	table td{font-size: 18px;}
+	h3{font-size:20px;}
+}
+</style>
+<script type="text/javascript" src="$rooturl/js/lims/hyd.js"></script>
+<script type="text/javascript">
+function add1(pid){
+location.href='add1.php?pid='+pid;
+}
+function add2(id){
+location.href="display.php?id="+id+"&action=file&name=$_GET[name]";
+}
+function fix(id,pid,name,namebak){
+location.href="fix.php?id="+id+"&pid="+pid+"&name="+name+"&namebak="+namebak;
+}
+function del(id,pid){
+	if(confirm("确定要删除数据吗？"))
+location.href="del.php?id="+id+"&pid2="+pid;
+}
+function del_all(id,pid){
+	if(confirm("确定要删除数据吗？"))
+location.href="del.php?id="+id+"&pid3="+pid;
+}	
+function upload(id,pid){
+location.href="display.php?id="+id+"&pid="+pid+"&action=upload&name=$_GET[name]";
+}
+function ret(){
+location.href="fileadmin.php";
+}
+function trim(str){ //删除空格
+　　return str.replace(/(^\s*)|(\s*$)/g, "");
+}
+$(function(){
+	$(".can_modify").click(function(){
+		var input_date_class	= $("input[name='fb_date']").attr('class');
+		if(input_date_class){
+			//$("input[class='date-picker'][name='fb_date']").remove();
+			var input_date	= $("input[class='date-picker'][name='fb_date']");
+			input_date.parent("td").html(input_date.val());
+		}
+		var input	= $(this);
+		var content	= input.html();
+		var name	= input.attr("name");
+		var id	= input.parent("tr").attr('id');
+		if(name == 'fb_date'){//发布日期改为用日历的方式修改
+			var fb_date_html= "<input class='date-picker' name='fb_date' value='"+content+"' style='background-color:#FFF !important;width:"+input.width()+"px;' readonly placeholder='请选择日期' />";
+			input.html(fb_date_html);
+			//给新添加的input增加 弹出日历的事件
+			$('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+				$(this).prev().focus();
+			});
+			$("input[class='date-picker'][name='fb_date']").focus();
+			//当发布日期更改时，ajax修改数据库
+			$("input[class='date-picker'][name='fb_date']").change(function(){	
+				var new_content	= $(this).val();
+				if(content!=new_content && name!='' && id!=''){
+					$.post('adddeal.php',
+						{'name':name,'id':id,'content':new_content,'ajax':'1'},
+						function(data){
+							if(data=='成功'){
+								input.html(new_content);
+							}else{
+								alert("修改失败");
+								input.html(content);
+							}
+					});
+				}else{
+					input.html(content);
+				}
+			});
+			return false;
+		}else{
+			var str	= prompt("请输入新的名称",content);
+			str	= str.replace(/'/g,"‘");
+			str	= str.replace(/"/g,"“");
+			var	new_content = str.replace(/;/g,"；");
+		}
+		if(content!=new_content && name!='' && id!=''){
+			$.post('adddeal.php',
+				{'name':name,'id':id,'content':new_content,'ajax':'1'},
+				function(data){
+					if(data=='成功'){
+						input.html(new_content);
+					}else{
+						alert("修改失败");
+						input.html(content);
+					}
+			});
+		}
+	});
+	$("#print").click(function(){
+		window.print();
+	});
+	$("#down_load").click(function(){
+		window.location.href = "show.php?id=$_GET[id]&name=$_GET[name]&handle=down_load";
+	});
+})
+</script>
+<h3 class="header smaller center title">{$_GET[name]}类文件管理</h3>
+<table frame=void style="width:1250px;" >
+	<tr>
+		<td align=right><input type=button class="btn btn-xs btn-primary noprint" name=add2x value='增加' onClick='javascript:add2($_GET[id]);'\>
+			<input class="btn btn-xs btn-primary noprint" id="print" type=button name=ret value='打印' \>
+			<input class="btn btn-xs btn-primary noprint" id="down_load" type=button  value='下载' \>
+		</td>
+	</tr>
+</table>
+<table class="table table-striped table-bordered table-hover center" style="width:1250px; ">
+	<form method='post' action="del.php">
+		<tr align=center>
+			<th>序号<!--(id)--></th><th>类型</th><th>文件名称<!--(name)--></th><th>文件编号</th><th>发布日期</th><th>适用范围</th><th>状态</th><th>备注<!--(namebak)--></th><th class="noprint">文件<!--(file)--></th><th class="noprint">操作<!--(opert)--></th><!--<td>原文件(old_file)</td>-->
+		</tr>
+		$strline
+	</form>
+</table>

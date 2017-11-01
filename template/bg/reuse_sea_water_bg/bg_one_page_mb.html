@@ -1,0 +1,61 @@
+<div style="background-color: #FFFFFF; width:20cm;margin:0 auto;" >
+<table style="border-color:#000;border-collapse:collapse;background-color: #FFFFFF; width:19cm;" align="center">
+<tbody>
+	<tr style="height:1cm">
+		<td colspan="7">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="7"><h2 align="center" style="background-color: #FFFFFF;font-family:宋体;font-size:20pt;">检<span style="letter-spacing:30px;">&nbsp;</span>测<span style="letter-spacing:30px;">&nbsp;</span>报<span style="letter-spacing:30px;">&nbsp;</span>告</h2></td>
+	</tr>
+	</tbody></table>
+<table style="border-color:#000;border-collapse:collapse; background-color: #FFFFFF; width:19cm; " align="center">
+	<tbody>
+		<tr class="firstRow" style="font-family:宋体;font-size:12pt">
+			<td colspan="3" style="word-break: break-all;" width="68%" nowrap>报告编号：(青水监)字 {$nian} 第 {$bh} 号</td>
+			<td colspan="4" align="right" style="letter-spacing:5px">第 {$page} 页 共 {$z_page} 页</td>
+		</tr>
+	</tbody>
+</table>
+<table style="background-color:#FFFFFF;border-collapse:collapse;width:19cm;" align="center" border="1" cellpadding="4" class="td_border" >
+	<tbody>
+		<tr class="firstRow" style="height:0.8cm;font-family:宋体;font-size:10.5pt">
+			<td colspan="2" style="width:33%">联系人：{$detail_rs['lx_user']}</td>
+			<td colspan="3" style="width:33%">样品状态：{$detail_rs['yp_zt']}</td>
+			<td colspan="2" style="width:33%">样品编号：{$ypbh}</td>
+		</tr>
+		<tr style="height:0.8cm;font-family:宋体;font-size:10.5pt">
+			<td colspan="2" >联系电话：{$detail_rs['tel']}</td>
+			<td colspan="3" >样品数量：{$detail_rs['yp_sl']}</td>
+			<td colspan="2" >检测项目：{$vid_nums}</td>
+		</tr>
+		<tr style="height:0.8cm;font-family:宋体;font-size:10.5pt">
+			<td colspan="2" >{$date_lx}：{$detail_rs['sj_date']}</td>
+			<td colspan="3" >检验类别：{$detail_rs['jy_lb']}</td>
+			<td colspan="2" >类别：{$yplb}</td>
+		</tr>	
+		<tr style="height:0.8cm;font-family:宋体;font-size:10.5pt">
+			<td colspan="7" >采样地点：{$ypmc}</td>
+		</tr>
+		<tr style="height:0.8cm;font-family:宋体;font-size:10.5pt">
+			<td colspan="7" >评价依据：{$detail_rs['pj_yj']}</td>
+		</tr>	
+	</tbody>
+</table>
+<table style="border-collapse:collapse; background-color: #FFFFFF; width:19cm;" align="center" cellpadding="6">
+	<tbody>
+		<tr class="firstRow">
+			<td style="word-break: break-all;font-family:宋体;font-size:12pt">检测结果：</td>
+		</tr>
+	</tbody>
+</table>
+<table style="background-color: #FFFFFF;border-collapse:collapse; width:19cm;" cellpadding="0" cellspacing="0" align="center" border="1" class="td_border">
+	<tr class="firstRow" align="center" style="font-family:宋体;font-size:12pt;">
+	<td>序号</td>
+	<td>检测项目</td>
+	<td colspan="2">计量单位</td>
+	<td>检测结果</td>
+	<td colspan="2">检测依据</td>
+	</tr>
+	$bgline
+</table>
+</div>

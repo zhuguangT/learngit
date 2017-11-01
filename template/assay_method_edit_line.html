@@ -1,0 +1,41 @@
+<!-- 是检验方法编辑的行模板 -->
+<tr>
+	<td >$j</td>
+	<td >
+    <!-- <td style="color: rgb(0, 0, 255);" title="点击修改方法" onclick="modi('./assay_method_edit_save.php?fid=$r[id]&item=upfa&lxid=$r[lxid]&xmid=$r[xmid]&value=',' $xmname 的化验方法','$r[fangfa]');"> $r[fangfa]--> 
+	<select id="value_C" class="chosen-select" onchange="location='./assay_method_edit_save.php?fid=$r[id]&item=upfa&lxid=$r[lxid]&xmid=$r[xmid]&xmname=$_GET[xmname]&value='+this.value;" style="width:35%;">$valuefangfa</select>
+	</td>
+	<td >
+    $valueyq  
+	</td>
+	<td >
+    $valueuser
+	</td>
+	<td>
+    $valueuser2
+	</td>
+	<!-- <td>
+    $dwline
+	</td> -->	
+	<!-- <td style="color: rgb(0, 0, 255);"  title="点击修改检出限" onclick="modi('./assay_method_edit_save.php?fid=$r[id]&item=upjcx&lxid=$r[lxid]&xmid=$r[xmid]&value=',' $r[fangfa] 检出限是','$r[jcx]') $mrjcx;"> 
+	$mrjcx  
+	</td> -->
+	<!-- <td><input name="jcx"  type="text" size="6"  value="$mrjcx" onchange="location='./assay_method_edit_save.php?fid=$r[id]&item=upjcx&lxid=$r[lxid]&xmid=$r[xmid]&xmname=$_GET[xmname]&value='+this.value;"/></td>
+    <td>$mrw1line</td>
+	<td>$mrw2line</td>
+	<td>$mrw3line</td>
+	<td>$mrw4line</td>
+	<td>$mrw5line</td> -->
+	<td >$mr</td>
+	<!-- <td >$act</td> -->
+    <td title="点击修改状态" >
+	 <!-- onclick="mr($r[mr],$r[act],$r[lxid],$r[xmid],$r[id],$_GET[xmname])" -->
+	<span onclick="gotoif('assay_method_edit_save.php?item=upact&mr=$r[mr]&act=$r[act]&lxid=$r[lxid]&xmid=$r[xmid]&fid=$r[id]&xmname=$_GET[xmname]&user1=$r[userid]&fangfa=$r[fangfa]','确定启用或弃用该方法吗？');" class="spanclick" style="color:#428BCA">$act</span>
+	</td>
+<td ><a href="assay_method_edit_xx.php?id=$r[id]&value_C=$_GET[xmname]">详细修改</a></td>
+	<!-- 备注暂时用不到
+	<td style="color: rgb(0, 0, 255);" onclick="modi('./assay_method_edit_save.php?fid=$r[id]&item=upbeizhu&lxid=$r[lxid]&xmid=$r[xmid]&value=',' $r[fangfa] 备注是','$r[beizhu]');">
+	$r[beizhu]
+	</td>
+	 -->
+</tr>

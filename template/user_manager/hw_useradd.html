@@ -1,0 +1,57 @@
+<link href='$rooturl/temp/time.css' rel="stylesheet" type="text/css">
+<script src='../js/jstime.js'></script>
+<h1 align="center">新建人员上岗项目</h1>
+<form method=post action="hw_useradd.php">
+<table class='table table-striped table-bordered table-hover center' style='width:600px;'>
+<tr align=center>
+<td>化验人员</td>
+<td>$user<input type='hidden' name='user'value='$uid'></td>
+<td>上岗项目</td>
+<td><!--<input type=text name="assay_value" size=10>-->
+	<select name='assay_value' class='chosen' style='width:200px;'>$value_C</select>
+</td>
+</tr>
+<tr align=center>
+<td colspan = 1>化验方法</td>
+<td colspan = 3><!--<input type=text size=45 name="method">-->
+	<select name='method' class='chosen'>$method</select>
+</td>
+</tr>
+<tr align=center>
+<td>上岗证过期日期</td>
+<td><input type=text size=10 class='date_input' name="expiry_date" id="expiry_date">
+	<!--<input class="date_input" style="height:26px;width:86px;vertical-align:middle;" title="在此处输入上岗证过期日期" name="expiry_date" maxlength="10"  oninput="this.value=this.value.replace(/[^\d\- :]/g,'');" type="text">-->
+</td>
+<td>上岗证过期提醒天数</td>
+<td><input type=text size=10 name="expiry_remind"></td>
+</tr>
+<tr align=center>
+<td colspan=4><input type = 'submit' class='btn btn-xs btn-primary' name='save' value='保存'>
+&nbsp;<input class='btn btn-xs btn-primary' type='button' value='返回' onclick="history.go(-1)"></td></tr>
+</table>
+<script>
+window.onload=function(){
+	var inp = document.getElementsByTagName("input");
+	zhuru(inp);
+}
+function zhuru(obj){
+	var len = obj.length -1;
+	for(var i=0;i<len;i++){
+		if(obj[i].type=='text'){
+			obj[i].onblur=function(){
+				var str = this.value;
+				str= str.replace(/'/g,"‘");
+				str= str.replace(/"/g,"“");
+				this.value = str.replace(/;/g,"；"); 
+			}
+		}
+	}
+}
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".chosen").chosen();
+	$(".date_input").date_input();
+});
+</script>
+</form>

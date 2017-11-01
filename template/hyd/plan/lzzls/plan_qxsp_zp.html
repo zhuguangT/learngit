@@ -1,0 +1,168 @@
+<!-- 气相色谱 -->
+<h1>气相色谱质谱法检验记录（Ⅰ）</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:11%"></td><td style="width:12%"></td><td style="width:10%"></td><td style="width:9%"></td>
+    <td style="width:11%"></td><td style="width:11%"></td><td style="width:12%"></td><td style="width:12%"></td>
+    <td style="width:12%"></td>
+  </tr>
+  <tr>
+    <td>检验项目</td>
+    <td colspan="3">{$arow['assay_element']}</td>
+    <td>检验地点</td>
+    <td colspan="4"><input type="text" class="inputc" name="td7"   value="{$arow['td7']}" /></td>
+  </tr>
+   <tr>
+    <td>检验方法</td>
+    <td colspan="3">{$arow['td1']}</td>
+    <td>检验依据</td>
+    <td colspan="4">{$arow['td2']}</td>
+  </tr>
+  <tr>
+    <td colspan="1">仪器型号</td>
+    <td colspan="3">{$arow['td5']}</td>
+    <td colspan="1">仪器编号</td>
+    <td colspan="4">{$arow['yq_bh']}</td>
+  </tr>
+  <tr class="auto"> 
+    <td colspan="9">Tekmar <input type="text" class="inputc" size="10" name="td27"   value="{$arow['td27']}" /> 吹扫捕集条件</td>
+  </tr>
+  <tr> 
+    <td colspan="2">吹扫时间min</td>
+    <td><input type=text name="btdata[1]" value="{$arow['btdata'][1]}" class=inputc ></td>
+    <td colspan="2">解析温度℃</td>
+    <td><input type=text name=btdata[2] value="{$arow['btdata'][2]}" class=inputc ></td>
+    <td colspan="2">解析时间min</td>
+    <td><input type=text name=btdata[15] value="{$arow['btdata'][15]}" class=inputc ></td>
+  </tr>
+  <tr> 
+    <td colspan="2">烘烤温度℃</td>
+    <td><input type=text name=btdata[3] value="{$arow['btdata'][3]}" class=inputc ></td>
+    <td colspan="2">烘烤时间min</td>
+    <td><input type=text name=btdata[4] value="{$arow['btdata'][4]}" class=inputc ></td>
+    <td colspan="2">干燥时间min</td>
+    <td><input type=text name=btdata[5] value="{$arow['btdata'][5]}" class=inputc ></td>
+  </tr>
+  <tr> 
+    <td colspan="2">传输线温度℃</td>
+    <td><input type=text name=btdata[6] value="{$arow['btdata'][6]}" class=inputc ></td>
+    <td colspan="2">阀温度℃</td>
+    <td><input type=text name=btdata[7] value="{$arow['btdata'][7]}" class=inputc ></td>
+    <td colspan="2">样品架温度℃</td>
+    <td><input type=text name=btdata[8] value="{$arow['btdata'][8]}" class=inputc ></td>
+  </tr>
+  <tr> 
+    <td colspan="2">解析预加热温度℃</td>
+    <td><input type=text name=btdata[9] value="{$arow['btdata'][9]}" class=inputc ></td>
+    <td colspan="2">吹扫准备温度℃</td>
+    <td><input type=text name=btdata[10] value="{$arow['btdata'][10]}" class=inputc ></td>
+    <td colspan="2">condensate准备温度℃</td>
+    <td><input type=text name=btdata[11] value="{$arow['btdata'][11]}" class=inputc ></td>
+  </tr>
+  <tr>
+    <td colspan="2">GC操作模式</td>
+    <td colspan="2"><input type=text name=btdata[12] value="{$arow['btdata'][12]}" class=inputc ></td>
+    <td colspan="2">样品瓶温度℃</td>
+    <td colspan="3"><input type=text name=btdata[13] value="{$arow['btdata'][13]}" class=inputc ></td>
+  </tr>
+  <tr> 
+    <td colspan="2">condensate Bake温度℃</td>
+    <td colspan="7"><input type=text name=btdata[14] value="{$arow['btdata'][14]}" class=inputc ></td>
+  </tr>
+  <tr class='auto'> 
+    <td colspan="9"><input type="text" class="inputc" name="td8"   value="{$arow['td8']}" /> 色谱条件</td>
+  </tr>
+  <tr> 
+    <td colspan="2">色谱柱型号及规格</td>
+    <td colspan="7"><input type="text" class="inputc" name="td9"   value="{$arow['td9']}" /></td>
+  </tr>
+  <tr> 
+    <td colspan="2">载气名称</td>
+    <td><input type="text" class="inputc" name="td10"   value="{$arow['td10']}" /></td>
+    <td colspan="2">进样模式</td>
+    <td><input type="text" class="inputc" name="td11"   value="{$arow['td11']}" /></td>
+    <td colspan="2">分流比</td>
+    <td><input type="text" class="inputc" name="td12"   value="{$arow['td12']}" /></td>
+  </tr>
+  <tr> 
+    <td colspan="2">进样口温度</td>
+    <td><input type="text" class="inputc" name="td13"   value="{$arow['td13']}" /></td>
+    <td colspan="2">气体流量</td>
+    <td><input type="text" class="inputc" name="td14"   value="{$arow['td14']}" /></td>
+    <td rowspan="2">炉温</td>
+    <td colspan="2" rowspan="2"><textarea name="td15" rows="4">{$arow['td15']}</textarea></td>
+  </tr>
+  <tr> 
+    <td colspan="2">传输线温度</td>
+    <td colspan="4"><input type="text" class="inputc" name="td16"   value="{$arow['td16']}" /></td>
+  </tr>
+  <tr class='auto'> 
+    <td colspan="9"><input type="text" class="inputc" name="td17"   value="{$arow['td17']}" />质谱条件</td>
+  </tr>
+  <tr> 
+    <td colspan="2">离子源类型</td>
+    <td><input type="text" class="inputc" name="td18"   value="{$arow['td18']}" /></td>
+    <td colspan="2">电离电压</td>
+    <td><input type="text" class="inputc" name="td19"   value="{$arow['td19']}" /></td>
+    <td colspan="2">离子源温度℃</td>
+    <td><input type="text" class="inputc" name="td20"   value="{$arow['td20']}" /></td>
+  </tr>
+  <tr> 
+    <td colspan="2">扫描范围</td>
+    <td><input type="text" class="inputc" name="td24"   value="{$arow['td24']}" /></td>
+    <td colspan="2">定量方法</td>
+    <td><input type="text" class="inputc" name="td25"   value="{$arow['td25']}" /></td>
+    <td colspan="2">四级杆温度℃</td>
+    <td><input type="text" class="inputc" name="td23"   value="{$arow['td23']}" /></td>
+  </tr>
+  <tr> 
+    <td colspan="2">扫描方式</td>
+    <td><input type="text" class="inputc" name="td21"   value="{$arow['td21']}" /></td>
+    <td colspan="2">溶剂延迟</td>
+    <td colspan="4"><input type="text" class="inputc" name="td22"   value="{$arow['td22']}" /></td>
+  </tr>
+  <input type="hidden" class="inputc" name="td26"   value="{$arow['td26']}" />
+  <tr>
+    <td>序号</td>
+    <td>样品仪器编号</td>
+    <td colspan="2">{$zhanming}</td>
+    <td>检测结果（mg/L）</td>
+    <td>空白结果（mg/L）</td>
+    <td>实际检验结果<br />（mg/L）</td>
+    <td>平均值<br />（mg/L）</td>
+    <td>质控结果<br />%</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="8"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+if('494'=="{$arow['vid']}"){
+  $("#assay_form_{$arow['id']} .hyd[name^='vd27[']").addClass("noinputc");
+}
+function zhi()
+{
+  var td26='';
+  for(var j=1;j<16;j++) {
+    var js="jss"+j;
+    var zhi=$("input[id="+js+"]").val()+'&';
+    td26 = td26+zhi;
+  }
+  $("input[name=td26]").val(td26)
+}
+var default_nsbs = '{$arow['td23']}';
+window.jsgs = function(){
+  var vd3=parseFloat(vs['vd3'])?parseFloat(vs['vd3']):0;
+  if( $.isNumeric(vs['vd27']) && $.isNumeric(vd3)){
+    vs['vd0']=accsub(parseFloat(vs['vd27']),vd3);
+  }
+  zhi();
+  if('μg/L'=='{$arow['unit']}')
+   {
+    vs['vd0'] =accMul(vs['vd0'],1000);
+   }
+}
+</script>

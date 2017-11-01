@@ -1,0 +1,65 @@
+<h1>电感耦合等离子体质谱仪原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:12%"></td><td style="width:12%"></td><td style="width:12%"></td>
+		<td style="width:12%"></td><td style="width:13%"></td><td style="width:13%"></td>
+		<td style="width:13%"></td><td style="width:13%"></td>
+	</tr>
+	<tr class="auto">
+		<td colspan="2" class="left">分析项目：{$arow['assay_element']}</td>
+		<td colspan="3" class="left">分析方法：{$arow['td2']}</td>
+		<td colspan="3" class="left">分析日期：<input type="text" name="td31"  value="{$arow['td31']}" class="inputl"></td>
+	</tr>
+	<tr>
+		<td colspan="2" class="left">样品类别：{$arow['water_type']}</td>
+		<td colspan="4" class="left">仪器型号及编号：{$arow['td4']} {$arow['yq_bh']}</td>
+		<td colspan="2" class="left">检出限：$arow['td3'] μg/L</td>
+	</tr>
+	<tr class="auto">
+		<td colspan="2" class="left">RF功率：<input type="text" name="td15" size="10" class="inputl" value="{$arow['td15']}"></td>
+		<td colspan="2" class="left">载气流量：<input type="text" name="td20" size="5" class="inputl" value="{$arow['td20']}" />L/min</td>
+		<td colspan="2" class="left">采样深度：<input type="text" name="td7" size="5" class="inputl" value="{$arow['td7']}"></td>
+		<td colspan="2" class="left">采样锥类：<input type="text" name="td8" size="5" class="inputl" value="{$arow['td8']}"></td>
+	</tr>
+
+	<tr class="auto">
+		<td colspan="3" class="left">标准工作液名称：<input type="text" name="td11" size="7" class="inputl" value="{$arow['td11']}"></td>
+		<td colspan="2" class="left">浓度：<input type="text" name="td9" size="5" class="inputl" value="{$arow['td9']}" />μg/L</td>
+		<td class="left">配置日期</td><td colspan="2"><input type="text"  class="inputl" size="20" name="td10" value="{$arow['td10']}" /></td>
+	</tr>
+
+	<tr class="auto">
+		<td colspan="6" class="left">
+		曲线编号：<input type="text" name="td12" size="8" class="inputl" value="{$arow['td12']}" />   
+		曲线上限：<input type="text" name="td14" size="8" class="inputl" value="{$arow['td14']}" /> μg/L  
+		率定日期：<input type="text" name="td13" size="8" class="inputl" value="{$arow['td13']}"></td>
+		<td colspan="2">计算公式：C（μg/L） = C<sub>0</sub>×f</td>
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td colspan="2">{$zhanming}</td>
+		<td>直读含量C<sub>0</sub><br />（μg/L）</td>
+		<td>稀释倍数f</td>
+		<td>含量C<br />（{$arow[‘unit’]}）</td>
+		<td>平均值<br />（{$arow[‘unit’]}）</td>
+		<td>相对偏差（％）/<br />加标回收率（％）</td>
+	</tr>
+	{$aline}
+	<tr class="auto">
+		<td colspan="3" class="left">加标量：<input type="text" name="td16" size="10" class="inputl" value="{$arow['td16']}">mL</td>
+		<td colspan="5" class="left">P%=<input type="text" name="td17" size="40" class="inputl" value="{$arow['td17']}" /></td>
+	</tr>
+	<tr>
+		<td>备注</td>
+		<td colspan="7"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	function jsgs() {
+		if($.isNumeric(vs['vd27'])&&$.isNumeric(vs['vd2']))
+			vs['vd0'] = accMul(vs['vd27'],vs['vd2']);
+		else
+			vs['vd0'] ='';
+	}
+</SCRIPT> 

@@ -1,0 +1,24 @@
+<style>
+td{overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+</style>
+<h3 class="header smaller center title">关联项目列表</h3>
+<div class="widget-box no-border">
+	<div class="widget-body">
+		<table class="table table-striped table-bordered table-hover center" style='min-width:635px;max-width:100%;'>
+			<tr>
+				<th style="min-width:30px">序号</th>
+				<th style="min-width:200px;max-width:330px;">相关项目</th>
+				<th style="min-width:100px">判断依据</th>
+				<th style="min-width:100px">备注</th>
+				<th style="min-width:100px">操作</th>
+			</tr>
+			$lines
+		</table>
+	</div>
+</div>
+<script type="text/javascript">
+$("button.value_set").click(function(){
+	var set_id	= $(this).attr("set_id");
+	location.href	= "relate_value_set.php?set_id="+set_id;
+});
+</script>

@@ -1,0 +1,27 @@
+<h1 align="center">{$r['wz_type']}{$_GET['action']}</h1>
+<form name="bzwz" action="bzwz.php" onsubmit="return(verify(this))">
+<input name="wz_id" type="hidden" value="$r[id]" />
+<input name="wz_type" type="hidden" value="$_GET[wz_type]" />
+<table class="single" style="width:18cm">
+<tr class="auto">
+	<td>{$r['wz_type']}编号: {$r['wz_bh']}</td>
+	<td>{$r['wz_type']}名称: {$r['wz_name']}</td>
+	<td>现有数量: {$r['amount']} {$r['unit']}</td>
+</tr>
+<tr class="auto">
+	<td>{$_GET['action']}日期: <input type="text" name="date" class="date_input" value="$date" /></td>
+	<td>{$_GET['action']}数量: <input type="number" name="数量" class="inputl" size="4"  value="" required placeholder="请输入正整数"/> {$r['unit']}</td>
+	<td>$_user:<select name="action_user"><option value="$user_">$user_</option> $useralllist</select></td>
+</tr>
+<tr align="center" class="auto"><td colspan="5">$_action </td></tr>
+</table>
+</form>
+<script type="text/javascript">
+$($.date_input .initialize);
+function verify(aForm){
+	if(!aForm._user.value.trim() || !aForm.数量.value.trim()){
+		alert('请将数据填写完整后再提交！');
+		return false;
+	}
+}
+</script>

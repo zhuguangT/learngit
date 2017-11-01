@@ -1,0 +1,26 @@
+<style type="text/css">
+a{cursor:pointer}
+</style>
+<script>
+	function del_add_bzyp(t,rec_id){
+		$.post('modi_add_bzyp.php?ajax=1',{rec_id:rec_id,action:'del_add_bzyp'},function(data){
+			if(data=='1'){
+				$(t).parent().parent().remove();
+			}
+		},'html');
+	}
+</script>
+<h3 class="header smaller center title">修改已添加标样</h3>
+<div class="widget-box no-border">
+<div class="widget-body">
+<table class="table table-striped table-bordered table-hover center" style='table-layout:fixed'>
+<tr align="center">
+<td width="20%">标样编号</td>
+<td width="20%">标样名称</td>
+<td width="40%">本次质控项目</td>
+<td width="20%">操作</td>
+</tr>
+{$modi_add_bzyp_lines}
+</table>
+</div>
+</div>

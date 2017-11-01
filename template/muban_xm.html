@@ -1,0 +1,224 @@
+<script> 
+ function in_array(stringToSearch, arrayToSearch) {
+
+	        for (s = 0; s <arrayToSearch.length; s++) {
+
+			      thisEntry = arrayToSearch[s].toString();
+
+			            if (thisEntry == stringToSearch) {
+
+					          return true;
+
+						        }
+
+			            }
+
+		      return false;
+		 
+		      }
+
+function quan1(th){
+	with(th.form){
+		var im=mbxm.value;
+		var t=im.split('*');
+		var t2=t[0];
+		var t3=t2.split(','); 
+		v=elements['vid[]'];
+		for(var i=0;i<v.length;i++) 
+		{
+
+			 if(in_array(v[i].value,t3))
+				 v[i].checked=true;
+			 else
+				 v[i].checked=false;
+		}
+    tj();
+    $("input[flag='mb']").each(function(){
+        $(this).parent("label").parent("td").css("background-color","");
+         $(this).parent("label").css("background-color","");
+    });
+
+    $("input[flag='mb']").each(function(){//把已经选中的项目高亮显示
+    if($(this).is(":checked")){
+      $(this).parent("label").parent("td").css("background-color","#C9F2D1");
+      $(this).parent("label").css("background-color","#C9F2D1");
+    }
+    });
+		    
+	}
+
+}
+
+  $("input[flag='mb']").each(function(){//把已经选中的项目取消高亮显示
+    if($(this).is(":checked")){
+      $(this).parent("label").parent("td").css("background-color","#C9F2D1");
+      $(this).parent("label").css("background-color","#C9F2D1");
+    }
+  });
+
+  $("label[flag='mb']").mouseover(function(){//鼠标移动到项目上或者选中的项目，高亮显示
+    $(this).parent("td").css({"background-color":"#C9F2D1"});
+    $(this).css({"background-color":"#C9F2D1"});
+  }).mouseout(function(){
+    if(!$(this).children("input").is(":checked")){
+      $(this).parent("td").css("background-color","");
+      $(this).css("background-color","");
+    }
+  });
+
+$("#checked_num1").html($("input[flag='mb']:checked").length);
+ function tj()
+ {
+    $("#checked_num1").html($("input[flag='mb']:checked").length);
+ }
+ $("input[flag='mb']").click(function(){
+    tj();
+  });
+
+function admb()//添加操作ajax
+{
+   xinxi = '';
+   $("input[flag='mb']").each(function(){//把已经选中的项目高亮显示
+      if($(this).is(":checked")){
+        xinxi += ','+$(this).val();
+      }
+    });
+   xinxi = xinxi.substring(1); 
+	$.post("$rooturl/site/muban_xm_save.php",{action:"addmb",newname:$('#newname').val(),vids:xinxi},
+   function(data){
+   	if(data=='0'){alert("添加时名称不能为空");}
+   	else{
+   		alert('添加成功！');
+   		eval("re = " + data + ";");
+   		shai(re.name,re.id);
+   		shai1(re.name,re.id);
+   		$('#newname').val('');
+   	}
+   });
+}
+function upmb()//修改操作ajax
+{
+  xinxi = '';
+   $("input[flag='mb']").each(function(){
+      if($(this).is(":checked")){
+        xinxi += ','+$(this).val();
+      }
+    });
+   xinxi = xinxi.substring(1); 
+	$.post("$rooturl/site/muban_xm_save.php",{action:"upmb",newname:$('#newname').val(),gai:$("#mbxm option:selected").html(),mbxm:$("#mbxm option:selected").val(),nxm:xinxi},
+   function(data){
+   		if(data == '发生未知错误'){alert('请选择您要修改的模板');}
+   		else{
+   			alert('修改成功');
+   			eval("re = " + data + ";");
+   			shai(re.name,re.id);
+   			shai1(re.name,re.id);
+   			$('#newname').val('');
+   		}
+   });
+}
+function delmb()//删除操作ajax
+{ 
+  name = $("#mbxm option:selected").html();
+  if(name != "----请选择----")
+  {
+    var a = confirm('是否确认删除?');
+    if(a){
+      $.post("$rooturl/site/muban_xm_save.php",{action:"del",gai:$("#mbxm option:selected").html(),mbxm:$("#mbxm option:selected").val()},
+        function(data){
+        if(data == 0){alert('删除失败');}
+          else{
+            shai(data);
+            shai1(data);
+            $("input[flag='mb']").each(function(){
+              $(this).parent("label").parent("td").css("background-color","");
+            });
+          }
+        });
+    }
+  }else{
+    alert('请选择您要删除的模板');
+  }
+		
+}
+function shai(m,id)//添加删除修改后的下拉菜单修改ajax
+{
+	$.post("$rooturl/site/muban_xm_save.php",{action:"shai",ming:m,mbid:id},
+   function(data1){
+   		a=$('#mbxm').children();
+		a.remove();
+		$('#mbxm').html(data1);
+		
+    if(id='')
+    {
+      a=$("#mbxm").children().first();
+    }else{
+      a=$("#mbxm option:selected");
+    }
+		quan1(a[0]);
+   });	
+}
+function shai1(m,id,flag='0')//添加删除修改后原页面的下拉菜单修改ajax
+{
+  	$.post("$rooturl/site/muban_xm_save.php",{action:"shai1",ming:m,mbid:id},
+    function(data2){
+     	b=$('#mb1').children();
+  		b.remove();
+  		$('#mb1').html(data2);
+  		b=$("#mb1 option:selected");
+  		quan(b[0]);
+      if(flag=='1')
+      {
+         guanbi();
+      }
+   });	
+}
+
+function tijiao()//保存操作的ajax
+{
+
+	$.post("$rooturl/site/muban_xm_save.php",$("#xmform").serializeArray(),
+   function(data){
+   		if(data){
+   			alert('保存成功！');
+   			shai($("#mbxm option:selected").html(),data);
+   			shai1($("#mbxm option:selected").html(),data,1);
+   		}
+   		else{alert('保存失败，请选择您要修改的模板');}	
+   });
+}
+
+</script>
+
+
+<form action="" method="post" id='xmform'>
+<br/>
+<span id="close" style="position: absolute; top: 0px; left: 745px; font-size:18px;">
+        <B><a href='javascript:guanbi()'>关闭</a></B>
+</span>
+<h3 class="header smaller center title">常用化验模板:化验项目的设定</h3>
+<table style='border:1px solid white!important;'>
+  <tr align="center">
+    <td style='border:1px solid white!important;'>选择模板:</td>
+    <td style='border:1px solid white!important;'><select name="mbxm" id='mbxm' onchange="quan1(this)">
+$mbxm
+ </select> 
+ <input type="hidden" name="mbname" value="$_GET[mbname]"></td>
+    <td style='border:1px solid white!important;'>添加新模板:</td>
+    <td style='border:1px solid white!important;'>名称:<input type="text" name="newname" id='newname' size="8"></td>
+    <td nowrap='nowrap' style='border:1px solid white!important;'><input  class="btn btn-xs btn-primary" type="button" value="添加" onclick="admb()">&nbsp;<input class="btn btn-xs btn-primary"  type="button" value="修改" onclick='upmb()'>&nbsp;<input class="btn btn-xs btn-primary" name="delemb" type="button" onclick="delmb()" value="删除"></td>
+  </tr>
+  <tr style='border:1px solid white!important;'>
+    <td colspan="5" align="center" style='border:1px solid white!important;'>
+      目前已经选择了 <span id="checked_num1" style='color:blue;'>0</span> 个项目
+    </td>
+  </tr>
+</table>
+<table>
+ $lines
+   <tr style='border:1px solid white!important;'>
+    <td colspan="5" align="center" style='border:1px solid white!important;'><br/><input class="btn btn-primary" name="bao" type="button" value="保存" onclick='tijiao()'></td>
+  </tr>
+</table>
+<br/>
+</form>

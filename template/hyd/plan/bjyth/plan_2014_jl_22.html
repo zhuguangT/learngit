@@ -1,0 +1,214 @@
+<h1>紫外分光光度法分析原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:4%"></td><td style="width:5%"></td><td style="width:7%"></td>
+		<td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td>
+		<td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td>
+		<td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td>
+		<td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="5">分析项目：{$arow['assay_element']}</td>
+		<td class="left" colspan="5">分析方法：{$arow['td2']}</td>
+		<td class="left" colspan="5">分析日期：<input class="date_Ymd" type="text" name="td31" value="{$arow['td31']}" /></td>
+	</tr>
+	<tr>
+		<td class="left" colspan="4">样品类别：{$arow['water_type']}</td>
+		<td class="left" colspan="6">仪器名称及编号：{$arow['td4']} {$arow['yq_bh']}</td>
+		<td class="left" colspan="5">检出限：{$arow['td3']} {$arow['unit']}</td>
+	</tr>
+	<tr>
+		<td class="left" colspan="4">
+			<span class="blue_a change_qx">曲线编号：</span>{$arow['sc_bh']}
+		</td>
+		<td class="noborder" colspan="5">
+			曲线参数： b={$arow['CB']}, a={$arow['CA']}
+		</td>
+		<td class="noborder" colspan="3">
+			<span class="blue_a view_qx">率定日期：</span>{$arow['sc_ldrq']}
+		</td>
+		<td class="left" colspan="3">调零方法：{$arow['tl_ff']}</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="5">曲线上限： {$arow['sc_upper_limit']} {$arow['sc_unit']}</td>
+		<td class="left" colspan="6">标准使用液浓度：{$arow['scby_nd']}</td>
+		<td class="left" colspan="4">定容体积V<sub>1</sub>：{$arow['dr_v']}<input type="hidden" name="td6" value="{$arow['dr_v']}" /> mL</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="4">比色皿规格：{$arow['bsm_gg']} cm</td>
+		<td class="left" colspan="2">波长：{$arow['bo_chang']} nm</td>
+		<td class="left" colspan="9">计算公式： C（mg/L）=<span id="_jsgs"></span></td>
+		<script type="text/javascript">
+			{
+				var sc_unit = '{$arow['sc_unit']}';
+				if(sc_unit.split('/').length == 2){
+					$("#_jsgs").html('[A-({$arow['CA']})]/({$arow['CB']})');
+				}else{
+					$("#_jsgs").html('[A-({$arow['CA']})]/({$arow['CB']}×V)');
+				}
+			}
+		</script>
+	</tr>
+	<tr >
+		<td rowspan="3">序号</td>
+		<td colspan="2" rowspan="3">{$zhanming}</td>
+		<td colspan="8">吸光度（A）</td>
+		<td rowspan="3">取样<br />体积<br />V（mL）</td>
+		<td rowspan="3">含量C<br /> （{$arow['unit']}）</td>
+		<td rowspan="3">平均值<br />（{$arow['unit']}）</td>
+		<td rowspan="3">相对<br />偏差<br />（％）</td>
+	</tr>
+	<tr >
+		<td colspan="3">220nm A<sub>1</sub></td>
+		<td colspan="3">275nm A<sub>2</sub></td>
+		<td rowspan="2" nowrap="">A<sub>1</sub>-2A<sub>2</sub><br /><sub>（1）</sub></td>
+		<td rowspan="2" nowrap="">A<sub>r</sub><br /><sub>（1）-（2）</sub></td>
+	</tr>
+	<tr >
+		<td>I</td>
+		<td>II</td>
+		<td>平均</td>
+		<td>I</td>
+		<td>II</td>
+		<td>平均</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td colspan="2" rowspan="2">空白实验</td>
+		<td>1</td>
+		<td><input type="text" name="td12" class="inputc" value="{$arow['td12']}" onblur="btgs()"></td>
+		<td><input type="text" name="td13" class="inputc" value="{$arow['td13']}" onblur="btgs()"></td>
+		<td><input type="text" name="td14" class="noinputc" value="{$arow['td14']}" /></td>
+		<td><input type="text" name="td15" class="inputc" value="{$arow['td15']}" onblur="btgs()"></td>
+		<td><input type="text" name="td16" class="inputc" value="{$arow['td16']}" onblur="btgs()"></td>
+		<td><input type="text" name="td17" class="noinputc" value="{$arow['td17']}" /></td>
+		<td>平均<br />（2）</td>
+		<td>相对<br />偏差</td>
+		<td class="left" colspan="4">加标量：<input style="width:auto" size="8" type="text" name="td26" class="inputc" value="{$arow['td26']}"> mL</td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td><input type="text" name="td18" class="inputc" value="{$arow['td18']}" onblur="btgs()"></td>
+		<td><input type="text" name="td19" class="inputc" value="{$arow['td19']}" onblur="btgs()"></td>
+		<td><input type="text" name="td20" class="noinputc" value="{$arow['td20']}" /></td>
+		<td><input type="text" name="td21" class="inputc" value="{$arow['td21']}" onblur="btgs()"></td>
+		<td><input type="text" name="td22" class="inputc" value="{$arow['td22']}" onblur="btgs()"></td>
+		<td><input type="text" name="td23" class="noinputc" value="{$arow['td23']}" /></td>
+		<td><input type="text" name="td24" class="noinputc" value="{$arow['td24']}" /></td>
+		<td><input type="text" name="td25" class="noinputc" value="{$arow['td25']}"></td>
+		<td class="left" colspan="4">P% = <input style="width:auto" size="8"  type="text" name="td27" class="inputc" value="{$arow['td27']}" ></td>
+	</tr>
+
+	<tr><td colspan="2">备注</td><td colspan="13"><textarea name="td30">{$arow['td30']}</textarea></td></tr>
+</table>
+<script type="text/javascript">
+//曲线溶液的单位，如果存在“/”，可以判断出该计算公式是按照浓度的曲线计算的，否则，是按照质量曲线计算
+var sc_unit = '{$arow['sc_unit']}';
+function jsgs(){
+	//运算函数在lib.js
+	//加 accAdd 减 accsub 乘 accMul 除 accDiv
+	if(sc_unit.split('/').length == 2){
+		var qy_v = 1;
+	}else{
+		//取样体积
+		var qy_v = parseFloat(vs['vd1']);
+	}
+	//定容体积
+	var ding_v = parseFloat('{$arow['dr_v']}');
+	//中间计算保留位数
+	var vd_split = String(vs['vd3']).split('.');
+	var diding_ws = (vd_split.length==2) ? vd_split[1].length : '';
+
+	if($.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4'])){
+		var A_1_1 = parseFloat(vs['vd3']);//A220 I
+		var A_1_2 = parseFloat(vs['vd4']);//A220 II
+		var A220  = accDiv(accAdd(A_1_1,A_1_2),2);
+		A220  = vs['vd5'] = (String(A220).split('.')[1].length>diding_ws) ? roundjs(A220,diding_ws+1) : A220;
+	}else{
+		vs['vd5'] = '';
+	}
+	if($.isNumeric(vs['vd6']) && $.isNumeric(vs['vd7'])){
+		var A_2_1 = parseFloat(vs['vd6']);//A275 I
+		var A_2_2 = parseFloat(vs['vd7']);//A275 II
+		var A275  = accDiv(accAdd(A_2_1,A_2_2),2);
+		A275  = vs['vd8'] = (String(A275).split('.')[1].length>diding_ws) ? roundjs(A275,diding_ws+1) : A275;
+	}else{
+		vs['vd8'] = '';
+	}
+	var Ab = $("input[name=td24]").val();//空白溶液的校正吸光度
+	if($.isNumeric(A220) && $.isNumeric(A275) && $.isNumeric(vs['vd1']) && $.isNumeric(ding_v)){
+		var f	= parseFloat(ding_v/vs['vd1']);//稀释倍数
+		var As	= vs['vd9'] = roundjs(accsub(A220,accMul(2,A275)),diding_ws+1);//As=A220-2*A275 标准溶液的校准吸光度
+		var Ar	= vs['vd10'] = roundjs(accsub(As,Ab),diding_ws+1);//Ar=As-Ab 标准溶液的校准吸光度 与 空白溶液的校正吸光度 的差
+		var CA	= parseFloat('{$arow['CA']}');
+		var CB	= parseFloat('{$arow['CB']}');
+		if($.isNumeric(CA) && $.isNumeric(CB)){
+			//计算公式 ρ=(Ar-a)*f/(b*V)
+			var han1  = parseFloat(accMul(accsub(Ar,CA),f));
+			var jie_g = parseFloat(accDiv(han1,accMul(qy_v,CB))).toFixed(5);
+			if(!isNaN(A275)){
+				vs['vd0'] = vs['_vd0']= jsws(jie_g);
+			}
+		}
+	}else{
+		vs['vd9']=vs['vd10']=vs['vd0']=vs['_vd0']='';
+	}
+}
+function btgs()
+{
+	var td12=$("input[name=td12]").val();
+	var td13=$("input[name=td13]").val();
+	var td15=$("input[name=td15]").val();
+	var td16=$("input[name=td16]").val();
+	var td18=$("input[name=td18]").val();
+	var td19=$("input[name=td19]").val();
+	var td21=$("input[name=td21]").val();
+	var td22=$("input[name=td22]").val();
+	if($.isNumeric(td12)&&parseInt(td12)!=td12){
+		ws=(td12.split("."))[1].length;
+	}else{
+		ws=0;
+	}
+	if($.isNumeric(td12)&&$.isNumeric(td13)){
+		var td14=roundjs(accDiv(accAdd(td12,td13),2),ws);
+	}else{
+		td14='';
+	}
+	if($.isNumeric(td15)&&$.isNumeric(td16)){
+		var td17=roundjs(accDiv(accAdd(td15,td16),2),ws);
+	}else{
+		td17='';
+	}
+	if($.isNumeric(td18)&&$.isNumeric(td19)){
+		var td20=roundjs(accDiv(accAdd(td18,td19),2),ws);
+	}else{
+		td20='';
+	}
+	if($.isNumeric(td21)&&$.isNumeric(td22)){
+		var td23=roundjs(accDiv(accAdd(td21,td22),2),ws);
+	}
+	else{
+		td23='';
+	}
+	var kb1=td14-(td17*2);
+	var kb2=td20-(td23*2);
+	if($.isNumeric(kb1)&&$.isNumeric(kb2)){
+		var td24=roundjs(accDiv(accAdd(kb1,kb2),2),ws);
+		var td25=roundjs((accsub(kb1,kb2)/accAdd(kb1,kb2)),2);
+	}
+	if($.isNumeric(td24)&&$.isNumeric(td25))
+	{
+		td24=td24;
+		td25=td25;
+	}else{
+		td14=td17=td20=td23=td24=td25='';
+	}
+	$("input[name=td14]").attr("value",td14);
+	$("input[name=td17]").attr("value",td17);
+	$("input[name=td20]").attr("value",td20);
+	$("input[name=td23]").attr("value",td23);
+	$("input[name=td24]").attr("value",td24);
+	$("input[name=td25]").attr("value",td25);
+}
+</script>

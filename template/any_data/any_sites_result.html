@@ -1,0 +1,280 @@
+<script> 
+//js判断一个变量是否在一个数组中
+ function in_array(stringToSearch, arrayToSearch) {
+	        for (s = 0; s <arrayToSearch.length; s++) {
+			      thisEntry = arrayToSearch[s].toString();
+			            if (thisEntry == stringToSearch) {
+					          return true;
+						        }
+			            }
+		      return false;
+}
+//点击站点或者取消勾选站点时判断是否要勾选批名
+function check_group(t){
+	var c=$(t).attr("class"); 
+	var c=parseInt(c);
+	var b=t.checked;
+	if(b){	
+		$('#'+c).prop('checked',true);
+	}
+	else{
+		var cl=$("input[class='"+c+"']:checked").length;
+		if(cl==0){
+			$("#"+c).prop('checked',false);
+		}
+	}
+}
+//选中或者取消所有站点
+function check_sites(t){
+	var id=t.id;
+	if(t.checked){
+		$('.'+id).prop("checked",true);
+	}else{
+		$('.'+id).prop("checked",false);
+	}
+}
+//根据任务类型、水样类型、批次名称查询数据
+function redirect() {
+	var	site_type=$("#site_type").val();
+	var	water_type=$("#water_type").val();
+	var	group_name=$("#group_name").val();
+	//var	tjcs=$("#tjcs").val();
+	var	tjcs	= '';
+	var set_id=$("#set_id").val();
+	var action=$("#action").val();
+	url = "?site_type="+site_type+'&water_type='+water_type+'&tjcs='+tjcs+'&set_id='+set_id+'&action='+action;
+	if( group_name.value != '' )
+		url += "&group_name="+group_name;
+location = url;
+}
+//form提交前验证
+function verify(aForm){
+	var sites_length=$("input[name='group_name[]']:checked").length;
+
+	if(!sites_length){
+		alert('请先选择站点！');
+		return false;
+	}
+	var begin_date=$("#begin_date").val();
+	var end_date=$("#end_date").val();
+	var a = /^(\d{4})-(\d{2})-(\d{2})$/;
+	var r = a.test(begin_date);
+	if($("#begin_date").length>0&&$("#end_data").length>0){
+		
+		if(begin_date==''||begin_date==null){
+			alert('开始时间不能为空！');
+			return false;
+		}
+		if(end_date==''||end_date==null){
+			alert('终止时间不能为空！');
+			return false;
+		}
+		if(r==false){
+			alert('开始时间格式不对！');
+			return false; 
+		}
+		var r1 = a.test(end_date);
+		if(r1==false){
+			alert('终止时间格式不对！');
+			return false; 
+		}
+		if(end_date<begin_date){
+			alert('终止时间不能小于开始时间！');
+			return false;
+		}
+	}
+    with(aForm){
+        vid=elements['vid[]'];
+        var vid_count=0;
+        for(i=0;i<vid.length;i++) if(vid[i].checked) vid_count++;
+		if(!vid_count){
+			if(confirm("请先选择项目！")){
+				return false;
+			}else{
+				return false;
+			}
+		}
+    }
+}
+//项目的全选或者取消全选
+function qx(aButton,aItem){
+    with(aButton.form){
+        var v=$("input[name='"+aItem+"']");
+		if(aItem=='alone_sites[]'){
+			var v2=$("input[name='group_name[]']");
+
+			for(i=0;i<v2.length;i++){
+				v2[i].checked=(aButton.value!='全选') ? false :true;
+				//获得目前批次的对象
+				var v3=$("input[name='alone_sites[]']");
+				for(j=0;j<v3.length;j++){
+					v3[j].checked=(aButton.value!='全选') ? false :true;
+				}
+			}
+			aButton.value=(aButton.value=='全选') ? '取消全选' : '全选' ;
+		}else{
+			for(i=0;i<v.length;i++) {
+				v[i].checked=(aButton.value!='项目全选') ? false :true;
+			}
+			aButton.value=(aButton.value=='项目全选') ? '取消全选' : '项目全选' ;
+		}
+    }
+	
+}
+//改变模板时ajax更新数据库
+function change_mb(t){
+	var mb_value=t.value;
+	$.get('any_sites_result.php?ajax=1',{mb_value:mb_value},function(data){
+		$("#col_max").val(data.col_max);
+		$("#row_max").val(data.row_max);
+	},'json');
+}
+//改变成果表参数时ajax更新数据库
+function change_bt_cs(t){
+	var btcs=$("input[name='cgb_bt_cs[]']:checked");
+	var len=btcs.length;
+	var arr=[];
+	for(var i=0;i<len;i++){
+		arr[i]=btcs[i].value;
+	}
+	$.post('any_sites_result.php?ajax=1',{bt_cs_arr:arr},function(data){
+	},'html');
+}
+function quan(th){
+	with(th.form){ 
+		var im=xmmb.value;
+		var t=im.split(",");
+		var	v=elements['vid[]'];
+		for(var i=0;i<v.length;i++) 
+		{
+			if(in_array(v[i].value,t)){
+				v[i].checked=true;
+			}else{
+				v[i].checked=false;
+			}
+		}   
+	}
+}
+//模板设定
+function gm(){
+	jie = $("#mb1 option:selected").val();
+	ming = $("#mb1 option:selected").html();
+	if(ming == '----请选择----')
+	{
+		jie = $("#mb1 option:selected").next().val();
+		ming = $("#mb1 option:selected").next().html();
+	}
+	$('.modal-content').load('$rooturl/site/muban_xm.php',{"mbname":ming,"xm":jie,"ajax":"1",'fa':'1'});
+	$('body').css("overflow","hidden")
+	$("#cover").show();
+}
+//关闭弹出层
+function guanbi(){
+	$('body').css("overflow","auto")
+	$("#cover").hide();
+}
+//保存行列
+function save_hl(t){
+	var col_max=$("#col_max").val();
+	var row_max=$("#row_max").val();
+	var cgb_mb=$("input[name='cgb_mb']:checked").val();
+	$.get('any_sites_result.php?ajax=1',{cgb_mb:cgb_mb,col_max:col_max,row_max:row_max},function(data){
+	},'html');
+}
+function abs(){
+	$('#bz_list').show();
+}
+</script>
+<style type="text/css">
+	.s_float{display:block;margin-left:15px;float:left}
+	.pc_css{font-size:14px;font-weight:bold;}
+</style>
+<form  action="tjbg_cgmonth_bg.php?ajax=1" method="post" onsubmit="return(verify(this))" target="_blank">
+<input type="hidden" name="set_id" id="set_id" value="{$_GET[set_id]}">
+<input type="hidden" name="action" id="action" value="{$_GET[action]}">
+{$month_type}
+<h3 class="header smaller center title">任意站点任意项目任意时间段成果输出</h3>
+<div class="widget-box no-border">
+  <div class="widget-header header-color-blue4 center">
+	<div class="widget-toolbar">
+    任务类型: <select id="site_type" name="site_type" onchange="redirect()">{$site_type_str}</select>
+    水样类型: <select id="water_type" name="water_type" onchange="redirect()"><option value="全部" selected="selected">全部</option>{$lxlist}</select>
+    站点分批: <select id="group_name" name="group_name" onchange="redirect()" class="select2"><option value="">请选择</option>{$group_name_str}</select>  
+	<!-- 统计参数: <select id="tjcs" name="tjcs" onchange="redirect()"><option value="">请选择</option>{$tjcs_str}</select> -->
+	</div>
+  </div>
+  <div class="widget-body">
+<table  style="margin-top:20px" class="table table-striped table-bordered table-hover">
+<tr>
+    <td colspan="{$line_nums}" align='center'>
+        选择站点 <input type="button" class="btn btn-xs btn-primary" value="全选" onclick="qx(this,'alone_sites[]')">
+    </td>
+</tr>
+$group_site_str
+
+<tr>
+    <td colspan="{$line_nums}" align='center'>
+       {$date_str}
+    </td>
+</tr>
+<tr>
+    <td colspan="{$line_nums}" align='center'>
+       项目选择模板：
+	<select class="select2" onchange="quan(this)" name="xmmb" id='mb1'>
+		<option value="$xm_values">----请选择----</option>
+		$xmmb_options
+	</select>
+	<button type="button" class="btn btn-xs btn-primary" onclick='gm()' >项目选择模板设定</button> 
+		项目排序模板：
+	<select class="select2" name="xm_px_id" id='xm_px_id'>
+		<option value="0">----请选择----</option>
+		{$option_px_mb}
+	</select>
+	<input type="button" value="项目全选" class="btn btn-xs btn-primary" onclick="qx(this,'vid[]')">
+    </td>
+</tr>
+$vid_str
+</table>
+<br />
+<table style="margin-top:20px" class="table table-striped table-bordered table-hover center">
+<tr align="left">
+<td align="center">成果表基础信息</td>
+<td >标题名称：<textarea type="text" name="cgb_title" id="cgb_title" style="width:60%;height:50px"></textarea></td><td>监测部门：<input type="text" name="jc_bm" id="jc_bm" list="jc_bm_list" style="width:300px" value="{$jc_bm}">
+<datalist id="jc_bm_list">
+{$list_option}
+</datalist>
+</td>
+</tr>
+<tr>
+<td width="20%">成果表模板类型</td>
+<td align='left' colspan="2"><span style='width:80px;text-align:center' class='s_float'><input type='radio' name='cgb_mb' value='1'  onclick="change_mb(this)"/>项目横表</span><span class='s_float' style='width:80px;text-align:center'><input type='radio' name='cgb_mb' value='2' checked="checked" onclick="change_mb(this)"/>项目竖表</span></td>
+</tr>
+<tr>
+	<td>设置行列</td><td align="left" colspan="2">每页站点数：<input type="text" name="col_max" value="{$col_max}" style="width:45px" id="col_max" onblur="save_hl(this)" onafterpaste="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')">&nbsp;&nbsp;每页项目数：<input type="text" name="row_max" value="{$row_max}" style="width:45px" id="row_max" onblur="save_hl(this)" onafterpaste="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')"></td>
+</tr>
+</table>
+{$submit_str}
+</div>
+</div>
+</form>
+<!-- 弹出层 -->
+		<div id="cover" class="modal" role="dialog" style='background-color:rgba(15, 15, 15, 0.7)!important;'>
+			<div class="modal-dialog" style='width:800px;'>
+				<div id="con" class='modal-content' style='width:800px;'></div>
+			</div>
+		</div>
+<!-- 弹出层 -->
+<script type="text/javascript">
+//可输入搜索条件的下拉列表
+$(document).ready(function(){ $(".select2").select2();});
+$('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+	$(this).prev().focus();});
+$('.timepicker1').timepicker({
+	minuteStep: 1,
+	showSeconds: true,
+	showMeridian: false
+}).next().on(ace.click_event, function(){
+	$(this).prev().focus();
+});
+</script>
+

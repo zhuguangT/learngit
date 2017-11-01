@@ -1,0 +1,58 @@
+<script type="text/javascript">
+	function show_hyd(tid){
+		if(tid.indexOf(":") > -1 ){
+			var tid_arr	= tid.split(":");
+			var cyd_id	= tid_arr[1];
+			window.open("$rooturl/cy/cy_record.php?cyd_id="+cyd_id);
+		}else{
+			window.open("$rooturl/huayan/assay_form.php?tid="+tid); 
+		}
+	}
+</script>
+<div style="background-color: #FFFFFF; width:20cm;margin:0 auto;" >
+<table style="border-color:#000;border-collapse:collapse;margin:0 auto;width:19cm;" align="center">
+	<tbody>
+		<tr><td colspan="2" style="text-align:right;word-break: break-all;font-family:楷体; font-size: 16pt;">报告编号：{$bgbh}</td></tr>
+		<tr class="firstRow" style="font-family:楷体;font-size:29pt;text-align:center;line-height:2em;">
+			<td style="word-break: break-all;padding-top:50px;" colspan="2">国家城市供水水质监测网<br/></td>
+		</tr>
+		<tr align="center" style="height:110px">
+			<td style="font-family: 黑体; font-size: 16pt; word-break: break-all;" colspan="2"></td>
+		</tr>
+		<tr class="firstRow" style="font-family:楷体;font-size:40pt;text-align:center;line-height:2em;">
+			<td style="word-break: break-all;" colspan="2">兰&nbsp;州&nbsp;监&nbsp;测&nbsp;站<br/>检&nbsp;&nbsp;测&nbsp;&nbsp;报&nbsp;&nbsp;告</td>
+		</tr>
+		<tr align="center" style="height:280px">
+			<td style="font-family: 黑体; font-size: 16pt; word-break: break-all;" colspan="2"></td>
+		</tr>
+		<tr style="line-height:2em;font-family:楷体;font-size:16pt;">
+			<td style="word-break: break-all;" align="right" width="40%">样品编号:</td>
+			<td style="word-break: break-all;line-height:1em;">{$ypbh}</td>
+		</tr>
+		<tr style="line-height:2em;font-family:楷体;font-size:16pt;">
+			<td style="word-break: break-all;" align="right">样品名称:</td>
+			<td style="word-break: break-all;">{$ypmc}<br/></td>
+		</tr>
+		<tr style="line-height:2em;font-family:楷体;font-size:16pt;">
+			<td style="word-break: break-all;" align="right" width="40%">委托单位:</td>
+			<td style="word-break: break-all;line-height:1em;">{$wtdw}</td>
+		</tr>
+		<tr style="line-height:2em;font-family:楷体;font-size:16pt;">
+			<td style="word-break: break-all;" align="right">报告日期:</td>
+			<td style="word-break: break-all;">$bgrq<br/></td>
+		</tr>
+		<tr style="line-height:2em;font-family:楷体;font-size:16pt;">
+			<td style="word-break: break-all;" align="right">&nbsp;&nbsp;</td>
+			<td style="word-break: break-all;">&nbsp;&nbsp;<br/></td>
+		</tr>
+		<tr style="line-height:2em;font-family:楷体;font-size:16pt;">
+			<td style="word-break: break-all;" align="right">&nbsp;&nbsp;</td>
+			<td style="word-break: break-all;">&nbsp;&nbsp;<br/></td>
+		</tr>
+		<tr align="center" style="height:3px">
+			<td style="font-family:楷体; font-size: 16pt; word-break: break-all;" colspan="2"></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+<div style="height:3px;width:19cm"></div>

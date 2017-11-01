@@ -1,0 +1,235 @@
+<link rel="stylesheet" href="$rooturl/css/boxy.css" type="text/css" />
+<script type="text/javascript" src="$rooturl/js/jquery-1.2.6.pack.js"></script>
+<script type="text/javascript" src="$rooturl/js/jquery.boxy.js"></script>
+<script language="javascript" src="$rooturl/js/lims/jquery.js"></script>
+
+<script language="javascript" src="$rooturl/js/lims/jquery.jBox-2.3.min.js"></script>
+<script language="javascript" src="$rooturl/js/lims/jquery.tools.min.js"></script>
+<script language="javascript" src="$rooturl/js/boxy.js"></script>
+<script language="javascript" src="$rooturl/js/lims/jquerysession.js"></script>
+<script language="JavaScript" type="text/JavaScript">
+$(function(){
+	$(".boxy").boxy();
+});
+
+</script>
+ <style type="text/css">
+.table-striped th{min-width: 40px;}
+.table-striped td{min-width: 40px;}   
+li {list-style-type:none;}  
+.mask{position: absolute;
+				top: 0px; 
+				left: 0px; 
+				filter: alpha(opacity=50);
+				-moz-opacity:0.5;   
+				opacity:0.5; 
+				background-color: #ffffff;
+				z-index: 2; 
+				display: none; border:}
+span.bar_code{ cursor: pointer;}
+span.bar_code img{ width:13px; height: 13px;}
+td{white-space: nowrap;}/*td里的文字不换行*/
+td.bar{display: none;}
+</style>
+<script language='javascript' src="$rooturl/js/jquery.date_input.js"></script>
+<link rel="stylesheet" href="$rooturl/js/date_input.css" type="text/css">
+<script type="text/javascript">
+$(document).ready(function(){
+	//加载页面时，默认根据session中存储的搜索字符串继续搜索页面信息
+	var search_content	= $.session.get('input_search');
+	if(search_content){
+		$("#search").val(search_content).keyup();
+	}
+	$($.date_input .initialize);
+	$("span.bar_code").next("input").each(function(){
+		$(this).hide();
+	});
+	$("span.bar_code").click(function(){
+		$(this).hide();
+		$(this).next("input").show();
+		$(this).next("input").focus();
+		$(this).next("input").blur(function(){
+			$(this).hide();
+			$(this).prev("span.bar_code").html($(this).val()+'<img src="images/b_edit.png">');
+			$(this).prev("span.bar_code").show();
+		});
+	});
+});
+
+function select_all(aButton){
+		var forms = aButton.form;
+		for(j=0;j<forms.length;j++){
+			with(forms.elements[j]){
+				if(type=='checkbox' && name=="cid[]"){
+					checked=(aButton.value=='全选')?true:false;
+				}
+			}
+		}
+		aButton.value=(aButton.value=='全选')?'取消全选' : '全选';
+}
+
+function redirect( cy_date ){
+		url = "bg_liebiao.php?cy_date=" + cy_date + "&site_type=" + v('site_type')+"&print_status="+v('print_status');
+		url += "&year=" + v( 'year') + "&month=" + v( 'month' );
+		location = url;
+}
+function get_cy_date() {
+		return  v('year') + "-" + v('month')
+}
+function change_bg_mb(rec_id,t){
+	if(t.value!=''&&t.value!=null&&rec_id!=''&&rec_id!=null){
+		$.post("change_bg_mb.php?ajax=1",{rec_id:rec_id,te_id:t.value},function(data){
+			if(data=='1'){
+				alert("更新成功！");
+			}else{
+				alert("更新失败,请联系系统管理员！");
+				return false;
+			}
+		},'html');
+	}else{
+		alert("无法更改模板,请联系系统管理员！");
+		return false;
+	}
+}
+</script>
+<div style="min-height:500px">
+<form >
+<h3 class="header smaller center title">$title</h3>
+<div   class="widget-header header-color-blue4 center" style="line-height:38px;">
+	任务性质:<select name="site_type" id="site_type" onchange="redirect(get_cy_date())">{$site_type_list}</select>
+	年份选择:<select name="year" id="year" onchange="redirect(get_cy_date())">{$year_list} </select>
+	月份选择:<select name="month" id="month" onchange="redirect(get_cy_date())">{$month_list}</select>
+	打印状态:<select name="print_status" id="print_status" onchange="redirect(get_cy_date())">{$print_list}</select>
+	<input type="text" name="" value="" id='search' onkeyup="input_search(this);" placeholder="请输入要搜索的内容!" />
+</div>
+</form>
+<table  width='88%'  class="table table-striped table-bordered table-hover center bg_list" >
+<thead>
+<tr>
+	<th>序号</th>
+	<th>批次</th>
+	<th class='hide' bar='yes'>搜索内容</th>
+	<th>采样单号</th>
+	<th>采样日期</th>
+	<th>超标项目</th>
+	<th>报告打印进度</th>
+	<th>化验项目进度</th>
+	<th width ="20%">操作</th>
+</tr>
+</thead>
+<tbody>
+$lines
+</tbody>
+</table>
+
+</div>
+<script type="text/javascript">
+//搜索(支持空格多项搜索)，应当排除按钮里的文字
+function input_search(search_input){
+	var search_val	= search_input.value;
+	$.session.set('input_search', search_val);
+	//不能搜索特殊字符
+	var bbb	= /[()<>.+*?^$|\\\[\]]/;
+	if(bbb.test(search_val)){
+		alert('不能输入一下特殊符号:\\r\\n()<>.+*?^$|\[]');//+bbb.source
+		search_input.value=search_val.substr(0,-1);
+		search_input.focus();
+		return false;
+	}
+	//去除首尾的空格和中间多余的空格
+	search_val	= search_val.replace(/(^\s*)|(\s*$)/g, "").replace(/ {2,}/g,' ');
+	//清除掉为了突出提醒而增加的html标签
+	$("table.bg_list tbody td.js_add").each(function(i){
+		var old_html	= $(this).html().replace(/(<b class="js_add" style="color:red;">(.+?)<\/b>)/g,'$2');
+		$(this).html(old_html).removeClass('js_add');
+		$("table.bg_list td[bar='yes'] span").hide();
+	});
+	//搜索内容不为空时再进行搜索
+	if(search_val){
+		var search_arr	= search_val.split(' ');
+		//定义搜索内容
+		if(search_arr.length >1){
+			var jquery_search	= ":contains("+search_arr.join("):contains(")+")";
+		}else{
+			var jquery_search	= ":contains("+search_val+")";
+		}
+		//检查是否搜索到样品编号或报告编号
+		var bar_td  = $("table.bg_list td[bar='yes']"+jquery_search).length;
+		if(bar_td>0){
+			$("table.bg_list td[bar='yes'],table.bg_list th[bar='yes']").removeClass('hide').show();
+			$("table.bg_list td[bar='yes'] span"+jquery_search).removeClass('hide').show();
+		}else{
+			$("table.bg_list td[bar='yes'],table.bg_list th[bar='yes']").hide();
+		}
+		//逐行开始检索
+		$("table.bg_list tbody tr").each(function(i){
+			//查找是否有包含搜索内容的td，包含内容的将tr显示，没有的隐藏
+			var find_td  = $(this).find("td[search!='no_search']"+jquery_search);
+			if(find_td.length > 0){
+				find_td.parent("tr").show();
+				//对每个td里的搜索内容 变红加粗显示
+				$(this).find("td[search!='no_search']"+jquery_search).each(function(i){
+					$(this).addClass('js_add');//增加一个class，去掉该标签时容易识别
+					//for (var w = 0; w < search_arr.length; w++) {
+						setHeightKeyWord($(this),search_val);
+					//}
+				});
+			}else{
+				$(this).hide();
+			}
+		});
+	}else{
+		$("table.bg_list tbody tr").show();
+		$("table.bg_list td[bar='yes'],table.bg_list th[bar='yes']").hide();
+	}
+}
+//搜索到的东西变个颜色突出显示
+function setHeightKeyWord(id, keyword) {
+	if (keyword == "" || keyword==' ')
+		return;
+	var tempHTML = id.html();
+	//把html标签特殊标记出来，防止后面匹配时匹配到
+	var htmlReg = new RegExp("\<.*?\>", "i");
+	var arrA = new Array();
+	for (var i = 0; true; i++) {
+		var m = htmlReg.exec(tempHTML);
+		if (m) {
+			arrA[i] = m;
+		}else {
+			break;
+		}
+		tempHTML = tempHTML.replace(m, "&#&%" + i + "%&#&");
+	}
+	//根据传入参数决定将搜索到的内容如何处理
+	var replaceText = "<b class='js_add' style='color:red;'>$1</b>";
+	//可以根据空格进行多次并列搜索
+	var arrayWord = keyword.split(' ');
+	for (var w = 0; w < arrayWord.length; w++) {
+		var ts_zf	= arrayWord[w].replace(/[(){}.+*?^$|\\\[\]]/g, "\\$&");
+		//将js的特殊字符转义一下,并注意注意不要匹配到特殊标记的 html标签//bug 特殊字符的转义失败导致不能搜索特殊字符
+		var r 		= new RegExp("("+ts_zf+")", "ig");
+		//解决 纯数字搜索时会匹配到特殊标记的html标签的bug
+		var str_key	= tempHTML.match(/&#&%[0-9]+?%&#&/g);//记录下所有特殊标记的html标签
+		if(!isNaN(arrayWord[w]) && str_key){//如果搜索的纯数字走这里
+			var str_arr = tempHTML.split(/&#&%[0-9]+?%&#&/);//根据特殊html标记 将字符串分解成数组
+			var finist_str	= '';
+			for (var i = 0; i<str_arr.length; i++) {
+				finist_str += str_arr[i].replace(r, replaceText);
+				if(str_key[i]){
+					finist_str += str_key[i];
+				}
+			}
+			tempHTML	= finist_str;
+		}else{
+			var r = new RegExp("((?!&#&%)" + ts_zf + "(?!%&#&))", "ig");
+			tempHTML = tempHTML.replace(r, replaceText);
+		}
+	}
+	//把被搜索内容中转换的html标签恢复
+	for (var i = 0; i < arrA.length; i++) {
+		tempHTML = tempHTML.replace("&#&%" + i + "%&#&", arrA[i]);
+	}
+	//将改变后的html写回原标签
+	id.html(tempHTML);
+} 
+</script>

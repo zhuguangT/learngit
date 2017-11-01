@@ -1,0 +1,67 @@
+<div id="sc_get_bzry_box" class="modal fade" data-backdrop="static">
+  <div class="modal-content" style="width:800px;margin:0 auto;overflow:auto;">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h3>选择项目/选择标液</h3>
+	</div>
+	<div class="modal-body">
+		<table style="width:100%">
+		  <tr>
+			<td class="left">
+				选择项目：{echo PublicApp::get_select('vid',$xm_list,true,false);}
+				{php global $global;}
+				{if 'qdzls' != $global['hyd']['danwei']}
+				取用物质来源：{echo PublicApp::get_select('wz_type',array('1'=>'标准溶液','2'=>'自配溶液','3'=>'标定标液'),true,false);}
+				{else}<input type="hidden" name="wz_type" value="1">{/if}
+			</td>
+			<td style="text-align:right">
+			  {if '1'==$_GET['sc_type']}
+			  <label>
+				<input class="ace" type="radio" checked name="table_name" value="{$sc_plan[0]}" />
+				<span class="lbl">表格一{$_GET['sc_type']}</span>
+			  </label>
+			  <label>
+				<input class="ace" type="radio" name="table_name" value="{$sc_plan[1]}" />
+				<span class="lbl">表格二(总氮[两条波长])</span>
+			  </label>
+			  {else}
+			  <input type="radio" checked name="table_name" value="{$sc_plan[2]}" />
+			  <span class="lbl">表格三(仪器曲线)</span>
+			  {/if}
+			</td>
+		  </tr>
+		</table>
+		<div style="clear:both"></div>
+		<div class="select_bzry_div widget-box no-border">
+			<div class="widget-body">
+				<table class="table table-striped table-bordered table-hover center" style="table-layout:fixed"></table>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn btn-primary btn-sm sub_bzry">确定</a>
+		<a href="#" class="btn btn-sm" data-dismiss="modal">取消</a>
+	</div>
+  </div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var sc_gb_box = $("#sc_get_bzry_box");
+		sc_gb_box.find("select[name=vid],[name=wz_type]").unbind("change").change(function(){
+			var vid = sc_gb_box.FN("vid","s").val();
+			var wz_type = sc_gb_box.find("[name=wz_type]").val();
+			//总氮使用表格二
+			if('121'==vid.toString()){
+				sc_gb_box.find("input[type=radio][name=table_name]:eq(1)").prop("checked",true);
+			}else{
+				sc_gb_box.find("input[type=radio][name=table_name]:eq(0)").prop("checked",true);
+			}
+			$.get('{$rooturl}/huayan/ahlims.php?app=quxian&act=getBzryList', {vid:vid,wz_type:wz_type,ajax:1},
+				function(data){
+					sc_gb_box.find(".select_bzry_div table").html(data);
+				}
+			);
+		});
+		sc_gb_box.FN("vid","s").trigger("change");
+	});
+</script>

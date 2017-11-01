@@ -1,0 +1,108 @@
+<h1>{$arow['assay_element']}分析原始记录表</h1>
+{$hjtj_bt}
+<table  class="single">
+  <tr class="noborder">
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+  </tr>
+  <tr>
+  	<td colspan="2">检测项目</td>
+  	<td colspan="3">{$arow['assay_element']}</td>
+  	<td colspan="1">检测依据</td>
+  	<td colspan="2">{$arow['td2']}</td>
+  	<td colspan="1">检出限({$arow['unit']})</td>
+  	<td colspan="1">{$arow['td3']}</td>
+    <td colspan="1">取样体积(mL)</td>
+    <td colspan="1"><input type="text" name="td6" value="{$arow['td6']}" /></td>
+  </tr>
+  <tr>
+	  <td colspan="2">仪器名称</td>
+	  <td colspan="3"><input type="text" name="td4" value="{$arow['td4']}" /></td>
+    <td colspan="1">仪器型号</td>
+    <td colspan="2"><input type="text" name="td5" value="{$arow['td5']}" /></td> 
+    <td colspan="1">选用波长(nm)</td>
+    <td colspan="3"><input type="text" name="td8" value="{$arow['td8']}" /></td>
+  </tr>
+  <tr>
+  	<td colspan="2" >标准溶液名称</td>
+  	<td colspan="3"><input type="text" name='td10' value="{$arow['td10']}" ></td> 
+  	<td>标准溶液浓度(mg/L)</td>
+  	<td colspan="2"><input type="text" name="td11"   value="{$arow['td11']}"/></td> 
+    <td colspan="1">比色皿规格(cm)</td>
+    <td colspan="1"><input type="text" name="td9" value="{$arow['td9']}" /></td>
+    <td colspan="1">空白值(A<sub>b</sub>=A<sub>b220</sub>-2A<sub>b275</sub>)</td>
+    <td colspan="1"><input type="text" id="kbz"  name="td29" value="{$arow['td29']}" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" onclick='qx();' class="wei_a" title="点击选择曲线">回归方程</td>
+    <td colspan="6">
+      {$arow['quxian']}
+      &nbsp;&nbsp;&nbsp;&nbsp;截距a={$arow['CA']} 斜率b={$arow['CB']}
+      <input type="hidden" name = 'CA' id='qa' value="{$arow['CA']}" />
+      <input type="hidden" name = 'CB' id='qb' value="{$arow['CB']}" /></td>
+    <td colspan="2" class="wei_a" onclick="qx('{$arow['scid']}')" title="查看曲线">标准曲线绘制日期</td>
+    <td colspan="2">{$arow['sc_ldrq']}</td>
+  </tr>
+  <tr>
+    <td colspan="1" rowspan="2" width="50" >序号</td>
+    <td colspan="2" rowspan="2" width="150">站名</td>
+    <td colspan="2" rowspan="2">取样体积V(mL)</td>
+    <td colspan="4">吸光度</td>
+    <td colspan="1" rowspan="2" width='100'>含量({$arow['unit']})</td>
+    <td colspan="1" rowspan="2">平均值/理论浓度({$arow['unit']})</td>
+    <td colspan="1" rowspan="2">相对偏差/加标回收率(%)</td>
+    </tr>
+  <tr>
+    <td width='100'>A<sub>220</sub></td>
+    <td width='100'>A<sub>275</sub></td>
+    <td width='100'>A<sub>s</sub><br />(A<sub>s220</sub>-2A<sub>s275</sub>)</td>
+    <td width='100'>A<sub>r</sub>=A<sub>s</sub>-A<sub>b</sub></td>
+  </tr>
+  {$aline}
+  <tr>
+  	<td>备注</td>
+  	<td colspan="11"><textarea name="td30" >{$arow['td30']}</textarea></td>
+  </tr>
+  
+</table>
+<script type="text/javascript">
+$(document).ready(function(){
+  //填写或修改完空白 V1 V2后进行计算
+  $("#kbz,input[name=td6]").blur(function(){
+    $("input[name*='vd1']").each(function (i) {
+         $(this).blur();
+    });
+  })
+})
+var sc_unit = "{$arow['sc_unit']}";
+function jsgs(){
+      //运算函数在lib.js
+      //加 accAdd 减 accsub 乘 accMul 除 accDiv
+      var vid = {$arow['vid']};
+      if($.isNumeric(vs['vd1']) && $.isNumeric($("input[name=td6]").val())){
+        var qy_v  = parseFloat(vs['vd1']);//取样体积
+        var A220  = parseFloat(vs['vd3']);//A220
+        var A275  = parseFloat(vs['vd4']);//A275
+        var f     = parseFloat($("input[name=td6]").val()/vs['vd1']);//稀释倍数
+        if($.isNumeric(A220) && $.isNumeric(A275)){
+          var As    = vs['vd5'] = parseFloat(accsub(A220,accMul(2,A275)));//As=A220-2*A275 标准溶液的校准吸光度
+          var Ab    = document.getElementById('kbz').value;//空白溶液的校正吸光度
+          var Ar    = vs['vd6'] = parseFloat(accsub(As,Ab));//Ar=As-Ab 标准溶液的校准吸光度 与 空白溶液的校正吸光度 的差
+        }else{
+          vs['vd5'] = vs['vd6'] = "";
+        }
+        var CA    = parseFloat(document.getElementById('qa').value);
+        var CB    = parseFloat(document.getElementById('qb').value);
+        if($.isNumeric(CA) && $.isNumeric(CB)){
+          //计算公式 y=bx+a   x=(y-a)/b
+          var han1  = parseFloat(accMul(accsub(Ar,CA),f));
+          var jie_g = parseFloat(accDiv(han1,CB));
+          vs['vd0'] = vs['_vd0']= jsws(jie_g);
+        }else{
+          vs['vd5'] = vs['vd6'] = vs['vd0']=vs['_vd0']="";
+        }
+      }else{
+        vs['vd5'] = vs['vd6'] = vs['vd0']=vs['_vd0']="";
+      }
+}
+</script>  

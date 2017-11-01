@@ -1,0 +1,123 @@
+h1 {
+    font-family:宋体;
+    text-align:center;
+}
+
+body{
+    font-family:宋体;
+    background:#FFFFFF;
+    color:black;
+    font-size:9pt;
+}
+table, table.single{
+    margin-left: auto; 
+    margin-right: auto;
+    border-collapse: collapse;
+    line-height:5.5mm;
+}
+table.single td,table.single th{
+    border: 1px solid black;
+    padding:3px;
+    text-align: center;
+}
+table.single td.noborder{
+    border:0px;
+}
+.inputc {
+    font-size:9pt;
+    background:#ffffff;
+    text-align: center;
+}
+.inputl {
+    font-size:9pt;
+    background:#ffffff;
+    text-align:left;
+}
+.inputr {
+    font-size:9pt;
+    background:#ffffff;
+    text-align:right;
+}
+.noinput {
+    font-size:9pt;
+    background:#ffffff;
+    text-align:left;
+}
+
+textarea{
+    border:none !important;
+}
+.inputstr {
+    border:none;
+    background:#FFFFFF;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.pf {
+    page-break-before: always;
+}
+p{page-break-before: always;}
+input[type="text"]{
+    border:none;
+    background:#FFFFFF;
+}
+.center{
+    text-align:center;
+}
+table{
+    font-family:宋体;
+    font-size:9pt;
+	
+}
+.table.table-bordered.center tr td input, textarea{background-color:#FFFFFF;font-family:宋体;
+    font-size:9pt;color:#000;text-align:center;}
+.table{border-collapse:collapse !important;margin-left: auto; margin-right: auto;background-color:#FFF;}
+.table.table-striped.table-hover tr th,.table.table-striped.table-hover tr td,{background-color:#FFF;}
+.table-bordered,
+.table-bordered th,
+/*.table-bordered td{border:1px solid #000!important}*/
+.table-bordered{border:1px solid #000}
+.table-bordered>thead>tr>th,
+.table-bordered>tbody>tr>th,
+.table-bordered>tfoot>tr>th,
+.table-bordered>thead>tr>td,
+.table-bordered>tbody>tr>td,
+.table-bordered>tfoot>tr>td{border:1px solid #000 }
+.table-bordered>thead>tr>th,
+.table-bordered>thead>tr>td{border-bottom-width:2px}
+table.table.table-bordered td.noborder{
+    border:0px;
+}
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: #FFF;
+}
+table.single tr td textarea,
+    table.single tr td input[type="text"],
+    table.single tr td input[type="password"],
+    table.single tr td input[type="datetime"],
+    table.single tr td input[type="datetime-local"],
+    table.single tr td input[type="date"],
+    table.single tr td input[type="month"],
+    table.single tr td input[type="time"],
+    table.single tr td input[type="week"],
+    table.single tr td input[type="number"],
+    table.single tr td input[type="email"],
+    table.single tr td input[type="url"],
+    table.single tr td input[type="search"],
+    table.single tr td input[type="tel"],
+    table.single tr td input[type="color"],
+    input,textarea {
+        border: none;background: none;
+}
+@media print{
+    a{
+        display:none;
+    }
+    input[type="submit"],input[type="buttton"]{
+        display:none;
+    }
+    select{
+        display:none;
+    }
+}

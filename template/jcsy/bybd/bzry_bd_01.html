@@ -1,0 +1,340 @@
+
+<style type="text/css">
+    form{min-width: 10cm;max-width: 18cm;margin: 0 auto;}
+    input{ text-align: center;}
+    center select{
+        min-width: 200px;
+    }
+</style>
+$print
+    
+<form name="bzry" action="bzry_modi.php" method="POST" onSubmit="return(verify(this))">
+  <h1 class="center">标准溶液标定原始记录表</h1>
+  <center>
+
+    {$tuihui_button}
+  </center>
+  <div class="accordion-style1 panel-group" id="accordion_{$tid}">
+   {$huiTuiShow}
+   </div>
+  <br />
+  <input type="hidden" name="bd_id" value="$r[id]">
+  <input type="hidden" name="action" value="$_GET[action]">
+  <input type="hidden" name="fx_user" value="$r[fx_user]">
+  <input type="hidden" name="table_type" value="01">
+  <table class="single center" style="width:18cm;">
+    <tr class="noborder">
+        <td style="width:16%"></td>
+        <td style="width:10%"></td><td style="width:10%"></td>
+        <td style="width:10%"></td><td style="width:10%"></td>
+        <td style="width:10%"></td><td style="width:10%"></td>
+        <td style="width:10%"></td><td style="width:10%"></td>
+    </tr>
+    <tr>
+        <td>分析项目</td>
+        <td colspan="2">$print_data[xm]
+            <select $display name='vid' style="width:100%">$xm_list</select></td>
+        <td>检测依据</td>
+        <td colspan="2"><input type="text" name="jcyj" value="$r[jcyj]" /></td>
+        <td>标定日期</td>
+        <td colspan="2"><input type="text" class="date-picker" name="bzry_bdrq" value="$r[bzry_bdrq]" /></td>
+    </tr>
+    <input type="hidden" name="bzry_id" value="$r[bzry_id]" />
+    <tr>
+        <td>标准溶液名称</td>
+        <td colspan="2">
+            $print_data[bzry_name]
+            <input type="hidden" name="bzry_name" value="$r[bzry_name]" />
+            <select $display  name="bzry_sel" style="width:100%">
+                <option value="$r[bzry_name]">$r[bzry_name]</option>
+            </select>
+        </td>
+        <td>配制日期</td>
+        <td colspan="2"><input type="text" class="disable" name="bzry_pzrq" value="$r[bzry_pzrq]" /></td>
+        <td>近似浓度</td>
+        <td colspan="2"><input type="text" class="disable" name="bzry_pznd" value="$r[bzry_pznd]" /></td>
+    </tr>
+    <input type="hidden" name="jzry_id" value="$r[jzry_id]" />
+    <tr>
+        <td>基准溶液名称</td>
+        <td colspan="2">
+            $print_data[jzry_name]
+            <input type="hidden" name="jzry_name" value="$r[jzry_name]" />
+            <select $display name="jzry_sel" style="width:100%">
+                <option value="$r[jzry_name]">$r[jzry_name]</option>
+            </select>
+        </td>
+        <td>配制日期</td>
+        <td colspan="2"><input type="text" class="disable" name="jzry_pzrq" value="$r[jzry_pzrq]" /></td>
+        <td>浓度</td>
+        <td colspan="2"><input type="text" class="disable" name="jzry_nd" value="$r[jzry_nd]" /></td>
+    </tr>
+    <input type="hidden" name="mol_m" value="" />
+    <tr>
+        <td>指示剂名称</td>
+        <td colspan="2"><input type="text" name="zsj_name" value="$r[zsj_name]" /></td>
+        <td>计算公式</td>
+        <td colspan="5">C=(基准溶液浓度×基准溶液体积)/用量</td>
+        <input type="hidden" name="mol_k" value="" />
+    </tr>
+    <tr><td colspan="9">标定方法</td></tr>
+    <tr>
+        <td colspan="9"><textarea name="bzry_bdff" >$r[bzry_bdff]</textarea></td>
+    </tr>
+    <tr>
+        <td colspan="9">标定记录</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td colspan="4">标定</td>
+        <td colspan="4">复标</td>
+    </tr>
+    <tr>
+        <td>基准溶液体积<br />mL</td>
+        <td><input  type="text" $displayclass name="tj[1]" value="$tj[1]" /></td>
+        <td><input  type="text" $displayclass hyd name="tj[2]" value="$tj[2]" /></td>
+        <td><input  type="text" $displayclass name="tj[3]" value="$tj[3]" /></td>
+        <td><input  type="text" $displayclass name="tj[4]" value="$tj[4]" /></td>
+        <td><input  type="text" $displayclass name="tj[5]" value="$tj[5]" /></td>
+        <td><input  type="text" $displayclass name="tj[6]" value="$tj[6]" /></td>
+        <td><input  type="text" $displayclass name="tj[7]" value="$tj[7]" /></td>
+        <td><input  type="text" $displayclass name="tj[8]" value="$tj[8]" /></td>
+    </tr>
+    <tr>
+        <td>耗用标准溶液量<br />mL</td>
+        <td><input  type="text" $displayclass name="yl[1]" value="$yl[1]" /></td>
+        <td><input  type="text" $displayclass name="yl[2]" value="$yl[2]" /></td>
+        <td><input  type="text" $displayclass name="yl[3]" value="$yl[3]" /></td>
+        <td><input  type="text" $displayclass name="yl[4]" value="$yl[4]" /></td>
+        <td><input  type="text" $displayclass name="yl[5]" value="$yl[5]" /></td>
+        <td><input  type="text" $displayclass name="yl[6]" value="$yl[6]" /></td>
+        <td><input  type="text" $displayclass name="yl[7]" value="$yl[7]" /></td>
+        <td><input  type="text" $displayclass name="yl[8]" value="$yl[8]" /></td>
+    </tr>
+    <tr>
+        <td>标准溶液浓度<br />mol/L</td>
+        <td><input  type="text" class="noinputc hyd" name="bd_nd[1]" value="$bd_nd[1]" /></td>
+        <td><input  type="text" class="noinputc hyd" name="bd_nd[2]" value="$bd_nd[2]" /></td>
+        <td><input  type="text" class="noinputc hyd" name="bd_nd[3]" value="$bd_nd[3]" /></td>
+        <td><input  type="text" class="noinputc hyd" name="bd_nd[4]" value="$bd_nd[4]" /></td>
+        <td><input  type="text" class="noinputc hyd" name="bd_nd[5]" value="$bd_nd[5]" /></td>
+        <td><input  type="text" class="noinputc hyd" name="bd_nd[6]" value="$bd_nd[6]" /></td>
+        <td><input  type="text" class="noinputc hyd" name="bd_nd[7]" value="$bd_nd[7]" /></td>
+        <td><input  type="text" class="noinputc hyd" name="bd_nd[8]" value="$bd_nd[8]" /></td>
+    </tr>
+    <tr>
+        <td>单人平均浓度<br />mol/L</td>
+        <td colspan="4"><input type="text" class="noinputc hyd" name="dnd[1]" value="$dnd[1]" /></td>
+        <td colspan="4"><input type="text" class="noinputc hyd" name="dnd[2]" value="$dnd[2]" /></td>
+    </tr>
+    <tr>
+        <td>双人平均浓度<br />mol/L</td>
+        <td colspan="8"><input type="text" class="noinputc hyd" name="bzry_nongdu" value="$r[bzry_nongdu]" /></td>
+    </tr>
+    <tr>
+        <td>单人极差相对值<br />%</td>
+        <td colspan="4"><input type="text" class="noinputc hyd" name="djc[1]" value="$djc[1]" /></td>
+        <td colspan="4"><input type="text" class="noinputc hyd" name="djc[2]" value="$djc[2]" /></td>
+    </tr>
+    <tr>
+        <td>双人人极差相对值<br />%</td>
+        <td colspan="8"><input type="text" class="noinputc hyd" name="bzry_jc" value="$r[bzry_jc]" /></td>
+    </tr>
+    <tr class="auto">
+        <td>结论</td>
+        <td colspan="8"><textarea $readonly name='jielun'>{$r[jielun]} </textarea></td>
+    </tr>
+    <tr class="auto">
+        <td>备注</td>
+        <td colspan="8"><textarea $readonly name='beizhu'>{$r[beizhu]}</textarea></td>
+    </tr>
+  </table>
+  <h3 class="center"> $save_button </h3>
+</form>
+<form name="shehe" method="POST" action="bzry_sh.php">
+  <input type="hidden" name="bzry_id" value="$r[id]">
+  <input type="hidden" name="vid" value="$r[vid]">
+ <table style="width:18cm;">
+    <tr>
+        <td width="33%">分析人员:$sign_01<input type="hidden" name="fx_user" value="$r[fx_user]" /></td>
+        <td width="34%">校核:$jh_user<input type="hidden" name="jh_user" value="$r[jh_user]" /></td>
+        <td width="33%">复核:$fh_user<input type="hidden" name="fh_user" value="$r[fh_user]" /></td>
+        <!-- <td>审核:$sh_user<input type="hidden" name="sh_user" value="$r[sh_user]" /></td> -->
+    </tr>
+    <tr>
+        <td>$r[fx_qz_date]</td>
+        <td>$r[jh_qz_date]</td>
+        <td>$r[fh_qz_date]</td>
+        <!-- <td>$r[sh_qz_date]<input type="hidden" name="sh_qz_date" value="$r[sh_qz_date]" /></td> -->
+    </tr>
+ </table>
+</form>
+<div style="height:500px;">&nbsp;</div>
+<script type="text/javascript">
+$(document).ready(function(){
+    //按钮样式
+    $("input[type=submit],input[type=button]").addClass('btn btn-xs btn-primary');
+    $(".tui_Hui_{$r['id']}").unbind("click").click(function(){
+        $.prompt({
+            title: '标定记录退回',
+            placeholder: '请输入退回原因',
+            errorText: '退回原因不能为空！',
+            confirm: function(back_reason){
+                $.ajax({
+                    type: 'post',dataType:'json',
+                    data: {id:'{$r['id']}',action:'bd',ajax:1,yuanYin:back_reason},
+                    url: trade_global.rooturl+'/huayan/hyd_huitui.php?id={$r['id']}',
+                    success: function(data){
+                        if('0'==data.error){
+                            document.location.reload();
+                        }else{
+                            return alert(data.content);
+                        }
+                    },error: function(data){
+                        return alert(data.responseText);
+                    }
+                });
+            }
+        });
+    });
+    $("[type=button][name=fx_qz]").unbind("click").click(function(){
+        $.prompt({
+            title: '修改理由',
+            errorText: '修改理由不能为空！',
+            placeholder: '标定记录经过退回，请输入修改理由',
+            confirm: function(modi_reason){
+                $.ajax({
+                    type: 'post',dataType:'json',
+                    data: {id:'{$r['id']}',action:'bd_modify',ajax:1,yuanYin:modi_reason},
+                    url: trade_global.rooturl+'/huayan/hyd_huitui.php?id={$r['id']}',
+                    success: function(data){
+                        if('0'==data.error){
+                            document.location.reload();
+                        }else{
+                            return alert(data.content);
+                        }
+                    },error: function(data){
+                        return alert(data.responseText);
+                    }
+                });
+            }
+        });
+    });
+    if('$edit_able'=='0'){
+        return false;
+    }
+    //日期插件
+    $('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+        $(this).prev().focus();});
+    //
+    var vid = '{$r[vid]}';
+    $("select[name=vid] option[value="+vid+"]").attr('selected',true);
+    $("input.disable").attr('title','不可编辑');
+    $("input.disable").focus(function(){
+        $(this).attr("disabled","disabled");
+        $(this).blur();
+        $(this).attr("disabled",false);
+    });
+    $("select[name=vid]").change(function(){
+        if(1=='{$edit_able}'||'add'=='$_GET[action]'){
+            //return false;
+        }
+        var xmid = $(this).val();
+        var bzry_id = $("form[name=bzry] input[name=bzry_id]").val();
+        var jzry_id = $("form[name=bzry] input[name=jzry_id]").val();
+        var jcyj_v  = $("input[name=jcyj]").val();
+        var jcyj_s = '{$r[jcyj]}';
+        $.getJSON('bzry_bd_getdata.php?ajax=1',{vid:xmid,bzry_id:bzry_id,jzry_id:jzry_id},function(data){
+            //检测依据
+            bzry.jcyj.value=(jcyj_s!='')?jcyj_s:data.jcyj;
+            //标准溶液
+            $("select[name=bzry_sel]").html(data.bzry);
+            //解决默认显示第一个option数据的问题
+            $("select[name=bzry_sel] option[value*='#"+bzry_id+"#']").attr('selected',true);
+            loading_bzry();
+            //基准溶液
+            $("select[name=jzry_sel]").html(data.jzry);
+            //解决默认显示第一个option数据的问题
+            $("select[name=jzry_sel] option[value*='#"+jzry_id+"#']").attr('selected',true);
+            loading_jzry();
+            //默认填充上次的内容
+            //bzry.mol_k.value=(undefined==data.last.mol_k)?'':data.last.mol_k;
+            bzry.zsj_name.value=(undefined==data.last.zsj_name)?'':data.last.zsj_name;
+            bzry.bzry_bdff.innerHTML=(undefined==data.last.bzry_bdff)?'':data.last.bzry_bdff;
+            //单位
+            var jzry_nddw = bzry.jzry_nd.value.replace(/[0-9]*[.]?[0-9]*/g,'');
+            bzry.jzry_nddw.value = jzry_nddw;
+            $("#jzry_nddw").html('标定浓度('+jzry_nddw+')');
+        });
+    });
+    //调出相关的标液和基准溶液提供选择
+    $("select[name=vid]").trigger('change');
+    $("select[name=bzry_sel]").change(function(){
+        loading_bzry();
+    });
+    $("select[name=jzry_sel]").change(function(){
+        loading_jzry();
+    });
+    /*
+    $("input.hyd").blur(function(){
+        var kb_sd = parseFloat(bzry.kb_sd.value);
+        var kb_sd = parseFloat(bzry.kb_zd.value);
+        var kb_yl = 0;
+        for(var i=0;i<$("input[name='sd[]']").length;i++){
+            var sd = parseFloat($("input[name='sd[]']").eq(i).val());
+            var zd = parseFloat($("input[name='zd[]']").eq(i).val());
+            if($.isNumeric(sd)&&$.isNumeric(zd)&&zd>sd){
+                var yl = parseFloat(zd-sd);
+                $("input[name='yl[]']").eq(i).val(yl);
+                var tj = parseFloat($("input[name='zd[]']").eq(i).val());
+                var jzry_nd = parseFloat(bzry.jzry_nd.value);
+                if($.isNumeric(tj)&&$.isNumeric(jzry_nd)){
+                    var bd_nd = (jzry_nd*tj)/yl;
+                    $("input[name='bd_nd[]']").eq(i).val(bd_nd);
+                }
+            }
+        }
+    });*/
+    $("input[name='tj[]']").focus(function(){
+        if($(this).val()==''){
+            var mr_v= $("input[name='tj[]']:first").val();
+            _data = prompt( "请输入有效数据:", mr_v );
+            $("input[name='tj[]']").each(function(){
+                if($(this).val()==''){
+                    $(this).val(_data);
+                }
+            });
+        }
+    })
+})
+function jsgs(){}
+function loading_bzry(){
+    if(''!=$("select[name=bzry_sel]").val()){
+        var bzry_data = $("select[name=bzry_sel]").val().split('**');
+    }else{
+        var bzry_data = new Array('','','','');
+    }
+    bzry.bzry_id.value  = bzry_data[0];
+    bzry.bzry_name.value= bzry_data[1];
+    bzry.bzry_pzrq.value= bzry_data[2];
+    bzry.bzry_pznd.value= bzry_data[3];
+}
+function loading_jzry(){
+    if(''!=$("select[name=jzry_sel]").val()){
+        var jzry_data = $("select[name=jzry_sel]").val().split('**');
+    }else{
+        var jzry_data = new Array('','','','');
+    }
+    bzry.jzry_id.value  = jzry_data[0];
+    bzry.jzry_name.value= jzry_data[1];
+    bzry.jzry_pzrq.value= jzry_data[2];
+    bzry.jzry_nd.value= jzry_data[3];
+}
+function verify(para){
+    aaa='';
+    for(i=0;i<para.length;i++)
+        if(para.elements[i].name.charCodeAt(0)>127 && para.elements[i].value=='')
+            aaa+='数据项"'+para.elements[i].name+'"不许为空n';
+    if(aaa!=''){alert(aaa);return false;} else return true;
+}
+</script>

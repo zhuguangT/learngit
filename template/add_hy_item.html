@@ -1,0 +1,28 @@
+<script>
+$(document).ready(function(){ $(".chosen-select").chosen();});
+</script>
+<style type="text/css">
+span{display:block;padding-left:20px;text-align:left;background-color:none}
+</style>
+<h3 class="header smaller center title">添加删除化验项目</h3>
+<div class="widget-box no-border">
+<div class="widget-body">
+<form method="post" action="add_hy_item_save.php">
+<input type="hidden" id="act" name="act" value="" />
+<input type="hidden" name="cyd_id" value="{$cyd['id']}" />
+<table class="table table-striped table-bordered table-hover center">
+<tr align="center">
+<td width="15%">站点名称</td>
+<td width="15%" nowrap>样品编号</td>
+<td width="40%">站点已选项目</td>
+<td width="30%">选择项目</td></tr>
+$add_hy_item_lines
+</table>
+<p class="center">
+<input class="btn btn-xs btn-primary" type="submit" name='sub' value="添加">
+<input class="btn btn-xs btn-primary" type="submit" name='sub' value="删除" onclick=" return confirm('一旦删除无法恢复，你真的要删除吗？')">
+</p>
+</form>
+</div>
+</div>
+

@@ -1,0 +1,13 @@
+<form name="{$group_name}">
+<tr style="background:#EDEDED; border: 1px solid #DDDDDD;">
+<td colspan="2" class="action-buttons">
+    <label><b><input name="group[]" type="checkbox" value="{$group_name}" $site_checked onclick="check_group(this)" />{$group_name}</b></label>
+    <a class="green" href="#" onclick="change_group_name('{$group_name}')" title="修改批名"><i class="icon-edit bigger-130"></i></a>
+    <a class="red" href="#" onclick="gotoif('$rooturl/site/site_delete.php?pi=1&site_type={$_GET[site_type]}&yplx={$_GET[water_type]}&sgname={$group_name}&fid={$fzx_id}','确定删除 {$group_name} 中全部的站点吗?');" title="删除 {$site['site_name']}"><i class="icon-remove bigger-140"></i></a>
+</td>
+<td align="center"><b>检测项目</b></td>
+<td align="center"><input class="btn btn-xs btn-primary" type="button" value="重排序" onclick="rerange(this.form)" /></td>
+<input type="hidden" name="group_name" value="$group_name" />
+</tr>
+$lines_line
+</form>

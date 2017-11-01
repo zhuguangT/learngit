@@ -1,0 +1,137 @@
+<h1>分光光度法分析原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:7%;"></td><td style="width:6%;"></td>
+		<td style="width:7%;"></td><td style="width:10%;"></td><td style="width:10%;"></td>
+		<td style="width:10%;"></td><td style="width:12%;"></td><td style="width:10%;"></td>
+		<td style="width:10%;"></td><td style="width:9%;"></td><td style="width:9%;"></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="4">分析项目：{$arow['assay_element']}</td>
+		<td class="left" colspan="4">方法：{$arow['td2']}</td>
+		<td class="left" colspan="3">
+			分析日期：<input class="date_Ymd" size="10" type="text" name="td31" value="{$arow['td31']}" />
+		</td>
+	</tr>
+	<tr>
+		<td class="left" colspan="3">样品类别：{$arow['water_type']}</td>
+		<td class="left" colspan="5">仪器名称及编号：{$arow['td4']} {$arow['yq_bh']}</td>
+		<td class="left" colspan="3">检出限： {$arow['td3']} {$arow['unit']}</td>
+	</tr>
+	<tr class="auto bt_hidden">
+		<td class="left noright" colspan="5">默认取样体积：<input type="text" name="td6" value="{$arow['td6']}" /> mL</td>
+		<td class="noleft" colspan="6"></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="8">
+			<scpan class="blue_a change_qx">曲线编号：</scpan>{$arow['sc_bh']}
+			曲线参数： b={$arow['CB']}&nbsp;a={$arow['CA']}&nbsp;&nbsp;
+			<scpan class="blue_a view_qx">率定日期：</scpan>{$arow['sc_ldrq']}
+		</td>
+		<td class="left" colspan="3">调零方法：{$arow['tl_ff']}</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="4">曲线上限：{$arow['sc_upper_limit']}</td>
+		<td class="left" colspan="4">标准使用液浓度：{$arow['scby_nd']}</td>
+		<td class="left" colspan="3">定容体积V₁：{$arow['dr_v']} mL</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="3">比色皿规格：{$arow['bsm_gg']} cm</td>
+		<td class="left" colspan="2">波长：{$arow['bo_chang']}nm</td>
+		<td class="left" colspan="6">计算公式： C（{$arow['unit']}）=(A-({$arow['CA']}))/({$arow['CB']}×V)</td>
+	</tr>
+	<tr>
+		<td rowspan="2">序号</td>
+		<td rowspan="2" colspan="2">{$zhanming}</td>
+		<td colspan="4">吸光度</td>
+		<td rowspan="2">取样体积V（mL）</td>
+		<td rowspan="2">含量<br>（{$arow['unit']}）</td>
+		<td rowspan="2">平均值（{$arow['unit']}）</td>
+		<td rowspan="2">相对偏差（％）</td>
+	</tr>
+	<tr>
+		<td>I</td>
+		<td>II</td>
+		<td>平均（1）</td>
+		<td nowrap="nowrap">（1）-（2）</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td rowspan="2" colspan="2">空白试验</td>
+		<td>1</td>
+		<td><input type="text" name="td17" value="{$arow['td17']}" class="inputc" onblur="btgs()" /></td>
+		<td><input type="text" name="td18" value="{$arow['td18']}" class="inputc" onblur="btgs()" /></td>
+		<td><input type="text" name="td19" value="{$arow['td19']}" class="noinputc" /></td>
+		<td>均值（2）</td>
+		<td>相对偏差</td>
+		<td colspan="3">加标量：<input style="width:auto;" type="text" name="td25" size="12" value="{$arow['td25']}" /> mL</td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td><input type="text" name="td20" value="{$arow['td20']}" class="inputc" onblur="btgs()" /></td>
+		<td><input type="text" name="td21" value="{$arow['td21']}" class="inputc" onblur="btgs()" /></td>
+		<td><input type="text" name="td22" value="{$arow['td22']}" class="noinputc" /></td>
+		<td><input type="text" name="td23" value="{$arow['td23']}" class="noinputc" /></td>
+		<td><input type="text" name="td24" value="{$arow['td24']}" class="noinputc" /></td>
+		<td colspan="3">P（％）=<input style="width:auto;" type="text" name="td26" size="10" value="{$arow['td26']}" /></td>
+	</tr>
+	<tr>
+		<td>备注</td>
+		<td colspan="10"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	function jsgs()
+	{
+		var A=$("input[name=td23]").val();
+		var ca=parseFloat('{$arow['CA']}');
+		var cb=parseFloat('{$arow['CB']}');
+		if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd4'])&&$.isNumeric(vs['vd1'])){
+			var vd_split = String(vs['vd3']).split('.');
+			if(2==vd_split.length){
+				var ws = vd_split[1].length+1;
+			}else{
+				var ws = 2;
+			}
+			vs['vd5'] = roundjs(accAdd(vs['vd3'],vs['vd4'])/2,ws);
+			vs['vd6'] = roundjs(vs['vd3']-A,ws);
+			vs['vd0'] = jsws(((vs['vd6']-ca)*50)/(cb*vs['vd1']));
+		}else{
+			vs['vd0']='';
+		}
+	}
+	function btgs()
+	{
+		var td17=$("input[name=td17]").val();
+		var td18=$("input[name=td18]").val();
+		var td20=$("input[name=td20]").val();
+		var td21=$("input[name=td21]").val();
+		var vd_split = String(td17).split('.');
+		if(2==vd_split.length){
+			var ws = vd_split[1].length;
+		}else{
+			var ws = 0;
+		}
+		if($.isNumeric(td17)&&$.isNumeric(td18)){
+			var td19=roundjs(accDiv(accAdd(td17,td18),2),ws);
+		}else{
+			td19='';
+		}
+		if($.isNumeric(td20)&&$.isNumeric(td21)){
+			var td22=roundjs(accDiv(accAdd(td20,td21),2),ws);
+		}else{
+			td22='';
+		}
+		if($.isNumeric(td19)&&$.isNumeric(td22)){
+			var td23=roundjs(accDiv(accAdd(td19,td22),2),ws);
+			var td24=roundjs((accsub(td19,td22)/accAdd(td19,td22)),2);
+		}else{
+			td19=td22=td23=td24='';
+		}
+		$("input[name=td19]").val(td19);
+		$("input[name=td22]").val(td22);
+		$("input[name=td23]").val(td23);
+		$("input[name=td24]").val(td24);
+	}
+</script>

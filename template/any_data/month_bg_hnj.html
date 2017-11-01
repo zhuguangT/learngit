@@ -1,0 +1,38 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+	<title>$title</title>
+	<!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name></x:Name><x:WorksheetOptions><x:Selected/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
+<style>
+	@page{mso-page-orientation:landscape;}
+	table tr{height:30px;}
+	table td{border:0.5px solid;text-align: center;}
+</style>
+</head>
+<body>
+$bianhao_content
+<table style="margin:0 auto;width:25cm;border-collapse:collapse;font-size:10pt;font-family:宋体" class="td_border" cellspacing="0" cellpadding="0">
+	<tr>
+		<td colspan='{$max_colspan}' style="font-weight:bold;font-size:20pt;border:none;">$title</td>
+	</tr>
+	<tr>
+		<td colspan="{$max_colspan_ban}" style="border:none;text-align:left;">监测部门：{$_POST[jc_bm]}</td><td colspan="{$max_colspan_ban}" style="border:none;text-align:right;">填表日期：{$_POST[tb_date]}</td>
+	</tr>
+	<tr>
+		<td colspan='3'>检测方法依据</td><td colspan="{$xm_num}">$jiance_fangfa</td>
+	</tr>
+	<tr>
+		<td rowspan='2' nowrap>采样地点</td><td rowspan='2' nowrap>类别</td><td rowspan='2'>采样日期</td><td colspan="{$xm_num}">检验项目</td>
+	</tr>
+	$value_names
+	$lines
+	<tr>
+		<td colspan="3">$jcbz_name</td>$jcbz_values
+	</tr>
+	<tr><td colspan='2'>结论</td><td colspan="{$beizhu_num}">$jielun</td></tr>
+	<tr><td colspan='2'>备注</td><td colspan="{$beizhu_num}"></td></tr>
+	<tr>
+		<td colspan='{$last_one}' style='text-align:left;border:none;'>单位负责人:</td><td colspan="{$last_two}" style="border:none;">审核:</td><td colspan="{$last_three}" style="border:none;text-align:right;padding-right:80px;"> 制表：</td>
+	</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!-- 减差法 镁 -->
+<h1>$arow[assay_element]测定原始记录表</h1>
+$hjtj_bt
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:8%"></td><td style="width:12%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td>
+  </tr>
+  <tr>
+    <td colspan="1">检测项目</td>
+    <td colspan="1">{$arow['assay_element']}</td>
+    <td colspan="1">检测依据</td>
+    <td colspan="1">{$arow['td2']}</td>
+    <td colspan="1">检出限({$arow['unit']})</td>
+    <td colspan="2">{$arow['td3']}</td>
+    <td colspan="1">指示剂名称</td>
+    <td colspan="2"><input type="text" name="td8" value="{$arow['td8']}" /></td>
+  </tr>
+  <tr>
+    <td colspan="1">滴定管规格</td>
+    <td colspan=""><input type="text" name="td9" value="{$arow['td9']}" /></td>
+    <td colspan="1">颜色</td>
+    <td colspan="1"><input type="text" name="td10" value="{$arow['td10']}" /></td>
+    <td colspan="1">标准溶液名称</td>
+    <td colspan="2"><input type="text" name="td11" value="{$arow['td11']}" /></td>
+    <td colspan="1">标准溶液浓度 C(mmol/L)</td>
+    <td colspan="2"><input type="text" name="td12" id="by_c" value="{$arow['td12']}" /></td>
+  </tr>
+  <tr>
+  </tr>
+  <tr>
+    <td colspan="2">计算公式</td>
+    <td class="noborder"></td>
+    <td colspan="7" class="noleft left"> C<sub>Mg</sub>=[(V<sub>0</sub>-V<sub>1</sub>)/V<sub>2</sub>-V<sub>3</sub>/V<sub>4</sub>]×C×24.30</td>
+  </tr>
+  <tr align="center">
+    <td colspan="1">序号</td>
+    <td colspan="1">样品编号</td>
+
+    <td>总硬度标液用量V<sub>0</sub>(mL)</td>
+    <td>总硬度空白用量V<sub>1</sub>(mL)</td>
+    <td>总硬度取样体积V<sub>2</sub>(mL)</td>
+    <td>钙标液用量V<sub>3</sub>(mL)</td>
+    <td>钙取样体积V<sub>4</sub>(mL)</td>
+    <td>含量({$arow['unit']})</td>
+    <td>平均值/理论浓度({$arow['unit']})</td>
+    <td>相对偏差/加标回收率(%)</td>
+  </tr>
+  $aline
+  <tr>
+    <td colspan="1">备注</td>
+    <td colspan="9"><textarea name='td30' value='$arow[td30]'></textarea></td>
+  </tr>
+  </table>
+<script type="text/javascript">
+function jsgs(){
+  var C = parseFloat($("#by_c").val());
+  if(''==C || isNaN(C)){
+    $("#by_c").focus();return false;
+  }
+  if($.isNumeric(vs['vd2'])&&$.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd4'])&&$.isNumeric(vs['vd5'])&&$.isNumeric(vs['vd6'])){
+    var Ca = parseFloat((parseFloat(vs['vd2'])-parseFloat(vs['vd3']))/parseFloat(vs['vd4']));
+    var Mg = parseFloat(parseFloat(vs['vd5'])/parseFloat(vs['vd6']));
+    var jg = parseFloat((Ca-Mg)*C*24.30);
+    vs['vd0'] = jsws(jg);
+  }else{
+    vs['vd0'] = '';
+  }
+}
+</script>

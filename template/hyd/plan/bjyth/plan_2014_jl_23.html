@@ -1,0 +1,85 @@
+<h1>石油类原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:10%"></td><td style="width:22%"></td><td style="width:17%"></td>
+		<td style="width:17%"></td><td style="width:9%"></td><td style="width:8%"></td>
+		<td style="width:17%"></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="2">分析项目：{$arow['assay_element']}</td>
+		<td class="left" colspan="2">分析方法：{$arow['td2']}</td>
+		<td class="left" colspan="3">分析日期：<input class="date_Ymd" type="text" name="td31" size="10" value="{$arow['td31']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="2">样品类别：{$arow['water_type']}</td>
+		<td class="left" colspan="3">仪器型号及编号：{$arow['td4']} {$arow['yq_bh']}</td>
+		<td colspan="2">检出限：{$arow['td3']} mg/L</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="2">取样体积：<input type="text" name="td6" size="8" value="{$arow['td6']}" /> mL</td>
+		<td class="left" colspan="2">萃取溶剂名称：<input type="text" name="td10" size="10" value="{$arow['td10']}" /></td>
+		<td class="left" colspan="3">萃取体积：<input type="text" name="td11" size="8" value="{$arow['td11']}"> mL</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="3">标准工作液浓度：<input type="text" name="td12" size="10" value="{$arow['td12']}" /></td>
+		<td class="left" colspan="1">调零方法：{$arow['tl_ff']}</td>
+		<td class="left" colspan="3">曲线上限：{$arow['sc_upper_limit']}</td>
+	</tr>
+	<tr>
+		<td class="left" colspan="3">
+			<span class="blue_a change_qx">曲线编号：</span>{$arow['sc_bh']}
+			<span class="blue_a view_qx">率定日期：</span>{$arow['sc_ldrq']}
+		</td>
+		<td class="left" colspan="4">计算公式：C（mg/L）= 仪器示值</td>
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td>{$zhanming}</td>
+		<td>仪器示值（mg/L）</td>
+		<td>含量  C（{$arow['unit']}）</td>
+		<td colspan="2">平均值（{$arow['unit']}）</td>
+		<td>相对偏差（％）</td>
+	</tr>
+	{$aline}
+	<tr>
+	<tr class="auto">
+		<td>空白试验</td>
+		<td>1：<input type="text" name="td23" id='td23' size="5"  onblur='btgs()' value="{$arow['td23']}" /></td>
+		<td>2：<input type="text" name="td24" size="5" id='td24'  onblur='btgs()'  value="{$arow['td24']}" /></td>
+		<td>平均值<input type="text" name='td25' size="5"  class="noinputc" value='{$arow['td25']}'></td>
+		<td colspan="3">相对偏差（％）=<input type="text" name="td26" size="6" class="noinputc" value="{$arow['td26']}" /></td>
+	</tr>
+		<td>备注</td>
+		<td colspan="6"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	function jsgs(){
+		if(vs['vd27']!=''){
+			var jg=vs['vd27'];
+			if(!isNaN(jg)){
+				vs['vd0']=vs['_vd0']=jg;
+			}
+		}
+	}
+	function btgs(){
+		var td23=$("input[name=td23]").val();
+		var td24=$("input[name=td24]").val();
+		if($.isNumeric(td23)&&parseInt(td23)!=td23){
+			ws=(td23.split("."))[1].length;
+		}else{
+			ws=0;
+		}
+		if($.isNumeric(td23)&&$.isNumeric(td24))
+		{
+			var td25=roundjs(accDiv(accAdd(td23,td24),2),ws);
+			var td26=roundjs((accsub(td23,td24)/accAdd(td23,td24)),2);
+		}else{
+			var td25=td23;
+			var td26=0;
+		}
+		$("input[name=td25]").attr("value",td25);
+		$("input[name=td26]").attr("value",td26);
+	}
+</script>

@@ -1,0 +1,59 @@
+<div class="widget-box no-border">
+	<div class="widget-body">
+		<table class="table table-striped table-bordered table-hover center report_site" >
+			<tr><th colspan="6" style="font-weight:bold;font-size:12pt">{$report_rs2['site_name']}</th></tr>
+			<tr>
+				<td>报告编号</td>
+				<td class="left" style="width:403px;">常规/委托<select name="sites[$cr_id][bg_lx]" style='min-width:30px !important;'>{$options}</select>年份<select name="sites[$cr_id][year]" id="year" style="min-width:60px;">{$year_list}</select>序号<input type='text' name="sites[$cr_id][xuhao]" value="{$report_rs2['xuhao']}" style="width:80px">&nbsp;&minus;&nbsp;第<input type="text"  name="sites[$cr_id][bg_bh]" onchange="jccf()" id='bg_bhs' size="4" value="{$report_rs2['bg_bh']}" />份<b id='pd' style="color:red"></b></td>
+				<td>项目排序</td>
+				<td class="left"><select name="sites[$cr_id][xm_px]">{$xm_px_arr}</select></td>
+				<td>检验结论</td>
+				<td class="left"><textarea type="text" name="sites[$cr_id][jy_jl]">{$report_rs2['jy_jl']}</textarea></td>
+				</td>
+			</tr>
+			<tr>
+				<td>样品类别</td>
+				<td class="left"><select name="sites[$cr_id][water_type]">{$wt_options}</select></td>
+				<td>样品状态</td>
+				<td class="left"><textarea type="text" name="sites[$cr_id][yp_zt]">{$report_rs2['yp_zt']}</textarea></td>
+				<td>样品数量</td>
+				<td class="left"><textarea type="text" placeholder="请同时填写计量单位" name="sites[$cr_id][yp_sl]">{$report_rs2['yp_sl']}</textarea></td>
+			</tr>
+			<tr>
+				<td>检测用样品制备</td>
+				<td class="left"><textarea type="text" name="sites[$cr_id][jcy_ypzb]">{$report_rs2['jcy_ypzb']}</textarea></td>
+				<td>采样地点</td>
+				<td class="left"><textarea type="text" name="sites[$cr_id][cy_place]">{$report_rs2['cy_place']}</textarea></td>
+				<td>备注</td>
+				<td class="left"><textarea type="text" name="sites[$cr_id][beizhu]">{$report_rs2['beizhu']}</textarea></td>
+			</tr>
+			<tr>
+				<td>评价标准</td>
+				<td class="left"><select name="sites[$cr_id][jcbz_id]" cr_id='$cr_id'><option value=''>系统默认</option>{$jcbz_options}</td>
+				<td>评价依据</td>
+				<td class="left"><input type="text" name="sites[$cr_id][pj_yj]" cr_id='$cr_id' autocomplete="off" list="pjyj" style="width:100%;" value="{$report_rs2['pj_yj']}">
+				<datalist id="pjyj" cr_id='$cr_id'>
+					<option jcbz_id=",7," value="《生活饮用水卫生标准》GB 5749-2006">《生活饮用水卫生标准》GB 5749-2006</option>
+					<option jcbz_id="" value="Standards for Drinking Water Quality  GB 5749-2006">Standards for Drinking Water Quality  GB 5749-2006</option>
+					<option jcbz_id=",793," value="《城市供水水质标准》CJ/T 206-2005">《城市供水水质标准》CJ/T 206-2005</option>
+					<option jcbz_id="" value="Standard for Urban Drinking Water Quality  CJ/T206-2005">Standard for Urban Drinking Water Quality  CJ/T206-2005</option>
+					<option jcbz_id="" value="《二次供水设施卫生规范》GB 17051-1997">《二次供水设施卫生规范》GB 17051-1997</option>
+					<option jcbz_id="" value="Secondary water supply facilities health standards  GB17051—1997">Secondary water supply facilities health standards  GB17051—1997</option>
+					<option jcbz_id=",705," value="《饮用净水水质标准》CJ 94-2005">《饮用净水水质标准》CJ 94-2005</option>
+					<option jcbz_id="" value="Water Quality Standards for fine Drinking Water  CJ 94-2005">Water Quality Standards for fine Drinking Water  CJ 94-2005</option>
+					<option jcbz_id=",1," value="《地表水环境质量标准》GB 3838-2002Ⅲ类">《地表水环境质量标准》GB 3838-2002Ⅲ类</option>
+					<option jcbz_id="" value="Environmental Quality Standard for Surface Water  GB 3838-2002 III类">Environmental Quality Standard for Surface Water  GB 3838-2002 III类</option>
+					<option jcbz_id=",421," value="《地下水质量标准》GB/T 14848-1993Ⅲ类">《地下水质量标准》GB/T 14848-1993Ⅲ类</option>
+					<option jcbz_id="" value="Quality standard for ground water  GB/T 14848-1993 III类">Quality standard for ground water  GB/T 14848-1993 III类</option>
+					<option jcbz_id="" value="《海水水质标准》GB 3097-1997">《海水水质标准》GB 3097-1997</option>
+					<option jcbz_id="" value="Sea water quality standard  GB 3097-1997">Sea water quality standard  GB 3097-1997</option>
+					<option jcbz_id="" value="《城市污水再生利用 城市杂用水水质》GB/T 18920-2002">《城市污水再生利用 城市杂用水水质》GB/T 18920-2002</option>
+					<option jcbz_id="" value="《城市污水再生利用 工业用水水质》GB/T 19923-2005">《城市污水再生利用 工业用水水质》GB/T 19923-2005</option>
+					<option jcbz_id="" value="《城市污水再生利用景观环境用水水质》GB/T 18921-2002">《城市污水再生利用景观环境用水水质》GB/T 18921-2002</option>
+					<option jcbz_id=",882,883," value="《生活饮用水用聚氯化铝》GB 15892-2009">《生活饮用水用聚氯化铝》GB 15892-2009</option>
+				</datalist></td>
+				<td></td><td></td>
+			</tr>
+		</table>
+	</div>
+</div>

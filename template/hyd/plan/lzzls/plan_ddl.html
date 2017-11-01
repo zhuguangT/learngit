@@ -1,0 +1,44 @@
+<h1>电导率检验原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:16%"></td><td style="width:20%"></td><td style="width:16%"></td>
+		<td style="width:16%"></td><td style="width:16%"></td><td style="width:16%"></td>
+	</tr>
+	<tr>
+		<td>检验地点</td>
+		<td colspan="2"><input type="text" class="inputc" name="td7"   value="{$arow['td7']}" /></td>
+		<td>仪器型号</td>
+		<td colspan="2">{$arow['td5']}</td>
+	</tr>
+	<tr>
+		<td>检验方法</td>
+		<td colspan="2">{$arow['td1']}</td>
+		<td>检验依据</td>
+		<td colspan="2">{$arow['td2']}</td>
+	</tr>
+	<tr>
+		<td colspan="3">氯化钾溶液浓度（mol/L，℃）</td>
+		<td colspan="2"><input type="text" class="inputc" name="td8"   value="{$arow['td8']}" /></td>
+		<td>25℃</td>
+	</tr>
+	<tr>
+		<td colspan="3">氯化钾溶液电导率K（μs/cm）</td>
+		<td colspan="3"><input type="text" class="inputc" name="td9"   value="{$arow['td9']}" /></td>
+	</tr>
+		<tr>
+		<td colspan="3">实测电导率K（μs/cm）</td>
+		<td colspan="3"><input type="text" class="inputc" name="td10"   value="{$arow['td10']}" /></td>
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td colspan="2">{$zhanming}</td>
+		<td>水温（℃）</td>
+		<td  colspan="2">检验结果（{$arow['unit']}）</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td>备注</td>
+		<td colspan="5"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>

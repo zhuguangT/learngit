@@ -1,0 +1,161 @@
+<script type="text/javascript" src="$rooturl/js/html5beta.js"></script>
+<script type="text/javascript" src="$rooturl/js/md5-min.js"></script>
+<script type="text/javascript" src="$rooturl/js/lims/lib.js?v=1205"></script>
+<script type="text/javascript" src="$rooturl/js/boxy.js?1230"></script>
+<script>
+//表格头部 点击跳转
+function redirect(){
+	var qixian = v('qixian');
+	if(qixian==''){
+		document.getElementById("qixian").value=$qixian;
+	}
+	else{
+		if(document.getElementsByName("zhoumoZt")[0].checked)var zt='yes';
+		else var zt='no';
+
+		url = "?year=" + v('year') + "&month=" + v('month') + "&count_type="+v('count_type')+"&qixian=" + v('qixian')+ "&zhoumoZt=" + zt;
+		location = url;
+	}
+}
+</script>
+<style>
+.bian{background-color:#fff;}
+.bian td{background:none !important; background:#94D0EE; filter:alpha(opacity=40);}
+.tdbian{color:blue;}
+.tdbian:hover{color:blue;font-weight:bold;cursor:pointer;text-decoration:underline;}
+.bian:hover{
+background-color: rgba(60, 132, 198, 0.8);
+background-image: -moz-linear-gradient(rgba(28, 91, 155, 0.8) 0%, rgba(108, 191, 255, 0.9) 90%);
+border-color: #8BA2C1 #5890BF #4F93CA #768FA5;
+font-weight:bold;
+}
+#chart{
+width: 680px;
+height: 480px;
+display:none;
+z-index: 2;
+border-radius: 18px;
+background: rgba(1, 3, 12, 0.52);
+position: absolute;
+top: 100px;
+right: 350px;
+cursor:move;
+   }
+</style>
+<div id="chart" > <img  style="float: right;cursor:pointer;" onclick="$('#chart').hide();" src="$rooturl/img/chart_close.png" />
+        <div id="tx" style="height: 450px;margin: 15px;cursor:default;">  </div>
+</div>
+<h1 align="center">复核，校核延迟签字统计表</h1>
+<p class="center">
+		统计类型：
+		<select name='count_type' id="count_type" onchange="redirect()">
+		<option value="huayan" {$huayan_checked}>化验签字统计</option>
+		<option value="shenhe" {$shenhe_checked}>校、复核签字统计</option>
+		$option_cont_type
+		</select>
+        年份选择:
+        <select name="year" id="year" onchange="redirect()">
+        $optionY
+        </select>
+        月份选择:
+        <select name="month" id="month" onchange="redirect()">
+        $optionM
+        </select>
+        <span style="$shenhe_tiaojian">
+        规定天数:<input type="text" value="$qixian" id="qixian" oninput="this.value=this.value.replace(/[^\d]/g,'');" onfocus="this.value=''" name="qixian" onblur="redirect();"size="10" placeholder="默认为2天" title="规定校核人，复核人在其校核，复核的人签字后的多少天内要签字" />
+        <label style="display:block_inline;cursor:pointer;"><input type="checkbox" name="zhoumoZt" style="cursor:pointer;" value='' $checked onclick="redirect();" />排除周六日</label>
+        </span>
+</p>
+<table class="table table-striped table-bordered table-hover center" align="center" style="width:18cm;text-align:center;">
+<tr>
+	<td>人员名单</td>
+	<td>共签字（次）</td>
+	<td>延迟签字（次）</td>
+	<td width='130px'>延迟率</td>
+	<td width='130px'>操作</td>
+</tr>
+$lines
+</table>
+<script type="text/javascript">
+//window.onload=render();
+var chushihua='no';
+//生成数据图形
+function newchart(name,year,qixian,zhoumoZt,count_type) {
+	$("#chart").show();
+	if(chushihua == 'no'){
+		//查看趋势图之前，先初始化一下。在这里初始化，比较好看些。
+		chushihua='yes';
+		render();
+	}
+	var url='$rooturl/user_manage/qzTxJson.php?name='+name+'&year='+year+'&qixian='+qixian+'&zhoumoZt='+zhoumoZt+'&count_type='+count_type;
+	$.get(url, function(json) {
+		zingchart.exec('tx', 'load', '{"dataurl":"'+url+'"}');
+	})
+};
+//初始化
+function render() {
+	var gdata = {
+		"type":"line",
+		"stacked":true,
+		"title":{
+			"text":"数据趋势"
+		},
+		"legend":{
+			"visible":true
+		},
+		"scale-x":{
+			"values":["1","2","3","4"]
+		},
+		"scale-y":{
+			"label":{
+				"text":"延迟签字数"
+			}
+		},
+		"plot":{
+			"tooltip-text":""
+		},
+		"series":[
+			{
+				"values":[],
+				"text":"月份"
+			}
+		]
+	};
+	zingchart.OFFSET = 1;
+	zingchart.render({
+			id : 'tx',
+			output : 'canvas',
+			width : 650,
+			height : 450,
+			data :  gdata
+	});
+}
+//下面是 用来让 趋势图div 可以拖动
+// <![CDATA[
+var j=function(id){return document.getElementById(id);};
+var getMouseP=function (e){
+	//获取鼠标坐标 请传递evnet参数
+	e = e || window.event;
+	var m=(e.pageX || e.pageY)?{ x:e.pageX, y:e.pageY } : { x:e.clientX + document.body.scrollLeft - document.body.clientLeft, y:e.clientY + document.body.scrollTop  - document.body.clientTop };
+	return m;
+};
+move=function(o,t){
+	o=j(o);
+	t=j(t);
+	o.onmousedown=function(ev){
+		var mxy=getMouseP(ev);//获取当前鼠标坐标
+		var by={x:mxy.x-(t.offsetLeft),y:mxy.y-(t.offsetTop)};
+		//o.style.cursor="move";
+		document.onmousemove=function(ev){
+			var mxy=getMouseP(ev);
+			t.style.left=mxy.x-by.x+"px";
+			t.style.top=mxy.y-by.y+"px";
+		};
+		document.onmouseup=function(){
+			window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+			this.onmousemove=null;
+		}
+	}
+}
+move("chart","chart");
+</script>

@@ -1,0 +1,56 @@
+<h1>纯水吸光度检验记录</h1>
+{$hjtj_bt}
+<table  class="single">
+  <tr class="noborder">
+    <td style="width:8%"></td><td style="width:12%"></td><td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+  </tr>
+  <tr>
+    <td>检验项目</td>
+    <td colspan="2">{$arow['assay_element']}</td>
+    <td>检验地点</td>
+    <td colspan="2"><input type="text" name="td7" value="$arow[td7]" /></td>
+    <td colspan="1">方法依据</td>
+    <td colspan="3">{$arow['td2']}</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">检测波长</td>
+    <td colspan="2"><input type="text" name="td9" value="$arow[td9]" /></td>
+    <td>仪器型号</td>
+    <td colspan="2">{$arow['td5']}</td>
+    <td nowrap="nowrap">仪器编号</td>
+    <td colspan="3">{$arow['yq_bh']}</td>
+  </tr>
+  <tr>
+    <td>计算公式</td>
+    <td colspan="9" id="jsgs_">{$arow['td28']}</td><input type="hidden" name="td28" value="" />
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>{$zhanming}</td>
+    <td>校零比色皿cm</td>
+    <td>检测比色皿cm</td>
+    <td>校零比色皿A<sub>0</sub></td>
+    <td>检测吸光值A</td>
+    <td>A-A<sub>0</sub></td>
+    <td>报告结果（{$arow['unit']}）</td>
+    <td>平均值（{$arow['unit']}）</td>
+    <td>质控结果（%）</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="9"><textarea name="td30" >{$arow['td30']}</textarea></td>
+  </tr>
+  
+</table>
+<script type="text/javascript">
+function jsgs(){
+      if( $.isNumeric(vs['vd5']) && $.isNumeric(vs['vd6']) ){
+        vs['vd0'] =vs['vd7'] = accsub($.isNumeric(vs['vd6']),$.isNumeric(vs['vd5']));
+      }else{
+        vs['vd7']=vs['vd0']='';
+      }
+}
+</script>

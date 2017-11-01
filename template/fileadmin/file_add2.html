@@ -1,0 +1,75 @@
+<body style="width: 1092px; background: rgb(255, 255, 255);">
+	<style>
+	
+	.tablelv { border:1px #0CF solid; border-collapse:collapse; width:1250px;margin:auto}
+	.tablelv *{ color:#363636}
+	.tablelv tr td{ font-size:12px; height:20px; line-height:20px; border:1px solid #00CCFF}
+	a{text-decoration:none}
+	a:hover{color:red}
+	input{background:#AACCFF;}
+ .size_same{min-width:215px !important;}
+	</style>
+<h3 class="header smaller center title">添加类文件</h3>
+<table class="table table-striped table-bordered table-hover center" style="width:600px">
+<form method="post" action="adddeal.php" enctype="multipart/form-data">
+	<tr align="center">
+		<td>名称</td>
+		<td><input type="text" name="data[name]" class='size_same' placeholder="默认为文件名称" ></td>
+	</tr>
+	<tr align="center">
+		<td>文件编号</td>
+		<td><input type="text" name="data[file_num]"  class='size_same' ></td>
+	</tr>
+	<tr align="center">
+		<td>发布日期</td>
+		<td><input type="text" class='size_same date-picker' name="data[fb_date]" readonly ></td>
+	</tr>
+	<tr align="center">
+		<td>适用范围</td>
+		<td><input type="text" name="data[use_range]"  class='size_same' ></td>
+	</tr>
+	<tr>
+		<td>状态</td>
+		<td><input type="text" name="data[namebak]"  class='size_same' ></td>
+	</tr>
+	<tr align="center">
+		<td>备注</td>
+		<td><input type="text" name="data[note]"  class='size_same' ></td>
+	</tr>
+	<tr>
+		<td>上传文件</td>
+		<input type="hidden" name="data[pid]"  value="$id"/>
+		<td align=center>
+			<!-- <input type="file" name="upfile[]" id="file">-->
+		 	<input type="file" id="input" name="upfile[]"  multiple="multiple">    
+		</td>
+	</tr>
+	<tr id="have_file">
+		<td>已上传的文件</td>
+		<td id="content" name="upfile[]"></td>
+	</tr>
+	<tr>
+		<td align=center colspan="2">
+			<input class='btn btn-xs btn-primary' type="submit" name="add2"  value="添加"/>
+	</tr>
+	</form>
+</table>
+<script> 
+$('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+	$(this).prev().focus();
+});
+//将浏览按钮转换为可上传多个文件的按钮
+var inputElement = document.getElementById("input");    
+inputElement.addEventListener("change", handleFiles, false);  
+function handleFiles(){  
+	fileList= this.files;  
+	var dd	= document.getElementById('content');
+	dd.innerHTML	= '';
+	var html_files= '';
+	for( var i = 0 ; i < fileList.length ; i++ ){
+		html_files +="<div id='del_one"+i+"'>" +fileList[i].name;
+	}
+	dd.innerHTML	= html_files;
+}
+</script> 
+</body>

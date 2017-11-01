@@ -1,0 +1,145 @@
+<div style="height:100%;">
+<!--遮罩层-->
+<span style="margin-left:20px;cursor:pointer;display:none;" id="open_1">领用</span>
+<div id="tinybox_1">
+    <div><h1>领用申请</h1></div>
+    <div>
+        <form action="../sjqm/sjqm_rck.php" method="post">
+        <div style=" z-index: 9999;">
+            领用：<select id='select' class='inputSelect'  onchange="ch();" style="width:500px;">$line</select>
+        </div>    
+            <!-- <input type="text" name='find' placeholder="输入查找内容"/> -->
+            <div id='t' style="margin-top:20px;"></div>
+            <input type="hidden" name="user" readonly value='$user'/>
+            <input type="hidden" name="chuku_self" value='chuku_self'>
+            <input type="submit" value="提交">
+            <input type="button" value="退出"  id="close_1"/>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#open_1").click();
+
+  $("select").mouseover(function(){
+    $("#t").find("*").css({'z-index':"-1"});
+  });
+  $("select").mousedown(function(){
+     $("#t").find("*").css({'z-index':""});
+  });
+  $(".selecttolist").click(function(){
+        $(this).select();
+  });
+});
+
+//模糊查询
+$("input[name='find']").keyup(function(){
+    var t=$("input[name='find']").val();
+    $.post("kf_lingyong.php" , {'handle':'like' , 'name' : t} , function(data){
+        if(data=='empty'){
+            $(".fi").empty();
+        }
+        if(data!='empty'){
+            $("#select").prepend(data);
+        }
+        
+    });
+});
+//选择完物品后，把物品列出来
+function ch(){
+    var name=$("#select option:selected").text();
+    var id=$("#select option:selected").val();
+    $.post('main_v_num.php',{"id":id,'action':'ly_ch'},function(data){
+        var num=data;
+        $("#t").prepend('<div style="margin-top:2px; ">领用物品名称：<input  type="text" value="'+name+'"/>领取数量：<input type="text"   name="shuliang[]"/><input type="hidden" name="id[]" value="'+id+'"/><span style="margin-left:2px;color:red;">库存:'+num+'个</span>&nbsp;&nbsp;<a onclick="del(this)" style="cursor:pointer;"><img src="$rooturl/img/Close_16px.png"/></a></div>');
+    });
+}
+//领用申请删除功能
+function del(obj){
+    $(obj).parent('div').remove();
+}
+</script>
+<style>
+/*遮罩层*/
+#tinybox_1 {
+position:absolute;
+width:1002px;
+background:#FFF;
+display: none;
+z-index: 99999;
+display:none;
+text-align:center;
+padding:10px
+}
+#tinybox_1 h4{ display:block; margin:0 auto; width:1002px; line-height:40px}
+.main{ width:98%; height:100%; margin:0 auto; }
+</style>
+<!--遮罩 begin -->
+<script type="text/javascript">
+function BtHide(id){var Div = document.getElementById(id);if(Div){Div.style.display="none"}}
+function BtShow(id){var Div = document.getElementById(id);if(Div){Div.style.display="block"}}
+function BtPopload(showId){
+// 高度减去 4px，避免在页面无滚动条时显示遮罩后出现流动条
+var h = (Math.max(document.documentElement.scrollHeight,document.documentElement.clientHeight) - 4) + 'px';
+var w = document.documentElement.scrollWidth + 'px';
+var popCss = "background:#000;opacity:0.3;filter:alpha(opacity=30);position:absolute;left:0;top:0;overflow:hidden;border:0"//遮罩背景
+var rePosition_mask = function() {
+pop_Box.style.height = h;
+pop_Box.style.width = w;
+pop_Iframe.style.height = h;
+pop_Iframe.style.width = w;
+if (document.documentElement.offsetWidth < 950) {
+//防止正常宽度下点击时 在 ff 下出现页面滚动到顶部
+document.documentElement.style.overflowX = "hidden";
+}
+}
+var exsit = document.getElementById("popBox");
+if (!exsit) {
+var pop_Box = document.createElement("div");
+pop_Box.id = "popBox";
+document.getElementsByTagName("body")[0].appendChild(pop_Box);
+pop_Box.style.cssText = popCss;
+pop_Box.style.zIndex = "10";
+var pop_Iframe = document.createElement("iframe"); // 这里如果用 div 的话，在 ie6 不能把 <select> 遮住
+pop_Iframe.id = "popIframe";
+document.getElementsByTagName("body")[0].appendChild(pop_Iframe);
+pop_Iframe.style.cssText = popCss;
+pop_Iframe.style.zIndex = "9";
+rePosition_mask();
+}
+BtShow("popIframe");
+BtShow("popBox");
+BtShow(showId);
+var pop_Win = document.getElementById(showId);
+pop_Win.style.position = "absolute";
+pop_Win.style.zIndex = "11";
+var rePosition_pop = function() {
+pop_Win.style.top = document.documentElement.scrollTop + document.body.scrollTop + document.documentElement.clientHeight/2 - pop_Win.offsetHeight + 'px';
+pop_Win.style.left = document.documentElement.scrollLeft + document.body.scrollLeft + document.documentElement.clientWidth/2 - pop_Win.offsetWidth/2 + 'px';
+}
+rePosition_pop();
+window.onresize = function(){
+w = document.documentElement.offsetWidth + 'px'; // 使用 scrollWidth 不能改变宽度
+rePosition_mask();
+rePosition_pop();
+}
+window.onscroll = function(){
+rePosition_pop();
+}
+}
+function BtPopShow(Bid,Did) {
+var UploadBtn = document.getElementById(Bid);
+if (UploadBtn){UploadBtn.onclick = function() {BtPopload(Did);return false;}}
+}
+function BtPopHide(Bid,Did) {
+var UploadBtn = document.getElementById(Bid);
+if (UploadBtn){UploadBtn.onclick = function() {BtHide(Did);BtHide("popBox");BtHide("popIframe");window.location="$rooturl/main.php";return false;}}
+}
+</script>
+<!--遮罩 end -->
+<script type="text/javascript">
+BtPopShow("open_1","tinybox_1");
+BtPopHide("close_1","tinybox_1")
+</script>
+<!-- 遮罩层 end --> 
+</div>

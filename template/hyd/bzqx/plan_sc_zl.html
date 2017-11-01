@@ -1,0 +1,176 @@
+<h1>标准曲线原始记录表（4）</h1>
+<input type="hidden" name="sc_type" value="2" />
+<table style="width:100%">  
+  <tr>
+    <td>
+      温度（℃）：<input type="text" name="td32" value="{$arow['td32']}" size="4" />
+      湿度（％）: <input type="text" name="td33" value="{$arow['td33']}" size="4" />
+    </td>
+  </tr>
+</table>
+<table  class="single">
+  <tr class="noborder">
+    <td style="width:11%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:11%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+  </tr>
+  <tr>
+    <td>检验项目</td>
+    <td colspan="2">{$arow['assay_element']}</td>
+    <td>检验地点</td>
+    <td colspan="2"><input type="text" name="td6" value="{$arow['td6']}" /></td>
+    <td>检验日期</td>
+    <td colspan="2"><input class="date_Ymd" type="text" name="td31" value="{$arow['td31']}" /></td>
+  </tr>
+  <tr>
+    <td>分量曲线ID</td>
+    <td colspan="2">项目名称</td>
+    <td>a</td>
+    <td colspan="2">b</td>
+    <td>c</td>
+    <td colspan="2">R</td>
+  </tr>
+  {loop $fenLiang $key $row}
+  <tr>
+    <td>{$row['guanLian']}</td>
+    <td colspan="2">{$row['assay_element']}</td>
+    <td>{$row['CA']}</td>
+    <td colspan="2">{$row['CB']}</td>
+    <td>{$row['CC']}</td>
+    <td colspan="2">{$row['CR']}</td>
+  </tr>
+  {/loop}
+  <tr>
+    <td>备注</td>
+    <td colspan="8"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<script>
+  //曲线切换和查看曲线函数
+  var scF = {
+    id:"{$arow['id']}",
+    vid:"{$arow['vid']}"
+  };
+  // 切换关联的分量曲线
+  scF.change_qx = function(vid, valueC){
+    if($("#sel_flqx_"+scF.id).length==0){
+      $("div[id^=sel_flqx_]").remove();//防止曲线表单页面出现在曲线列表后面
+      $("body").append('<div id="sel_flqx_'+scF.id+'" class="modal fade" data-backdrop="static"></div>')
+    }
+    var sel_flqx = $("#sel_flqx_"+scF.id);
+    var url = trade_global.rooturl+'/huayan/ahlims.php?pid='+scF.id+'&fl_vid='+vid+'&valueC='+valueC+'&ajax=1';
+    // 获取相关分量曲线
+    $.get(url+'&app=quxian&act=sel_flsc',function(data){
+      sel_flqx.html(data);
+      sel_flqx.modal('show');
+      var sc_type = sel_flqx.find("input[name=sc_type]").val();
+      var table_name = '';
+      sel_flqx.find("#sel_qx_ok").click(function(){
+        // 定义ajax提交
+        sel_flqx.find("form[name=form_select]").submit(function(){
+          $(this).ajaxSubmit({
+            type: 'get',dataType:'json',data: {'ajax': 1},
+            url: trade_global.rooturl+'/huayan/ahlims.php',
+            success: function(data) {
+              if(data.error != '0'){
+                return alert(data.content)
+              };
+              // 刷新曲线
+              window.view_sc_bd('quxian','view_sc',scF.id);
+            },
+            error: function(data){
+              // return alert(data.responseText,alert_obj);
+            }
+          });
+          return false; //阻止表单自动提交事件
+        });
+        sel_flqx.find("form[name=form_select]").submit();
+        sel_flqx.modal('hide');
+      });
+      //新建
+      sel_flqx.find(".create_sc").unbind("click").click(function(){
+        var act	= $(this).attr('data-act');
+        var app	= $(this).attr('data-app');
+        var vid = sel_flqx.find("input[name=vid]").val();
+        scF.view_sc_bd(app,act,0,'vid='+vid+'&table_name=sc_yq&sc_type='+sc_type,sel_flqx);
+      });
+      //曲线查看和编辑
+      sel_flqx.find("a.icon-zoom-in,a.icon-edit").unbind("click").click(function(){
+        var id	= $(this).attr('data-id');
+        var act	= $(this).attr('data-act');
+        var app	= $(this).attr('data-app');
+        scF.view_sc_bd(app,act,id,'',sel_flqx);
+      });
+      //删除
+      sel_flqx.find("a.icon-remove").unbind("click").click(function(){
+        var id	= $(this).attr('data-id');
+        var act	= $(this).attr('data-act');
+        var app	= $(this).attr('data-app');
+        scF.delete_sc_bd(app,act,$(this).attr('data-id'));
+      });
+    });
+  }
+  scF.delete_sc_bd = function(app,act,id){
+    var sel_flqx = $("#sel_flqx_"+scF.id);
+    $.confirm({
+      content: '你确定要删除吗？',
+      confirm: function(){
+        $.ajax({
+          type: 'get',data: {app:app,act:act,id:id},dataType: 'json',
+          url: trade_global.rooturl+'/huayan/ahlims.php?ajax=1&',
+          success: function(data){
+            if('1'==data.error){
+              return alert_error(data.content);
+            }else{
+              var vid = sel_flqx.find("form[name=form_select] [name=vid]").val();
+              var valueC = sel_flqx.find("form[name=form_select] [name=valueC]").val();
+              scF.change_qx(vid, valueC);
+            }
+          },error: function(data){
+            return alert_error(data.responseText);
+          }
+        });
+      }
+    });
+  }
+  scF.view_sc_bd = function(app,act,id,options,selQxByBox){
+    (typeof options != "string") && (options = '');
+    $.ajax({
+      type: 'get',data: {app:app,act:act,id:id},dataType: 'json',
+      url: trade_global.rooturl+'/huayan/ahlims.php?ajax=1&'+options,
+      success: function(data){
+        if('1'==data.error){
+          return alert_error(data.content);
+        }
+        //曲线，标定显示的modal
+        if($("#sc_bd_box_"+id).length == 0 );{
+          var sc_bd_box_html = '<div id="sc_bd_box_'+id+'" class="modal fade" data-backdrop="static"><div style="width:800px;margin:0 auto;overflow:auto;" class="modal-content"><div class="modal-header"><button type="button" class="close close_sc_bd" data-dismiss="modal" aria-hidden="true" title="关闭窗口">&times;</button><h3></h3></div><div class="modal-body"></div><div class="modal-footer"><button type="button" class="btn btn-sm close_sc_bd" data-dismiss="modal" aria-hidden="true" title="关闭窗口">关闭</button></div></div></div>';
+          $("body").append(sc_bd_box_html);
+        }
+        var sc_bd_box = $("#sc_bd_box_"+id);
+        sc_bd_box.modal('show').find(".modal-body").html(data.html);
+        $("#sc_bd_box_"+id).find(".close_sc_bd").click(function(){
+          var vid = selQxByBox.find("form[name=form_select] [name=vid]").val();
+          var valueC = selQxByBox.find("form[name=form_select] [name=valueC]").val();
+          scF.change_qx(vid, valueC);
+        });
+      },error: function(data){
+        return alert_error(data.responseText);
+      }
+    });
+  }
+  //关联曲线
+  $(".guanlian_quxian").click(function(){
+      if("0"=="{$arow['id']}"){
+        alert_error('请点击保存后再进行关联!');
+        return false;
+      }
+      scF.change_qx($(this).data("vid"), $(this).data("valuec"));
+  });
+  /*$(".guanlian_quxian").click(function(){
+    get_bzry_box(0,1,function(B){
+      var url = '{$rooturl}/huayan/ahlims.php?app=quxian&act=create_sc';
+      location.href=url+'&vid='+B.vid+'&wz_type='+B.wz_type+'&table_name='+B.table_name+'&bzry_id='+B.bzry_id;
+    });
+  });*/
+</script>

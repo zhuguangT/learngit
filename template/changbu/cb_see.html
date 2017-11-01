@@ -1,0 +1,128 @@
+<style type="text/css">
+//form{margin-left:80px !important;}
+//table.single{margin-top:178px !important;}
+//div.head{position:fixed;top:0;width:100%;background-color:#FFF;z-index:999;}
+//thead{position:fixed;top:80px;z-index:999;width:100%;margin:0;padding:0;left:0px;}
+table.single td{font-size: 13px;border:1px solid #E1E1E1;min-width:58px;text-align: center;}
+table.single th{font-size: 13px;border:1px solid #E1E1E1;min-width:58px;background-color:#F5F5F5;}
+table.single tbody td input{width: 100% !important;margin:0;background-color:#F5F5F5;}
+//.head{padding-right:17px;}
+//.date_input{width:80px !important;}
+</style>
+	<div class="head">
+		<h3 class="header smaller center title">分厂水质数据查看</h3>
+		<div class="widget-header header-color-blue4 center">
+			<div class="widget-toolbar tiaozhuan">
+				起始日期:<input type="text" size="10" name="begin_date" id="begin_date" class="date-picker" style="margin-right:5px" value='{$begin_date}' />
+                终止日期:<input type="text" size="10" id="end_date"  class="date-picker"  name="end_date"  style="margin-right:5px" value='{$end_date}' />
+				水样类型<select name="water_type" id="water_type" style="margin-right:5px">{$lx_options}</select>
+				<button type="button" class="btn btn-xs btn-primary" id='see' style="width:75px" value='see'>查看</button>
+				<button type="button" class="btn btn-xs btn-primary" id='xia' style="width:75px;margin-left:5px" value='xia'>下载</button>
+			</div>
+		</div>
+	</div>
+	<form action='cbsee_save.php' method="post">
+	<input type='hidden' name='begin_date' value='{$begin_date}' />
+	<input type='hidden' name='end_date' value='{$end_date}' />
+	<input type='hidden' name='water_type' value='{$water_type}' />
+	<input type='hidden' id='xm_count' value='{$xm_count}' />
+	<table  style="margin:0 auto;border-collapse:collapse;font-size:10pt;text-align:center;border:none;" width="100%" border="0" class="td_border single">
+		<thead>
+			<tr ><th width="8%" class='date_input'>采样日期</th><th width="5%">采样时间</th><th width="10%">取样点</th>{$xm_name_td}</tr>
+		</thead>
+		<tbody>
+		{$day_into_line}
+		</tbody>
+	</table>
+	<center class='tfoot'><input type="submit" name="sub" value="确认修改" class="btn btn-xs btn-primary" ><center>
+	</form>
+<script type="text/javascript">
+//鼠标点击tr整行input变红
+function change_color(obj){
+	$(obj).find('input').each(function(){
+		$(this).css('background-color','#FFC78E');
+	});
+}
+//当input框失去焦点时改变改行所有input框的背景颜色
+$("input").blur(function(){
+	$(this).parent('td').parent("tr").find('input').each(function(){
+		$(this).css('background-color','');
+	});
+});
+
+//时间格式设定
+function time(zhi){
+	var zhiCl   = zhi.value.replace(/[^\d\- :]/g,"");//只能输入数字
+	var maoArr  = zhiCl.match(/:/g);//匹配“:”
+	var wei     = zhiCl.substring((zhiCl.length-1));//取出最后一个数字
+	zhi.value   = zhiCl;  
+	if(zhiCl.length>5){
+		zhiCl=zhiCl.substring(0,5);
+		zhi.value=zhiCl;
+	}
+	document.onkeydown = function (e) {
+	　　var theEvent = window.event || e;
+	　　var code = theEvent.keyCode || theEvent.which;
+		if(code!=8){//如果按得是删除键不做任何处理
+			if(zhiCl.length=='2'){
+				zhi.value = zhiCl+":";
+			}
+		}
+　　}
+}
+//传输条件查数据
+$("#see").click(
+	function(){
+		var begin_date = $("#begin_date").val();
+		var end_date   = $("#end_date").val();
+		var water_type = $("#water_type").val();
+		var seexia     = $("#see").val();
+		location.href="?begin_date="+begin_date+"&end_date="+end_date+"&water_type="+water_type+"&seexia="+seexia;
+	}
+);
+$("#xia").click(
+	function(){
+		var begin_date = $("#begin_date").val();
+		var end_date   = $("#end_date").val();
+		var water_type = $("#water_type").val();
+		var seexia     = $("#xia").val();
+		location.href="?begin_date="+begin_date+"&end_date="+end_date+"&water_type="+water_type+"&seexia="+seexia;
+	}
+);
+
+//可输入搜索条件的下拉列表
+$(document).ready(function(){
+	var xm_count	= $("#xm_count").val();
+	var window_width= $(window).width();//页面宽度
+	if((xm_count <=13 && window_width>= 1200) || xm_count<=8){
+		//页面浮动//1192px
+		var thead_height	= $("thead").height();
+		var tbody_height	= $(window).height() - $("div.head").height() - thead_height - $(".tfoot").height() -10;
+		//增加一个如果宽度达不到 页面宽度，就不padding-right:17
+		if($("table.single tbody").height() > tbody_height){
+			/*$("thead tr:eq(0) th").each(function(i){
+				var this_width	= $(this).width() +"px";
+				$(this).css({"width":this_width,"min-width":'0',"padding":"0"});
+				$("tbody tr:eq(0) td:eq("+i+")").css({"width":this_width,"min-width":'0',"padding":"0"});
+			});*/
+			$("table.single tbody tr:eq(0) td").each(function(i){
+				var this_width	= $(this).width() +"px !important";
+				var this_css	= "'cssText','width:"+this_width+";'";
+				$(this).css("cssText","width:"+this_width+";");
+				$("table.single thead tr:eq(0) th:eq("+i+")").css("cssText","width:"+this_width+";");
+			});
+			$("table.single thead,div.head").css({"display":"block","margin-right":"17px"});
+			$("table.single tbody").css({"display":"block","height":+tbody_height+"px","overflow":"auto"});
+		}
+	}
+});
+$('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+	$(this).prev().focus();});
+$('.timepicker1').timepicker({
+	minuteStep: 1,
+	showSeconds: true,
+	showMeridian: false
+}).next().on(ace.click_event, function(){
+	$(this).prev().focus();
+});
+</script>

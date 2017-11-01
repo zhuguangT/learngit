@@ -1,0 +1,100 @@
+<!-- 气相色谱 -->
+<h1>液相色谱法检验记录</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td>
+  </tr>
+  <tr>
+    <td>检验项目</td>
+    <td colspan="4">{$arow['assay_element']}</td>
+    <td>检验地点</td>
+    <td colspan="4"><input type="text" class="inputc" name="td7"   value="{$arow['td7']}" /></td>
+  </tr>
+   <tr>
+    <td>检验方法</td>
+    <td colspan="4">{$arow['td1']}</td>
+    <td>检验依据</td>
+    <td colspan="4">{$arow['td2']}</td>
+  </tr>
+  <tr>
+    <td colspan="1">仪器型号</td>
+    <td colspan="4">{$arow['td5']}</td>
+    <td colspan="1">仪器编号</td>
+    <td colspan="4">{$arow['yq_bh']}</td>
+  </tr>
+  <tr> 
+    <td colspan="10">
+      色谱条件
+    </td>
+  </tr>
+  <tr> 
+    <td>色谱柱</td>
+    <td colspan="4"><input type="text" class="inputc" name="td8" value="{$arow['td8']}" /></td>
+    <td>检测器</td>
+    <td colspan="4"><input type="text" class="inputc" name="td9" value="{$arow['td9']}" /></td>
+  </tr>
+  <tr> 
+    <td>流动相</td>
+    <td colspan="4"><input type="text" class="inputc" name="td10" value="{$arow['td10']}" /></td>
+    <td>柱流速</td>
+    <td colspan="4"><input type="text" class="inputc" name="td11" value="{$arow['td11']}" /></td>
+  </tr>
+  <tr>
+    <td colspan="1">柱温</td>
+    <td colspan="4"><input type="text" class="inputc" name="td12" value="{$arow['td12']}" /></td>
+    <td colspan="1">检测波长</td>
+    <td colspan="4"><input type="text" class="inputc" name="td13" value="{$arow['td13']}" /></td>
+  </tr>
+  <tr>
+    <td colspan="1">水样体积</td>
+    <td colspan="4"><input type="text" class="inputc" name="td14" value="{$arow['td14']}" /></td>
+    <td colspan="1">进样体积</td>
+    <td colspan="4"><input type="text" class="inputc" name="td15" value="{$arow['td15']}" /></td>
+  </tr>
+  <tr>
+    <td>计算公式</td> 
+    <td colspan="9">检验结果（mg/L）= C<sub>2</sub>×10<sup>-3</sup>/浓缩倍数</td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>样品仪器编号</td>
+    <td>{$zhanming}</td>
+    <td>样品检出浓度C<sub>1</sub><br />（μg/L）</td>
+    <td>空白检出浓度C<sub>0</sub><br />（μg/L）</td>
+    <td>样品-空白浓度C<sub>2</sub><br />（μg/L）</td>
+    <td>浓缩倍数</td>
+    <td>检验结果<br />（mg/L）</td>
+    <td>平均值</td>
+    <td>质控结果</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="9"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+  var default_nsbs = '{$arow['td23']}';
+  window.jsgs = function(){
+    var vd3_split = String(vs['vd3']).split('.');
+    if(vd3_split.length==2){
+      var diding_ws = vd3_split[1].length;
+    }else{
+      var diding_ws = 0;
+    }
+    if( $.isNumeric(vs['vd27']) && $.isNumeric(vs['vd3'])){
+      vs['vd5']=jsws(accsub(parseFloat(vs['vd27']),parseFloat(vs['vd3'])),diding_ws);
+    }
+    else
+    {
+      vs['vd5']='';
+    }
+    if($.isNumeric(vs['vd5']) && $.isNumeric(vs['vd2']))
+    {
+      vs['vd0']=accDiv(accDiv(parseFloat(vs['vd5']),1000),parseFloat(vs['vd2']));
+    }
+  }
+</script>

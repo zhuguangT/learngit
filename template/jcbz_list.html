@@ -1,0 +1,152 @@
+<!-- 检测标准列表，显示所有已设置的项目检测值 -->
+<script>          
+//切换启用弃用状态
+function diag(t)
+{
+
+	var action=t.value;
+	var jcbz_bh_id=document.getElementById('jcbz').value;
+	var choose=document.getElementById('jcbz');
+	
+	if(action=="open")
+	{
+		
+		if(confirm("确定要启用此标准"))
+		{
+			window.location.href='$rooturl/system_settings/jcbz_manage/jcbz_list.php?action=open&jcbz_bh_id='+jcbz_bh_id;
+		}
+	}
+
+	 return false;
+}
+//获得检测标准的模板下拉菜单
+function get_jcbz_mb(t)
+{
+	var sylx_val=t.value;
+	if(sylx_val==0)
+	{	
+		$("#tab tr:gt(1)").remove();//删除第二个tr下面的所有tr
+		$("#jcbz_mb").remove();
+	}
+	else
+	{
+		$.get("jcbz_list.php?ajax=1",{sylx:sylx_val},function(data){
+		if(data==1)
+		
+		{
+			$("#jcbz_mb").remove();
+			$('#sp2').append('&nbsp;&nbsp;<select id=jcbz_mb  name=jcbz_mb onchange=get_mb_data(this)><option value=0>请选择要复制模板</option>'+data+'</select>');
+		}
+	},'html');
+	}
+}
+//获得检测标准的模板信息
+function get_mb_data(t)
+{
+	var jcbz_mb_id=t.value;
+	if(jcbz_mb_id==0)
+	{
+		$("#tab tr:gt(1)").remove();
+		return false
+	}
+	else
+	{
+		$("#tab tr:gt(1)").remove();
+		$.get("jcbz_list.php?ajax=1",{jcbz_mb_id:jcbz_mb_id},function(data){
+		$('#tab tr').eq(-1).after(data);
+		
+		},'html');
+	}
+}
+//检测水样类型是否选择
+function check_jcbz()
+{
+	var jcbz_data=$("#jcbz").val();
+	var sylx_data=$("#sylx").val();
+	var jcbz_data=parseInt(jcbz_data);
+	var sylx_data=parseInt(sylx_data);
+	if(!jcbz_data&!sylx_data)
+	{
+		alert('请选择水样类型！');
+		return false;
+	}
+}
+
+</script>
+<h3 class="header smaller center" style="margin:3px 0 6px 0;border:0"><b>检测标准限值列表</b></h3>
+<form action="" method="post" id="tab" onsubmit="return diag()">
+<input type="hidden" id="hid" name="hid" value="">
+<div class="widget-box" style="border:none;width:90%;margin:0 auto">
+  <div class="widget-header header-color-blue4 center">
+	
+	  	<span id="sp">检测标准状态<select id='jcbz_zt'>$jcbz_zt_select</select>&nbsp;&nbsp;</span>
+	  	检测标准编号:<select name="jcbz" id='jcbz'>$jcbz_list</select>&nbsp;&nbsp;
+	  	<span id="sp2"></span>
+	  	$change_zt  
+		<select id="value_C" name='quanbu' class="chosen-select" size='50' style="position:absolute; top: 40px;width: 170px; height: 22px; clip: rect(0 170 22 150)" ><option value='' selected>项目分类搜索&nbsp;&nbsp;&nbsp;&nbsp;</option>$value_group_list</select>&nbsp;&nbsp;&nbsp;
+		<select id="product_search"   class="chosen-select"  style="position:absolute; top: 40px;width: 170px; height: 22px; clip: rect(0 170 22 150)" ><option value=''>项目名搜索</option>$search</select>
+	
+  </div>
+  <div class="widget-body" style="border:none;">
+	<table class="table table-striped table-bordered table-hover center" id="tab">
+		<thead>
+			<tr class='ttt'>
+				<th class="center" style="width:20%">项目分类</th>
+				<th class="center" style="width:30%">项目名称</th>
+				<th class="center" style="width:25%">检测限值</th>
+				<th class="center" style="width:25%">单位</th>
+			</tr>
+		</thead>
+		<tbody>
+			$xm_list
+		</tbody>
+	</table>
+  </div>
+</div>
+
+<div id='sub' style="display:none;width:70%;margin:0 auto;" align="center"><input type="submit" value="提交" onclick="return check_jcbz()"></div>
+ <div id='test'></div>
+<script src="jquery.min.js"></script>
+ <script>
+ 	$(document).ready(function() {
+	$(".chosen-select").chosen();});
+
+	
+</script>
+
+</form>
+<script>
+//搜索
+$('#product_search').change(function(){
+	var bh = $("#jcbz").val();
+    var jcbz_zt=$("#jcbz_zt").val();
+	var search=$('#product_search').val();
+	
+	
+	
+	window.location.href='jcbz_list.php?search='+search+'&jcbz='+bh+'&jcbz_zt='+jcbz_zt;
+})
+//分类
+$('#value_C').change(function(){
+	var bh = $("#jcbz").val();
+    var jcbz_zt=$("#jcbz_zt").val();
+	var quen=$('#value_C').val();
+	
+	
+	window.location.href='jcbz_list.php?quanbu='+quen+'&jcbz='+bh+'&jcbz_zt='+jcbz_zt;
+})
+//改变检测标准编号时执行函数
+$('#jcbz').change(function(){
+   var bh = $("#jcbz").val();
+   var jcbz_zt=$("#jcbz_zt").val();
+  window.location.href='jcbz_list.php?jcbz='+bh+'&jcbz_zt='+jcbz_zt;
+})
+//改变检测标准状态时执行函数
+$('#jcbz_zt').change(function(){
+   var jcbz_zt=$("#jcbz_zt").val();
+  window.location.href='jcbz_list.php?jcbz_zt='+jcbz_zt;
+})
+</script>
+
+
+</body>

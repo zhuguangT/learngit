@@ -1,0 +1,233 @@
+<style>
+.site_label,.group_sites{float:left;margin:1px 0px 1px 1px;height:43px;width:130px;border:1px #D7D7D7 solid;text-align:left;opacity:1;cursor:pointer;}
+.group_sites{float:none;background-color:#C9F2D1}
+</style>
+<div id="tabs" style="width:100%;margin:0 auto;" class="center">
+                        <ul>
+				<!-- $fp_sites -->
+								 <li>
+                                        <a href="#tabs-2" id="k2">添加新站点</a>
+                                </li>
+                                <li>
+                                        <a href="#tabs-1" id="k1">选择站点</a>
+                                </li>
+                               
+                        </ul>
+			<!-- $fp_sites_div -->
+                        <div id="tabs-1">
+				水样类型:<select id="water_select" style="text-align:left;" onclick='wychange(this)'><option value='全部'>全部</option>$water_type_options</select>
+				批名:<select id="group_select" class="chosen"><option value='全部'>全部</option>$group_name_option</select>
+				统计参数:<select id="tjcs_select" class="chosen"><option value='全部'>全部</option>$tjcs_option</select>
+				<div style="text-align:left;margin-top:20px;">
+					$lines	
+					<div style="clear:both;"></div>
+				</div>
+                        </div>
+                        <div id="tabs-2">
+                                <br />数据加载中......<br />
+                        </div>
+</div>
+<script>
+$(function(){
+	//防止批次过少，窗口扩展不开的情况。
+	$('body').height($('body').parent().height());
+	$(".chosen").chosen();//可搜索下拉菜单
+	$( "#tabs" ).tabs();
+	if($("#tabs-2:contains('数据加载中')").html()){
+        	var lianJie     = "$rooturl/site/group_add_sites.php?site_type=$site_type&no_daohang=yes&daohang_action={$_GET['daohang_action']}&ajax=$_GET[ajax]";
+		var group_name  = $("form[name='group_add'] input[name='group_name']").val();
+        	var str = "<option value='"+group_name+"' selected>"+group_name+"</option>";
+        	$("#tabs-2").load(lianJie).find("select[name='group_name']").append(str);
+		$("#tabs-2 select[name='site_type'],#tabs-2 select[name='group_name'],#tabs-2 select[name='fenz[]']").attr("disabled",true);
+        }
+	$("#k2").click(function(){
+		if($("#tabs-2:contains('数据加载中')").html()){
+			var lianJie	= "$rooturl/site/group_add_sites.php?site_type=$site_type&no_daohang=yes";
+			$("#tabs-2").load(lianJie);
+		}
+		//默认批次名称
+        	var group_name  = $("form[name='group_add'] input[name='group_name']").val();
+		$("#tabs-2 input[name='group_name']").val(group_name);
+		//$(window.parent.document).find('iframe').height($('body').height()+$("#tabs-2").height()+300);
+	});
+	//鼠标移动到项目上或者选中的项目，高亮显示
+	$("label.site_label,.group_sites").mouseover(function(){
+    	$(this).css({"background-color":"#C9F2D1","cursor":"pointer"});
+    }).mouseout(function(){
+    	if(!$(this).children("input").is(":checked")){
+        	$(this).css("background-color","#FFF");
+    	}
+    });
+	//用户改变“批名”是对应 搜出站点
+	$("#group_select").change(function(){
+		var tjcs	= $("#tjcs_select").val();
+		$("div[group_id],label[group_id]").hide();
+		if(this.value!='全部'){
+			if(tjcs!='全部'){
+                        	$("div[group_id='"+this.value+"'],label[group_id='"+this.value+"'][tjcs='"+tjcs+"']").show();
+			}else{
+				$("div[group_id='"+this.value+"'],label[group_id='"+this.value+"']").show();
+			}
+		}else{
+			if(tjcs!='全部'){
+				$("label[group_id][tjcs='"+tjcs+"']").each(function(){
+					$(this).show().prevAll("div[group_id='"+$(this).attr("group_id")+"']").show();//筛选出站点后，将其对应的批次名称也显示出来;
+				});
+			}else{
+				$("div[group_id],label[group_id]").show();
+			}
+		}
+	});
+	//用户改变 已有批的站点的”统计属性“时对应搜出站点   div存放批次名称，label存放站点名称
+	$("#tjcs_select").change(function(){
+		var group_name	= $("#group_select").val();
+		$("div.old_sites[tjcs],label.old_sites[tjcs]").hide();
+		if(this.value!='全部'){
+			$("div.old_sites[tjcs],label.old_sites[tjcs]").hide();
+			if(group_name!='全部'){
+				//$("div[group_id='"+group_name+"']").show();
+				$("label.old_sites[tjcs*='"+this.value+"'][group_id='"+group_name+"']").show();
+				$("label.old_sites[tjcs*='"+this.value+"'][group_id='"+group_name+"']").prevAll("div").each(function(){
+					$(this).show();
+					return false;
+				});
+			}else{
+                		$("label.old_sites[tjcs*='"+this.value+"']").each(function(){
+					$(this).show().prevAll("div.old_sites[group_id='"+$(this).attr("group_id")+"']").show();//筛选出站点后，将其对应的批次名称也显示出来;
+				});
+			}
+		}else{
+			if(group_name!='全部'){
+				$("div.old_sites[tjcs][group_id='"+group_name+"'],label.old_sites[tjcs][group_id='"+group_name+"']").show();
+			}else{
+				$("div.old_sites[tjcs],label.old_sites[tjcs]").show();
+			}
+		}
+	});
+	//未分配批次的站点
+	$("#fp_new_sites").click(function(){
+		if($(this).is(":checked")){
+			$("#tabs-3 [new_sites][new_sites!='new_sites']").hide();
+			$("#tabs-3 [new_sites='new_sites']").show();
+			//有时候参数的div会没有new_sites的属性，这里要处理一下
+			$("label.fp_sites[new_sites='new_sites']").each(function(){
+                        	$(this).show();
+                        	$("div.fp_sites[tjcs='"+$(this).attr("tjcs")+"']").show();
+			});
+		}else{
+			$("#tabs-3 [new_sites]").show();
+		}
+	});
+	//往 批次表格的'批内站点td'里追加选中的站点
+	$("label[group_id] input,label.fp_sites[tjcs] input").click(function(){
+		var sum_sites   = parseInt($("#sum_sites").text());
+		if($(this).is(":checked")){
+			//将这个站点在其他批次里的站点取消选中
+			//$("label[group_id] input[value!='"+this.value+"'][site_id='"+$(this).attr("site_id")+"'],label.fp_sites[tjcs] input[value!='"+this.value+"'][site_id='"+$(this).attr("site_id")+"']").attr("checked",false).parent().css("background-color","#fff");
+			if(!$("#group_sites input[value='"+this.value+"']").val()){
+				//if($("#group_sites input[site_id='"+$(this).attr("site_id")+"']").val()){
+				//	$("#group_sites input[site_id='"+$(this).attr("site_id")+"']").val(this.value);
+				//}else{
+					//var site_id_count	= $("#group_sites input[site_id='"+$(this).attr("site_id")+"']").length;
+					//alert(site_id_count);
+					//if(site_id_count>0){
+						var tishi	= $(this).parent().attr("title")+"{"+$(this).attr('tishi')+"}";
+					//}else{
+					//	var tishi 	= $(this).parent().attr("title");
+					//}
+					var site_html	= "<label class='group_sites' title='"+tishi+"'><input type='checkbox' name='sites[]' site_id="+$(this).attr("site_id")+"  value="+$(this).attr("site_id")+" value1='"+this.value+"' checked /><input type='hidden' name='gids["+$(this).attr("site_id")+"]' value="+this.value+" />"+$(this).parent().text()+"</label>";
+					$("#group_sites").prepend(site_html);
+					if(sum_sites==0){
+						sum_sites	= 1;
+					}else{
+						sum_sites	= sum_sites + 1;
+					}
+					$("#sum_sites").text(sum_sites);
+				//}
+			}
+		}else{
+			//$("label[group_id] input[value='"+this.value+"']").attr("checked",false).parent().css("background-color","#fff");
+			if($("label.group_sites input[value1='"+this.value+"']").val()){
+				$("label.group_sites input[value1='"+this.value+"']").parent().remove();
+				if(sum_sites!=0){
+					sum_sites	= sum_sites - 1;
+				}
+				$("#sum_sites").text(sum_sites);
+			}
+		}
+	});
+	//默认将 任务类型、批次名称、分中心  都处理为不可选择
+	$("#tabs-2").on("click","#add",function(){
+		$("#tabs-2 form[name='playlist'] select[name='customers[]']:last").removeAttr("disabled");
+		$("#tabs-2 form[name='playlist'] select[name='fenz[]']").attr("disabled",true);
+		//添加分中心的隐藏域
+		var fzx_id_last	= $("#tabs-2 form[name='playlist'] select[name='fenz[]']:last").val();
+		$("#tabs-2 form[name='playlist']").append("<input type='hidden' name='fenz[]' value='"+fzx_id_last+"' />");
+	});
+	//选择新添加站点提交时改为ajax提交
+	$("#tabs-2").on("submit","form[name='playlist']",
+		function(){
+			//添加一个隐藏域变量，告诉站点添加页面 这里是ajax提交的
+			if($("input[name='action'][value='site_add_ajax']").val()!='site_add_ajax'){
+				$("#tabs-2 form[name='playlist']").append("<input type='hidden' name='action' value='site_add_ajax' />");
+			}
+			var options = {
+				dataType: "json",
+				success:function(result){
+					if(result.jieGuo=='yes'){
+					//批次表格的"批内站点"td里追加选中的站点
+						for(gr_id in result.ajax_group){
+							if(!$("#group_sites input[value='"+gr_id+"']").val()){
+								var site_html   = "<label class='group_sites'><input type='checkbox' name='sites[]' value='"+result.ajax_sid[gr_id]+"' checked /><input type='hidden' name='gids[]' value='"+gr_id+"'/>"+result.ajax_group[gr_id]+"</label>";
+								$("#group_sites").prepend(site_html);
+								var sum_sites   = parseInt($("#sum_sites").text());
+								if(sum_sites==0){
+									sum_sites	= 1;
+								}else{
+									sum_sites	= sum_sites + 1;
+								}
+								$("#sum_sites").text(sum_sites);
+							}
+						}
+						//把已经添加的站点 改为不可编辑  并隐藏添加站点页面
+						$("#tabs-2 form[name='playlist'] input[type='text'],#tabs-2 form[name='playlist'] select[name='customers[]']").attr("disabled",true);
+						$("#button_site_add").val('点击显示站点添加窗口');
+						$("#fieldset_site_add").toggle('2');
+                          		}else{
+                                		alert('修改失败，请重试');
+                          		}
+                    		},
+                    		timeout:10000
+               		};
+			$(this).ajaxSubmit(options);//ajax提交
+			return false;
+		}
+	);
+})
+//水样类型筛选
+function wychange(wy){
+	var va = $(wy).val();
+	if(va == '全部'){
+		$("label[wy]").show();
+	}else if(va.indexOf(',')!='-1'){
+		$("label[wy]").hide();
+		varr = va.split(',');
+		for(s in varr){
+			xian = $("label[wy='"+varr[s]+"']");
+			xian.show();
+			// xian.each(function(){
+			// 	$(this).parent('div').find('div[tjcs]').show();
+			// });
+		}
+
+	}else{
+		//$("div[tjcs]").hide();
+		xian1 = $("label[wy='"+va+"']");
+		xian1.show();
+		// xian1.each(function(){
+		// 		$(this).parent('div').find('div[tjcs]').show();
+		// });
+		$("label[wy!='"+va+"']").hide();
+	}
+}
+</script>

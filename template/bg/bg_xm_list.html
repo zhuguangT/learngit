@@ -1,0 +1,140 @@
+<script> 
+ function in_array(stringToSearch, arrayToSearch) {
+
+	        for (s = 0; s <arrayToSearch.length; s++) {
+
+			      thisEntry = arrayToSearch[s].toString();
+
+			            if (thisEntry == stringToSearch) {
+
+					          return true;
+
+						        }
+
+			            }
+
+		      return false;
+		 
+		      }
+
+function quan1(th){
+	with(th.form){
+		var im=mbxm.value;
+		var t=im.split('*');
+		var t2=t[0];
+		var t3=t2.split(','); 
+		v=elements['vid[]'];
+		for(var i=0;i<v.length;i++) 
+		{
+
+			 if(in_array(v[i].value,t3))
+				 v[i].checked=true;
+			 else
+				 v[i].checked=false;
+		}
+    tj();
+    $("input[flag='mb']").each(function(){
+        $(this).parent("label").parent("td").css("background-color","");
+         $(this).parent("label").css("background-color","");
+    });
+
+    $("input[flag='mb']").each(function(){//把已经选中的项目高亮显示
+    if($(this).is(":checked")){
+      $(this).parent("label").parent("td").css("background-color","#C9F2D1");
+      $(this).parent("label").css("background-color","#C9F2D1");
+    }
+    });
+		    
+	}
+
+}
+
+  $("input[flag='mb']").each(function(){//把已经选中的项目取消高亮显示
+    if($(this).is(":checked")){
+      $(this).parent("label").parent("td").css("background-color","#C9F2D1");
+      $(this).parent("label").css("background-color","#C9F2D1");
+    }
+  });
+
+  $("label[flag='mb']").mouseover(function(){//鼠标移动到项目上或者选中的项目，高亮显示
+    $(this).parent("td").css({"background-color":"#C9F2D1"});
+    $(this).css({"background-color":"#C9F2D1"});
+  }).mouseout(function(){
+    if(!$(this).children("input").is(":checked")){
+      $(this).parent("td").css("background-color","");
+      $(this).css("background-color","");
+    }
+  });
+
+$("#checked_num1").html($("input[flag='mb']:checked").length);
+ function tj()
+ {
+    $("#checked_num1").html($("input[flag='mb']:checked").length);
+ }
+ $("input[flag='mb']").click(function(){
+    tj();
+  });
+
+function tijiao()//保存操作的ajax
+{
+	var vid_nums=$("input[name='vid[]']:checked").length;
+	if(vid_nums>0){
+		$.post("$rooturl/baogao/bg_xm_save.php?ajax=1",$("#xmform").serializeArray(),
+		function(data){
+			if(data){
+				alert('保存成功！');
+			}else{
+				alert('保存失败，请联系系统管理员！');
+			}
+	   });
+	}else{
+		alert('项目不能为空！');
+	}
+	
+}
+//模板设定
+function gm(){
+	jie = $("#mbxm option:selected").val();
+	ming = $("#mbxm option:selected").html();
+	if(ming == '----请选择----')
+	{
+		jie = $("#mbxm option:selected").next().val();
+		ming = $("#mbxm option:selected").next().html();
+	}
+	$('.modal-content').load("$rooturl/site/muban_xm.php",{"mbname":ming,"xm":jie,"ajax":"1",'fa':'1'});
+	$('body').css("overflow","hidden")
+	$("#cover").show();
+}
+
+</script>
+
+
+<form action="" method="post" id='xmform'>
+<input type="hidden" name="bg_id" value="{$bg_id}">
+<br/>
+<span id="close" style="position: absolute; top: 0px; left: 745px; font-size:18px;">
+        <B><a href='javascript:guanbi()'>关闭</a></B>
+</span>
+<h3 class="header smaller center title">报告项目设定</h3>
+<table style='border:1px solid white!important;'>
+  <tr align="center">
+    <td style='border:1px solid white!important;'>选择模板:</td>
+    <td style='border:1px solid white!important;'><select name="mbxm" id='mbxm' onchange="quan1(this)">
+$mbxm
+ </select>
+ <button type="button" class="btn btn-xs btn-primary" onclick='gm()' >项目选择模板设定</button> 
+  </tr>
+  <tr style='border:1px solid white!important;'>
+    <td colspan="5" align="center" style='border:1px solid white!important;'>
+      目前已经选择了 <span id="checked_num1" style='color:blue;'>0</span> 个项目
+    </td>
+  </tr>
+</table>
+<table>
+ $lines
+   <tr style='border:1px solid white!important;'>
+    <td colspan="5" align="center" style='border:1px solid white!important;'><br/><input class="btn btn-primary" name="bao" type="button" value="保存" onclick='tijiao()'></td>
+  </tr>
+</table>
+<br/>
+</form>

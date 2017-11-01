@@ -1,0 +1,12 @@
+<!-- 模板显示 -->
+<table>
+<form action='$rooturl/blue/patch_edit.php' method=POST>
+<tr><td>补丁:</td><td><input type=text name=name value='$_GET[name]' onclick='unhide("sub2");unhide("sub1");'>
+<input type=submit name=action value='new' ><br></td></tr>
+<tr><td>注释:</td><td><input type=text name=note value='$note' size=80 onclick='unhide("sub2");unhide("sub1");'  name=action> 
+<input type=submit value='modi'  id=sub1 style='visibility: hidden; display: none;' name=action><a href='../patch/$name'>执行</a></td></tr>
+<tr><td>内容:</td><td><textarea  name=data  cols="120" rows="$linecount" style="font-family:simsun" onclick='unhide("sub1");unhide("sub2");'>$lines</textarea><br>
+<input type=submit value='modi' style='visibility: hidden; display: none;' id=sub2 name=action>
+</td></tr>
+</form>
+</table>

@@ -1,0 +1,80 @@
+<H1>原子荧光仪原始记录表</H1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:10%"></td><td style="width:15%"></td><td style="width:15%"></td>
+		<td style="width:15%"></td><td style="width:15%"></td><td style="width:15%"></td>
+		<td style="width:15%"></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="2">分析项目：{$arow['assay_element']}</td>
+		<td class="left" colspan="3">分析方法：{$arow['td2']}</td>
+		<td class="left" colspan="2">分析日期：<input class="date_Ymd" type="text" name="td31" size="10" value="{$arow['td31']}" /></td>
+	</tr>
+	<tr>
+		<td class="left" colspan="2">样品类别：{$arow['water_type']}</td>
+		<td class="left" colspan="3">仪器型号及编号：{$arow['td4']} {$arow['yq_bh']}</td>
+		<td class="left" colspan="2">检出限：{$arow['td3']} {$arow['unit']}</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="2">取样体积：<input type="text" name="td6" size="7" value="{$arow['td6']}" />  mL</td>
+		<td class="left" colspan="2">氩气压力：<input type="text" name="td7" size="10" value="{$arow['td7']}" />  MPa</td>
+		<td class="left" colspan="3">
+			曲线编号：<input type="text" name="td8" size="5" value="{$arow['td8']}" />
+			率定日期：<input class="date_Ymd" type="text" name="td9" size="10" value="{$arow['td9']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="3">标准工作液浓度：<input type="text" name="td10" size='14' value="{$arow['td10']}" /> mg/L</td>
+		<td class="left" colspan="4">计算公式：C（mg/L）= 直读含量×稀释倍数/1000</td>
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td>{$zhanming}</td>
+		<td>直读含量（μg/L）</td>
+		<td>稀释倍数</td>
+		<td>含量（{$arow['unit']}）</td>
+		<td>平均值<br/>（{$arow['unit']}）</td>
+		<td>相对偏差<br/>（％）</td>
+	</tr>
+	{$aline}
+	<tr class="auto">
+		<td>空白实验</td>
+		<td>1 <input type="text" name="td22" size="7" class="inputc" value="{$arow['td22']}" onblur="btgs()" /></td>
+		<td>2 <input type="text" name="td23" size="7" class="inputc" value="{$arow['td23']}" onblur="btgs()" /></td>
+		<td class="left" colspan="2">平均值 <input type="text" name="td24" size="7" class="noinputc" value="{$arow['td24']}" /></td>
+		<td class="left" colspan="2">相对偏差（%） <input type="text" name='td25' size="7" class="noinputc" value='{$arow['td25']}'></td>
+	</tr>
+	<tr>
+		<td>备注</td>
+		<td colspan="6"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	function jsgs(){
+		if($.isNumeric(vs['vd27']) && $.isNumeric(vs['vd2'])){
+			vs['vd0'] = jsws((vs['vd27']*vs['vd2'])/1000);
+		}else{
+			vs['vd0'] = '';
+		}
+	}
+	function btgs()
+	{
+		var td22=$("input[name=td22]").val();
+		var td23=$("input[name=td23]").val();
+		if($.isNumeric(td22)&&parseInt(td22)!=td22)
+			ws=(td22.split("."))[1].length;
+		else
+			ws=0;
+		if($.isNumeric(td22)&&$.isNumeric(td23))
+		{
+			var td24=roundjs(accDiv(accAdd(td22,td23),2),ws);
+			var td25=roundjs((accsub(td22,td23)/accAdd(td22,td23)),2);
+		}
+		else
+		{
+			td24=td25='';
+		}
+		$("input[name=td24]").attr("value",td24);
+		$("input[name=td25]").attr("value",td25);
+	}
+</script>

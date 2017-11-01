@@ -1,0 +1,763 @@
+<div class="widget-header">
+	水样类型：{echo PublicApp::get_select('leixing',$this->get_all_leixing(),true,true);}
+	{if $u['system_admin'] || $u['admin']}
+	检测人员：{echo PublicApp::get_select('uid',$fx_users,true);}
+	{else}
+	<input type="hidden" name="uid" value="{$u['id']}" />
+	{/if}
+	<div class="btn-group show_data_type">
+		<button type="button" class="btn btn-sm btn-primary dropdown-toggle" style="height: 30px;margin: 0 0 0 10px;padding: 2px 5px;" data-toggle="dropdown">
+			<span class="show_button" data-show="1">已启用方法</span>
+			<span class="icon-caret-down icon-on-right"></span>
+		</button>
+		<ul class="dropdown-menu dropdown-primary">
+			<li data-show="1" data-title="已启用的方法"><a href="javascript:void(1)">仅显示启用方法</a></li>
+			<li data-show="2" data-title="已停用的方法"><a href="javascript:void(2)">仅显示停用方法</a></li>
+			<li data-show="3" data-title="全部检测方法"><a href="javascript:void(3)">显示全部检测方法</a></li>
+			<li data-show="4" data-title="不完整的方法"><a href="javascript:void(4)">显示（<span>0</span>）条不完整的方法</a></li>
+		</ul>
+	</div>
+	<button type="button" class="btn btn-primary btn-sm add_xmfa" style="height: 30px;margin: 0 0 0 10px;padding: 2px 5px;">新增配置</button>
+	<!-- <input type="checkbox" name="show_ting" value="yes" />显示已停用的方法 -->
+</div>
+<!-- bootstrapTable数据表格 -->
+<table id="bootstrapTable" class="table center"></table>
+<!-- 检测单位 -->
+<div class="hide" id="sel_unit">{echo PublicApp::get_select('unit',$global['unit'],false,false);}</div>
+<!-- 检测人员 -->
+<div class="hide" id="sel_user">{echo PublicApp::get_select('uid',array('选择化验员'),false,false);}</div>
+<!-- 仪器列表 -->
+<div class="hide" id="sel_yiqi">{echo PublicApp::get_select('yiqi_id',$this->get_all_yiqi(),true,false);}</div>
+<!-- 表格模板列表 -->
+<div class="hide" id="sel_muban">{echo PublicApp::get_select('muban_id',$this->get_all_muban(),true,false);}</div>
+<!-- 检测方法列表 -->
+<div class="hide" id="sel_method">{echo PublicApp::get_select('method',$this->get_all_method(),true,false);}</div>
+<!-- 修约位数设置 -->
+<div class="hide" id="sel_fromat">{echo PublicApp::get_select('formatter',array('无',0,1,2,3,4,5,6,7,8),false,false);}</div>
+<script type="text/javascript">
+var cookieName = "xmfa_set_";
+// 根据cookie初始化本页的检索数据
+if( '{$_GET['vid']}' ){
+	setCookie( cookieName + "search", "{$_SESSION['assayvalueC'][$_GET['vid']]}");
+}
+$(document).ready(function(){
+	var uid = getCookie(cookieName + "uid");
+	var leixing = getCookie(cookieName + "leixing");
+	var show_type = getCookie(cookieName + "show_type");
+	( uid != '' ) && ( $("#xmfa_set [name=uid]").val(uid) );
+	( leixing != '' ) && ( $("#xmfa_set [name=leixing]").val(leixing) );
+	( show_type != '' ) && ( $("#xmfa_set .show_data_type li[data-show="+show_type+"]").trigger("click") );
+});
+// 选择需要展示的数据类型
+$("#xmfa_set .show_data_type li[data-show]").unbind("click").on("click", function(){
+	// 查看配置信息不完整的方法
+	if( '4' == $(this).data("show") ){
+		// 显示水样类型字段
+		theTable.bootstrapTable("showColumn","lname");
+		// 禁用水样类型和用户搜索功能
+		$("#xmfa_set").find("select[name=leixing],select[name=uid]").prop("disabled",true);
+	}else{
+		// 查看单一水样类型数据时隐藏该字段信息
+		if( '全部' != $("#xmfa_set select[name=leixing]").val() ){
+			theTable.bootstrapTable("hideColumn","lname");
+		}
+		// 启用水样类型和用户搜索功能
+		$("#xmfa_set").find("select[name=leixing],select[name=uid]").prop("disabled",false);
+	}
+	// 根据点击的选项更新按钮内容
+	$("#xmfa_set .show_data_type .show_button").html($(this).data("title")).data("show",$(this).data("show"));
+	// 更新bootstrapTable表数据，需要使用最新的URL路径
+	theTable.bootstrapTable("refresh",{silent: true, url: get_xmfa_set_bootstrapTable_url()});
+});
+// 为水样类型和人员选择绑定change事件来查看不同的数据
+$("#xmfa_set").find("select[name=leixing],select[name=uid]").unbind("change").on("change", function(){
+	// 查看单一水样类型数据时将水样类型一列隐藏
+	if( '全部' != $("#xmfa_set select[name=leixing]").val() ){
+		theTable.bootstrapTable("hideColumn","lname");
+	}else{
+		theTable.bootstrapTable("showColumn","lname");
+	}
+	// 更新bootstrapTable表数据，需要使用最新的URL路径
+	theTable.bootstrapTable("refresh",{silent: true, url: get_xmfa_set_bootstrapTable_url()});
+});
+//获取最新的URL地址
+var get_xmfa_set_bootstrapTable_url = function(){
+	var uid = $("#xmfa_set [name=uid]").val();
+	var leixing = $("#xmfa_set [name=leixing]").val();
+	var show_type = $("#xmfa_set .show_data_type .show_button").data("show");
+	setCookie(cookieName + "uid", uid, 0.04);
+	setCookie(cookieName + "leixing", leixing, 0.04);
+	setCookie(cookieName + "show_type", show_type, 0.04);
+	// 根据人员，水样类型，显示数据类型进行筛选数据进行展示
+	return 'ahlims.php?ajax=1&app=jcxm&act=xmfa_list&uid='+uid+'&leixing='+leixing+'&show_type='+show_type;
+}
+// 打开检测方法编辑模态框
+function open_xmfa_modal(row){
+	// 定义各参数的数据源
+	var field_ID = { unit: '#sel_unit', yiqi: '#sel_yiqi', fangfa: '#sel_method', hyd_bg_id: '#sel_muban' };
+	$("#xmfa_modal .xmfa_modal_msg").empty();
+	$("#xmfa_modal input[name=fid]").val(row.id);
+	$("#xmfa_modal [data-field]").each(function(){
+		var field = $(this).data("field");
+		if( typeof field_ID[field] == "undefined" ){
+			$(this).find("[name]").each(function(){
+				$(this).val(row[$(this).prop("name")]);
+			});
+		}else{
+			$(this).html($(field_ID[field]).html());
+			$(this).find("select").width("200px").prop("name",field).val(row[field]).select2();
+		}
+	});
+	// 获取化验员分配项目列表
+	$.ajax({
+		type: 'get',
+		dataType: 'json',
+		data: {uid: $("#xmfa_set select[name=uid]").val(),leixing: $("#xmfa_set select[name=leixing]").val()},
+		url: 'ahlims.php?app=jcxm&act=get_all_vids&ajax=1',
+		success: function(data){
+			var that = "#xmfa_modal select[name=xmid]";
+			$(that).empty();
+			$.each(data['jcxm'],function(vid){
+				$(that).append('<option value="'+vid+'">'+data['jcxm'][vid]+'</option>');
+			})
+			$(that).width("200px").val(row['xmid']).select2();
+		},error: function(data){
+			alert_error(data.responseText);
+		}
+	});
+	// 仪器信息允许为空
+	$("#xmfa_modal select[name=yiqi]").select2({placeholder: '--请选择--',allowClear: true});
+	// 只能将方法设置为默认方法，不允许在这取消方法默认，因为无法确定将要设置哪条信息为默认方法
+	if( '1' == row.mr ){
+		$("#xmfa_modal select[name=mr] option[value='0']").remove();
+	}
+	// 保留位数区间设置
+	var temp_blws_step = $("#temp_blws_step").html();
+	$("#xmfa_modal [data-field=blws]").empty().append(temp_blws_step);
+	// 初始化spinner
+	blws_spinner_init();
+	if( !$.isNumeric(row.id) ){
+		//新增配置时可以勾选全部的水样类型
+		//使用multiple属性，水样类型可以多选
+		var lx_select = '<select name="lxid" multiple="multiple">';
+		$("#xmfa_set select[name=leixing] option[value!='全部']").each(function(){
+			lx_select += '<option value="'+$(this).attr("value")+'">'+$(this).html()+'</option>';
+		});
+		lx_select += '</select>';
+		$("#xmfa_modal [data-field=lxid]").html(lx_select).find("select").val($("#xmfa_set [name=leixing]").val()).select2();
+	}else{
+		// 编辑状态下需要加载已配置的blws信息
+		if( row.blws ){
+			var blws_obj = $.parseJSON(row.blws);
+			$("#xmfa_modal [data-field=blws]").empty();
+			$.each(blws_obj,function(i){
+				$("#xmfa_modal [name=is_blws]").prop("checked",true);
+				$("#xmfa_modal [data-field=blws]").append(temp_blws_step);
+				// 初始化spinner
+				blws_spinner_init();
+				$("#xmfa_modal input[name^=blws]:eq("+i+")").val(blws_obj[i][0]);
+				$("#xmfa_modal input[name^=yxsz]:eq("+i+")").val(blws_obj[i][1]);
+				$("#xmfa_modal input[name^=zdws]:eq("+i+")").val(blws_obj[i][2]);
+			});
+		}
+		//编辑状态下不可修改项目
+		$("#xmfa_modal select[name=xmid]").select2("destroy").find("[value!="+row.xmid+"]").remove();
+		//编辑状态只能选择配置了相同方法的水样类型
+		$("#xmfa_modal [data-field=lxid]").html('<i class="icon icon-spinner icon-spin"></i> 水样类型数据加载中,请稍候……');
+		//根据检测项目和检测依据获取配置了相同方法的水样类型
+		$.ajax({ type: 'get', dataType: 'json', data: {fid: row.id},
+			url: 'ahlims.php?app=jcxm&act=get_leixing_by_xmfa&fangfa='+row.fangfa+'&xmid='+row.xmid+'&ajax=1',
+			success: function(lxid_arr){
+				//使用multiple属性，水样类型可以多选
+				var lx_select = '<select name="lxid" multiple="multiple">';
+				$("#xmfa_set select[name=leixing]:first option").each(function(){
+					var value = $(this).attr("value");
+					if( $.inArray(value, lxid_arr) >= 0 ){
+						lx_select += '<option value="'+value+'">'+$(this).html()+'</option>';
+					}
+				});
+				lx_select += '</select>';
+				$("#xmfa_modal [data-field=lxid]").html(lx_select).find("select").val(row.lxid).select2();
+			},error: function(data){
+				alert_error(data.responseText);
+			}
+		});
+	}
+	//绑定化验员选择事件
+	$("#xmfa_modal [name=xmid]").unbind("change").change(function(){
+		// 清除错误提示
+		$("#xmfa_modal .xmfa_modal_msg").empty();
+		var xmid = $(this).val() ? $(this).val() : row.xmid;
+		//uid
+		$.ajax({
+			type: 'get',
+			dataType: 'json',
+			data: {ajax: '1'},
+			url: "ahlims.php?app=jcxm&act=get_select2_data&field=userid&vid="+xmid,
+			success: function(data){
+				$("#xmfa_modal [data-field^=userid]").each(function(){
+					var that = this;
+					var field = $(this).data("field");
+					$(that).find("select").empty();
+					$.each(data['results'],function(i){
+						$(that).find("select").append('<option value="'+data['results'][i]['id']+'">'+data['results'][i]['text']+'</option>');
+					});
+					$(that).find("select").width("200px").val(row[field]).select2();
+				});
+			},error: function(data){
+				alert_error(data.responseText);
+			}
+		});
+		$("#xmfa_modal select[name^=userid]").unbind("change").on("change",function(){
+			var uid = $(this).val();
+			//a主测，b辅测
+			var name = $(this).is("[name=userid2]") ? 'userid' : 'userid2';
+			//主测切换后的人员如果与辅测相同则更改辅测人员设置，反之亦然
+			if( $("#xmfa_modal select[name="+name+"]").val() == uid ){
+				//如果下拉列表只有两个选项（未设置和本人），则切换为未设置状态
+				if( $("#xmfa_modal [name="+name+"] option").length == 2 ){
+					$("#xmfa_modal [name="+name+"]").val("0");
+				}else{
+					//否则切换为另一个可选化验员，获取要切换的化验员id
+					var uid = $("#xmfa_modal [name="+name+"] option[value!='0'][value!="+uid+"]:first").prop("value");
+					//因为使用了selec2插件，所以在修改了selec值后需要出发一下change事件
+					$("#xmfa_modal [name="+name+"]").val(uid).trigger("change");
+				}
+			}
+		});
+	}).trigger('change');
+	$("#xmfa_modal strong.leixing").html('【'+row.lname+'】');
+	$("#xmfa_modal").modal("show");
+}
+//新增方法配置记录
+$(".add_xmfa").click(function(){
+	var row = theTable.bootstrapTable('getData')[0];
+	open_xmfa_modal({id:'new', lname: '新增', xmid: row.xmid});
+});
+// 注册editable即点即改功能
+var register_editable = function(that, value, row, title, field){
+	//通过参数匹配相应的select下拉列表变量
+	var field_ID = {
+		fangfa: '#sel_method', unit: '#sel_unit', yiqi: '#sel_yiqi',hyd_bg_id: '#sel_muban',
+		userid: '#sel_user',	userid2: '#sel_user', w1: '#sel_fromat', w2: '#sel_fromat', w3: '#sel_fromat', w4: '#sel_fromat', w5: '#sel_fromat'
+	}
+	//检测方法，仪器信息，表格信息的数据比较多，选择完之后需要一步的确认才会进行修改
+	var showbuttons = ( $.inArray(field,['fangfa','yiqi','hyd_bg_id']) >= 0 ) ? true : false;
+	$(that).editable({
+		title: title,
+		type: 'select2',
+		showbuttons: showbuttons,
+		select2: {
+			allowClear: true,
+			placeholder: '--请选择--'
+		},
+		source: function(){
+			var source = [];
+			$(field_ID[field]+" option").each(function(){
+				source.push({id: $(this).attr("value"), text: $(this).html()});
+			});
+			return source;
+		},
+		value : $('<span>'+row[field]+'</span>').text(),
+		display: function(value) {
+			if( !value || '0' == value ){
+				$(that).html('<span class="red">未配置</span>');
+			}else{
+				$(that).html($(field_ID[field]+" option[value='"+value+"']").html());
+			}
+		},
+		url: function(params){
+			var d = new $.Deferred;//回调延迟的对象
+			eval("var prop = {fid: row.id, lxid: row.lxid, "+field+":params.value};");
+			$.ajax({
+				type: 'get',
+				data: prop,
+				dataType: 'json',
+				url: 'ahlims.php?app=jcxm&act=xmfa_save&ajax=1',
+				success: function(data){
+					if(data.error=='0'){
+						d.resolve();
+					}else{
+						return d.reject(data.content);
+					}
+				},error: function(data){
+					return d.reject(data.responseText);
+				}
+			});
+			return d.promise();
+		}
+	});
+	$(that).trigger("click");
+}
+//.editable的click事件绑定
+window.editClickEvents = {
+	'click .editable':function(e, value, row, index){
+		//如果已注册editable方法事件则不再重复注册
+		if( $(this).is(".editable-click") ){
+			return false;
+		}
+		var that = this;
+		var n = $(that).parents("tr").find("td").index($(that).parents("td"));		//当前列所在位置
+		var editableTitle = $("#bootstrapTable thead tr th:eq("+n+")").text();		//当前列数据名称
+		var field = $("#bootstrapTable thead tr th:eq("+n+")").attr("data-field");	//当前数据参数名称
+		// 选择人员时需要实时获取相关化验员
+		if( $.inArray(field,['userid','userid2']) >= 0 ){
+			$.ajax({
+				type: 'get',
+				dataType: 'json',
+				data: {ajax: '1'},
+				url: "ahlims.php?app=jcxm&act=get_select2_data&field=userid&vid="+row.xmid,
+				success: function(data){
+					$("#sel_user select").empty();
+					$.each(data['results'], function(i){
+						$("#sel_user select").append('<option value="'+data['results'][i]['id']+'">'+data['results'][i]['text']+'</option>');
+					});
+					// 注册editable即点即改功能
+					register_editable(that, value, row, editableTitle, field);
+				},error: function(data){
+					alert_error(data.responseText);
+				}
+			});
+		}else{
+			// 注册editable即点即改功能
+			register_editable(that, value, row, editableTitle, field);
+		}
+	}
+}
+window.jcx_editable = {
+	'click .editable':function(e, value, row, index){
+		//如果已注册editable方法事件则不再重复注册
+		if( $(this).is(".editable-click") ){
+			return false;
+		}
+		var jcx_value = $.isNumeric(row.jcx) ? row.jcx : '';
+		$(this).editable({
+			type: 'text',
+			title: '检出限（纯数字或者“-”）',
+			value: jcx_value,
+			validate: function (value) {
+				value = $.trim(value);
+				if (!value) {
+					return '不能为空！';
+				}
+				if (/[^\d.-]/g.test(value)){
+					return '只能输入纯数字或者“-”！';
+				}
+			},
+			display: function(value) {
+				if( value ){
+					$(this).html(value);
+				}else{
+					$(this).html(row.jcx);
+				}
+			},
+			url: function(params) {
+				value = $.trim(params.value);
+				var d = new $.Deferred;//回调延迟的对象
+				var data = theTable.bootstrapTable('getData'),
+					index = $(this).parents('tr').data('index');
+				if(data[index].jcx == value){
+					return '';
+				}
+				$.ajax({
+					type: 'get',
+					dataType: 'json',
+					data: {fid:data[index].id,lxid:data[index].lxid,jcx:value},
+					url: 'ahlims.php?app=jcxm&act=xmfa_save&ajax=1',
+					success: function(data){
+						if(data.error=='1'){
+							return d.reject(data.content);
+						}else{
+							d.resolve();
+						}
+					},error: function(data){
+						d.reject(data.responseText);
+					}
+				});
+				return d.promise();
+			}
+		});
+		$(this).trigger("click");
+	}
+}
+//这是绑定操作按钮事件
+window.editEvents = {
+	'click a[class^=ddel_]': function (e, value, row, index) {
+		$.confirm({
+			content: '你确定要删除吗？',
+			confirm: function(){
+				$.ajax({
+					type: 'get',
+					dataType: 'json',
+					data: {fid: row.id},
+					url: 'ahlims.php?app=jcxm&act=xmfa_del&ajax=1',
+					success: function(data){
+						if( '0' == data.error ){
+							save_status_msg('删除成功！','success');
+							theTable.bootstrapTable('removeByUniqueId', row.id);
+						}else{
+							save_status_msg(data.content,'danger');
+						}
+					},error: function(data){
+						alert_error(data.responseText);
+					}
+				});
+			}
+		});
+	},
+	'click a[class^=copy_]': function (e, value, row, index) {
+		var copyRow = row;
+		copyRow.id="copy";
+		open_xmfa_modal(copyRow);
+	},
+	'click a[class^=edit_]': function (e, value, row, index) {
+		open_xmfa_modal(row);
+	}
+}
+var get_xmfa_table_height = function(){
+	var height = $(window).height() - $('#xmfa_set .fixed-table-toolbar').outerHeight(true) - $(".fixed.nav-fixed").height() - 20;
+	return height < 300 ? 300 : height;
+}
+//使用js激活bootstrapTable样式
+var wei_pei_zhi = '<span class="red">未配置</span>';
+var theTable = $('#bootstrapTable').bootstrapTable({
+	cache: false,
+	url: get_xmfa_set_bootstrapTable_url(),
+	height: get_xmfa_table_height(),
+	uniqueId: 'id',
+	toolbar: "#xmfa_set .widget-header",
+	toolbarAlign: "center",
+	toolbarClass: "header-color-blue4",
+	showColumns: true,
+	showRefresh: true,
+	minimumCountColumns: 3,
+	clickToSelect:true,
+	sortName: getCookie(cookieName+"sort"),
+	sortOrder: getCookie(cookieName+"order"),
+	pagination: true,
+	sidePagination: 'server',
+	pageList: [25, 50, 100, '全选'],
+	pageNumber: getCookie(cookieName+"pageNumber") ? getCookie(cookieName+"pageNumber") : 1,
+	pageSize: getCookie(cookieName+"pageSize") ? getCookie(cookieName+"pageSize") : 25,
+	search: true,
+	searchText: getCookie(cookieName+"search"),
+	formatSearch: function () {
+		return '请输入要搜索的信息';
+	},
+	queryParams: function(params){
+		$.each(params, function(key){
+			setCookie(cookieName+key, typeof params[key] == "string" ? params[key] : "");
+		});
+		return params;
+	},
+	columns: [
+		{
+			field: 'xuhao',
+			title: '序号',
+			events: false
+		},
+		{
+			field: 'lname',
+			visible: ( '全部' == $("#xmfa_set select[name=leixing]").val() ) ? true : false,
+			sortable: true,
+			title: '水样类型'
+		},
+		{
+			field: 'value_C',
+			title: '项目',
+			sortable: true,
+			events: false,
+			formatter: function(value, row, index){
+				return '<div style="margin:0;padding:0;padding-left:2rem;text-align:left;"><span>'+value+'</span><div>';
+			}
+		},
+		{
+			field: 'option',
+			title: '操作',
+			align: 'left',
+			events: editEvents,
+			cellStyle: function cellStyle(value, row, index) {
+				return {
+					css: {},
+					classes: 'visible-md visible-lg hidden-sm hidden-xs action-buttons'
+				};
+			},
+			formatter: function(value, row, index){
+				//增加编辑和复制按钮
+				var but_tpl = '#0<a #1 class="#2_'+row.id+' tooltip-info #3" data-rel="tooltip" title="#4" href="javascript:void('+row.id+')"><i class="icon-#5 bigger-130"></i></a>';
+				return '<div style="white-space:nowrap;">'
+					+ but_tpl.replace("#0",'').replace("#1",'').replace("#2",'edit').replace("#3",'green').replace("#4",'编辑').replace("#5",'edit')
+					+ but_tpl.replace("#0",' | ').replace("#1",'').replace("#2",'copy').replace("#3",'green').replace("#4",'复制').replace("#5",'copy')
+					+ ( ( true == row.canDel ) ?
+						but_tpl.replace("#0",' | ').replace("#1",'').replace("#2",'ddel').replace("#3",'red').replace("#4",'删除').replace("#5",'remove')
+						: but_tpl.replace("#0",' | ').replace("#1",'style="cursor: not-allowed;color:#ccc"').replace("#2",'not-allowed').replace("#3",'tooltip-error').replace("#4",'该方法已在原始记录中使用！').replace("#5",'remove')
+					) + '</div>';
+			}
+		},
+		{
+			field: 'fangfa',
+			title: '检测方法',
+			sortable: true,
+			events: editClickEvents,
+			formatter: function(value, row, index){
+				var value = !row['method_number'] ? wei_pei_zhi : '<strong>'+row['method_number']+'</strong> ['+row['method_name']+']';
+				return '<div style="margin:0;padding:0;padding-left:2rem;text-align:left;"><span class="editable">'+value+'</span><div>';
+			}
+		},
+		{
+			field: 'act',
+			title: '启用状态',
+			events: false,
+			formatter: function(value, row, index){
+				if( '1' == value ){
+					return '<a class="editable editable-click green" data-act="1" href="javascript:void(0)">使用中</a>';
+				}else{
+					return '<a class="editable editable-click red" data-act="0" href="javascript:void(0)">已停用</a>';
+				}
+			},
+			events: {
+				'click .editable':function(e, value, row, index){
+					//当前的启用状态
+					var currentAct = $(this);
+					//当前的启用状态值
+					var act_status = currentAct.attr("data-act");
+					//获取"设置默认"在所有td中的索引位置
+					var mr_td_index = $("#bootstrapTable tr:eq(0) th[data-field=mr]").index("#bootstrapTable tr:eq(0) th");
+					if( '1' == row.mr ){
+						save_status_msg('默认方法不能停用','danger');
+						return false;
+					}
+					if( typeof theTable.setActStatus == "function" ){
+						theTable.setActStatus(currentAct,row);
+					}else{
+						//设置默认方法
+						theTable.setActStatus = function (currentAct,row) {
+							var act_status = ( '1' == currentAct.attr("data-act") ) ? '0' : '1';
+							$.ajax({
+								type: 'get',
+								dataType: 'json',
+								data: {fid:row.id, lxid: row.lxid, act_status:act_status},
+								url: 'ahlims.php?app=jcxm&act=xmfa_save&ajax=1',
+								success: function(data){
+									if('0' == data.error){
+										save_status_msg('状态已切换成功！','success');
+										if( '1' == data.data.act ){
+											currentAct.removeClass('red').addClass('green').attr("data-act","1").html('使用中');
+										}else{
+											currentAct.removeClass('green').addClass('red').attr("data-act","0").html('已停用');
+										}
+									}else if(data.error=='1'){
+										save_status_msg(data.content,'danger');
+									}
+								},error: function(data){
+									save_status_msg(data.responseText,'danger');
+								}
+							});
+						}
+						theTable.setActStatus(currentAct,row);
+					}
+				}
+			}
+		},
+		{
+			field: 'mr',
+			title: '设置默认',
+			formatter: function(value, row, index){
+				return ( '1' == value ) ? '<span class="editable editable-click">已默认</span>' : '<a class="editable editable-click" href="javascript:void(0)" >设置默认</a>';
+			},
+			events: {
+				'click .editable':function(e, value, row){
+					if( typeof theTable.xmfa_setMr == "function" ){
+						theTable.xmfa_setMr(row);
+					}else{
+						//设置默认方法
+						theTable.xmfa_setMr = function (row) {
+							//设置默认在所有td中的索引位置
+							var mr_td_index = $("#bootstrapTable tr:eq(0) th[data-field=mr]").index("#bootstrapTable tr:eq(0) th");
+							//设置启用状态在所有td中的索引位置
+							var act_td_index = $("#bootstrapTable tr:eq(0) th[data-field=act]").index("#bootstrapTable tr:eq(0) th");
+							$.ajax({
+								type: 'get',
+								dataType: 'json',
+								data: {id:row.id,xmid:row.xmid,lxid:row.lxid},
+								url: 'ahlims.php?app=jcxm&act=xmfa_setMr&ajax=1',
+								success: function(data){
+									if('0' == data.error){
+										for (var i = 0; i < data.data.length; i++) {
+											var currentTr = $("#bootstrapTable tr[data-uniqueid="+data.data[i]['id']+"]");
+											if( !currentTr.length ){
+												continue;
+											}
+											theTable.bootstrapTable("updateCell", {index: currentTr.data("index"), field:"mr", value: data.data[i]['mr']});
+											var currentTD = currentTr.find("td:eq("+mr_td_index+")");
+											var currentAct = currentTr.find("td:eq("+act_td_index+") a.editable");
+											if( '1' == data.data[i]['mr'] ){
+												// currentTD.html('已默认');
+												currentAct.removeClass('red').addClass('green').attr("data-act","1").html('使用中');
+												currentTD.html('<span class="editable editable-click">已默认</span>')
+												.find("a.editable").click(function(){
+													row.id = $(this).parents("tr").attr("data-uniqueid");
+													theTable.xmfa_setMr(row);
+												});
+											}else{
+												currentTD.html('<a class="editable editable-click" href="javascript:void(0)" >设置默认</a>')
+												.find("a.editable").click(function(){
+													row.id = $(this).parents("tr").attr("data-uniqueid");
+													theTable.xmfa_setMr(row);
+												});
+											}
+										};
+									}
+								},error: function(data){
+									alert_error(data.responseText);
+								}
+							});
+						}
+						theTable.xmfa_setMr(row);
+					}
+				}
+			}
+		},
+		{
+			field: 'jcx',
+			title: '检出限',
+			events: jcx_editable,
+			formatter: function(value, row, index){
+				var value = !row['jcx'] ? wei_pei_zhi : ( ('-' != row['jcx']) ? row['jcx'] : '<span style="color:#a0a0a0 !important">无</span>');
+				return '<span class="editable">'+value+'</span>';
+			}
+		},
+		{
+			field: 'unit',
+			title: '单位',
+			events: editClickEvents,
+			formatter: function(value, row, index){
+				var value = !row['unit'] ? wei_pei_zhi : row['unit'];
+				return '<span class="editable">'+value+'</span>';
+			}
+		},
+		{
+			field: 'yiqi',
+			title: '仪器信息',
+			sortable: true,
+			events: editClickEvents,
+			formatter: function(value, row, index){
+				var value = !row['td4'] ? wei_pei_zhi : row['td4']+'<strong>'+row['td5']+'</strong>' + ( !$.trim(row['yq_bh'] ) ? '' : ' ['+row['yq_bh']+']' );
+				return '<div style="margin:0;padding:0;padding-left:2rem;text-align:left;"><span class="editable">'+value+'</span><div>';
+			}
+		},
+		{
+			field: 'hyd_bg_id',
+			title: '表格模板',
+			sortable: true,
+			events: editClickEvents,
+			formatter: function(value, row, index){
+				var value = !row['table_cname'] ? wei_pei_zhi : row['table_cname'];
+				return '<div style="margin:0;padding:0;padding-left:2rem;text-align:left;"><span class="editable">'+value+'</span><div>';
+			}
+		},
+		{
+			field: 'userid',
+			title: '主测',
+			sortable: true,
+			events: editClickEvents,
+			formatter: function(value, row, index){
+				var value = !row['userida'] ? wei_pei_zhi : row['userida'];
+				return '<span class="editable">'+value+'</span>';
+			}
+		},
+		{
+			field: 'userid2',
+			title: '辅测',
+			sortable: true,
+			events: editClickEvents,
+			formatter: function(value, row, index){
+				var value = !row['useridb'] ? wei_pei_zhi : row['useridb'];
+				return '<span class="editable">'+value+'</span>';
+			}
+		},
+		{
+			field: 'w1',
+			visible: false,
+			title: '结果<1',
+			events: editClickEvents,
+			formatter: function(value, row, index){
+				!$.trim(value) && (value = '无');
+				return '<span class="editable">'+value+'</span>';
+			}
+		},
+		{
+			field: 'w2',
+			visible: false,
+			title: '1≤结果<10',
+			events: editClickEvents,
+			formatter: function(value, row, index){
+				!$.trim(value) && (value = '无');
+				return '<span class="editable">'+value+'</span>';
+			}
+		},
+		{
+			field: 'w3',
+			visible: false,
+			title: '10≤结果<100',
+			events: editClickEvents,
+			formatter: function(value, row, index){
+				!$.trim(value) && (value = '无');
+				return '<span class="editable">'+value+'</span>';
+			}
+		},
+		{
+			field: 'w4',
+			visible: false,
+			title: '100≤结果<1000',
+			events: editClickEvents,
+			formatter: function(value, row, index){
+				!$.trim(value) && (value = '无');
+				return '<span class="editable">'+value+'</span>';
+			}
+		},
+		{
+			field: 'w5',
+			visible: false,
+			title: '结果≥1000',
+			events: editClickEvents,
+			formatter: function(value, row, index){
+				!$.trim(value) && (value = '无');
+				return '<span class="editable">'+value+'</span>';
+			}
+		}
+	],
+	onLoadSuccess: function(data){
+		//更新所有提示信息
+		refresh_jcxm_all_msg(function(){
+			// tooltip
+			$('[data-rel="tooltip"]').tooltip();
+			theTable.positionTop = {};//记录每一行的位置
+			var data = theTable.bootstrapTable('getData');
+			for (var i = 0; i < data.length; i++) {
+				//记录每一行的位置，用于编辑后和添加后滚动至指定位置
+				theTable.positionTop[data[i]['id']] = $("#bootstrapTable tr:eq("+i+")").position().top;
+			};
+			//添加成功后自动更新数据并滚动至新增数据处
+			$.isNumeric(theTable.scrollToID) && typeof scrollToActiveRow == "function" && scrollToActiveRow();
+			//设置滚动条快速滑动。
+			$(window.parent.document.body).find("#full-top").click(function () {
+				theTable.bootstrapTable('scrollTo', 0);
+			});
+			$(window.parent.document.body).find("#full-btm").click(function () {
+				theTable.bootstrapTable('scrollTo', 'bottom');
+			});
+		});
+	}
+});
+// 自适应高度
+$(window).resize(function () {
+	theTable.bootstrapTable('resetView', {
+		height: get_xmfa_table_height()
+	});
+});
+//新建配置检测方法的弹出层
+$.get("ahlims.php?app=jcxm&act=xmfa_modal&ajax=1",function(data){
+	$("#xmfa_modal").html(data);
+});
+</script>

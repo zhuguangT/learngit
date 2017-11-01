@@ -1,0 +1,127 @@
+<h1>$arow[assay_element]测定原始记录表</h1>
+$hjtj_bt
+<input type="hidden" name="td6" value="$arow[td6]" />
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:10%"></td><td style="width:15%"></td><td style="width:10%"></td>
+    <td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td>
+    <td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td>
+  </tr>
+  <tr align="center">
+    <td colspan="1">分析项目</td>
+    <td colspan="1">{$arow['assay_element']}</td>
+    <td colspan="1">检测依据</td>
+    <td colspan="3">$arow[td2]</td>
+    <td colspan="2">检出限({$arow['unit']})</td>
+    <td colspan="3">{$arow['td3']}</td>
+    <td colspan="2">指示剂名称</td>
+    <td colspan="3"><input type="text" class="inputl" name="td8" value="$arow[td8]"/></td>
+  </tr>
+  <tr>
+    <td colspan="1">滴定管规格</td>
+    <td colspan="1"><input type="text" class="inputl" name="td9" value="$arow[td9]"/></td>
+    <td colspan="1">颜色</td>
+    <td colspan="3"><input type=text name="td10"  class="inputl" value="$arow[td10]" /></td>
+    <td colspan="3">空白消耗体积 V<sub>0</sub> (mL)</td>
+    <td colspan="2"><input type=text name="td11" id="kb"  class="inputl" value="$arow[td11]" /></td>
+    <td colspan="2">V<sub>2</sub> (mL)</td>
+    <td colspan="3"><input type=text name="td12" id="kv"    class="inputl" value="$arow[td12]" /></td>
+  </tr>
+ <tr>
+    <td colspan="1">标准溶液名称</td>
+    <td colspan="1"><input type=text name="td13" class="inputl" value="$arow[td13]" /></td>
+    <td colspan="4">草酸钠标准溶液浓度 C (mol/L)</td>
+    <td colspan="3"><input type=text name="td14" class="inputl" id="c_v" value="$arow[td14]" /></td>
+    <td colspan="7"></td>
+    </td>
+  </tr>
+  <tr>
+  	<td>计算公式</td>
+  	<td colspan="2"> ρ = [(10+V<sub>1</sub>)×10/V<sub>2</sub>-10]×C×8×1000/V<sub>3</sub></td>
+  	<td colspan="4"> f=(100-V<sub>3</sub>)/100</td>
+  	<td colspan="9"> ρ = {[(10+V<sub>1</sub>)×10/V<sub>2</sub>-10]-[(10+V<sub>0</sub>)×10/V<sub>2</sub>-10]×f}×C×8×1000/V<sub>3</sub></td>
+  </tr>
+  <tr align="center">
+    <td rowspan="2">序号</td>
+    <td rowspan="2">样品编号</td>
+    <td rowspan="2">取样体积<br/> V<sub>3</sub> (mL)</td>
+    <td colspan="8">滴定液读数(mL)</td>
+    <td colspan="3" rowspan="2">含量<br/>({$arow['unit']})</td>
+
+    <td rowspan="2">平均值/理论浓度({$arow['unit']})</td>
+    <td rowspan="2">相对偏差/加标回收率(%)</td>
+
+  </tr>
+  <tr align="center">
+    <td colspan="2">始点</td>
+    <td colspan="2">终点</td>
+    <td colspan="2">用量</td>
+    <td colspan="2">平均值 V<sub>1</sub></td>
+  </tr>
+  $aline
+  <tr>
+    <td align="center">备注</td>
+    <td colspan="15"><textarea name="td29">$arow[td29]</textarea></td>
+  </tr>
+</table>
+
+<script type="text/javascript"> 
+function jsgs(){
+  var v2    = parseFloat($("#kv").val());
+  var k		  = 10/parseFloat(v2);
+  var kb    = parseFloat($("#kb").val());
+  var mr_v  = parseFloat($("input[name=td6]").val());
+  if(''==$("#c_v").val()){
+    $("#c_v").val('0.01');
+  }
+  var C   = parseFloat($("#c_v").val());
+  mr_v = $.isNumeric(mr_v) ? mr_v : 100;
+  //默认体积与实际取样体积比较判断是否稀释
+  if(mr_v!=vs['vd1'] && 0!=kb&&(''==kb || !$.isNumeric(kb))){
+    $("#kb").focus(); return false;
+  }
+  if(''==k || !$.isNumeric(k)){
+    $("#kv").focus(); return false;
+  }
+  var vd3_split = String(vs['vd3']).split('.');
+  if(vd3_split.length==2){
+    var diding_ws = vd3_split[1].length;
+  }else{
+    var diding_ws = 2;
+  }
+  if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd4'])){
+    vs['vd5'] = roundjs(accsub(parseFloat(vs['vd4']),parseFloat(vs['vd3'])),diding_ws);
+  }else{
+    vs['vd5'] = '';
+  }
+  if($.isNumeric(vs['vd6'])&&$.isNumeric(vs['vd7'])){
+    vs['vd8'] = roundjs(accsub(parseFloat(vs['vd7']),parseFloat(vs['vd6'])),diding_ws);
+  }else{
+    vs['vd8'] = '';
+  }
+  if($.isNumeric(vs['vd5'])&&$.isNumeric(vs['vd8'])){
+    vs['vd9'] = roundjs(accDiv(accAdd(parseFloat(vs['vd5']),parseFloat(vs['vd8'])),2),diding_ws+1);
+  }else{
+    vs['vd9'] = '';
+  }
+  if(''!==vs['vd9']){
+    //计算公式
+    //默认体积与实际取样体积比较判断是否稀释
+    // C 草酸钠标准溶液 0.010mol/L
+    //系数   C*8000/v3
+    if(mr_v==vs['vd1']){
+      //不稀释 (10+v1)*C*8000/v3
+      var xishu = parseFloat(8000*C/parseFloat(vs['vd1']));
+      vs['vd0'] = jsws(((10+parseFloat(vs['vd9']))*k-10)*xishu);
+    }else{
+      //稀释 {[(10+v1)*k-10]-[(10+v0)*k-10]*f}*C*8000/V3
+      var xishu = parseFloat(8000*C/parseFloat(vs['vd1']));
+      var f   = (mr_v-parseFloat(vs['vd1']))/mr_v;
+      var p1  = (10+parseFloat(vs['vd9']))*k-10;
+      var p2  = ((10+kb)*k-10)*f;
+      var p3  = (p1-p2)*xishu;
+      vs['vd0'] = jsws(p3);
+    }
+  }
+}
+</script> 

@@ -1,0 +1,22 @@
+<input type="hidden" name="mission[{$c}]" value="{$row['id']}" /> 
+<tr>
+	<td>{$i}</td>
+	<td colspan="2">{$row['site_name']}</td>
+	<td><input type="text" class='inputc hyd' name="vd3[{$c}]"  value="{$row['vd3']}" /></td>
+	<td><input type="text" class='inputc hyd' name="vd4[{$c}]" value="{$row['vd4']}" /></td>
+	<td><input type="text" class='inputc hyd' name="vd1[{$c}]" value="{$row['vd1']}" /></td>
+	<!--检验浓度1-->
+	<td><input type="text" class='inputc hyd' name="vd6[{$c}]"  value="{$row['vd6']}" /></td>
+	<!--检验浓度2-->
+	<td><input type="text" class='inputc hyd' name="vd7[{$c}]"  value="{$row['vd7']}" /></td>
+	<!--平均值-->
+	<td><input type="text" class='noinputc hyd' name="vd8[{$c}]"  value="{$row['vd8']}" /></td>
+	<!--稀释倍数-->
+	<td><input type="text" class='inputc hyd' name="vd9[{$c}]"  value="{$row['vd9']}" /></td>
+	<td><input type="text" class='noinputc hyd' name="vd10[{$c}]"  value="{$row['vd10']}" /></td>
+	<!--氧化铝的质量分数-->
+	<td><input type="text" class='inputc hyd' name="vd11[{$c}]"  value="{$row['vd11']}" /></td>
+	<td  title="原始结果: {$row['_vd0']}" >
+		<input type="text" class='noinputc hyd' name="vd0[{$c}]" value="{$row['vd0']}" />
+	</td>
+</tr>

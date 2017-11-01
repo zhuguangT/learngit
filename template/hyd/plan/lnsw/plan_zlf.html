@@ -1,0 +1,98 @@
+<!--重量分析法原始记录表-->
+
+<h1>重量法检测{$arow['assay_element']}原始记录表</h1>
+{$hjtj_bt}
+<input type="hidden" id="L" value="$arow[td6]">
+<table class="single">
+<tr class="noborder">
+  <td style="width:5%"></td><td style="width:13%"></td><td style="width:7%"></td><td style="width:7%"></td>
+  <td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td>
+  <td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+  <td style="width:8%"></td>
+</tr>
+  <tr>
+    <td colspan="2">分析项目</td>
+    <td colspan="3">{$arow['assay_element']}</td>
+    <td colspan="2">检测依据</td>
+    <td colspan="2">{$arow['td2']} </td>
+    <td colspan="2">取样体积(mL)</td>
+    <td colspan="2"><input type="text" name='td6' value='$arow[td6]' /></td>
+  </tr>
+<tr> 
+    <td colspan="2">仪器名称及型号</td>
+    <td colspan="3">$arow[td4]&nbsp;&nbsp;&nbsp;$arow[td5]</td>
+    <td colspan="2">仪器规格</td>
+    <td colspan="2"><input type="text" name='td8' value='$arow[td8]'></td>
+    <td colspan="2">样品烘干温度(℃)</td>
+    <td colspan="2"><input type="text" name='td9' value='$arow[td9]'></td>
+</tr>
+<tr>
+    <td colspan="2">第一次烘干时间(h)</td>
+    <td colspan="2"><input type="text" name='td10' value='$arow[td10]'></td>
+    <td colspan="2">第二次烘干时间(h)</td>
+    <td colspan="2"><input type="text" name='td11' value='$arow[td11]'></td>
+    <td colspan="1">计算公式</td>
+    <td colspan="4">ρ = (m<sub>1</sub>-m<sub>0</sub>)×10<sup>6</sup>/V <input type="hidden" name="td28" value="ρ = (m<sub>1</sub>-m<sub>0</sub>)×10<sup>6</sup>/V" /></td>
+</tr>
+<tr align="center" >
+    <td rowspan="2">序号</td>
+    <td rowspan="2">$zhanming</td>
+    <td rowspan="2">取样体积V(mL)</td>
+    <td colspan="3">滤膜及称量容器重(g)</td>
+    <td colspan="3">滤膜及称量容器重+残渣重(g)</td>
+    <td rowspan="2">m<sub>1</sub>-m<sub>0</sub></td>
+    <td rowspan="2">含量({$arow['unit']})</td>
+    <td rowspan="2">平均值/理论浓度({$arow['unit']})</td>
+    <td rowspan="2">相对偏差/加标回收率(%)</td>
+</tr>
+<tr align="center" >
+    <td>第一次</td>
+    <td>第二次</td>
+    <td>平均m<sub>0</sub></td>
+    <td>第一次</td>
+    <td>第二次</td>
+    <td>平均m<sub>1</sub></td>
+</tr>
+$aline
+<tr>
+    <td align="center">备注</td>
+    <td colspan="12"><textarea name="td29">$arow[td29]</textarea></td>
+</tr> 
+</table>
+<script type="text/javascript">
+function jsgs(){
+     
+      //运算函数在lib.js
+      var vid = $arow[vid];
+      var vd_split = String(vs['vd2']).split('.');
+      if(vd_split.length==2){
+        var diding_ws = vd_split[1].length;
+      }else{
+        var diding_ws = 4;
+      }
+      if(vid =='101' || vid =='100'){
+          if($.isNumeric(vs['vd2']) && $.isNumeric(vs['vd3']) ){
+              var vd2   = parseFloat(vs['vd2']);
+              var vd3   = parseFloat(vs['vd3']);
+              var vd4   = parseFloat(vs['vd4']);  
+              var pj1= vs['vd4'] = roundjs(accDiv(accAdd(vd2,vd3),2),diding_ws+1);
+            }
+        if($.isNumeric(vs['vd5']) && $.isNumeric(vs['vd6']) ){
+              var vd5   = parseFloat(vs['vd5']);
+              var vd6   = parseFloat(vs['vd6']);
+              var vd7   = parseFloat(vs['vd7']);  
+              var pj2    = vs['vd7']  = roundjs(accDiv(accAdd(vd5,vd6),2),diding_ws+1);
+              var pj      = vs['vd8']  = roundjs(accsub(pj2,pj1),diding_ws+1);
+
+        }
+        if( $.isNumeric(vs['vd8']) && $.isNumeric(vs['vd1'])){
+            var vd8   = parseFloat(vs['vd8']);
+            var vd1   = parseFloat(vs['vd1']);
+            var jg = accDiv(accMul(vd8,1000000),vd1);
+             vs['vd0']=vs['_vd0']=jsws(jg);
+          }else{
+                  vs['vd0']=vs['_vd0']='';
+          }
+      }
+}
+</SCRIPT>

@@ -1,0 +1,222 @@
+<head>
+<style type="text/css">
+//form{margin-left:80px !important;}
+//table.single{margin-top:178px !important;}
+//div.head{position:fixed;top:0;width:100%;background-color:#FFF;z-index:999;}
+//thead{position:fixed;top:80px;z-index:999;width:100%;margin:0;padding:0;left:0px;}
+table.single td{font-size: 15px;text-align: left;padding:0;border:1px solid #E1E1E1}
+
+table.single td input{width: 100% !important;margin:0;background-color:#F5F5F5;}
+table.single th{padding:0;border:2px solid #E1E1E1;border-bottom: 0;}
+//.head{padding-right:17px;}
+</style>
+<script type="text/javascript">
+//判定时间格式是否是正确
+function check_time(t){
+	var time=t.value.replace(/\s+/g,"");
+	if(t.value.match(/\d{2}\:{1}\d{2}/)==null&&time!=''){ 
+		alert("采样时间格式错误！正确格式00:00");
+		window.setTimeout(function () { $(t).val("").focus();},0);
+				return false;
+	}
+}
+//时间格式设定
+function time(zhi){
+	var zhiCl   = zhi.value.replace(/[^\d\- :]/g,"");//只能输入数字
+	var maoArr  = zhiCl.match(/:/g);//匹配“:”
+	var wei     = zhiCl.substring((zhiCl.length-1));//取出最后一个数字
+	zhi.value   = zhiCl;  
+	if(zhiCl.length>5){
+		zhiCl=zhiCl.substring(0,5);
+		zhi.value=zhiCl;
+	}
+	document.onkeydown = function (e) {
+	　　var theEvent = window.event || e;
+	　　var code = theEvent.keyCode || theEvent.which;
+		if(code!=8){//如果按得是删除键不做任何处理
+
+			if(zhiCl.length=='2'){
+				zhi.value = zhiCl+":";
+			}
+		}
+　　}
+}
+//厂部项目设定
+function bg_xm_set(){
+	var water_type	= $("#water_type").val();//获取当前水样类型
+	$('.modal-content').load("$rooturl/changbu/bg_xm_set.php",{"ajax":"1",'water_type':water_type});
+	$('body').css("overflow","hidden")
+	$("#cover").show();
+}
+
+//厂部默认站点设定
+function bg_site_set(){
+	var water_type	= $("#water_type").val();//获取当前水样类型
+	$('.modal-content').load("$rooturl/changbu/bg_site_set.php",{"ajax":"1",'water_type':water_type});
+	$('body').css("overflow","hidden")
+	$("#cover").show();
+}
+//关闭弹出层
+function guanbi(){
+	$('body').css("overflow","auto")
+	$("#cover").hide();
+}
+</script>
+</head>
+<body>
+<form method="post" action="cb_save.php">
+	<div class="head">
+		<h3 class="header smaller center title">{$title_water_type}日检水质数据录入</h3>
+		<div class="widget-header header-color-blue4 center">
+			<div class="widget-toolbar tiaozhuan">
+				水样类型<select name="water_type" id="water_type" style="margin-right:5px">{$lx_options}</select>
+				<button type="button" class="btn btn-xs btn-primary" onclick="bg_xm_set()" style="width:75px">项目设定</button> 
+				<button type="button" class="btn btn-xs btn-primary" onclick="bg_site_set()" style="width:75px">站点设定</button> 
+			</div>
+		</div>
+	</div>
+	<table  style="margin:0 auto;border-collapse:collapse;font-size:10pt;text-align:center;border:none;"  border="0" class="td_border single">
+		<thead>
+			<tr><th style="min-width:80px;">采样日期</br>
+				<input type="text" size="10"  id='nowdate' class="date-picker" value='{$now_date}' />
+			</th><th style="min-width:70px;">采样时间</br>
+				<input type="text" size="10" id='nowtime' oninput="time(this);" onblur="return check_time(this)" value='{$now_time}'  />
+			</th><th style="min-width:80px;">取样点</th>{$xm_name_td}</tr>
+		</thead>
+		<tbody>
+		{$day_into_line}
+		</tbody>
+	</table>
+	<center class="tfoot"><input type="submit" name="sub" value="保存" class="btn btn-xs btn-primary" ></center>
+	</form>
+
+<!--厂部项目设定界面-->
+<div id="cover" class="modal" role="dialog" style='background-color:rgba(15, 15, 15, 0.7)!important;'>
+	<div class="modal-dialog" style='width:1300px;'>
+		<div id="con" class='modal-content' style='width:1300px;'></div>
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+//改变采样日期
+$("#nowdate").change(function(){
+	var water_type	= $("#water_type").val();//获取当前水样类型
+	var nowdate = $("#nowdate").val();//获取当前采样日期
+	var nowtime = $("#nowtime").val();//获取当前采样时间
+	location.href="cb_input.php?water_type="+water_type+"&nowdate="+nowdate+"&nowtime="+nowtime+"&caiyangdate=1";
+});
+//改变采样时间
+$("#nowtime").change(function(){
+	var water_type	= $("#water_type").val();//获取当前水样类型
+	var nowtime = $("#nowtime").val();//获取当前采样时间
+	var nowdate = $("#nowdate").val();//获取当前采样日期
+	location.href="cb_input.php?water_type="+water_type+"&nowtime="+nowtime+"&nowdate="+nowdate+"&caiyangtime=1";
+});
+//可输入搜索条件的下拉列表
+$(document).ready(function(){
+	var if_modi	= 'no';
+	$(".chosen-select").chosen();
+	$(".no_moren td input").val('');//清除不需要默认数据行的值
+	//添加新站点时，将默认值自动填写上
+	$("input[name^='site_name']").blur(function(){
+		var this_value	= $(this).val();
+		if(this_value !=''){
+			$(this).parent("td").parent("tr").find("input").each(function(){
+				var moren_value	= $(this).attr("moren_value");
+				var now_value	= $(this).val();
+				if(now_value=='' && moren_value!=''){
+					$(this).val(moren_value);
+				}
+			});
+		}
+	});
+	//当有数据更改时，记录下来，然后切换水样类型时，不刷新页面
+	$("input[type='text']").focus(function(){
+		if(!$(this).attr('old_value')){
+			$(this).attr('old_value',$(this).val());
+		}
+		$(this).parent("td").parent("tr").find("td").css({"background-color":"#C7EDCC"});
+	}).blur(function(){
+		$(this).parent("td").parent("tr").find("td").css({"background-color":"#FFF"});
+		if($(this).val()!=$(this).attr('old_value')){
+			//if_modi	= 'yes';
+			if($(this).attr("name") != 'site_name[]' || $(this).attr('old_value') !=''){
+				$(this).parent("td").parent("tr").find("td:last").find("span.tishi").html("<font color='red'>数据未保存</font>");
+			}
+		}
+	}).keydown(function(event){//临时写
+		/*if (event.which==37){//左
+			$(this).parent("td").prev("td").find("input").focus();
+		}
+		if (event.which==39){//右
+			$(this).parent("td").next("td").find("input").focus();
+		}*/
+		if($(this).attr("name") != 'cy_date[]'){
+			if (event.which==38){//上
+				$(this).parent("td").parent("tr").prev("tr").find("input[name='"+$(this).attr("name")+"']").focus();
+			}
+			if (event.which==40){//下
+				$(this).parent("td").parent("tr").next("tr").find("input[name='"+$(this).attr("name")+"']").focus();
+			}
+		}
+	});
+	$("#load_focus").focus();
+	//鼠标拂过tr时的处理,突出提醒
+	$("tr[shuju='yes']").mouseover(function(){
+		$(this).find("td").css({"border-bottom-color":"red"});
+		$(this).prev("tr").find("td").css({"border-bottom-color":"red"});
+	}).mouseout(function(){
+		$(this).find("td").css({"border-bottom-color":"black"});
+		$(this).prev("tr").find("td").css({"border-bottom-color":"black"});
+	});
+	//水样类型切换
+	$(".tiaozhuan select").change(function(){
+		var year	= $("#year").val();
+		var month	= $("#month").val();
+		var water_type	= $("#water_type").val();
+		//if(if_modi =='no'){
+			location.href = "?year="+year+"&month="+month+"&water_type="+water_type;
+		//}
+	});
+	//清空整行
+	$("button[id^='qingkong']").click(function(){
+		var qingkong	= $(this).attr('qingkong');
+		if(qingkong == 'all'){
+			$("tr[num='"+$(this).attr("id")+"']").find("input[type='text']").val('');
+		}else{
+			$("tr[num='"+$(this).attr("id")+"']").find("input[moren_value!='']").each(function(){
+				if($(this).val() == $(this).attr("moren_value")){
+					$(this).val('');
+				}
+			});
+		}
+	});
+	//页面浮动
+	var thead_height	= $("thead").height();
+	var tbody_height	= $(window).height() - $("div.head").height() - thead_height - $(".tfoot").height() -10;
+	//增加一个如果宽度达不到 页面宽度，就不padding-right:17
+	if($("table.single tbody").height() > tbody_height){
+		/*$("thead tr:eq(0) th").each(function(i){
+			var this_width	= $(this).width() +"px";
+			$(this).css({"width":this_width,"min-width":'0',"padding":"0"});
+			$("tbody tr:eq(0) td:eq("+i+")").css({"width":this_width,"min-width":'0',"padding":"0"});
+		});*/
+		$("table.single tbody tr:eq(0) td").each(function(i){
+			var this_width	= $(this).width() +"px";
+			$(this).css({"width":this_width,"min-width":'0',"padding":"0"});
+			$("table.single thead tr:eq(0) th:eq("+i+")").css({"width":this_width,"min-width":'0',"padding":"0"});
+		});
+		$("table.single thead,div.head").css({"display":"block","margin-right":"17px"});
+		$("table.single tbody").css({"display":"block","height":+tbody_height+"px","overflow":"auto"});
+	}
+});
+$('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+	$(this).prev().focus();});
+$('.timepicker1').timepicker({
+	minuteStep: 1,
+	showSeconds: true,
+	showMeridian: false
+}).next().on(ace.click_event, function(){
+	$(this).prev().focus();
+});
+</script>

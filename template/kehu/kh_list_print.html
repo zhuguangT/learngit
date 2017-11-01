@@ -1,0 +1,35 @@
+
+<style type="text/css">
+.tooltip {
+	background-color: #000000;
+	border: 1px solid #FFFFFF;
+	box-shadow: 0 0 10px #000000;
+	color: #FFFFFF;
+	display: none;
+	font-size: 12px;
+	padding: 10px 15px;
+	text-align: left;
+	width: 200px;
+}
+</style>
+<h3 class="header smaller center title">客户管理</h3>
+	
+	<table  class="table table-bordered table-hover center" border='1'>
+		<tr align=center>
+			<th rowspan='2'>序号</th>
+			<th rowspan='2'>委托单位</th>
+			<th rowspan='2'>联系人</th>
+			<th rowspan='2'>联系电话</th>
+			<th rowspan='2'>地址</th>
+			<th colspan='6' width='55%'>委托信息</th>
+		</tr>
+		<tr align=center>
+			<th>编号</th>
+			<th>委托日期</th>
+			<th width='30%'>委托样品<select id='year'>$ytime</select></th>
+			<th>完成时限</th>
+			<th>分类</th>
+			<th>费用</th>
+		</tr>
+		$lines       
+	</table>

@@ -1,0 +1,24 @@
+<head>
+<title>
+	任意成果查询结果
+</title>
+<style type="text/css">
+table tr{height:20px}
+{$td_class}
+</style>
+</head>
+<body>
+	$bianhao_content
+	<table style="margin:0 auto;width:$bg_width;margin-top:10px;font-family:宋体">
+		<caption align="top" style="font-weight:bold;font-size:22pt" > $title </caption> 
+		<tr><td colspan="{$col_one}">监测部门：{$_POST['jc_bm']}</td><td align="center" colspan="{$col_two}">采样日期：{$cy_date_fw}</td><td colspan="{$col_one}" align="right"><div style="width:180px;text-align:left">填表日期： {$_POST['tb_date']}</div></td></tr>
+	</table>
+	<table  style="margin:0 auto;width:$bg_width;border-collapse:collapse;font-size:11pt;font-family:宋体"  border="1" class="td_border" cellspacing="0" cellpadding="0">
+		<col width="{$xu_width}px" />
+		<col width="{$vid_width}px" />
+		<col width="{$unit_width}px" />
+		<col width="{$bz_width}px" />
+		<col width="{$site_width}px" span="{$col_max}" />
+		{$water_area_month_lines}
+	</table>
+</body>

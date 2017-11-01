@@ -1,0 +1,85 @@
+<!--重量分析法原始记录表-->
+
+<h1>重量法检验{$arow['assay_element']}原始记录表</h1>
+{$hjtj_bt}
+<input type="hidden" id="L" value="{$arow['td9']}">
+<table class="single">
+<tr class="noborder">
+  <td style="width:5%"></td><td style="width:13%"></td>
+  <td style="width:10%"></td><td style="width:9%"></td>
+  <td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td>
+
+  <td style="width:5%"></td><td style="width:5%"></td>
+  <td style="width:5%"></td><td style="width:5%"></td>
+
+  <td style="width:8%"></td><td style="width:8%"></td>
+</tr>
+  <tr>
+    <td colspan="2">检测方法依据</td>
+    <td colspan="11">{$arow['td2']} </td>
+  </tr>
+<tr>
+    <td colspan="2">计算公式</td>
+    <td colspan="11">ρ = （m<sub>1</sub>-m<sub>0</sub>）×10<sup>6</sup>/V <input type="hidden" name="td28" value="ρ = （m<sub>1</sub>-m<sub>0</sub>）×10<sup>6</sup>/V" /></td>
+</tr>
+<tr >
+    <td rowspan="2">序号</td>
+    <td rowspan="2">{$zhanming}</td>
+    <td rowspan="2">水样体积V（mL）</td>
+    <td colspan="2">滤膜及称量容器重（g）m<sub>0</sub></td>
+    <td colspan="2">滤膜及称量容器重+残渣重（g）m<sub>1</sub></td>
+    <td rowspan="2" colspan="2">m<sub>1</sub>-m<sub>0</sub></td>
+    <td rowspan="2" colspan="2">含量（mg/L）</td>
+    <td rowspan="2">平均值（mg/L）</td>
+    <td rowspan="2">相对偏差（％）</td>
+</tr>
+<tr >
+    <td>第一次</td>
+    <td>第二次</td>
+    <td>第一次</td>
+    <td>第二次</td>
+</tr>
+{$aline}
+<tr>
+    <td >备注</td>
+    <td colspan="13"><textarea name="td30">{$arow['td30']}</textarea></td>
+</tr> 
+</table>
+<script type="text/javascript">
+function jsgs(){
+     
+      //运算函数在lib.js
+      var vid = $arow[vid];
+      var vd_split = String(vs['vd2']).split('.');
+      if(vd_split.length==2){
+        var diding_ws = vd_split[1].length;
+      }else{
+        var diding_ws = 4;
+      }
+      if(vid =='101' || vid =='100'){
+          if($.isNumeric(vs['vd2']) && $.isNumeric(vs['vd3']) ){
+              var vd2   = parseFloat(vs['vd2']);
+              var vd3   = parseFloat(vs['vd3']);
+              //var vd4   = parseFloat(vs['vd4']);  
+              //var pj1= vs['vd4'] = roundjs(accDiv(accAdd(vd2,vd3),2),diding_ws+1);
+            }
+        if($.isNumeric(vs['vd5']) && $.isNumeric(vs['vd6']) ){
+              var vd5   = parseFloat(vs['vd5']);
+              var vd6   = parseFloat(vs['vd6']);
+              //var vd7   = parseFloat(vs['vd7']);  
+              //var pj2    = vs['vd7']  = roundjs(accDiv(accAdd(vd5,vd6),2),diding_ws+1);
+              //var pj      = vs['vd8']  = roundjs(accsub(pj2,pj1),diding_ws+1);
+              vs['vd8']  = roundjs(accsub(vd6,vd3),diding_ws);
+
+        }
+        if( $.isNumeric(vs['vd8']) && $.isNumeric(vs['vd1'])){
+            var vd8   = parseFloat(vs['vd8']);
+            var vd1   = parseFloat(vs['vd1']);
+            var jg = accDiv(accMul(vd8,1000000),vd1);
+             vs['vd0']=vs['_vd0']=jsws(jg);
+          }else{
+                  vs['vd0']=vs['_vd0']='';
+          }
+      }
+}
+</SCRIPT>

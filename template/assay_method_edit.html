@@ -1,0 +1,163 @@
+<!--  设置每种样品类型中每个项目的检验方法和一些相关信息 -->
+<script>
+$(document).ready(function() {
+	$(".chosen-select").chosen();});
+</script>
+<script>
+ function validate_required(field,alerttxt)
+{
+	with (field)
+	  {
+
+		if (value==null||value=="" )
+		{
+			alert(alerttxt);
+			return false
+		}else 
+		{
+			return true
+		}
+	  }
+}
+function validate_form(thisform)
+{ 
+	with (thisform)
+	  {
+		 if (validate_required(fafa,"新建检验方法名称必须填写!")==false)
+		 {
+			fafa.focus();
+			return false
+		 }
+		 if (validate_required(user,"人员必须填写!")==false)
+		 {
+			user.focus();
+			return false
+		 }
+		 //if (validate_required(yiqi,"新建选择仪器必须填写!")==false)
+		// {
+		//	yiqi.focus();
+		//	return false
+		 //}
+		 if (validate_required(jcx,"新建检出限必须填写!")==false)
+		 {
+			jcx.focus();
+			return false
+		 }
+
+	  }
+	 
+}
+</script>
+<script>
+function jcry(){
+ var q=document.getElementByName("user"); 
+	  var d=document.getElementByName("user2");
+	  alert(q.value);
+	  alert(d.value);
+}
+</script>
+<form action="./assay_method_edit_save.php" metdod="get" onsubmit="return validate_form(this)">
+<h3 class="header smaller center title">配置检验方法列表</h3>
+<div class="widget-box no-border">
+  <div class="widget-header header-color-blue4 center">
+	<div class="widget-toolbar">
+		水样类型 
+		<select name="lxid" onchange='gotourl("./assay_method_edit.php?xmid=$_GET[xmid]&xmname=$_GET[xmname]&lxid="+this.value);'>
+		$lxlist
+		</select> 
+		检测项目［ $_GET[xmname]  ］方法设置 
+		<!-- <a title="点击修改默认" href="assay_method_list.php?&lxid=$r[lxid]&fzx_id=$_GET[fzx_id]" >返回</a> -->
+	</div>
+  </div>
+  <div class="widget-body">
+	<table class="table-striped table-bordered table-hover center">
+		$biaotou
+		<tbody>
+			 $falist
+			<input name="lxid" type="hidden" value="$_GET[lxid]" />
+			<input name="xmid" type="hidden" value="$_GET[xmid]" />
+			<input name="xmname" type="hidden" value="$_GET[xmname]" />
+		</tbody>
+	</table> 
+	<table class="table-striped table-bordered table-hover center">
+			<tr align="center" >
+			<td colspan="10" style="background-color:#F5F5F5;width:5%;padding-top:1%;padding-bottom:1%">新建检验方法</td> 
+		   </tr>
+		  <tr align="center" >
+			<td colspan="4" style="width:50%;">检验方法名称</td>
+			<td colspan="3" style="width:25%;">选择模板</td>
+			<td colspan="3"style="width:25%;">选择仪器</td>
+		</tr>
+		<tr align="center" >
+			<td colspan="4"> <input name="item" type="hidden" value="add" />
+				<select id="value_C" class="chosen-select" name="fafa" style="width:50%;"onchange="location='./assay_method_edit.php?lxid=$_GET[lxid]&xmid=$_GET[xmid]&fangfa='+this.value;">$valueOption1</select></td>
+			<td colspan="3" ><select name='bgid'>$mr_bgline</select></td> 
+			<td colspan="3" ><select id="value_yiqi" class="chosen-select" name="yiqi">$valueyiqi</select></td>
+			</tr>
+		<tr align="center" >
+			<td rowspan="2">检出限</td>
+			<td rowspan="2">单位</td>
+			<td rowspan="2">人员</td>
+			<td rowspan="2">人员2</td>
+			<td rowspan="2">资质认证</td>
+			<td colspan="5">默认修约位数(结果值小数点后保留位数)</td>
+		</tr>
+		<tr align="center" >
+			<td>结果&lt;1</td>
+			<td>1≤结果&lt;10</td>
+    		<td>10≤结果&lt;100</td>
+			<td>100≤结果&lt;1000</td>
+			<td>结果≥1000</td></tr> 
+		<tr align="center" >
+			<td >
+			<input onkeyup="value=value.replace(/[^\d.-]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d.-]/g,''))" name="jcx" size="8" value="$mr_jcx[xz]" placeholder="不能为空" required> 
+			</td>
+			<td ><select name='unit' >$mr_dw</select></td>
+			<td ><select name='user' >$mr_user</select></td> 
+			<td ><select name='user2'>$mr_user2</select></td>
+			<td ><select name='zzrz'>$mr_zzrz</select></td>
+			<td ><select name='mrw1' >$mrw1_line</select></td>
+			<td ><select name='mrw2' >$mrw2_line</select></td>
+			<td ><select name='mrw3' >$mrw3_line</select></td>
+			<td ><select name='mrw4' >$mrw4_line</select></td>
+			<td ><select name='mrw5' >$mrw5_line</select></td>
+		   </tr>
+		   <tr align="center" >
+		   <td colspan="10" style="height:40px;"><input class="btn btn-xs btn-primary" type="submit" name="submit" onclick="jcry()" value="提交" /></td></tr>
+		   <!-- <tr>
+			<td colspan="10" style="height:60px;">添加系统没有的新方法</td>
+		   </tr>
+		   <tr>
+			<td>方法标准号:<br><input type="text" name="bzh" value="" /></td><td>方法名称:<br><input  type="text" name="fangfa_name" value="" /></td><td><input type="button" name="" class="btn btn-xs btn-primary" value="添加" id="fangfa_add" /></td><td colspan="6"></td>
+		   </tr> -->
+		</table> 
+	
+  </div>
+  
+</div>
+</form>
+<script>
+$(function(){
+	$("#fangfa_add").click(function(){
+		var bzh	= $("input[name='bzh']").val();
+		var fangfa_name	= $("input[name='fangfa_name']").val();
+		if(bzh==''){
+			alert('方法标准号没有写！');
+			return false;
+		}
+		if(fangfa_name==''){
+			alert('方法名称没有写！');
+			return false;
+		}
+		$.post("fangfa_add.php",{bzh:bzh,fangfa_name:fangfa_name},function(data){
+			if(data=='yes'){
+				alert('添加成功，请到下拉菜单中选择');
+				//$("#value_C").append("<option></option>");
+				location.reload();
+			}else{
+				alert('添加失败，请联系管理员');
+			}
+		})
+	});
+})
+</script>

@@ -1,0 +1,156 @@
+<script type="text/javascript">
+$(function(){
+	$("a[data-action='collapse']").removeAttr("data-action").css({"color":"#777777"});
+	$(".zhedie").css({"cursor":"pointer"});
+	$(".zhedie").click(function(){
+		if($(this).find(".icon-chevron-down").length > 0 ){
+			$(this).find(".icon-chevron-down").addClass("icon-chevron-up").removeClass("icon-chevron-down");
+			$(this).next(".widget-body").slideDown("3");
+		}else{
+			$(this).find(".icon-chevron-up").addClass("icon-chevron-down").removeClass("icon-chevron-up");
+			$(this).next(".widget-body").slideUp("3");
+		}
+	});
+})
+</script>
+<h3 class="header smaller center" style="margin:3px 0 6px 0;border:0"><b>个人任务列表</b></h3>
+<div class="widget-box collapsed" style="border:none;">
+  <div class="widget-header header-color-blue zhedie" style="background:#D9EDF7;border-color:#D9EDF7;color: #855D10 !important;">
+	<h4>采样任务（{$cyrw_nums}）</h4>
+	<span class="widget-toolbar">
+	<a data-action="collapse" href="#"><i class="1 icon-chevron-down bigger-125"></i></a>
+	</span>
+  </div>
+  <div class="widget-body" style="border:none;">
+
+	<table class="table table-striped table-bordered table-hover center">
+		<thead>
+			<tr>
+				<th class="center">序号</th>
+				<th class="center">采样日期</th>
+				<th class="center">采样单号</th>
+				<th class="center">批名/委托单位</th>
+				<th class="center">采样人</th>
+				<th class="center">状态</th>
+				<th class="center">操作</th>
+			</tr>
+		</thead>
+		<tbody>$cy_rw</tbody>
+	</table>
+  </div>
+</div>
+
+
+<div class="widget-box collapsed" style="border:none;">
+  <div class="widget-header header-color-orange zhedie" >
+	<h4>化验任务（{$hyrw_nums}）  $main_user</h4>
+	<span class="widget-toolbar">
+	<a data-action="collapse" href="#"><i class="icon-chevron-down bigger-125"></i></a>
+	</span>
+  </div>
+  <div class="widget-body" style="border:none;">
+	<table class="table table-striped table-bordered table-hover center">
+		<thead>
+			<tr>
+				<th class="center">序号</th>
+				<th class="center">化验项目</th>
+				<th class="center">要求完成日期</th>
+				<th class="center">化验单号</th>
+				<th class="center">采样批次名称</th>
+				<th class="center">采样日期</th>
+				<th class="center">公式参数</th>
+				<th class="center">化验状态</th>
+			</tr>
+		</thead>
+
+		<tbody>$hy_rw</tbody>
+	</table>
+  </div>
+</div>
+
+<div class="widget-box collapsed" style="border:none;">
+  <div class="widget-header header-color-green zhedie">
+	<h4>校核任务（{$xhsum}）</h4>
+	<span class="widget-toolbar">
+	<a data-action="collapse" href="#"><i class="icon-chevron-down bigger-125"></i></a>
+	</span>
+  </div>
+  <div class="widget-body" style="border:none;">
+	<table class="table table-striped table-bordered table-hover center">
+		<thead>
+			<tr><th colspan="8">化验单校核任务</th></tr>
+			<tr>
+				<th class="center">序号</th>
+				<th class="center">化验项目</th>
+				<th class="center">要求完成日期</th>
+				<th class="center">化验单号</th>
+				<th class="center">采样批次名称</th>
+				<th class="center">采样日期</th>
+				<th class="center">公式参数</th>
+				<th class="center">化验状态</th>
+			</tr>
+		</thead>
+
+		<tbody>$mian_xh</tbody>
+	</table>
+	<table  class="table table-striped table-bordered table-hover center" style=" margin-top:20px">
+		<thead>
+			<tr><th colspan="6">标准曲线校核任务</th></tr>
+			<tr>
+			<th scope="col">序号</th>
+			<th scope="col">标准曲线</th>
+			<th scope="col">分析人员</th>
+			<th scope="col">校核人</th>
+			<th scope="col">率定日期</th>
+			<th scope="col">曲线状态</th>
+			</tr>
+		</thead>
+		<tbody>$qx_xh_line</tbody>
+	</table>
+  </div>
+</div>
+
+<div class="widget-box collapsed" style="border:none;">
+  <div class="widget-header header-color-blue2 zhedie">
+	<h4>复核任务（{$fhsum}）</h4>
+	<span class="widget-toolbar">
+	<a data-action="collapse" href="#"><i class="icon-chevron-down bigger-125"></i></a>
+	</span>
+  </div>
+  <div class="widget-body" style="border:none;">
+	<table class="table table-striped table-bordered table-hover center">
+		<thead>
+			<tr><th colspan="8">化验单复核任务</th></tr>
+			<tr>
+				<th class="center">序号</th>
+				<th class="center">化验项目</th>
+				<th class="center">要求完成日期</th>
+				<th class="center">化验单号</th>
+				<th class="center">采样批次名称</th>
+				<th class="center">采样日期</th>
+				<th class="center">公式参数</th>
+				<th class="center">化验状态</th>
+			</tr>
+		</thead>
+
+		<tbody>$main_fh</tbody>
+	</table>
+	<table  class="table table-striped table-bordered table-hover center" style=" margin-top:20px">
+		<thead>
+			<tr><th colspan="9">标准曲线复核任务</th></tr>
+			<tr>
+				<th class="center">序号</th>
+				<th class="center">标准曲线</th>
+				<th class="center">分析人员</th>
+				<th class="center">分析日期</th>
+				<th class="center">校核人</th>
+				<th class="center">校核日期</th>
+				<th class="center">率定日期</th>
+				<th class="center">复核人</th>
+				<th class="center">曲线状态</th>
+			</tr>
+		</thead>
+		<tbody>$qx_fh_line</tbody> 
+	</table>
+  </div>
+</div>

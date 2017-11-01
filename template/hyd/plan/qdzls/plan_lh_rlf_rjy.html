@@ -1,0 +1,147 @@
+<!-- 如果列line里的vd有所调整需要更改 huayan/assay_form_func.php 里面的Mg_hyd()函数，因为镁是通过总硬度和钙减差得出的结果 -->
+<h1>容量法检测$arow[assay_element]原始记录表</h1>
+{$hjtj_bt}
+<input type="hidden" name="yq_bh" value="{$arow['yq_bh']}" />
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+  </tr>
+  <tr>
+    <td colspan="2">检验方法依据</td>
+    <td colspan="2">{$arow['td2']}</td>
+    <td colspan="2">检验方法</td>
+    <td colspan="4">{$arow['td1']}</td>
+  </tr>
+  <tr class="bt_hidden">
+    <td colspan="2">当量或分子量</td>
+    <td colspan="8"><input type="text" name="td11" value="{$arow['td11']}" /></td>
+  </tr>
+  <tr class="bt_hidden">
+    <td colspan="2">滴定管校正值设置
+      <input type="hidden" name="td16" class="ddg_fw" value="{$arow['td16']}" />
+      <input type="hidden" name="td17" class="ddg_jz" value="{$arow['td17']}" /></td>
+    <td>≤ <input type="text" name="fw0" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz0" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw1" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz1" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw2" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz2" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw3" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz3" value="" class="jiaozheng" /></td>
+  </tr>
+  <tr class="bt_hidden">
+    <td>≤ <input type="text" name="fw4" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz4" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw5" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz5" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw6" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz6" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw7" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz7" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw8" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz8" value="" class="jiaozheng" /></td>
+  </tr>
+  <tr>
+    <td colspan="2">标准溶液名称</td>
+    <td colspan="2"><input type="text" name="td12" class="inputl" value="{$arow['td12']}"/></td>
+    <td colspan="2">滴定管校正值</td>
+    <td colspan="4"><input type="text" name="td15" id="ddg_jzz"  class="inputl" value="{$arow['td15']}" /></td>
+  </tr>
+  <tr>
+    <td colspan="2">标准溶液浓度（mol/L）</td>
+    <td colspan="2"><input type="text" name="td13" id="c_v" class="inputl" value="{$arow['td13']}" /></td>
+    <td colspan="2">计算公式</td>
+    <td colspan="5" id="jsgs_"></td>
+    <input type="hidden" name="td28" value="" />
+  </tr>
+  <tr>
+    <td rowspan="2">序号</td>
+    <td rowspan="2">样品编号</td>
+    <td rowspan="2">取样体积<br/> V<sub>0</sub>（mL）</td>
+    <td colspan="3">滴定液读数（mL）</td>
+    <td rowspan="2" colspan="2">含量<br/>（{$arow['unit']}）</td>
+    <td rowspan="2">平均值/<br />理论浓度（{$arow['unit']}）</td>
+    <td rowspan="2">相对偏差/<br />加标回收率（%）</td>
+  </tr>
+  <tr>
+    <td>始读</td>
+    <td>终读</td>
+    <td>消耗量V</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="15"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+
+//容量法的计算一般是：水样的含量=（标准溶液用量-空白）*标准溶液浓度 *  当量 / 取体积。
+var jsgs_html = '';	//计算公式
+var dl_fzl = '{$arow['td11']}';	//当量，分子量
+var dl_emp = (''== dl_fzl || !$.isNumeric(dl_fzl)) ? true:false;
+if('103'=='{$arow['vid']}'){
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 100.09;	//总硬度
+	jsgs_html = 'ρ = V<sub>1</sub>×C×'+dl_fzl+'×1000/V<sub>0</sub>';
+}else if('114'=='{$arow['vid']}'){
+	var xkp_v  = parseFloat($("input[name=td12]").val());
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 8;	//溶解氧
+	var jsgs_html = 'ρ = M<sub>r</sub>V<sub>1</sub></sub>×C×250×1000/400×(250-3)';
+	var dl_fzl = dl_fzl*250/(250-3);
+}else if('118'=='{$arow['vid']}'){
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 8;	//化学需氧量COD
+	var jsgs_html = 'ρ = (V<sub>2</sub>-V<sub>1</sub>)×C×'+dl_fzl+'×1000/V<sub>0</sub>';;
+}else if('126'=='{$arow['vid']}'){
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 22;	//二氧化碳
+}else if('127'=='{$arow['vid']}'){
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 22;	//游离二氧化碳
+  jsgs_html = 'ρ = V<sub>1</sub>×C×'+dl_fzl+'×1000/V<sub>0</sub>';
+}else if('128'=='{$arow['vid']}'){
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 22;	//侵蚀性二氧化碳钙
+}else if('173'=='{$arow['vid']}'){
+  var dl_fzl = (false==dl_emp) ? dl_fzl : 40.08;  //钙
+  jsgs_html = 'ρ = V<sub>1</sub>×C×A×1000/V<sub>0</sub>';
+}else if('595'=='{$arow['vid']}'){
+  var dl_fzl = (false==dl_emp) ? dl_fzl : 50.04;  //钙
+  jsgs_html = 'ρ = V<sub>1</sub>×C×'+dl_fzl+'×1000/V<sub>0</sub>';
+}else{
+	var dl_fzl = 1;
+}
+jsgs_html = (''!=jsgs_html) ? jsgs_html : 'ρ = (V<sub>1</sub>-V<sub>2</sub>)×C×'+dl_fzl+'×1000/V<sub>0</sub>';
+$("input[name=td28]").val(jsgs_html);
+$("#jsgs_").html(jsgs_html);
+function jsgs(){
+  if(''==$("#c_v").val()){ $("#c_v").focus(); return false;}
+  var C = parseFloat($("#c_v").val());
+
+  var vd3_split = String(vs['vd3']).split('.');
+  if(vd3_split.length==2){
+    var diding_ws = vd3_split[1].length;
+  }else{
+    var diding_ws = 0;
+  }
+  if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd4'])){
+    vs['vd5'] = roundjs(accsub(parseFloat(vs['vd4']),parseFloat(vs['vd3'])),diding_ws);
+  }else{
+    vs['vd5'] = '';
+  }
+
+  if(''!==vs['vd5']){
+  	var jjz = get_jzz(vs['vd4']);//获取校正值
+    //填充表头中校正值
+    var result =[];
+    $("input[name*='vd4[']").each(function(i){
+      result.push(get_jzz($(this).val()));
+    })
+    result = unique(result);
+    $("#ddg_jzz").val(result.join(','));
+
+    var jg = (parseFloat(vs['vd5'])+parseFloat(jjz))*parseFloat(C)*parseFloat(dl_fzl)*1000/parseFloat(vs['vd1']);
+	vs['vd0'] = jsws(jg);
+  }
+}
+</script> 

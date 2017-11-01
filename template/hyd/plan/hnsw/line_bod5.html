@@ -1,0 +1,29 @@
+<input type="hidden" name="mission[{$c}]" value="{$row['id']}">
+<tr>
+    <td>{$i}</td>
+    <td nowrap="nowrap">{$row['site_name']}</td>
+    <td>
+        <input type="text" name="vd1[{$c}]" onclick="_aItem(this)"class="inputc hyd" value="{$row['vd1']}" /></td>
+    <td>
+        <input type="text" name="vd3[{$c}]" onclick="_aItem(this)" class="inputc hyd" value="{$row['vd3']}"></td>
+        <!-- 始读 -->
+    <td><input type="text" name="vd6[{$c}]" class="inputc hyd" value="{$row['vd6']}" /></td>
+        <!-- 终读 -->
+    <td><input type="text" name="vd5[{$c}]" class="inputc hyd" value="{$row['vd5']}" /></td>
+    <td><input type="text" name="vd7[{$c}]" class="noinputc hyd" value="{$row['vd7']}" /></td>
+    <td>
+        <input type="text" name="vd8[{$c}]" class="noinputc hyd" value="{$row['vd8']}" /></td>
+        <!-- 始读 -->
+    <td><input type="text" name="vd10[{$c}]" class="inputc hyd" value="{$row['vd10']}" /></td>
+        <!-- 终读 -->
+    <td><input type="text" name="vd9[{$c}]" class="inputc hyd" value="{$row['vd9']}" /></td>
+    <td><input type="text" name="vd11[{$c}]" class="noinputc hyd" value="{$row['vd11']}" /></td>
+    <td>
+        <input type="text" name="vd12[{$c}]" class="noinputc hyd" value="{$row['vd12']}" /></td>
+    <td title="原始结果: {$row['_vd0']}" colspan="2">
+        <input class="noinputc"  type="text"  name="vd0[{$c}]" value="{$row['vd0']}" /></td>
+    <td>{$_ping_jun}</td>
+    <td>{$_xdpc}</td>
+    <td>
+        <input type="text" name="vd4[{$c}]" onclick="_aItem(this)" class="inputc hyd" value="{$row['vd4']}" /></td>
+</tr>

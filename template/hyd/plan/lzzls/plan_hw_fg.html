@@ -1,0 +1,88 @@
+<h1>红外分光光度法检验记录</h1>
+{$hjtj_bt}
+<table  class="single">
+  <tr class="noborder">
+    <td style="width:8%"></td><td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td>
+    <td style="width:9%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+    <td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+  </tr>
+  <tr>
+    <td>项目</td>
+    <td colspan="3">{$arow['assay_element']}</td>
+    <td>检验地点</td>
+    <td colspan="3"><input type="text" name="td7" value="$arow[td7]" /></td>
+    <td>仪器型号</td>
+    <td colspan="3">{$arow['td5']}</td>
+  </tr>
+  <tr>
+    <td>仪器编号</td>
+    <td colspan="3">{$arow['yq_bh']}</td>
+    <td colspan="1">检验方法</td>
+    <td colspan="3">{$arow['td1']}</td>
+    <td>方法依据</td>
+    <td colspan="3">{$arow['td2']}</td>
+  </tr>
+  <tr>
+    <td>扫描范围</td>
+    <td colspan="2"><input type="text" name="td8" value="$arow[td8]" /></td>
+    <td>扫描次数</td>
+    <td colspan="2"><input type="text" name="td9" value="$arow[td9]" /></td>
+    <td>分辨率</td>
+    <td colspan="2"><input type="text" name="td10" value="$arow[td10]" /></td>
+    <td>测量方式</td>
+    <td colspan="2"><input type="text" name="td11" value="$arow[td11]" /></td>
+  </tr>
+   <tr>
+    <td>变迹/函数</td>
+    <td colspan="2"><input type="text" name="td12" value="$arow[td12]" /></td>
+    <td>检测器</td>
+    <td colspan="2"><input type="text" name="td13" value="$arow[td13]" /></td>
+    <td>光束</td>
+    <td colspan="2"><input type="text" name="td14" value="$arow[td14]" /></td>
+    <td>检测器速度</td>
+    <td colspan="2"><input type="text" name="td15" value="$arow[td15]" /></td>
+  </tr>
+  <tr>
+    <td colspan="12">计算公式</td>
+  </tr>
+  <tr>
+    <td colspan="12" class="auto"> C=[X×A<sub>2930</sub>＋Y×A<sub>2960</sub>＋Z×(A<sub>3030</sub>－A<sub>2930</sub>/F)]×（V<sub>0</sub>/V）  校正系数(X=<input type="text" name="td16" size="6" value="$arow[td16]" />，Y=<input type="text" name="td17" size="6" value="$arow[td17]" />，Z=<input type="text" name="td18" size="6" value="$arow[td18]" />，F=<input type="text" name="td19" size="6" value="$arow[td19]" />)</td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td colspan="2">{$zhanming}</td>
+    <td>水样体积V<sub></sub><br />（mL）</td>
+    <td>定容体积V<sub>0</sub><br />（mL）</td>
+    <td>A<sub>2930</sub></td>
+    <td>A<sub>2960</sub></td>
+    <td>A<sub>3030</sub></td>
+    <td colspan="2">样品浓度（{$arow['unit']}）</td>
+    <td>平均值<br />（{$arow['unit']}）</td>
+    <td>质控结果<br />（％）</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="11"><textarea name="td30" >{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+window.jsgs = function(){
+	var x1=$("input[name=td16]").val();
+	var y1=$("input[name=td17]").val();
+	var z1=$("input[name=td18]").val();
+	var f1=$("input[name=td19]").val();
+	if($.isNumeric(vs['vd1']) && $.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd4']) && $.isNumeric(vs['vd5'])&& $.isNumeric(vs['vd6']))
+	{
+		var x=accMul(x1,parseFloat(vs['vd3']));
+		var y=accMul(y1,parseFloat(vs['vd4']));
+		var z=accMul(z1,accsub(parseFloat(vs['vd5']),accDiv(parseFloat(vs['vd3']),f1)));
+		var pro=accAdd(accAdd(x,y),z);
+		vs['vd0']=accMul(pro,accDiv(parseFloat(vs['vd1']),parseFloat(vs['vd6'])));
+	}
+	else
+	{
+		vs['vd0']='';
+	}
+}
+</script>

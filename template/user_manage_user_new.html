@@ -1,0 +1,178 @@
+<!--用户添加界面 user_manage_user_new.html-->
+<script type="text/javascript">
+$(function(){
+	$("#user_name").focus();//默认选中姓名输入框
+	like_name = 'yes';
+	//姓名输入框不允许输入特殊字符，只能输入10个字符
+	$("#user_name").keyup(function(){
+                this.value    = this.value.replace(/[\'"\\\<> ]/g,'');
+                if(this.value.length<'10'){
+                        $("#username_tixing").text('');
+                }
+        }).keydown(function(){
+                if(this.value.length>='10'){
+                        $("#username_tixing").text(' *最多只能输入10个字符');
+                }else{
+                        $("#username_tixing").text('');
+                }
+        });
+	//昵称输入框不允许输入特殊字符，只能输入10个字符
+        $("#nickname").keyup(function(){
+                this.value    = this.value.replace(/[\'"\\\<> ]/g,'');
+                if(this.value.length<'10'){
+                        $("#nickname_tixing").text('');
+                }
+        }).keydown(function(){
+                if(this.value.length>='10'){
+                        $("#nickname_tixing").css("color","red").text(' *最多只能输入10个字符');
+                }else{
+                        $("#nickname_tixing").text('');
+                }
+        });
+	$("#user_name").focus(function(){//判断如果“姓名输入框”和“用户名输入框”的值不一样时，将不再同时填充数据给“用户名数据库框”	
+		var nick_name = $("#nickname").val();
+                     var user_name = this.value;
+		if(nick_name==''||user_name==nick_name){
+			like_name = 'yes';//可以把“姓名输入框”的内容填充到“用户名输入框”中
+		}else{
+			like_name = '';
+		}
+	}).keyup(function(){//输入姓名时同时将输入结果填充到 用户名输入框中
+		var nick_name = $("#nickname").val();
+		var user_name = this.value;
+		if(like_name=='yes'){
+			$("#nickname").val(this.value);
+		}
+	});
+	$("#user_name,#nickname").blur(function(){//ajax验证重名的情况 并给予提示
+		var user_name = $("#user_name").val();
+		var nick_name = $("#nickname").val(); 
+		if(user_name==''){
+			$("body").animate({scrollTop:0},"slow");
+                               $("#username_tixing").css("color","red").text(" *姓名不能为空！");
+		}else if(nick_name==''){
+			$("#username_tixing").text('');
+                               $("#nickname_tixing").css("color","red").text(" *用户名不能为空");
+		}else{
+			$("#username_tixing").text('');
+			$.getJSON("$rooturl/user_manage/user_manage_user_save.php?action=ajax&ajax=1",
+			{nick_name:nick_name,user_name:user_name},
+			function(json){
+				$("#nickname_tixing").text(json.tixing).css("color",json.color);
+			});
+		}
+	});
+	$("#submit_user_new").click(function(){
+		var user_name = $("#user_name").val();
+                     var nick_name = $("#nickname").val();
+                     if(user_name==''){
+			//$("#navbar").parent("body").animate({scrollTop:0},"slow");
+                     	$("#username_tixing").css("color","red").text(" *姓名不能为空！");
+			setTimeout(function(){
+				$("#user_name").focus();
+			},0);
+                     }else if(nick_name==''){
+			$("html,body").animate({scrollTop:"0px"},"slow");
+                     	$("#username_tixing").text('');
+                     	$("#nickname_tixing").css("color","red").text(" *用户名不能为空");
+			setTimeout(function(){
+				$("#nickname").focus();
+			},0);
+                     }else{
+                     	$("#username_tixing").text('');
+                       	$.getJSON("$rooturl/user_manage/user_manage_user_save.php?action=ajax&ajax=1",
+                     	  	{nick_name:nick_name,user_name:user_name},
+                        	function(json){
+					if(json.submit=='yes'){
+						$("#form_user_new").submit();
+					}
+					$(window.parent.document).find('html,body').animate({scrollTop:0}, "slow");
+					//$(html,body).animate({scrollTop:"0px"},"slow");
+                        		$("#nickname_tixing").text(json.tixing).css("color",json.color);
+					setTimeout(function(){
+                                		$("#nickname").focus();
+                        		},0);
+                     		}
+			);
+                     }
+	});
+	//鼠标放上、点击变色；鼠标离开恢复
+          $(".bianse").mouseover(function(){
+                $(this).css({"color":"#008000","font-weight":"bold","cursor":"pointer"});
+           }).mouseout(function(){
+                if(!$(this).children("input:checked").val()){
+                        $(this).css({"color":"#000","font-weight":"nomal"});
+                }
+
+        });
+	//点击组名 同步选择相应的权限
+	$("input[name='group[]']").click(function(){
+		var group_id = $(this).attr("group_id");
+		var aaa = '';
+		if($(this).is(":checked")){
+                        $("input[group*='|"+group_id+"|']").prop("checked",true).removeAttr("groupid"+group_id).parent().css({"color":"#008000","font-weight":"bold","cursor":"pointer"});//.attr("checked",'true') 重复点击时不好使;
+                }
+		else{
+			$("input[group*='|"+group_id+"|']").removeAttr("checked").parent().css({"color":"#000","font-weight":"nomal"});
+			//下面代码的目的是 把该组取消的取消的权限，而其他选中组里有的权限给恢复 
+			$("input[name='group[]']:checked").each(function(){
+				group_id = $(this).attr("group_id");
+				$("input[group*='|"+group_id+"|']").prop("checked",true).parent().css({"color":"#008000","font-weight":"bold","cursor":"pointer"});
+                        });
+			
+		}
+	});
+	//默认密码
+	$("#user_pwd").blur(function(){
+		if($(this).val()==''){
+			$(this).val('lims123');
+		}
+	});
+
+            });
+
+
+
+</script>
+<form method="POST" action=user_manage_user_save.php id="form_user_new" style="margin:0 auto;text-align:center;">
+<input type="hidden" name="action" value="add" />
+<h3 class="header smaller center title">用户添加页面</h3>
+<table class="table table-bordered   center " style="width:80%;text-align:left;">
+  <tr>
+	<td  align='middle'  nowrap>姓名
+		<span style="position:relative;display:inline-block;padding-bottom:13px;">
+                	<input type='text' name='user_name' id="user_name" value='' maxLength="10" placeholder='不能为空' required/>
+			<span style="color:red;position:absolute;top:30px;left:0px;" id="username_tixing" > </span>
+		</span>
+        </td>
+        <td  align='middle'  nowrap>用户名称
+        	<span style="position:relative;display:inline-block;padding-bottom:13px;">
+                	<input type='text' name='nickname' id="nickname" value='' maxLength="10" placeholder='登陆时请使用此用户名' required/>
+			<span id="nickname_tixing" style="color:red;position:absolute;top:30px;left:0px;"> </span>
+		</span>
+        </td>
+	<td align='middle'  nowrap>登陆密码
+                <input type='text' name='user_pwd' value='lims123' id='user_pwd' style="ime-mode:disabled;margin-bottom:13px;" placeholder='默认密码:lims123' required/>
+        </td>
+	<td align='middle'  nowrap>性别
+                <select name="sex" style="margin-bottom:13px;">
+			<option value='男'>男</option>
+			<option value='女'>女</option>
+		</select>
+        </td>
+  </tr>
+  <tr>
+        <td align='middle'  nowrap>所属用户组</td>
+        <td colspan='7' align="left">
+                $checkbox_group
+        </td>
+  </tr>
+  <tr>
+        <td align='middle'  nowrap>用户组权限</td>
+        <td colspan='7' align="left">
+                $checkboxQx
+        </td>
+  </tr>
+</table>
+<input class="btn btn-xs btn-primary" type="button" id='submit_user_new' value="添加" />
+</form>

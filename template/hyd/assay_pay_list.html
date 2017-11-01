@@ -1,0 +1,119 @@
+<script type="text/javascript">
+    document.onkeydown = keyDown;
+    function keyDown(e){
+        keyCode = e.which;//获取按键的编号
+    }
+    $(function(){
+        $(".chosen").chosen();//可搜索下拉菜单
+        //化验单号搜索时，按enter键实现搜索功能
+        $("#hyd_id").keyup(function(){
+            if(keyCode==13){
+                form1.tid.value=form2.tid.value;
+                form1.submit();
+            }
+        });
+    })
+    function verify(aForm){
+        with(aForm){
+            if(tid.value.trim() || (vid.value && yp_id.value.trim())){return true;}
+            else{
+                alert('未提供足够信息,不能提交! (要么提供化验单号,要么提供样品编号及化验项目)');
+                return false;
+            }
+        }
+    }
+    function submit_form( cy_date ) {
+        if(cy_date) {
+            e('cy_date').value = cy_date;
+        } 
+        e('aplist_form').submit();
+    }
+    function verify(aform){
+        hyd = e('change_fx_user').elements["s[]"];
+        if(hyd.length) {
+            for( i=0; i<hyd.length;i++ ) {
+            if(hyd[i].checked)
+                    return true;
+            }
+        } else {
+            if(hyd.checked) return true;
+        }
+        alert("你还没有选择要改变化验员的化验单！");
+        return false;
+    }
+</script>
+
+
+<h3 class="header smaller center title">化验任务列表</h3>
+<div class="widget-box no-border">
+  <!-- <div class="widget-header">
+    <h4 style="float:left">搜索化验单</h4>
+  </div>
+  <div class="widget-header">
+    <div class="center" style="line-height:42px">
+      <form action="$rooturl/huayan/assay_pay_search.php" method="post">
+        化验单号:<input type="text" size="8" name="tid">
+        <button type="submit" class="btn btn-primary btn-sm">搜索</button>
+        　　
+        化验项目:<select name="vid">$huayan_item_list</select>　
+        样品编号:
+        <input type="text" size="10" name="yp_id" value="" title="在此输入完整的样品编号,如:A2005070700(一定要加上年月前缀)" />
+        <button type="submit" class="btn btn-primary btn-sm">搜索</button>
+      </form>
+    </div>
+  </div>
+  <div class="widget-header">
+    <h4 style="float:left">化验单列表条件</h4>
+  </div> -->
+  <div class="widget-header header-color-blue4 center">
+    <div class="center">
+      <form name="form1" action="$rooturl/huayan/assay_pay_search.php" method="post"><input type="hidden" name="tid" /></form>
+      <form id="aplist_form" name="form2" action="$rooturl/huayan/assay_pay_list.php" method="get">
+        $jindu_input
+        <input type="hidden" name="is_xmfb" value="{$_GET['is_xmfb']}" />
+        <table>
+            <tr align="center">
+            <td width='25%' nowrap>任务性质: <select id="site_type" name="site_type" onchange="form.submit()">$site_type_list</select>$muban_select</td>
+            <td width='50%' nowrap>采样日期: <select id='year' name="year" onchange="form.submit()">$year_list</select> 年
+                <select id='month' name="month" onchange="form.submit()">$month_list</select> 月</td>
+            <td width='25%' nowrap>采样批次: <select id="cyd_bh" name="cyd_bh" onchange="form.submit()">$cyd_bh_list</select>
+            </td>
+            </tr>
+            <tr align="center">
+            <td nowrap>化验员: <select id="fx_user" name="fx_user" onchange="form.submit()">$fx_user_list</select></td>
+            <td nowrap>化验项目: <select id="fx_item_c" class="chosen" name="fx_item_c" onchange="form.submit()">$fx_item_list</select>
+            <td nowrap>
+                完成度: <select id="hyd_status" name="hyd_status" onchange="form.submit()">$hyd_status_list</select>
+                化验单号:<input id="hyd_id" type="text" size="8" name="tid" />
+                <button type="button" class="btn btn-primary btn-xs" onclick="form1.tid.value=form2.tid.value;form1.submit();">搜索</button>
+           </td>
+            </tr>
+            </table>
+      </form>
+    </div>
+  </div>
+  <div class="widget-body">
+    <table class="table table-striped table-bordered table-hover center">
+        <thead>
+            <tr>
+                <th class="center" style="width:8%"> 序号</th>
+                <th class="center" style="width:15%">化验单号</th>
+                <th class="center" style="width:25%">化验项目</th>
+                <th class="center" style="width:16%">采样日期</th>
+                <th class="center" style="width:10%">化验员</th>
+                <th class="center" style="width:10%">化验状态</th>
+                <th class="center" style="width:8%">删除</th>
+                <th class="center" style="width:8%">打印</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <form id="change_fx_user" action="change_fx_user.php" method="post" onsubmit="return verify(this)">
+            $pay_list
+            $edit_pay
+            $lines
+            </form>
+        </tbody>
+    </table>
+  </div>
+</div>

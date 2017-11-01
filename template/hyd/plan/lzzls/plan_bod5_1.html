@@ -1,0 +1,94 @@
+<h1>五日生化需氧量检验记录</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+		<td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+		<td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td>
+	</tr>
+	<tr align="center">
+		<td colspan="2">检验地点</td>
+		<td colspan="4"><input type="text" name="td7" class="inputc" value="{$arow['td7']}" /></td>
+		<td colspan="2">检验方法</td>
+		<td colspan="4">{$arow['td1']}</td>
+	</tr>
+	<tr>
+		<td colspan="2">方法依据</td>
+		<td colspan="2">{$arow['td2']}</td>
+		<td colspan="2">仪器型号</td>
+		<td colspan="2">{$arow['td5']}</td>
+		<td colspan="2">仪器编号</td>
+		<td colspan="2">{$arow['yq_bh']}</td>
+	</tr>
+	<tr>
+		<td colspan="2">校准方法</td>
+		<td colspan="2"><input type="text" name="td8" class="inputc" value="{$arow['td8']}" /></td>
+		<td colspan="2">气压（mmHg）</td>
+		<td colspan="2"><input type="text" name="td9" class="inputc" value="{$arow['td9']}" /></td>
+		<td colspan="2">校准值（kPa）</td>
+		<td colspan="2"><input type="text" name="td10" class="inputc" value="{$arow['td10']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2" rowspan="3">培养箱温度（℃）</td>
+		<td colspan="2">第一天</td>
+		<td colspan="2">第二天</td>
+		<td colspan="2">第三天</td>
+		<td colspan="2">第四天</td>
+		<td colspan="2">第五天</td>
+	</tr>
+	<tr>
+		<td>上午</td>
+		<td>下午</td>
+		<td>上午</td>
+		<td>下午</td>
+		<td>上午</td>
+		<td>下午</td>
+		<td>上午</td>
+		<td>下午</td>
+		<td>上午</td>
+		<td>下午</td>
+	</tr>
+	<tr>
+		<td><input type="text" name="td11" class="inputc" value="{$arow['td11']}" /></td>
+		<td><input type="text" name="td12" class="inputc" value="{$arow['td12']}" /></td>
+		<td><input type="text" name="td13" class="inputc" value="{$arow['td13']}" /></td>
+		<td><input type="text" name="td14" class="inputc" value="{$arow['td14']}" /></td>
+		<td><input type="text" name="td15" class="inputc" value="{$arow['td15']}" /></td>
+		<td><input type="text" name="td16" class="inputc" value="{$arow['td16']}" /></td>
+		<td><input type="text" name="td17" class="inputc" value="{$arow['td17']}" /></td>
+		<td><input type="text" name="td18" class="inputc" value="{$arow['td18']}" /></td>
+		<td><input type="text" name="td19" class="inputc" value="{$arow['td19']}" /></td>
+		<td><input type="text" name="td20" class="inputc" value="{$arow['td20']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">计算公式</td>
+		<td colspan="10">ρ=ρ1-ρ2</td>
+	</tr>
+	<tr align="center">
+		<td>序号</td>
+		<td colspan="2">{$zhanming}</td>
+		<td>当日测水温</td>
+		<td>五日后测水温</td>
+		<td colspan="2">当日测定结果ρ<sub>1</sub>(mg/L)</td>
+		<td colspan="2">五日后测定结果ρ<sub>2</sub>(mg/L)</td>
+		<td>样品浓度<br/>({$arow['unit']})</td>
+		<td>平均值({$arow['unit']})</td>
+		<td>质控结果(%)</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td align="center">备注</td>
+		<td colspan="11"><textarea name="td30">$arow[td30]</textarea></td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+function jsgs(){
+	if($.isNumeric(vs['vd6'])&&$.isNumeric(vs['vd7'])){
+		vs['vd0'] =accsub(parseFloat(vs['vd6']),parseFloat(vs['vd7']));
+	}
+	else{
+		vs['vd0'] = '';
+	}
+}
+</script> 

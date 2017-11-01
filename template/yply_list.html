@@ -1,0 +1,38 @@
+<h3 class="header smaller center title">样品领用单</h3>
+  <div class="widget-body">
+    <table class="table table-striped table-bordered table-hover center">
+        <thead>
+            <tr>
+                <th class="center" style="width:10%"> 序号</th>
+                <th class="center" style="width:10%">样品编号</th>
+                <th class="center" style="width:10%">采样日期</th>
+                <th class="center" style="width:10%">采样人</th>
+                <th class="center" style="width:10%">批名/委托单位</th>
+                <th class="center" style="width:10%">检测项目</th>
+                <th class="center" style="width:10%">采样容器名称</th>
+                <th class="center" style="width:10%">容器规格</th>
+                <th class="center" style="width:10%">接收样品时间</th>
+                <th class="center" style="width:10%">接收人签字</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        <!-- 采样日期，采样人，批名/委托单位，采样容器名称，容器规格，接收样品时间，接收人签字（电子签名） -->
+            {loop $yply_list $key $row}
+            <tr>
+                <td>{$row['xuhao']}</td>
+                <td>{$row['bar_code']}</td>
+                <td>{$row['cy_date']}</td>
+                <td>{$row['cy_user']}</td>
+                <td>{$row['group_name']}</td>
+                <td>{$row['assay_element']}</td>
+                <td>{$rongqi[$row['vid']]['rq_name']}</td>
+                <td>{$rongqi[$row['vid']]['rq_size']}</td>
+                <td>{$row['start_time']}</td>
+                <td>{$row['userid']}</td>
+            </tr>
+            {/loop}
+        </tbody>
+    </table>
+  </div>
+</div>

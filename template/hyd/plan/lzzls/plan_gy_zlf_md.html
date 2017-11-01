@@ -1,0 +1,56 @@
+<h1>重量法检验记录（工艺）</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:11%"></td><td style="width:11%"></td><td style="width:11%"></td><td style="width:11%"></td>
+		<td style="width:11%"></td><td style="width:11%"></td><td style="width:11%"></td><td style="width:11%"></td>
+		<td style="width:11%"></td>
+	</tr>
+	<tr align="center">
+		<td colspan="2">检验项目</td>
+		<td colspan="2">{$arow['assay_element']}</td>
+		<td colspan="2">检验地点</td>
+		<td colspan="3"><input type="text" name="td7" class="inputc" value="{$arow['td7']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">检验方法</td>
+		<td colspan="2">{$arow['td1']}</td>
+		<td colspan="2">方法依据</td>
+		<td colspan="3">{$arow['td2']}</td>
+	</tr>
+		<tr>
+		<td colspan="2">天平型号</td>
+		<td colspan="2">{$arow['td5']}</td>
+		<td colspan="2">天平编号</td>
+		<td colspan="3">{$arow['yq_bh']}</td>
+	</tr>
+	<tr>
+		<td colspan="2">计算公式</td>
+		<td colspan="7" class="left">   密度(g/cm<sup>3</sup>)=G<sub>0</sub>/V(粒径：2~4mm)</td>
+	</tr>
+	<tr align="center">
+		<td >序号</td>
+		<td colspan="2">{$zhanming}</td>
+		<td >样品质量m（g）</td>
+		<td colspan="2">加样品后瓶中水面刻度体积</td>
+		<td >检验结果<br/>({$arow['unit']})</td>
+		<td >平均值</td>
+		<td >质控结果 <br />(%)</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td>备注</td>
+		<td colspan="8"><textarea name="td30">$arow[td30]</textarea></td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+function jsgs(){
+	if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd4'])){
+		vs['vd0'] =accDiv(parseFloat(vs['vd3']),parseFloat(vs['vd4']));
+	}
+	else{
+		vs['vd0'] = '';
+	}
+}
+</script> 

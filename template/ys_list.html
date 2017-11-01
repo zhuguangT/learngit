@@ -1,0 +1,34 @@
+<script>
+function redirect( cy_date ){
+    url = "cy_ys_list.php?cy_date=" + cy_date + "&site_type=" + v('site_type');
+    url += "&year=" + v( 'year') + "&month=" + v( 'month' )+ "&jie=" + v( 'jie' );
+    location = url;
+}
+function get_cy_date() {
+    return  v('year') + "-" + v('month')
+}
+</script>
+<h3 class="header smaller center title">样品接收</h3>
+<div class="widget-box no-border">
+  <div class="widget-header header-color-blue4 center">
+	<div class="widget-toolbar">
+		任务性质:<select id="site_type" onchange="redirect(get_cy_date())">$site_type_list</select>
+		年份选择:<select id="year"      onchange="redirect(get_cy_date())">$year_list</select>
+		月份选择:<select id="month"     onchange="redirect(get_cy_date())">$month_list</select> 
+    状态:<select id="jie"     onchange="redirect(get_cy_date())"><option value='未接收' $bwjs>未接收</option><option value='已接收' $byjs>已接收</option></select> 
+	</div>
+  </div>
+  <div class="widget-body">
+<table class="table table-striped table-bordered table-hover center" style='table-layout:fixed'>
+  <tr>
+    <td width="5%">序号</td>
+    <td width="10%">采样日期</td>
+    <td width="10%">采样单号</td>
+    <td width="20%">批名/委托单位</td>
+    <td width="15%">采样人</td>
+    <td width="23%">操作/记录表</td>
+  </tr>
+$lines
+</table>
+</div>
+</div>

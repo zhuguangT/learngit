@@ -1,0 +1,52 @@
+<!-- 仪器管理目录 -->
+<style>
+.tablelv { border:1px #0CF solid; border-collapse:collapse; width:1250px;margin:auto}
+.tablelv *{ color:#363636}
+.tablelv tr td{ font-size:12px; height:20px; line-height:20px; border:1px solid #00CCFF;align:center;}
+a{text-decoration:none}
+a:hover{color:red}
+input{background:#AACCFF}
+
+</style>
+<script>
+window.onload=function(){
+	document.getElementById('insert').onclick=function(){
+		location.href = 'yiqijb.php?id='+$id+'&action=add';
+	}
+	document.getElementById("fh").onclick=function(){
+		location.href = 'hn_yiqimanager.php';
+	}	
+}
+	function del(id,bd,pid){
+		if(confirm("您确定要删除"+bd+"吗？")){
+			location.href = 'hn_yiqiguanli.php?id='+id+'&action=del&pid='+pid;
+		}else{
+			return false;
+		}
+		
+		
+}
+</script>
+
+<h3 class="header smaller center title">仪器管理目录</h3>
+ <table  class=printer style="width:20cm" >
+ <tr align=right>
+   <td>
+    <input type="button" class="btn btn-xs btn-primary" id="insert" value="新增" />
+ 	<input type="button" class="btn btn-xs btn-primary" id="fh" value="返回">
+   </td>
+ </tr>
+ </table>
+
+ <table class="table table-striped table-bordered table-hover center" style="width:20cm" >
+<thead>
+<tr align=center>
+<th>序号</th>	
+<th>表单名称</th>
+<th>文件</th>
+<th>备注</th>
+<th>操作</th>
+</tr>
+</thead>
+ $lines
+</table>

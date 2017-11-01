@@ -1,0 +1,165 @@
+<h1>容量法检验记录（工艺）</h1>
+{$hjtj_bt}
+<input type="hidden" name="td6" value="$arow[td6]" />
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:10%"></td><td style="width:15%"></td><td style="width:11%"></td>
+		<td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+		<td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+	</tr>
+	<tr align="center">
+		<td colspan="2">样品名称</td>
+		<td colspan="4"><input type="text" name="td8" class="inputl" value="{$arow['td8']}" /></td>
+		<td colspan="2">检验项目</td>
+		<td colspan="3">{$arow['assay_element']}</td>
+	</tr>
+	<tr>
+		<td colspan="2">检验地点</td>
+		<td colspan="4"><input type="text" name="td7" class="inputl" value="{$arow['td7']}" /></td>
+		<td colspan="2">检验方法</td>
+		<td colspan="3">{$arow['td1']}</td>
+	</tr>
+	<tr>
+		<td colspan="2">天平型号</td>
+		<td colspan="4">{$arow['td5']}</td>
+		<td colspan="2">天平编号</td>
+		<td colspan="3">{$arow['yq_bh']}</td>
+	</tr>
+		<tr>
+		<td colspan="11">标准溶液</td>
+	</tr>
+	<tr>
+		<td colspan="2">基准溶液名称</td>
+		<td colspan="4"><input type="text" name="td10" class="inputl" value="{$arow['td10']}" /></td>
+		<td colspan="2">基准溶液浓度 M<sub>1</sub></td>
+		<td colspan="3"><input type="text" name="td11" class="inputl" value="{$arow['td11']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">标准样品名称</td>
+		<td colspan="4"><input type="text" name="td12" class="inputl" value="{$arow['td12']}" /></td>
+		<td colspan="2">基准溶液体积 V<sub>1</sub></td>
+		<td colspan="3"><input type="text" name="td13" class="inputl" value="{$arow['td13']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">空白耗用标准溶液体V<sub>0</sub>（mL）</td>
+		<td colspan="4"><input type="text" name="td14" class="inputl" value="{$arow['td14']}" /></td>
+		<td colspan="2">基准耗用标准溶液体V<sub>2</sub>（mL）</td>
+		<td colspan="3"><input type="text" name="td15" class="inputl" value="{$arow['td15']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">标准溶液浓度计算公式</td>
+		<td colspan="9">C(Na<sub>2</sub>S<sub>2</sub>O<sub>3</sub>)=M<sub>1</sub>×V<sub>1</sub>/(V<sub>2</sub>-V<sub>0</sub>)</td>
+	</tr>
+	<tr>
+		<td colspan="2">标准溶液浓度C(Na<sub>2</sub>S<sub>2</sub>O<sub>3</sub>  mol/L)</td>
+		<td colspan="9"><input type="text" name="td16" id='c_v' class="inputl" value="{$arow['td16']}" /></td>
+	</tr>
+	</tr>
+	<tr>
+		<td colspan="2">样品处理方式</td>
+		<td colspan="9"><input type="text" name="td18" class="inputl" value="{$arow['td18']}" /></td>
+	</tr>
+	<tr id="jsgs_">
+	</tr>
+	<tr align="center">
+		<td>序号</td>
+		<td>{$zhanming}</td>
+		<td>试样质量m （g）</td>
+		<td>试样稀释体积 (mL)</td>
+		<td>滴定取用试样体积 (mL)</td>
+		<td>耗用标准<br/>V (mL)</td>
+		<td>空白耗用标准<br/>V<sub>0</sub> (mL)</td>
+		<td>V-V<sub>0</sub>(mL)</td>
+		<td>计算结果<br/>({$arow['unit']})</td>
+		<td colspan="2">报告结果<br/>({$arow['unit']})</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td align="center">备注</td>
+		<td colspan="10"><textarea name="td30">$arow[td30]</textarea></td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+
+if('723'=='{$arow['vid']}'||'679'=='{$arow['vid']}'){  //氯化铁 723 
+	var jsgs_html = '<td colspan="2">计算公式</td><td colspan="2" class="right noright"> FeCl<sub>3</sub>（%）=</td><td colspan="4" class="center noborder">(V-V<sub>0</sub>)×C×M<hr />1000×m×(25/500)</td><td colspan="3" class="left noleft">×100</td>';
+	var M= 162.2;	//氯化铁
+	var V1  = 25;
+	var V2 = 500;
+}else{
+
+}
+$("input[name=td28]").val(jsgs_html);
+$("#jsgs_").html(jsgs_html);
+function jsgs(){
+	if(''==$("#c_v").val()){ $("#c_v").focus(); return false;}
+	var C = parseFloat($("#c_v").val());
+	var vd6_split = String(vs['vd6']).split('.');
+	if(vd6_split.length==2){
+		var diding_ws = vd6_split[1].length;
+	}else{
+		var diding_ws = 2;
+	}
+	V1 = ($.isNumeric(vs['vd5']))?parseFloat(vs['vd5']):V1;
+	V2 = ($.isNumeric(vs['vd4']))?parseFloat(vs['vd4']):V2;
+	var vd7=!$.isNumeric(vs['vd7'])?0:vs['vd7'];
+	var vd17=!$.isNumeric(vs['vd17'])?0:vs['vd17'];
+	if('723'=='{$arow['vid']}'||'679'=='{$arow['vid']}'||'681'=='{$arow['vid']}'||'707'=='{$arow['vid']}'||'719'=='{$arow['vid']}' )  //氯化铁723  氯化亚铁681  含硅物质707 有效氯 719
+	{
+		if($.isNumeric(vs['vd6'])&&$.isNumeric(vd7))
+		{
+			vs['vd8'] = roundjs(accsub(parseFloat(vs['vd6']),parseFloat(vd7)),diding_ws);
+		}
+		else
+		{
+			vs['vd8'] = '';
+		}
+		var jg1= accMul(accMul(parseFloat(vs['vd8']),C),M);
+		var jg2= accMul(accMul(parseFloat(vs['vd3']),1000),accDiv(V1,V2));
+		if($.isNumeric(jg1)&&$.isNumeric(jg2))
+		{
+			vs['vd9'] = roundjs(accMul(accDiv(jg1,jg2),100), 2);
+		}
+		else
+		{
+			vs['vd9']='';
+		}
+		//平行计算
+		if($.isNumeric(vs['vd16'])&&$.isNumeric(vd17))
+		{
+			vs['vd18'] = roundjs(accsub(parseFloat(vs['vd16']),parseFloat(vd17)),diding_ws);
+		}
+		else
+		{
+			vs['vd18'] = '';
+		}
+		var jg11= accMul(accMul(parseFloat(vs['vd18']),C),M);
+		var jg21= accMul(accMul(parseFloat(vs['vd13']),1000),accDiv(V1,V2));
+		if($.isNumeric(jg11)&&$.isNumeric(jg21))
+		{
+			vs['vd19'] = roundjs(accMul(accDiv(jg11,jg21),100), 2);
+		}
+		else
+		{
+			vs['vd19']='';
+		}
+		//计算报告结果
+		if($.isNumeric(vs['vd9'])&&$.isNumeric(vs['vd19']))
+		{
+			vs['vd0'] = accDiv(accAdd(vs['vd9'],vs['vd19']),2);
+
+		}else if($.isNumeric(vs['vd9'])&&!$.isNumeric(vs['vd19']))
+		{
+			vs['vd0'] =vs['vd9'];
+		}
+		else{
+			vs['vd0'] = '';
+		}
+		if('-40'==vs['vd22'])
+		{
+			vs['vd0'] = '/';
+		}
+	}
+}
+</script> 

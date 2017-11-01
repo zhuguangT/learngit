@@ -1,0 +1,23 @@
+<input type="hidden" name="mission[{$c}]" value="{$row['id']}" />  
+<tr>
+    <td>{$i}</td>
+    <td>{$row['site_name']}</td>
+    <td title="原始结果: {$row['vd4']}">
+    	<input type="hidden" name="vd4[{$c}]" value="{$row['vd4']}" />
+    	<input type="text" class="inputc hyd" name="vd3[{$c}]" value="{$row['vd3']}" />
+    </td>
+    <td title="原始结果: {$row['vd6']}">
+        <input type="hidden" name="vd6[{$c}]" value="{$row['vd6']}" />
+        <input type="text" class="inputc hyd" name="vd5[{$c}]" value="{$row['vd5']}" />
+    </td>
+    <td title="原始结果: {$row['vd8']}">
+        <input type="hidden" name="vd8[{$c}]" value="{$row['vd8']}" />
+        <input type="text" class="inputc hyd" name="vd7[{$c}]" value="{$row['vd7']}" />
+    </td>
+    <td title="原始结果: {$row['_vd0']}">
+        <input type="text" class='noinputc hyd' name="vd0[{$c}]" value="{$row['vd0']}" />
+        <input type="hidden" name="vd27[{$c}]" value='{$row['vd27']}' />
+    </td>
+    <td>{$_ping_jun}</td>  
+    <td>{$_xdpc}</td>
+</tr>

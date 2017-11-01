@@ -1,0 +1,152 @@
+<h1>五日生化需氧量（BOD₅）原始记录表（2）</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:8%"></td><td style="width:16%"></td>
+		<td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+		<td style="width:10%"></td><td style="width:10%"></td><td style="width:9%"></td>
+		<td style="width:8%"></td><td style="width:9%"></td>
+	</tr>
+	<tr>
+		<td class="left" colspan="5">分析方法：{$arow['td2']}</td>
+		<td class="left" colspan="5">样品类别：{$arow['water_type']}</td>
+	</tr>
+	<tr>
+		<td class="left" colspan="10">仪器型号及编号：{$arow['td5']} {$arow['yq_bh']}</td>
+	</tr>
+	<tr class='auto'>
+		<td class="left" colspan="5" style="line-height:28px;">
+			测定日期<br />&nbsp;
+			当日：<input class="input-mask-date" size="16" type="text" name="td17" value="{$arow['td17']}" /> ，
+			室温：<input type="text" size="5" name="td11" value="{$arow['td11']}" /> ℃
+			<br />&nbsp;
+			五日：<input class="input-mask-date" size="16" type="text" name="td18" value="{$arow['td18']}" /> ，
+			室温：<input type="text" size="5" name="td12" value="{$arow['td12']}" /> ℃
+		</td>
+		<td class="left" colspan="5">
+			计算公式：<br /><br />&nbsp;
+			BOD₅（{$arow['unit']}）=[(C₁-C₂)-(V<sub>t</sub>-V<sub>e</sub>)×(C₃-C₄)/V<sub>t</sub>]×V<sub>t</sub>/V<sub>e</sub>
+		</td>
+	</tr>
+	<tr>
+		<td rowspan="2">序号</td>
+		<td rowspan="2">{$zhanming}</td>
+		<td rowspan="2">取样体<br />积&nbsp;V<sub>e</sub><br />（mL）</td>
+		<td rowspan="2">总体积<br />&nbsp;V<sub>t</sub>（mL）</td>
+		<td rowspan="2">当日含<br />量&nbsp;C₁<br />（mg/L）</td>
+		<td rowspan="2">五日含<br />量&nbsp;C₂<br />（mg/L）</td>
+		<td rowspan="2">结果<br />（{$arow['unit']}）</td>
+		<td rowspan="2">均值<br />（{$arow['unit']}）</td>
+		<td colspan="2">平行样</td>
+	</tr>
+	<tr>
+		<td>均值</td>
+		<td>相对偏<br />差（％）</td>
+	</tr>
+	{$aline}
+	<tr >
+		<td colspan="2" rowspan="2">空白</td>
+		<td>1</td>
+		<td><input type="text" name="td15" class="inputc bttd" value="{$arow['td15']}" id="td15"></td>
+		<td><input type="text" name="td6"  class="inputc bttd" value="{$arow['td6']}"  onblur=$("input[name^='vd1']").blur() id="td6"></td>
+		<td><input type="text" name="td7"  class="inputc bttd" value="{$arow['td7']}"  onblur=$("input[name^='vd1']").blur() id="td7"></td>
+		<td>C₃</td>
+		<td colspan="3"><input type="text" name="td8" class="noinputc" value="{$arow['td8']}" id="td8" onblur=$("input[name^='vd1']").blur() /></td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td><input type="text" name="td9"  class="inputc bttd" value="{$arow['td9']}"  id="td9"></td>
+		<td><input type="text" name="td10" class="inputc bttd" value="{$arow['td10']}" onblur=$("input[name^='vd1']").blur(); id="td10"></td>
+		<td><input type="text" name="td13" class="inputc bttd" value="{$arow['td13']}" onblur=$("input[name^='vd1']").blur(); id="td13"></td>
+		<td>C₄</td>
+		<td colspan="3"><input type="text" name="td14" class="noinputc" value="{$arow['td14']}" id="td14" onblur=$("input[name^='vd1']").blur() /></td>
+	</tr>
+	<tr>
+		<td>备注</td>
+		<td colspan="9"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	function jsgs(){
+		var c3	= $("#td8").val();
+		var c4	= $("#td14").val();
+		var jcx	= parseFloat('{$arow['td3']}');
+		var zj	= (parseFloat(c3)+parseFloat(c4))/2;
+		if(vs['vd1']!='' && vs['vd2']!=''){
+			var c10=((vs['vd3']-vs['vd4'])-(parseFloat(zj)*(vs['vd2']-vs['vd1']))/vs['vd2'])*(vs['vd2']/vs['vd1']);
+			c10=round(c10,2);
+			if($.isNumeric(c10)){
+				if(c10<jcx){
+					c101='<'+jcx;
+					vs['vd10']=c101;
+				}else{
+					vs['vd10']=round(c10,2);
+				}
+			}
+		}else{
+			vs['vd10']='';
+		}
+		if(vs['vd11']!='' && vs['vd12']!=''){
+			var c20=((vs['vd13']-vs['vd14'])-(parseFloat(zj)*(vs['vd12']-vs['vd11']))/vs['vd12'])*(vs['vd12']/vs['vd11']);
+			c20=round(c20,2);
+			if($.isNumeric(c20)){
+				if(c20<jcx){
+					c201='<'+jcx;
+					vs['vd20']=c201;
+				}
+				else{
+					vs['vd20']=round(c20,2);
+				}
+			}
+		}
+		else{
+			vs['vd20']='';
+		}
+		if(vs['vd21']!='' && vs['vd22']!=''){
+			var c30=((vs['vd23']-vs['vd24'])-(parseFloat(zj)*(vs['vd22']-vs['vd21']))/vs['vd22'])*(vs['vd22']/vs['vd21']);
+			c30=round(c30,2);
+			if($.isNumeric(c30)){
+				if(c30<jcx){
+					c301='<'+jcx;
+					vs['vd30']=c301;
+				}else{
+					vs['vd30']=round(c30,2);
+				}
+			}
+		}else{
+			vs['vd30']='';
+		}
+		arr = new Array();
+		arr[0] = c10;
+		arr[1] = c20;
+		arr[2] = c30;
+		var zz=j=0;
+		for(var i=0;i<arr.length;i++){
+			if($.isNumeric(arr[i])){
+				zz=parseFloat(zz)+parseFloat(arr[i]);
+				j++;
+			}
+		}
+		var pj=zz/j;
+		if($.isNumeric(pj)){
+			vs['vd0']=vs['_vd0']=pj;
+		}
+	}
+	function btgs(){
+		var td6=$("#td6").val();
+		var td7=$("#td7").val();
+		var td10=$("#td10").val();
+		var td13=$("#td13").val();
+		if(td6!='' && td7!=''){
+			var c3=round((parseFloat(td6)-parseFloat(td7)),1);
+			$("#td8").val(c3);
+		}
+		if(td10!='' && td13!=''){
+			var c4=round((parseFloat(td10)-parseFloat(td13)),1);
+			$("#td14").val(c4);
+		}
+	}
+	$('.bttd').bind('blur', function(){
+		btgs();
+	});
+</script>

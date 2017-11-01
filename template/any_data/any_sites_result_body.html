@@ -1,0 +1,29 @@
+<table style="margin-top:20px" class="table table-striped table-bordered table-hover center">
+<tr >
+<td rowspan="3" align="center">成果表基础信息</td>
+<td align="left" >标题名称：<textarea type="text" name="cgb_title" id="cgb_title" style="width:60%;height:50px">{$cgb_title}</textarea></td><td align="left">监测部门：<textarea type="text" name="jc_bm" id="jc_bm" style="width:60%;height:60px">{$jc_bm}</textarea></td>
+</tr>
+<tr align="left">
+<td >填表日期：<input type="text" size='10' name="tb_date" id="tb_date" class="date-picker" value="{$tb_date}"/></td><td>水质评价：<textarea type="text" name="sz_pj" id="sz_pj" style="width:60%;height:50px">{$sz_pj}</textarea></td>
+</tr>
+<tr align="left" >
+<td >备注：<textarea type="text"  name="bz" id="bz" style="width:60%;height:50px">{$bz}</textarea>
+<td>记录编号：<select name="jl_bh" id="jl_bh">{$jl_bh_option}</select></td>
+</td>
+</tr>
+<tr>
+<td width="20%">成果表模板类型</td>
+<td align='left' colspan="2"><span style='width:80px;text-align:left' class='s_float'><input type='radio' name='cgb_mb' value='1'  onclick="change_mb(this)" $checked1/>项目横表</span><span class='s_float' style='width:80px;text-align:left'><input type='radio' name='cgb_mb' value='2'  onclick="change_mb(this)" $checked2/>项目竖表</span></td>
+</tr>
+<tr>
+<td width="20%">表格横纵</td>
+<td align='left' colspan="2"><span style='width:80px;text-align:left' class='s_float'><input type='radio' name='bg_hz' value='1' $checked3 />竖版</span><span class='s_float' style='width:80px;text-align:left'><input type='radio' name='bg_hz' value='2' $checked4 />横版</span></td>
+</tr>
+<tr>
+	<td>设置行列</td><td align="left" colspan="2">每页站点数：<input type="text" name="col_max" value="{$col_max}" style="width:45px" id="col_max" onblur="save_hl(this)" onafterpaste="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')">&nbsp;&nbsp;每页项目数：<input type="text" name="row_max" value="{$row_max}" style="width:45px" id="row_max" onblur="save_hl(this)" onafterpaste="this.value=this.value.replace(/\D/g,'')" onkeyup="this.value=this.value.replace(/\D/g,'')"></td>
+</tr>
+<tr>
+<td>成果表参数</td>
+<td align="left" colspan="2">$cgb_bt_cs</td>
+</tr>
+</table>

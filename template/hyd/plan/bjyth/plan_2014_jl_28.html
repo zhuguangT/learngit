@@ -1,0 +1,64 @@
+<h1>流动注射仪分析原始记录表</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:10%"></td><td style="width:15%"></td><td style="width:15%"></td>
+		<td style="width:15%"></td><td style="width:15%"></td><td style="width:15%"></td>
+		<td style="width:15%"></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="2">分析项目：{$arow['assay_element']}</td>
+		<td class="left" colspan="3">分析方法：{$arow['td2']}</td>
+		<td class="left" colspan="2">分析日期：<input class="date_Ymd" type="text" name="td31" size="10" value="{$arow['td31']}" /></td>
+	</tr>
+	<tr>
+		<td class="left" colspan="2">样品类别：{$arow['water_type']}</td>
+		<td class="left" colspan="3">仪器型号及编号：{$arow['td4']} {$arow['yq_bh']}</td>
+		<td class="left" colspan="2">检出限：{$arow['td3']} {$arow['unit']}</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="7">
+			标准工作液名称： <input type="text" size="15" name="td7" value="{$arow['td7']}" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			浓度：<input type="text" name='td8' size="5" value="{$arow['td8']}" /> {$arow['unit']}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			配制日期：<input class="date_Ymd" type="text" name="td12" size="10" value="{$arow['td12']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="7">
+			标准曲线编号：<input type="text" name="td10" size="15" value="{$arow['td10']}" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			率定日期：<input type="text" name="td13" value="{$arow['td13']}" size="10" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			曲线上限： <input type="text" size="4" value="{$arow['td14']}" name="td14"> {$arow['unit']}
+		</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="2">波长： <input type="text" name="td9" size="5" value="{$arow['td9']}" /> nm</td>
+		<td class="left" colspan="5"> 计算公式：C（ {$arow['unit']}）=直读含量×稀释倍数/1000</td>
+	</tr>
+	<tr >
+		<td>序号</td>
+		<td>{$zhanming}</td>
+		<td>直读含量（μg/L）</td>
+		<td>稀释倍数</td>
+		<td>含 量（ {$arow['unit']}）</td>
+		<td>平均值<br>（ {$arow['unit']}）</td>
+		<td>相对偏差<br>（％）</td>
+	</tr>
+	{$aline}
+	<tr class="auto">
+		<td class="left" colspan="2">加标量：<input type="text" name="td16" size="8" value="{$arow['td16']}" /> mL</td>
+		<td class="left" colspan="3">原水样量：<input type="text" name="td17" size="10" value="{$arow['td17']}" /> mL</td>
+		<td class="left" colspan="3">P%= <input type="text" name="td18" size="10" value="{$arow['td18']}" /></td>
+	</tr>
+	<tr>
+		<td>备注</td>
+		<td colspan="6"><textarea name="td30" rows="2" cols="80">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	function jsgs(){
+		if($.isNumeric(vs['vd27']) && $.isNumeric(vs['vd2'])){
+			vs['vd0'] = jsws((vs['vd27']*vs['vd2'])/1000);
+		}else{
+			vs['vd0'] = '';
+		}
+	}
+</script>

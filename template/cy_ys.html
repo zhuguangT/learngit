@@ -1,0 +1,97 @@
+<style>
+.fenye{page-break-after: always;}
+</style>
+<script language="javascript">
+//显示页码
+window.onload = function(){
+var gong = $("span[id='gong']").length; 
+$("span[id='gong']").html(gong);
+var di = $("span[id='di']");
+var i = 1;
+di.each(function(){
+$(this).html(i);
+++i;
+});
+//计算打印总数
+//计算总数
+  if($('#pddy').val()==1){
+    var quan = $("td[rid]");
+    var qb=[];
+    var zz = 0;
+    quan.each(function(){
+      aa = $(this).attr('rid');
+      as = $(this).html();
+      zz = Number(zz)+Number(as);
+      yuan = $("td[zid='"+aa+"']").html();
+      yuan = Number(yuan)+Number(as);
+      if(yuan == 0){
+        yuan = '';
+      }
+      $("td[zid='"+aa+"']").html(yuan);
+    });
+    $("td[zz='zz']").html(zz);
+  }
+}
+//修改瓶子
+function xiuping(ping){
+  var cid =  $(ping).attr('cid');
+  $('body').css("overflow","hidden")
+  $("#cover"+cid).show();
+}
+
+function guanbi(aa){
+  $('body').css("overflow","auto")
+  var cid =  $(aa).attr('cid');
+  $("#cover"+cid).css("display","none");
+}
+function pingajax(aa){
+  var cid = $(aa).attr('cid');
+  var cyd_id = $(aa).attr('cyd_id');
+  var tj = document.getElementById("ys");
+  tj.action="./cy_ys_save.php?ajax=1&flag=pingzi&cid="+cid+"&cyd_id="+cyd_id;
+  tj.submit();
+}
+</script>
+<font face='宋体'>
+<br>
+<form id="ys" action='./cy_ys_save.php' name='ys' method='post'>
+  {$pddy}
+  <input type='hidden' name='cyd_id'>
+<div style="text-align:right;padding-right:50px">$dayin</div>
+<table align="center" style="border-bottom:none;width:28cm;"  cellspacing="0" cellpadding="0" >
+  <caption style="font-size:24px; line-height:25px; ">
+    <B>样品验收记录表</B>  
+  </caption>
+  <tr align="center">
+    <td align="left" width='6%'>&nbsp;&nbsp;&nbsp;$hub_info</td>
+    <td align="right" width='10%'>第&nbsp;<span id='di'></span>&nbsp;页&nbsp;共&nbsp;<span id='gong'></span>&nbsp;页&nbsp;&nbsp;&nbsp;</td>  
+  </tr>
+</table>
+<table  class="center" style="width:28cm;" border='1'  cellspacing="0" cellpadding="0">
+  <tr>
+        <td style="width:2%;" rowspan='2'>序号</td>
+        <td style="width:14%;" rowspan='2'>采样地点</td>
+        <td style="width:5%;" rowspan='2'>样品类型</td>
+        <td style="width:5%;" rowspan='2'>样品编码</td>
+        <td style="width:15%;" rowspan='2'>样品状态</td>
+        <td style="width:25%;" colspan='2'>样品数量</td>
+        <td style="width:5%;" rowspan='2'>体积<p/>(L)</td>
+        <td style="width:8%;" rowspan='2'>验收结论</td>
+  </tr>
+  <tr>
+        $rq_fenlei_td
+  </tr>
+{$cy_js_line}
+<input type='hidden' name="id" id='cyd_id' value={$_GET[cyd_id]}  />
+</table>
+
+<table align="center" style="width:28cm;"  cellspacing="0" cellpadding="0"> 
+<tr> 
+$neirong
+</tr>
+<tr align="center">
+ $jieshou
+</tr> 
+</table> 
+</form></font>
+<p></p>

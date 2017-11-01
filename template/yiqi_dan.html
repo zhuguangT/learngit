@@ -1,0 +1,97 @@
+<form method="GET" action="$rooturl/yiqigl/yiqidanan_g.php" >
+<h1 align="center" >添加新仪器</h1>
+<table width="750" border="1" cellspacing="0" cellpadding="0">
+  <tr align="center">
+    <td width="90" height="34" >名称</td>
+    <td ><input type="text" name="name" /></td>
+    <td width="80" >设备编号</td>
+    <td><input type="text" name="sbbh" /> </td>
+  </tr>
+  <tr align="center">
+    <td width="90" height="34" >型号</td>
+    <td><input type="text" name="sbxh" /></td>
+    <td>国别</td>
+    <td><input type="text" name="guobie" /><td>
+  </tr>
+  <tr align="center">
+    <td width="90" height="34" >使用单位</td>
+    <td><input type="text" name="sydw" /></td>
+    <td>鉴定类型</td>
+    <td>  <select name="jdlx" >
+    <option value="强检">强检</option>
+    <option value="自检">自检</option>
+  </select><td>
+  </tr>
+  <tr align="center">
+    <td width="90" height="34" >制造厂</td>
+    <td ><input type="text" name="zhizhao" /></td>
+    <td >出厂编号</td>
+    <td><input type="text" name="ccbh" /></td>
+  </tr>
+  <tr align="center">
+    <td  width="90" height="34" align="center">制造日期</td>
+    <td align="center"><input type="text" name="zzdate" /></td>
+    <td align="center">价格</td>
+    <td><input type="text" name="jiage" /></td>
+  </tr>
+  <tr align="center">
+    <td  width="90" height="34" align="center">来源</td>
+    <td align="center"><input type="text" name="laiyuan" /></td>
+    <td align="center">调购日期</td>
+    <td><input type="text" name="diaodate" /></td>
+  </tr>
+  <tr align="center">
+    <td width="90" height="34" >新旧程度</td>
+    <td ><input type="text" name="xinjiu" /</td>
+    <td >起用日期</td>
+    <td><input type="text" name="qiydate" /></td>
+  </tr>
+  <tr>
+    <td align="center" height="90">规格精度</td>
+    <td colspan="3"><textarea name="guige" cols="60" rows="5"></textarea></td>
+  </tr>
+
+</table></br>
+<table width="650" border="1" cellspacing="0" cellpadding="0">
+  <tr  align="center">
+    <td  colspan="6" height="34"><h1>附件及备品配件</h1></td>
+
+  </tr>
+  <tr align="center">
+    <td>名称</td>
+    <td  width="50">数量</td>
+    <td>名称</td>
+    <td width="50">数量</td>
+    <td >名称</td>
+    <td width="50">数量</td>
+  </tr>
+  <tr  align="center"> 
+    <td><input type="text" name="fj[1]" /></td>
+    <td><input type="text" name="fs[1]" size="3" value="1"  /></td>
+    <td><input type="text" name="fj[2]" /></td>
+    <td><input type="text" name="fs[2]" size="3" value="1" /></td>
+    <td><input type="text" name="fj[3]" /></td>
+    <td><input type="text" name="fs[3]"  size="3" value="1" /></td>
+  </tr>
+  <tr  align="center">
+    <td><input type="text" name="fj[4]" /></td>
+    <td><input type="text" name="fs[4]" size="3" value="1" /></td>
+    <td><input type="text" name="fj[5]" /></td>
+    <td><input type="text" name="fs[5]" size="3" value="1" /></td>
+    <td><input type="text" name="fj[6]" /></td>
+    <td><input type="text" name="fs[6]" size="3" value="1" /></td>
+  </tr>
+  <tr  align="center">
+    <td><input type="text" name="fj[7]" /></td>
+    <td><input type="text" name="fs[7]" size="3" value="1" /></td>
+    <td><input type="text" name="fj[8]" /></td>
+    <td><input type="text" name="fs[8]" size="3"  value="1" /></td>
+    <td><input type="text" name="fj[9]" /></td>
+    <td><input type="text" name="fs[9]" size="3" value="1" /></td>
+  </tr>
+<tr >
+  <td  colspan="6" align="center">
+      <input type="submit" name="tijiao" value="提交" /></td>
+    </tr>
+</table>
+</from>

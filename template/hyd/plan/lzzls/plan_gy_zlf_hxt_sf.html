@@ -1,0 +1,82 @@
+<h1>重量法检验记录（工艺）</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:8%"></td><td style="width:6%"></td><td style="width:9%"></td><td style="width:8%"></td>
+		<td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td>
+		<td style="width:9%"></td><td style="width:9%"></td><td style="width:8%"></td><td style="width:8%"></td>
+	</tr>
+	<tr align="center">
+		<td colspan="2">检验项目</td>
+		<td colspan="4">{$arow['assay_element']}</td>
+		<td colspan="2">检验地点</td>
+		<td colspan="4"><input type="text" name="td7" class="inputc" value="{$arow['td7']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">检验方法</td>
+		<td colspan="4">{$arow['td1']}</td>
+		<td colspan="2">方法依据</td>
+		<td colspan="4">{$arow['td2']}</td>
+	</tr>
+		<tr>
+		<td colspan="2">天平型号</td>
+		<td colspan="4">{$arow['td5']}</td>
+		<td colspan="2">天平编号</td>
+		<td colspan="4">{$arow['yq_bh']}</td>
+	</tr>
+	<tr>
+		<td colspan="2">计算公式</td>
+		<td colspan="10" class="left">   W(%)=(m<sub>2</sub>-m<sub>1</sub>)/m×100</td>
+	</tr>
+	<tr align="center">
+		<td rowspan="2">序号</td>
+		<td rowspan="2" colspan="2">{$zhanming}</td>
+		<td rowspan="2">试样质量m（g）</td>
+		<td colspan="2">坩埚式过滤器连同残渣的质量，m<sub>1</sub>（g）</td>
+		<td>平均（g）</td>
+		<td colspan="2">残渣+容器重量m<sub>2</sub>（g）</td>
+		<td>平均（g）</td>
+		<td rowspan="2">m<sub>1</sub>-m<sub>2（g）</sub></td>
+		<td rowspan="2">检验结果<br/>({$arow['unit']})</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td>备注</td>
+		<td colspan="11"><textarea name="td30">$arow[td30]</textarea></td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+function jsgs(){
+
+	var vd3_split = String(vs['vd3']).split('.');
+	if(vd3_split.length==2){
+		var diding_ws = vd3_split[1].length;
+	}else{
+		var diding_ws = 2;
+	}
+	console.log(diding_ws)
+	if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd4'])){
+		vs['vd5'] =jsws(accDiv(accAdd(parseFloat(vs['vd3']),parseFloat(vs['vd4'])),2),diding_ws);
+	}
+	else
+	{
+		vs['vd5'] ='';
+	}
+	if($.isNumeric(vs['vd6'])&&$.isNumeric(vs['vd7'])){
+		vs['vd8'] =jsws(accDiv(accAdd(parseFloat(vs['vd6']),parseFloat(vs['vd7'])),2),diding_ws);
+	}
+	else
+	{
+		vs['vd8'] ='';
+	}
+	if($.isNumeric(vs['vd8'])&&$.isNumeric(vs['vd5'])&&$.isNumeric(vs['vd1'])){
+		vs['vd10']=jsws(accsub(parseFloat(vs['vd8']),parseFloat(vs['vd5'])),diding_ws);
+		var pro =jsws(accMul(vs['vd10'],100),diding_ws);
+		vs['vd0'] =accDiv(pro,parseFloat(vs['vd1']));
+	}
+	else{
+		vs['vd0'] = '';
+	}
+}
+</script> 

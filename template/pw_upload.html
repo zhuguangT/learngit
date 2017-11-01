@@ -1,0 +1,125 @@
+
+
+<style>
+.tablelv { border:1px #0CF solid; border-collapse:collapse; width:1250px;margin:auto}
+.tablelv *{ color:#363636}
+.tablelv tr td{ font-size:12px; height:20px; line-height:20px; border:1px solid #00CCFF}
+a{text-decoration:none}
+a:hover{color:red}
+input{background:#AACCFF;}
+.inputWidth{width:222px;}
+.hand{cursor:pointer;}
+td{text-align:center;}
+</style>
+<script language='javascript'>
+//文件上传前的各种验证
+function yanZheng(e){
+	var paiWuFile = e.paiWuUpfile.value;
+	var diXiaFile = e.diXiaUpfile.value;
+	var paiWuMbxm = e.paiWuMbxm.value;
+	var diXiaMbxm = e.diXiaMbxm.value;
+	if(paiWuFile==''&&diXiaFile==''){
+		alert("请先选择要上传的文件");
+		return false;
+	}
+	else{
+		if(paiWuFile!=''){
+			var paiWuGeShi= paiWuFile.substring(paiWuFile.lastIndexOf(".")+1);//获取文件后缀名
+		}
+		else if(diXiaFile!=''){
+			var diXiaGeShi= diXiaFile.substring(diXiaFile.lastIndexOf(".")+1);//获取文件后缀名
+		}
+		if(paiWuGeShi&&paiWuGeShi!='xlsx'&&paiWuGeShi!='xls'){
+			alert("请选择excel格式的排污口站点文件");
+			return false;
+		}
+		else if(diXiaGeShi&&diXiaGeShi!='xlsx'&&diXiaGeShi!='xls'){
+			alert("请选择excel格式的地下水站点文件");
+			return false;
+		}
+	}
+	if((paiWuFile!=''&&paiWuMbxm=='')||(diXiaFile!=''&&diXiaMbxm=='')){
+		if(!window.confirm('确定不设置"默认项目"！')){
+			return false;
+		}
+	}
+}
+//选择模板时的 项目个数 提示
+function tishi(e,tdId){
+	var countData2 = e.options[e.selectedIndex].getAttribute("countData2");
+	if(countData2){
+		var tishi = "此模板拥有化验项目:"+countData2+" 项";
+	}
+	else{
+		var tishi = "未选择 默认项目!";
+	}
+	document.getElementById(tdId).innerHTML = tishi;
+}
+</script>
+<form method="post" action="#" enctype="multipart/form-data" style='margin-top:30px;' onsubmit="return yanZheng(this);">
+  <table>
+    <tr>
+      <td align='center' style='width:500px;'>
+	<h1>上传排污口站点</h1>
+	<table>
+	  <tr>
+	    <td align='center'>批次名称:<input type="text" name="paiWuGroupName" class='inputWidth' value="排污口$date" /></td>
+	  </tr>
+	  <tr>
+	    <td align='center'>选择文件:<input type="file" name="paiWuUpfile" class='inputWidth hand' title="请选择excel文件" /></td>
+	  </tr>
+	  <tr>
+	    <td>默认项目:<select name='paiWuMbxm' style="width:168px;" onchange="tishi(this,'paiWuTiShi')">
+				<option value=''>请选择项目模板...</option>
+				$paiWuMbxm 
+			</select>
+		<a href="$rooturl/site/muban_xm.php" target='_blank' title="点击设定化验项目模板">设定模板</a>
+	    </td>
+	  </tr>
+	   <tr>
+            <td style="color:red;" id='paiWuTiShi'>
+                $paiWuTiShi
+            </td>
+          </tr>
+	  <tr>
+	    <td align='center'><input type =submit name="fsub" value="上传" class='hand' /></td>
+	  </tr>
+	  <tr>
+	    <td>规定excel格式&nbsp;&nbsp;&nbsp;<a href="$rooturl/site/upfile/paiwukou/排污口默认模版.xlsx" >下载排污口excel模版</a><br /><img src="$rooturl/images/排污口excel格式.png" width="500px" /></td>
+	  </tr>
+	</table>
+      </td>
+      <td align='center' style='width:500px;'>
+	<h1>上传地下水站点</h1>
+        <table>
+          <tr>
+            <td align='center'>批次名称:<input type="text" name="diXiaGroupName" class='inputWidth' value="地下水$date" /></td>
+          </tr>
+          <tr>
+            <td align='center'>选择文件:<input type="file" name="diXiaUpfile" class='inputWidth hand' /></td>
+          </tr>
+	  <tr>
+	    <td>默认项目:<select name='diXiaMbxm'style="width:168px;" onchange="tishi(this,'diXiaTiShi')">
+                                <option value=''>请选择项目模板...</option>
+                                $diXiaMbxm
+                        </select>
+                <a href="$rooturl/site/muban_xm.php" target='_blank' title="点击设定化验项目模板">设定模板</a>
+            </td>
+          </tr>
+	  <tr>
+	    <td style="color:red;" id='diXiaTiShi'>
+		$diXiaTiShi
+	    </td>
+	  </tr>
+          <tr>
+            <td align='center'><input type =submit name="fsub" value="上传" class='hand'></td>
+          </tr>
+	  <tr>
+            <td>规定excel格式&nbsp;&nbsp;&nbsp;<a href="$rooturl/site/upfile/dixiashui/地下水默认模版.xlsx" >下载地下水excel模版</a><br /><img src="$rooturl/images/地下水excel格式.png" width="500px" /></td>
+          </tr>
+	</table>
+      </td>
+    </tr>
+  </table>
+</form>
+

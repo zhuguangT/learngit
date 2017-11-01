@@ -1,0 +1,182 @@
+<link rel="stylesheet" href="{$rooturl}/js/table-master/bootstrap-table.css" />
+<script type="text/javascript" src="{$rooturl}/js/lims/hyd.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-table.js"></script>
+<script type="text/javascript" src="{$rooturl}/js/table-master/bootstrap-table-cookie.js"></script>
+<div class="outerBox">
+  <div class="widget-box transparent" style="margin:0;">
+    <div class="widget-header center">
+      <h3 class="header smaller title" style="color:#000;">检测任务列表</h3>
+    </div>
+  </div>
+  <div id="toolbar" class="header-color-blue4" style="padding-top:10px;">
+    <input type="hidden" name="fzx" value="{$fzx_id}" />
+    <input type="hidden" name="is_xmfb" value="{$_GET['is_xmfb']}" />
+    <table style="max-width:900px">
+      <tr>
+        <td>任务性质：{echo PublicApp::get_select('site_type',$global['site_type'],true,true);}</td>
+        <td>采样日期：
+          {echo PublicApp::get_select('year');}
+          {echo PublicApp::get_select('month');}
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<table id="bootstrapTable" class="table center"></table>
+<script type="text/javascript">
+// 定义本页面的cookieName
+var cookieName = "xd_csrw_list";
+// 如果URL传值中包含如下参数需要给Cookie赋值
+{loop array('site_type','year','month') $value}
+{if isset($_GET[$value]) && !empty($_GET[$value]) && '全部' != $_GET[$value]}
+setCookie(cookieName + '.bs.table.{$value}', "{$_GET[$value]}");
+{/if}
+{/loop}
+// 检索内容
+{if isset($_GET['searchText']) && !empty($_GET['searchText']) && '全部' != $_GET['searchText']}
+setCookie(cookieName + '.bs.table.searchText', "{$_GET['searchText']}");
+{/if}
+// 根据cookie初始化本页的检索数据
+$('#toolbar,#toolbar2').find('select[name]').not('[type=hidden]').each(function (i) {
+  var value = getCookie( cookieName + '.bs.table.' + $(this).attr('name') );
+  if( value && $(this).is("select") && $(this).find("[value='"+value+"']").length ){
+    $(this).val(value);
+  }
+});
+// 检索条件更改后进行数据更新
+$("#toolbar").find("input[name],select[name]").on("change",function () {
+  dataListTable.bootstrapTable("refresh", {silent: true, url: get_url()});
+});
+//获取最新的URL地址
+var get_url = function(){
+  params = [];
+  $('#toolbar,#toolbar2').find('input[name],select[name]').each(function (i) {
+    params[i] = $(this).attr('name') + '=' + $(this).val();
+    setCookie(cookieName + '.bs.table.' + $(this).attr('name'), $(this).val());
+  });
+  params_str = params.join('&');
+  return '{$rooturl}/huayan/ahlims.php?ajax=1&app=jcrw_list&act=jcrw_list&'+params_str;
+}
+//使用js激活bootstrapTable样式
+var dataListTable = $('#bootstrapTable').bootstrapTable({
+  cookie: "true",
+  cookieIdTable: cookieName,
+  cache: false,
+  url: get_url(),
+  height: get_height(),
+  uniqueId: 'id',
+  toolbar: "#toolbar",
+  toolbarAlign: "center",
+  toolbarClass: "header-color-blue4",
+  // showColumns: true,
+  showRefresh: true,
+  minimumCountColumns: 3,
+  clickToSelect:true,
+  pagination: true,
+  sidePagination: 'server',
+  pageSize:50,
+  pageList: [50, 100, '全选'],
+  search: true,
+  formatSearch: function () {
+    return '请输入要搜索的信息';
+  },
+  columns: [
+    /*{
+      width: '50px',
+      field: 'checkbox',
+      checkbox: true
+    },*/
+    {
+      width: '7%',
+      field: 'xuhao',
+      title: '序号'
+    },
+    {
+      width: '10%',
+      field: 'cy_date',
+      title: '采样日期',
+      sortable: true
+    },
+    {
+      width: '10%',
+      field: 'cyd_bh',
+      title: '采样单号',
+      sortable: true,
+      formatter: function(value, row, index){
+        var value = '<a href="{$rooturl}/cy/dayin_biaoqian.php?cyd_id='+row.id+'" >'+ value +'</a>';
+        return '<span class="assay_element tooltip-info" style="cursor: pointer;" data-original-title="'+row.group_name+'" data-rel="popover" data-content="'+row.bar_code.info+'" data-animation="true" data-placement="right" data-trigger="hover focus">'+value+'</span>';
+      }
+    },
+    {
+      width: '17%',
+      field: 'group_name',
+      title: '批名/委托单位',
+      sortable: true
+    },
+    {
+      width: '8%',
+      field: 'yp_total',
+      title: '样品数量',
+      formatter: function(value, row, index){
+        return row.bar_code.total;
+      }
+    },
+    {
+      width: '8%',
+      field: 'cy_user',
+      title: '采样人',
+      sortable: true
+    },
+    {
+      width: '15%',
+      field: 'status',
+      title: '状态'
+    },
+    {
+      width: '25%',
+      field: 'option',
+      title: '操作',
+      cellStyle: function cellStyle(value, row, index) {
+        return {
+          css: {},
+          classes: 'visible-md visible-lg hidden-sm hidden-xs action-buttons'
+        };
+      }
+    }
+  ],
+  onLoadSuccess: function(data){
+    // tooltip
+    $('[data-rel="tooltip"]').tooltip();
+    $('[data-rel=popover]').popover({html:true});
+    // 有时候表格高度渲染失败
+    setTimeout(function () {
+            dataListTable.bootstrapTable('resetView');
+        }, 200);
+    //设置滚动条快速滑动。
+    $(window.parent.document.body).find("#full-top").click(function () {
+      dataListTable.bootstrapTable('scrollTo', 0);
+    });
+    $(window.parent.document.body).find("#full-btm").click(function () {
+      dataListTable.bootstrapTable('scrollTo', 'bottom');
+    });
+  }
+});
+// 重置表格高度
+$(window).resize(function () {
+  dataListTable.bootstrapTable('resetView', { height: get_height() });
+});
+// 当化验单被选中时批量操作按钮才可操作
+dataListTable.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', function () {
+  $("#toolbar2 button").prop('disabled', !dataListTable.bootstrapTable('getSelections').length);
+  var selections = getIdSelections();
+});
+
+function get_height(){
+  var height = $(window).height() - $('.pay-list-header').outerHeight(true) - $(".outerBox").height();
+  return height < 300 ? 300 : height;
+}
+</script>
+
+
+
+

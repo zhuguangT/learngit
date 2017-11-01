@@ -1,0 +1,47 @@
+<style type="text/css">
+	a{cursor:pointer}
+	span,li{text-align:center;}
+	.chosen-single div{padding-right:5px}
+</style>
+<h3 class="header smaller center title">质控范围列表</h3>
+<form method="post" action="zk_set.php" name="zkff">
+<div class="widget-box no-border" style="width:95%;margin:0 auto;">
+  $zhushi
+  <div class="widget-header center" style="padding-top:10px">
+	<span class="widget-toolbar">{$add_button}</span>
+  	水样类型：<select id="water_type">{$water_type_option}</select>
+	检测项目：<select id="value_C"><option value='全部'>全部</option>{$valueOption}</select>
+  </div>
+  <div class="widget-body">
+	<table class="table table-striped table-bordered table-hover center" id="tab">
+		<thead class="center">
+		  <tr align=center>
+			<th width="15%" rowspan="2">项目</th>
+			<th width="10%" rowspan="2">样品含量范围<br />mg/L</th>
+			<th width="30%" colspan="2">精密度(%)</th>
+			<th width="40%" colspan="3">准确度(%)</th>
+			<th width="5%" rowspan="2">操作</th>
+		  </tr>
+		  <tr align=center>
+			<th width="15%">室内</th>
+			<th width="15%">室间</th>
+			<th width="14%">加标回收率</th>
+			<th width="13%">室内相对误差</th>
+			<th width="13%">室间相对误差</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  $lines
+		</tbody>
+	</table>
+	</form>
+</div></div>
+<script type="text/javascript">
+//可输入搜索条件的下拉列表
+$(document).ready(function(){
+	$("#value_C").select2();
+	$("#water_type").on("change",function(){
+		document.location='zk_range_set.php?water_type='+$(this).val();
+	});
+});
+</script>

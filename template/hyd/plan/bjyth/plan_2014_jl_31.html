@@ -1,0 +1,53 @@
+<h1>TOC仪原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:9%"></td><td style="width:13%"></td><td style="width:13%"></td>
+		<td style="width:13%"></td><td style="width:13%"></td><td style="width:13%"></td>
+		<td style="width:13%"></td><td style="width:13%"></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="3">分析方法：{$arow['td2']}</td>
+		<td class="left" colspan="2">检出限：{$arow['td3']} {$arow['unit']}</td>
+		<td class="left" colspan="3">分析日期：<input class="date_Ymd" type="text" name="td31" value="{$arow['td31']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="2">样品类别：{$arow['water_type']}</td>
+		<td class="left" colspan="4">仪器型号及编号：{$arow['td4']} {$arow['yq_bh']}</td>
+		<td class="left" colspan="2">进样量（mL）：<input type="text" size="4" name="td15" value="{$arow['td15']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="6">
+			工作标准溶液名称：　<input type="text" size='12' name="td11"value="{$arow['td11']}" />
+			浓度：<input type="text" size="8" name="td7" value="{$arow['td7']}" />
+		</td>
+		<td class="left" colspan="2">配置日期：<input type="text" name="td10" size="10" value="{$arow['td10']}" /></td>
+	</tr>
+	<tr>
+		<td class="left" colspan="8">计算公式：C（{$arow['unit']}）=C<sub>0</sub>×f</td>
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td>{$zhanming}</td>
+		<td>标准值<br />（{$arow['unit']}）</td>
+		<td>直读含量<br />C<sub>0</sub></td>
+		<td>稀释倍数<br />f</td>
+		<td>含量<br />（{$arow['unit']}）</td>
+		<td>平均值<br />（{$arow['unit']}）</td>
+		<td>相对偏差<br />%</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td>备注</td>
+		<td colspan="7"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	function jsgs(){
+		if($.isNumeric(vs['vd27']) && $.isNumeric(vs['vd2'])){
+			vs['vd0'] = jsws(vs['vd27']*vs['vd2']);
+		}else{
+			vs['vd0'] = '';
+		}
+	}
+</script>

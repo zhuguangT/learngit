@@ -1,0 +1,60 @@
+<!-- PH -->
+<h1>PH值检验原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:16%"></td><td style="width:20%"></td><td style="width:16%"></td>
+		<td style="width:16%"></td><td style="width:16%"></td><td style="width:16%"></td>
+	</tr>
+	<tr>
+		<td>检验地点</td>
+		<td colspan="2"><input type="text" class="inputc" name="td7"   value="{$arow['td7']}" /></td>
+		<td>方法依据</td>
+		<td colspan="2">{$arow['td2']}</td>
+	</tr>
+	<tr>
+		<td>仪器型号</td>
+		<td colspan="2">{$arow['td5']}</td>
+		<td>仪器编号</td>
+		<td colspan="2">{$arow['yq_bh']}</td>
+	</tr>
+	<tr>
+		<td colspan="6">标准缓冲溶液</td>
+	</tr>
+	<tr>
+		<td colspan="2">标准物质名称</td>
+		<td colspan="2">标准物质编号</td>
+		<td colspan="2">标准物质pH值</td>
+	</tr>
+	<tr>
+		<td colspan="2">邻苯二甲酸氢钾</td>
+		<td colspan="2"><input type="text" class="inputc" name="td8"   value="{$arow['td8']}" /></td>
+		<td colspan="1" class="auto">pH=<input type="text" class="inputc" size="8" name="td9"   value="{$arow['td9']}" /></td>
+		<td colspan="1" class="auto"><input type="text" class="inputc" size="8" name="td14"   value="{$arow['td14']}" />℃</td>
+	</tr>
+	<tr>
+		<td colspan="2">混合磷酸盐</td>
+		<td colspan="2"><input type="text" class="inputc" name="td10"   value="{$arow['td10']}" /></td>
+		<td colspan="1" class="auto" >pH=<input type="text" class="inputc" size="8" name="td11"   value="{$arow['td11']}" /></td>
+		<td colspan="1" class="auto"><input type="text" class="inputc" size="8" name="td15"   value="{$arow['td15']}" />℃</td>
+	</tr>
+	<tr>
+		<td colspan="2">硼砂</td>
+		<td colspan="2"><input type="text" class="inputc" name="td12"   value="{$arow['td12']}" /></td>
+		<td colspan="1" class="auto">pH=<input type="text" class="inputc" size="8" name="td13"   value="{$arow['td13']}" /></td>
+		<td colspan="1" class="auto"><input type="text" class="inputc" size="8" name="td16"   value="{$arow['td16']}" />℃</td>
+	</tr>
+	<tr class="auto">
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td>{$zhanming}</td>
+		<td colspan="2">水温（℃）</td>
+		<td colspan="2">检验结果</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td>备注</td>
+		<td colspan="5"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>

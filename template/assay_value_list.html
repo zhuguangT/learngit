@@ -1,0 +1,311 @@
+<!--- assay_value_list.html  化验项目列表 模板-->
+<style>
+.hand,.update{cursor:pointer;}
+#valueTable tr{text-align:center;height:25px;}
+.red{color:red;}
+#valueTable,#valueTable td{border:1px black solid;border-collapse: collapse;font-size:13px;}
+.guDingWidth{width:90%;margin:0px auto;}
+}
+</style>
+<script>
+$(document).ready(function() {
+	$(".chosen-select").chosen();
+	/*
+	作用：根据项目分类 筛选项目
+	原理：根据tr里的自定义属性fenlei 来筛选
+	*/
+	$("#fenlei").change(function(){
+		var fenlei = this.value;
+		if(document.getElementById("onlyAct").checked){
+			var actValue = '1';
+		}else var actValue = '0';
+		url = "?morenFenlei="+fenlei+"&actValue="+actValue;
+		location = url;
+		if(fenlei=='全部'){
+			$("#valueTable tr").show();
+			$("#value_C option").show();
+		}
+		else{
+			//将 此分类的 项目 在table 表格上筛选出来
+			$("#valueTable tr[fenlei!='"+fenlei+"'][fenlei]").hide();
+			$("#valueTable tr[fenlei='"+fenlei+"']").show();
+			//将 此分类的项目 在“项目名称“下拉菜单中筛选出来
+			var fenleit = document.getElementById("fenlei").value;
+			$("#value_C option[fenlei!='"+fenlei+"'][fenlei]").hide();
+			$("#value_C option[fenlei='"+fenlei+"']").show();
+			//筛选完分类后 将 ”项目名称“下拉菜单的默认选项改为“全部”
+			$(".selecttolist[data-i='"+$("#").attr('data-i')+"']").val('全部');
+			$("#value_C").find("option[text='全部']").attr("selected",true);;
+
+		}
+		//清除 项目名称筛选时产生的 表格变动(不然表格会变形)
+		$("#valueTable td[duoYu]").remove();
+                $("#valueTable td[oldRowspan]").each(function(){
+                	$(this).attr("rowSpan",$(this).attr("oldRowspan"));
+                });
+	});
+	/*
+	作用：根据 项目名称 筛选 项目
+	原理：根据tr里的 id来筛选的  tr里的id为这个检测项目的id
+	*/
+	$("#value_C").change(function(){
+		var vid = this.value;
+		if(vid=='全部'){
+			//去除筛选时加入的 多余 的td
+			$("#valueTable td[duoYu]").remove();
+			//恢复筛选时改变 的td的rowspan
+			$("#valueTable td[oldRowspan]").each(function(){
+				$(this).attr("rowSpan",$(this).attr("oldRowspan")).removeAttr("oldRowspan");
+			});
+			var fenleiSelected = $("#fenlei option:selected").val();
+			//根据“项目分类”里的选项 来显示 全部检测项目还是全部的某分类下的项目
+			if(fenleiSelected=='全部'){
+				$("#valueTable tr").show();
+			}
+			else $("#valueTable tr[fenlei='"+$("#fenlei option:selected").val()+"']").show();
+		}else{
+			//获取要筛选的项目的“项目分类”列(第一列)的文字信息
+			var name = $("#valueTable tr[id='"+vid+"'] td:eq(1)[name='fenlei']").text();
+			
+			if(name==''){//如果 “项目分类”信息为空，说明此行不是某分类的第一行信息。则需要用js加一列td来存储 “项目分类”信息
+				name = $("#valueTable tr[id='"+vid+"']").attr("fenlei");
+				$("#valueTable tr[id='"+vid+"'] td:eq(0)").after("<td name='fenlei' duoYu='多余的td'>"+name+"</td>");//duoYu属性是为了区分出多加的td
+			}
+			else{//如果 “项目分类”信息不为空，说明此行是某分类的第一行信息。则需要改变这个td的rowspan为1
+				var oldRowspan = $("#valueTable tr[id='"+vid+"'] td:eq(1)").attr("oldRowspan");
+				if(!oldRowspan){
+					//改变td的rowspan为1 并记录下 之前的rowspan到 属性“oldROwspan”中
+					$("#valueTable tr[id='"+vid+"'] td:eq(1)").attr("oldRowspan",$("#valueTable tr[id='"+vid+"'] td:eq(1)").attr("rowSpan")).attr("rowSpan","1");
+				}
+			}
+			//显示筛选出的项目
+			$("#valueTable tr[id!='"+vid+"'][id]").hide();
+                        $("#valueTable tr[id='"+vid+"']").show();
+		}
+	});
+	/*
+	作用：根据默认化验员搜索项目
+	原理：用php代码，数据库搜索的方式筛选项目
+	*/
+	$("#chose_userid").change(function(){
+	var morenUserid = this.value;
+	var fenlei = document.getElementById("fenlei").value;
+	if(document.getElementById("onlyAct").checked){
+			var actValue = '1';
+		}else var actValue = '0';
+		url = "?morenUserid="+morenUserid+"&morenFenlei="+fenlei+"&actValue="+actValue;
+		location = url;
+	});
+	/*
+	作用：实现一些数据的 即点即改
+	原理：	1.根据td的是否有class='update'和name属性来判断该td是否有即点即改的功能
+		2.用js往td里插入控件，鼠标离开input或选择select后，ajax修改数据
+	*/
+	$("td.update[name]").click(function(){
+		var html  = $(this).html();
+		var zt    = $("td.update[name][update]").attr("update");
+		var width = $(this).width();
+		var height = $(this).height();
+		var position = $(this).position();
+		var tdName=$(this).attr('name');
+		var reg = /^w\d$/;//w1,w2,w3...
+		//如果页面中的某个td里已经有js添加的控件了（此时update=now），则不允许重复添加可修改的控件
+		if(zt!='now'){
+			if(tdName=='act'){//本实验室是否化验列的修改
+				//添加一个与td长度、位置 都一样的select（下拉菜单） ,select内容为 页面中name='act'的select
+				var actHtml = "<select id='act' style='position:absolute;width:"+width+"px;top:"+position.top+"px;left:"+position.left+"px' size='"+$("select[name='act'] option").length+"' name='act'>"+$("select[name='act']").html()+"</select>";
+				$(this).append(actHtml).attr("update","now");
+				$("#act").focus();//为了下面的 blur函数生效(点击其他地方的时候 隐藏下拉菜单),这里先获得焦点
+			}else if(reg.test(tdName)){//修约位数列的修改
+				var xiuyueHtml = "<select id='xiuyue' style='position:absolute;width:"+width+"px;top:"+position.top+"px;left:"+position.left+"px' size='"+$("select[name='xiuyue'] option").length+"' name='"+tdName+"'>"+$("select[name='xiuyue']").html()+"</select> ";
+				$(this).append(xiuyueHtml).attr("update","now");
+				$("#xiuyue").focus();//为了下面的 blur函数生效(点击其他地方的时候 隐藏下拉菜单),这里先获得焦点
+			}else if(tdName=='userid'){//默认化验员列的修改
+				var optionsum = $("select[name='hy_user'] option").length;
+                		if(optionsum>10){//如果下拉菜单数多于10个,则添加一个可搜索的下拉菜单##！！！由于不容易取消加入的select，暂时没做+(position.left+(width/2))+
+					//var userHtml = "<select id='userid' class='chosen-select' style='position:absolute;width:"+width+";top:"+position.top+"px;left:"+position.left+"px' size='10' name='"+tdName+"'>"+$("select[name='hy_user']").html()+"</select>";
+						var userHtml = "<select id='userid'  style='position:absolute;width:"+width+"px;top:"+position.top+"px;left:"+position.left+"px' size='10' name='"+tdName+"'>"+$("select[name='hy_user']").html()+"</select> ";
+					}else{
+						var userHtml = "<select id='userid'  style='position:absolute;width:"+width+"px;top:"+position.top+"px;left:"+position.left+"px' size='"+optionsum+"' name='"+tdName+"'>"+$("select[name='hy_user']").html()+"</select> ";
+					}
+				$(this).append(userHtml).attr("update","now");
+				$("#userid").focus();
+				/*$(".chosen-select").chosen();
+				$("#userid_chosen").attr("tabindex","0");
+				$("#userid_chosen").blur(function(){
+					$("#userid_chosen").remove();style='width:"+(width-10)+"px;height:23px;'
+				});*/
+		}else{//其他列的修改
+				//td加入一个与td的 name一样/长度略小 的input输入框         style='width:50px;height:22px;'
+				$(this).text('').append("<input type='text' id='updateNow' style='width:"+(width-10)+"px;height:"+height+"px' name='"+tdName+"' value='"+html+"' />").attr("update","now");
+				$("#updateNow").focus();
+				$("#updateNow").change(function(){
+						if(this.value==''){
+							alert('不能为空!');
+						}else if(isNaN(this.value)){
+							alert('请输入数值类型!');
+						}else{
+							//这里会重复修改多次  看看什么原因 用 alert可以看出来
+							var vid        = $(this).parent().parent("tr").attr("id");
+							var tdChild    = $(this);
+							var modifyName = $(this).attr("name");	
+							var modifyValue= $(this).val();
+							//alert(modifyValue);
+							var oldValue   = $(this).parent("td").attr("oldValue");
+							//这里判断下 只有数据有改动了才 ajax更新
+								$.getJSON("$rooturl/system_settings/assay_value/assay_value_save.php?ajax=1",
+									{panduan:'assay_value_list',vid:vid,modifyName:modifyName,modifyValue:modifyValue,oldValue:oldValue},
+									function(json){
+										if(json.jieguo=='成功'){
+										//这里执行失败  function外面执行成功
+										tdChild.parent("td").attr("oldValue",modifyValue);//.text(modifyValue).removeAttr("update");
+														//tdChild.remove();
+										//这里如果弹框就会触发第2次的提交
+										//alert('操作'+json.jieguo);
+										}else{
+										tdChild.value = oldValue;
+										alert(json.jieguo);
+										}
+									});
+								
+							//这里执行成功
+							//$(this).parent("td").attr("oldValue",modifyValue).text(modifyValue).removeAttr("update");
+							//$(this).remove();
+
+							//$(this).parent("td").text($(this).val()).removeAttr("update");
+										//$(this).remove();
+								
+						}		
+					}).blur(function(){
+			if(this.value==''||isNaN(this.value)){
+                                setTimeout(function(){
+                                        $("#updateNow").focus();
+                                });
+            }else{
+				$(this).parent("td").text($(this).val()).removeAttr("update");
+                $(this).remove();
+			}
+		});
+				
+		}
+	}
+	//});
+/*
+作用：鼠标离开输入框 ajax修改数据
+*/
+	//	$("#updateNow").change(function(){
+
+		$("#act,#xiuyue,#userid").change(function(){
+			//ajax 修改数据
+			var vid        = $(this).parent().parent("tr").attr("id");
+			var tdChild    = $(this);
+            var modifyName = $(this).attr("name");
+            var modifyValue= $(this).val();
+			var oldValue   = $(this).parent("td").attr("oldValue");
+			var newText    = tdChild.find("option:selected").text();
+                        //这里判断下 只有数据有改动了才 ajax更新
+                        $.getJSON("$rooturl/system_settings/assay_value/assay_value_save.php?ajax=1",
+                        {panduan:'assay_value_list',vid:vid,modifyName:modifyName,modifyValue:modifyValue,oldValue:oldValue},
+                        function(json){
+                        	if(json.jieguo=='成功'){
+					tdChild.parent("td").attr("oldValue",modifyValue).text(newText).removeAttr("update");
+                        		tdChild.remove();
+								var morenUserid = document.getElementById("chose_userid").value;
+								var fenlei = document.getElementById("fenlei").value;
+								var value_C = document.getElementById("value_C").value;
+								if(document.getElementById("onlyAct").checked){
+								var actValue = '1';
+								}else var actValue = '0';
+								url = "?morenUserid="+morenUserid+"&morenFenlei="+fenlei+"&morenXm="+value_C+"&actValue="+actValue;
+								location = url;
+                                        //alert('操作'+json.jieguo);
+                                }
+                                //else alert(json.jieguo);
+                        });
+                	//$(this).parent("td").text($(this).find("option:selected").text()).removeAttr("update");
+                	//$(this).remove();
+        	}).blur(function(){
+                	$(this).parent("td").removeAttr("update");
+                        $(this).remove();
+        	});
+	});
+	
+});
+//表格头部 点击跳转
+function redirect(){
+	var fenlei = document.getElementById("fenlei").value;
+	var morenUserid = document.getElementById("chose_userid").value;
+	var value_C = document.getElementById("value_C").value;
+	if(document.getElementById("onlyAct").checked){
+		var actValue = '1';
+	}else var actValue = '0';
+	url = "?morenUserid="+morenUserid+"&morenFenlei="+fenlei+"&morenXm="+value_C+"&actValue="+actValue;
+	location = url;
+}
+</script>
+
+<select name="act" style="display:none;">
+	<option value='1'>是</option>
+	<option value='0'>否</option>
+</select>
+<select name='xiuyue' style="display:none;">
+	<option value='0'>0</option>
+	<option value='1'>1</option>
+	<option value='2'>2</option>
+	<option value='3'>3</option>
+	<option value='4'>4</option>
+	<option value='5'>5</option>	
+</select>
+<select name="hy_user" style="display:none;">
+	$userOption1
+</select>
+<h3 class="header smaller center title">化验项目列表</h3>
+<div class="widget-box no-border">
+  <div class="widget-header header-color-blue4 center">
+	<div class="widget-toolbar">
+		<label title="只显示本中心化验的项目" class="hand"><input type="checkbox" id="onlyAct" name='onlyAct' $htmlOnlyAct onclick="redirect();">本中心化验的项目</label>&nbsp;|
+		项目分类:
+		<select name="fenlei" id='fenlei'style="width:100px;">
+			<option value='全部'>全部</option>
+			$fenleiOption
+		</select>&nbsp;|
+		默认化验员:
+		<select name='chose_userid' id="chose_userid" class="chosen-select" style="width:100px;">
+            <option value='全部'>全部</option>
+			$userOption
+          </select>&nbsp;|
+		项目名称:
+		<select class="chosen-select" id='value_C' name="value_C" style="width:200px;">
+			<option value='全部'>全部</option>
+            $valueOption
+		</select>
+	</div>
+  </div>
+  <div class="widget-body">
+	<table id="valueTable" class="table table-striped table-bordered table-hover center">
+		<tr>
+    <td colspan="13" class='red'>本系统有化验项目：$allCount 个。本实验室化验项目：$actCount 个。
+  </tr>
+			
+ <tr style="font-weight:bold;">
+    <td rowspan='2' style="width:4%;">序号</td>
+    <td rowspan='2' style="width:10%;">项目分类</td>
+    <td rowspan='2' style="width:20%;">项目名称</td>
+    <td rowspan='2' style="width:8%;">默认化验员</td>
+    <td rowspan='2' style="width:8%;">默认检出限</td>
+    <td colspan='5'>默认修约位数(结果值小数点后保留位数)</td>
+    <td rowspan='2' style="width:8%;">本实验室是否化验</td>
+    <td rowspan='2' style="width:8%;">操作</td>
+  </tr>
+  <tr style="font-weight:bold;">
+    <td style="width:5%;">结果&lt;1</td>
+    <td style="width:8%;">1&lt;结果&lt;10</td>
+    <td style="width:8%;">10&lt;结果&lt;100</td>
+    <td style="width:8%;">100&lt;结果&lt;1000</td>
+    <td style="width:5%;">结果&gt;1000</td>
+  </tr>
+  $lines
+		
+	</table>
+  </div>
+</div>

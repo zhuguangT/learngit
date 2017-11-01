@@ -1,0 +1,118 @@
+<script>
+function rwxd_qian_zi(aForm){
+    with(aForm){
+        if( !v('xd_hy_rw') ) {
+            alert('你没有下达检测任务的权限, 不能签字!');
+            return false;
+        }
+        if( !confirm("填写完成后必须先保存数据再签字,你确认已经保存了你的数据吗?")) 
+            return false;
+        location = 'hy_tzd_qz.php?action=任务下达人签字&cyd_id=' + v('cyd_id');
+    }
+}
+
+$(function () {
+$($.date_input.initialize);
+});
+function rwjs_qian_zi() {
+        location='hy_tzd_qz.php?action=任务接受人签字&cyd_id='+v('cyd_id');
+}
+//签字按钮
+function qianzi(qzlx,dangqian){
+	var userid = dangqian.attributes["user"].nodeValue;
+	if(qzlx=='xdqz'){
+		if(!confirm("填写完成后必须先保存数据再签字,你确认已经保存了你的数据吗?"))return false;
+	}
+	var cydId  = '';
+	var url    = window.location.href;
+	var tmpArr = url.split('&');
+	for(i=0;i<tmpArr.length;i++){
+		var weizhi = tmpArr[i].indexOf('cyd_id=');
+		if(weizhi>=0){
+			cydId  = tmpArr[i].substring((weizhi+7),tmpArr[i].length);
+			break;
+		}
+	}
+	//专递很多cyd_id 和签字类型名
+	location="hw_csd_qz.php?action="+qzlx+"&cydId="+cydId+"&userid="+userid;
+	
+}
+</script>
+$dayin
+<h3 class="header smaller center title">水环境监测中心检测任务通知书</h3>
+<div class="widget-box no-border">
+
+  <div class="widget-body">
+
+<form action="hy_tzd_save.php" method="POST">
+<input type="hidden" name="cyd_id"       id="cyd_id"       value="$_GET[cyd_id]" />
+<input type='hidden' name='current_user' id="current_user" value='$u[userid]' />
+<input type='hidden' name='xd_hy_rw'     id="xd_hy_rw"     value='$u[xd_hy_rw]' />
+<input type='hidden'                     id="hy_tzd_rwjs_user"  value='$cyd[hy_tzd_rwjs_user]' />
+<input type='hidden'                     id="old_jc_dept"  value="$cyd[jc_dept]" />
+
+<table class="table table-striped table-bordered table-hover center" style="width:70%">
+<tr>
+    <td  align=left class="noborder" nowrap=npwrap colspan="4">文件编号:淮水监/QB016-2012－3 </td>
+</tr>
+<tr>
+    <td colspan="3">项目名称:<input type="text" class="inputl" name="d[group_name]" size=55 value="$cyd[group_name]" id="group_name" /></td>
+    <td>来样时间:<input type="text" class="inputl" name="d[json][cy_date]" size=20 value="$cyJson[cy_date]" /></td>
+</tr>
+<tr>
+    <td colspan='2'>样品类型:<input type="text" class="inputl" name='d[json][water_type]' value="$cyd[water_type]"  /></td>
+    <td>样品数量: $cyd[site_count]  </td>
+    <td>完成时间:<input type="text" class="inputl date_input" name="d[wc_date]" size="20" value="$cyd[wc_date]"></td>
+</tr>
+<tr>
+    <td colspan="4">采样单位:<input type="text" class="inputl" name="d[cy_dept]" size=55 value="$cyd[cy_dept]"></td>
+</tr>
+<tr>
+    <td align=center width="20%">样品编号</td>
+    <td colspan="3">$bar_code  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
+</tr>
+<tr>
+    <td align=center>检测参数</td>
+    <td colspan="3" style="width=80px;height:100px;" >$jccs</td>
+</tr>
+<tr>
+    <td align=center>检测依据</br>和其他要求</td>
+    <td colspan="3">
+    $cyd[zk_info]<br>
+    <textarea class="inputl" cols="80" rows="5" name='d[jc_yiju]' />$cyd[jc_yiju]</textarea>
+    </td>
+</tr>
+<tr>
+    <td align=center>质控要求</td>
+    <td colspan="3">
+    $cyd[zk_info]<br>
+    <textarea class="inputl" cols="80" rows="5" name='d[qita_zk]' />$cyd[qita_zk]</textarea>
+    </td>
+</tr>
+<tr>
+    <td align=center>审批</td>
+    <td colspan="3">
+	<div style="height:75px;text-align:center;" align=right>$spString</div>
+    </td>
+</tr>
+<tr>
+    <td align=center>经办人</td>
+    <td width="35%"><div style="height:80px;text-align:center;">$xdString </div>
+</td>
+	<td align=center>监测室</td>
+    <td width="35%"><div style="height:80px;text-align:center;">$jcString</div>
+</td>
+</tr>
+<tr height="60px">
+    <td align=center>备注</td>
+    <td colspan="3">
+    $note
+    </td>
+</tr>
+</table>
+</div>
+</div>
+<input type="hidden" name="file_name" value=$file_name>
+$next_table
+$cyd[save_button]
+

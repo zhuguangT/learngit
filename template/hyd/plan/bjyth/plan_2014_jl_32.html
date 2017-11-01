@@ -1,0 +1,104 @@
+<style type="text/css">
+	table.single .hyd_tr_{$tid} td,table.single .hyd_tr_{$tid} input{
+		margin: 0;
+		padding: 1px 1px 0 1px;
+	}
+	table.single .hyd_tr_{$tid} input{
+		height: 100%;
+	}
+</style>
+<h1>{$arow['assay_element']}分析原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr>
+		<td colspan="4">分析方法：{$arow['td2']}</td>
+		<td colspan="3">仪器名称及编号</td><td colspan="6">{$arow['td4']} {$arow['yq_bh']}</td>
+		<td colspan="2">分析日期</td><td colspan="5"><input type="text" name="td31" size="10" class="inputl" value="{$arow['td31']}" >
+	</tr>
+	<tr class="auto">
+		<td colspan="4">样品类别：{$arow['water_type']}</td>
+		<td colspan="3">调零方法： <input type="text" name="td8" size="6" class="inputl" value="{$arow['td8']}" /></td>
+		<td colspan="4">比色皿规格： <input type="text" name="td9" size="4" class="inputl" value="{$arow['td9']}" /></td>
+		<td colspan="4">提取液定容体积： <input type="text" name="td7" size="4" class="inputl" value="{$arow['td7']}"> mL</td>
+		<td colspan="5">计算公式： C（{$arow['unit']}） = 273 × （ Eb -Ea ） / V</td>
+	</tr>
+	<tr>
+		<td rowspan="3" nowrap="nowrap">序号</td>
+		<td rowspan="3">{$zhanming}</td>
+		<td colspan="7">酸化前吸光度</td>
+		<td colspan="7">酸化后吸光度</td>
+		<td rowspan="3">取样<br />体积V<br />（mL）</td>
+		<td rowspan="3">含量<br /><sub>（{$arow['unit']}）</sub></td>
+		<td rowspan="3">平均值<br /><sub>（{$arow['unit']}）</sub></td>
+		<td rowspan="3">相对<br />偏差<br />（％）</td>
+	</tr>
+	<tr>
+		<td colspan="3">750nm</td>
+		<td colspan="3">665nm</td>
+		<td>Eb</td>
+		<td colspan="3">750nm</td>
+		<td colspan="3">665nm</td>
+		<td>Ea</td>
+	</tr>
+	<tr>
+		<td>I</td>
+		<td>II</td>
+		<td>平均<br />（1）</td>
+		<td>I</td>
+		<td>II</td>
+		<td>平均<br />（2）</td>
+		<td nowrap><sub>(2)-(1)</sub></td>
+		<td>I</td>
+		<td>II</td>
+		<td>平均<br />（1）</td>
+		<td>I</td>
+		<td>II</td>
+		<td>平均<br />（2）</td>
+		<td nowrap><sub>(2)-(1)</sub></td>
+	</tr>
+	{$aline}
+	<tr>
+		<td>备注</td>
+		<td colspan="20"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+
+</table>
+<script type="text/javascript">
+function jsgs() {
+	if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd4'])){
+		vs['vd5'] = accAdd(vs['vd3'],vs['vd4'])/2;
+	}else{
+		vs['vd5'] = '';
+	}
+	if($.isNumeric(vs['vd6'])&&$.isNumeric(vs['vd7'])){
+		vs['vd8'] = accAdd(vs['vd6'],vs['vd7'])/2;
+	}else{
+		vs['vd8'] = '';
+	}
+	if($.isNumeric(vs['vd5'])&&$.isNumeric(vs['vd8'])){
+		vs['vd9'] = accsub(vs['vd8'],vs['vd5']);
+	}else{
+		vs['vd9'] = '';
+	}
+	if($.isNumeric(vs['vd10'])&&$.isNumeric(vs['vd11'])){
+		vs['vd12'] = accAdd(vs['vd10'],vs['vd11'])/2;
+	}else{
+		vs['vd12'] = '';
+	}
+	if($.isNumeric(vs['vd13'])&&$.isNumeric(vs['vd14'])){
+		vs['vd15'] = accAdd(vs['vd13'],vs['vd14'])/2;
+	}else{
+		vs['vd15'] = '';
+	}
+	if($.isNumeric(vs['vd12'])&&$.isNumeric(vs['vd15'])){
+		vs['vd16'] = accsub(vs['vd15'],vs['vd12']);
+	}else{
+		vs['vd16'] = '';
+	}
+	if($.isNumeric(vs['vd1'])&&$.isNumeric(vs['vd16'])&&$.isNumeric(vs['vd9'])){
+		vs['vd0'] =vs['_vd0']=273*(vs['vd16']-vs['vd9'])/vs['vd1'];
+	}else{
+		vs['vd0'] = '';
+	}
+}
+</script>

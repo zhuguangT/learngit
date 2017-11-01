@@ -1,0 +1,150 @@
+<script type="text/javascript">
+	function get_data(){
+		var year=$("#year").val();
+		var month=$("#month").val();
+		location.href="$rooturl/data_statistics/tjbg_month.php?year="+year+"&month="+month;
+	}
+	$(function(){
+		//调用number的输入框
+		$('#spinner1').ace_spinner({value:{$moren_px},min:1,max:50,step:1, btn_up_class:'btn-info aaa' , btn_down_class:'btn-info'});
+		//调用可搜索的下拉菜单输入框
+		$("select[name='bg_style']").select2();
+		//bootstrap提示框
+		$('[data-rel=tooltip]').tooltip();
+		//弹出添加报告的页面
+		$("button.btn_bg").click(function(){
+			$('body').css("overflow","hidden")
+			$("#cover").show();
+		});
+		//添加检测报告
+		$("#add_bg").click(function(){
+			var bg_name	= $("#cover input[name='baogao_name']").val();
+			var bg_style= $("#cover select[name='bg_style']").val();
+			var bg_px	= $("#cover input[name='bg_px']").val();
+			if(!bg_name){
+				alert('请填写报告类型');
+				$("#cover input[name='baogao_name']").focus();
+				return false;
+			}else if(!bg_px){
+				bg_px	= {$moren_px};//默认排序
+			}else{
+				var bg_old_name	= $("#cover select[name='bg_style'] option[old_name='"+bg_name+"']").val();
+				if(bg_old_name){
+					alert('该报告类型已存在');
+					$("#cover input[name='baogao_name']").focus();
+					return false;
+				}
+			}
+			$.post("tjbg_month.php",{'action':'ajax_add_bg',"bg_name":bg_name,"bg_id":bg_style,"bg_px":bg_px,"ajax":"1"},function(data){
+				if(data == 'yes'){
+					alert('添加成功！');
+					$("#con").html('<font style="font-weight:bold;"><br><br>正在返回主页面......<br><br>');
+					location.reload();
+				}else{
+					alert(data);
+				}
+			},'html');
+		});
+		//报告类型以及排序更改
+		$("td.modify_td").click(function(){
+			$(this).find("span").hide();
+			$(this).find("input").attr("type","text").focus();
+		});
+		//隐藏修改框
+		$("td.modify_td input").change(function(){
+			//获取变量
+			var field	= $(this);
+			var mdi_id	= field.attr('class');
+			var mdi_name= field.attr('name');
+			var mdi_val	= field.val();
+			if(!mdi_val){
+				//alert('不能为空！');
+				return false;
+			}
+			//ajax修改信息
+			//alert(mdi_id+"==>"+mdi_name+"==>"+mdi_val);
+			$.post("tjbg_month.php",{'action':'ajax_modify_bg',"mdi_name":mdi_name,"mdi_val":mdi_val,"mdi_id":mdi_id,"ajax":"1"},function(data){
+				if(data == 'yes'){
+					alert('修改成功');
+					if(mdi_name == 'px'){
+						location.reload();
+					}else{
+						field.prev('span').html(mdi_val);
+					}
+				}else{
+					alert(data);
+					location.reload();
+				}
+			})
+			//更改span内容
+		}).blur(function(){//隐藏输入框
+			$(this).attr("type","hidden");
+			$(this).prev('span').show();
+		});
+	})
+	//关闭弹出层
+	function guanbi(){
+		$('body').css("overflow","auto");
+		$(".modal-dialog,#con").width('800px');
+		//$("#con").html('正在加载中...');
+		$("#cover").hide();
+	}
+</script>
+<style>
+#cover input.fix-width,#cover select.fix-width{width:200px;}
+.modify_td{cursor:pointer;}
+.aaa{margin-left:0.1px !important;}
+</style>
+<h3 class="header smaller center title">常规月报</h3>
+<div class="widget-box no-border"  style="min-width:570px;">
+  <div class="widget-header header-color-blue4 center">
+	<div class="widget-toolbar">
+		年份<select id="year"  name="year" onchange="get_data()">{$year_option}</select>&nbsp;&nbsp;&nbsp;&nbsp;月份<select id="month" name="month" onchange="get_data()">{$month_option}</select>
+		&nbsp;<button class="btn btn-xs btn-primary btn_bg">添加报告</button>
+	</div>
+  </div>
+  <div class="widget-body">
+<table class="table table-striped table-bordered table-hover center" style="text-align:center;min-width:570px;" id="tab">
+	<tr align="center">
+		<th style="min-width:35px;width:10%;">序号</th>
+		<th style='min-width:150px;width:30%;'>报告类型</th>
+		<th style='min-width:75px;width:20%;'>日期</th>
+		<th style='min-width:55px;width:20%;'>进度</th>
+		<th style='min-width:135px;width:20%;'>操作</th>
+	</tr>
+	{$tjbg_month_line}
+</table>
+</div>
+</div>
+<div id="cover" class="modal" role="dialog" style='background-color:rgba(15, 15, 15, 0.7)!important;'>
+	<div class="modal-dialog" style='width:800px;'>
+		<div id="close" style="width:50px;background-color:#FFF;float:right;text-align: center;cursor:pointer;" onclick="guanbi()">关闭</div>
+		<div id="con" class='modal-content' style='clear:both;width:800px;text-align:center;'>
+			<h2>添加报告</h2>
+			<table>
+				<tr>
+					<td>报告类型</td><td align=left><input type="text" name="baogao_name" value='' class='fix-width' required placeholder="不能为空!" /></td>
+				</tr>
+				<tr>
+					<td>显示格式</td>
+					<td align=left>
+						<select name='bg_style' class='fix-width'>{$option_list}</select>
+						<i class="icon-warning-sign red bigger-120"  data-rel="tooltip" data-placement="top" title='显示格式在添加成功后不可更改！'></i>
+					</td>
+				</tr>
+				<tr>
+					<td>显示顺序</td>
+					<td align=left>
+						<input type="text" name='bg_px' class="input-mini" id="spinner1" style='width:182px;' />
+					</td>
+				</tr>
+				<tr>
+					<td colspan='2'><br><button class='btn btn-xs btn-primary' id='add_bg'>确认添加</button></td>
+				</tr>
+			</table>
+			<br>
+		</div>
+	</div>
+</div>
+
+

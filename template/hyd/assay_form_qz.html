@@ -1,0 +1,208 @@
+<link href="{$rooturl}/css/lims/time.css" rel="stylesheet" type="text/css">
+<link href="{$rooturl}/css/boxy.css" rel="stylesheet" type="text/css">
+<link href="{$rooturl}/css/lims/buttons.css" rel="stylesheet" type="text/css">
+<link href="{$rooturl}/css/lims/jbox.css" rel="stylesheet" type="text/css">
+<link href="{$rooturl}/css/lims/hyd.css?v={$global['hyd']['v']}" rel="stylesheet" type="text/css">
+<style type="text/css">
+	.hyd_handle {
+		display: none;
+	}
+</style>
+<script type="text/javascript" src="{$rooturl}/js/lims/hyd.js?v={$globl['hyd']['v']}"></script>
+<script type="text/javascript" src="{$rooturl}/js/lims/zhikong.js?v={$globl['hyd']['v']}"></script>
+<script type="text/javascript" src="{$rooturl}/js/boxy.js"></script>
+
+<div class="bs-docs-header">
+	<div class="container">
+		<h1>{$header_title}</h1>
+		<p>在这个页面你可以快速的校核和复核你的任务单</p>
+	</div>
+</div>
+
+<div class="container bs-docs-container">
+	<div class="row">
+		<div id="assay_form_more"class="col-md-9">{$assay_form_hyds}</div>
+		<div class="col-md-3">
+			<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
+				<ul id="step_rows" class="nav bs-docs-sidenav">
+					<li><a>共加载（<strong class="red" id="hyd_total">{$hyd_total}</strong>）张</a></li>
+					<li><a>已签字（<strong class="red" id="signTotal">0</strong>）张</a></li>
+					{$step_rows}
+				</ul>
+				<a class="back-to-top" href="#top">返回顶部</a>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="bs-docs-footer" role="contentinfo">
+	<div class="container has_not_more"></div>
+</footer>
+<script type="text/javascript">
+	//document.cookie="sidebar_menu_min=true";
+	$(document).ready(function(){
+		var b = $(window),
+		c = $(document.body);
+		c.scrollspy({ target: ".bs-docs-sidebar" });
+		b.on("load", function() { c.scrollspy("refresh"); });
+		$(".bs-docs-container [href=#]").click(function(a) { a.preventDefault(); });
+		setTimeout(function() {
+			var b = $(".bs-docs-sidebar");
+			b.affix({
+				offset: {
+					top: function() {
+						var c = b.offset().top,
+						d = parseInt(b.children(0).css("margin-top"), 10),
+						e = $(".bs-docs-nav").height();
+						return this.top = c - e - d
+					},
+					bottom: function() {
+						return this.bottom = $(".bs-docs-footer").outerHeight(!0)
+					}
+				}
+			})
+		},100);
+		setTimeout(function() { $(".bs-top").affix(); },100);
+
+		//瀑布流加载化验单
+		var has_more = true;
+		var is_success = true;
+		var list_type = '{$list_type}';
+		window.limit_start = 0;
+		var limit_step = parseInt('{$limit_step}');
+		window.onscroll = function(){
+			//校验数据请求
+			var scroll_bottom = $("body").height()-($(window).height()+$(document).scrollTop());
+			if(!is_success || !has_more || !(scroll_bottom < $(window).height() ) ){
+				return false;
+			}
+			is_success = false;
+			$.getJSON('get_more_assay.php?qz={$action}&tid={$_GET['tid']}&ajax=1',{limit_start:limit_start,limit_step:limit_step,list_type:list_type},function(data){
+				if(data.error || !data.has_more){
+					has_more = false;
+					$(".has_not_more").html('没有更多了。。。');
+					return false;
+				}
+				limit_start += parseInt(limit_step);
+				for(hydRow in data.hyd_all){
+					var Row_obj = $("#hydRow_"+hydRow);
+					if(Row_obj.length==0){
+						$("#assay_form_more").append(data[hydRow].hydRow);
+						Row_obj = $("#hydRow_"+hydRow);
+						var step_rows = '<li id="nav_rows_'+hydRow+'"><a href="#hydRow_'+hydRow+'">'+data[hydRow][data.hyd_all[hydRow][0]].row_name+'（ 共 <span class="hydRowSign">0</span>/<span class="hydRowCount">0</span> 张）</a><ul class="nav"></ul></li>';
+						$("#step_rows").append(step_rows);
+					}
+					var hydItem = [];
+					for(key in data.hyd_all[hydRow]){
+						var tid = data.hyd_all[hydRow][key];
+						hydItem[tid] = false;
+						if(hydItem[tid] == true || $("#hydItem_"+tid).length==0){
+							hydItem[tid] = true;
+							Row_obj.find('.hydRow_items').append(data[hydRow][tid].items);
+							var hyd_total = parseInt($("#hyd_total").html());
+							$("#hyd_total").html(hyd_total+1);
+							var items_c = parseInt($("#nav_rows_"+hydRow+" .hydRowCount").html());
+							$("#hydRow_"+hydRow+" .hydRowCount").html(items_c+1);
+							$("#nav_rows_"+hydRow+" .hydRowCount").html(items_c+1)
+							$("#nav_rows_"+hydRow+" ul").append('<li><a href="#hydItem_'+tid+'"><i class="icon-check-empty"></i>&nbsp;'+data[hydRow][tid].item_name+'（'+tid+'）</a></li');
+						}
+					}
+				};//End for
+				is_success = true;
+				$("body").scrollspy('refresh');
+			});
+		};
+		//自动触发滚动事件
+		$(window).scroll();
+	})
+</script>
+<!-- 质控操作 -->
+<div id="modal_zhikong" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-draggable="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 class="zhikong_title"></h3>
+			</div>
+			<form name="form_zhikong">
+			<input type="hidden" name="tid" value="" />
+			<input type="hidden" name="flag" value="" />
+			<input type="hidden" name="action" value="" />
+			<input type="hidden" name="data-orid" value="" />
+			<input type="hidden" name="data-type" value="" />
+			<!-- 错误提醒 -->
+			<div class="modal-body ui-state-error center"></div>
+			<!-- 空白信号值 -->
+			<div class="modal-body" data-type="kongbai">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-3 col-md-offset-2 right">信号值 ：</div>
+						<div class="col-md-7"><input type="text" autofocus="autofocus" size="10" name="xhz" value="" /></div>
+					</div>
+				</div>
+			</div><!-- End -->
+			<!-- 自控样（单点标液） -->
+			<div class="modal-body" data-type="zky">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-3 col-md-offset-2 right">批号 ：</div>
+						<div class="col-md-7"><input type="text" autofocus="autofocus" size="10" name="piHao" value="" /></div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-md-offset-2 right">标准值 <b class="red">*</b>：</div>
+						<div class="col-md-7"><input type="text" size="10" name="bzz" value="" />
+							<select name="bzzdw">
+								<option value="mg/L">mg/L</option>
+								<option value="µg/L">µg/L</option>
+								<option value="mol/L">mol/L</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-md-offset-2 right">不确定度 <b class="red">*</b>：</div>
+						<div class="col-md-7"><input type="text" size="10" name="bqdd" value="" />
+							<select name="bqdddw">
+								<option value="%">%</option>
+								<option value="mg/L">mg/L</option>
+								<option value="µg/L">µg/L</option>
+								<option value="mol/L">mol/L</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div><!-- End -->
+			<!-- 加标回收 -->
+			<div class="modal-body" data-type="jiabiao">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-3 col-md-offset-2 right">原水样体积 <b class="red">*</b>：</div>
+						<div class="col-md-7"><input type="text" autofocus="autofocus" size="10" name="qyv" value="" /> mL</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-md-offset-2 right">标液浓度 <b class="red">*</b>：</div>
+						<div class="col-md-7"><input type="text" size="10" name="byc" value="" />
+							<select name="bycdw">
+								<option value="mg/L">mg/L</option>
+								<option value="µg/mL">µg/mL</option>
+								<option value="mol/L">mol/L</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-md-offset-2 right">标液体积 <b class="red">*</b>：</div>
+						<div class="col-md-7"><input type="text" size="10" name="byv" value="" />
+							<select name="byvdw">
+								<option value="mL">mL</option>
+								<option value="L">L</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div><!-- End -->
+			</form>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn btn-primary btn-sm" id="zhikong_modal_submit">确定</a>
+				<a href="#" class="btn btn-sm" data-dismiss="modal">取消</a>
+			</div>
+		</div>
+	</div>
+</div>

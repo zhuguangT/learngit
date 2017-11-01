@@ -1,0 +1,354 @@
+<style type="text/css">
+
+.denggao{vertical-align: middle; line-height:25px; height:25px;}
+.denggao img{vertical-align: middle;}
+.tjk{display:none;}
+.duoxuan input{vertical-align: -2px;_vertical-align: -1px;margin-right: 2px;}
+.srk input{width:90px;}
+.srk{display:inline-block;}
+.bianse,.duoxuan label,.duoxuan input{cursor:pointer;}
+//.duoxuan label{white-space:nowrap;}
+.duoxuan{display:inline-block;width:438px;}
+.duoxuan label{}
+</style>
+<script>
+ function in_array(stringToSearch, arrayToSearch) {
+	        for (s = 0; s <arrayToSearch.length; s++) {
+			      thisEntry = arrayToSearch[s].toString();
+			            if (thisEntry == stringToSearch) {
+					          return true;
+						        }
+			            }
+		      return false;
+}
+
+function quan(th){
+	with(th.form){ 
+		var im=mbxm.value;
+		var t=im.split(',');
+		var	v=elements['vid[]'];
+		for(var i=0;i<v.length;i++) 
+		{
+			if(in_array(v[i].value,t)){
+				v[i].checked=true;
+			}else{
+				v[i].checked=false;
+			}
+		}   
+	}
+}
+function gt(){
+	jie = $("#mb1 option:selected").val();
+	ming = $("#mb1 option:selected").html();
+	if(ming == '----请选择----')
+	{
+		jie = $("#mb1 option:selected").next().val();
+		ming = $("#mb1 option:selected").next().html();
+	}
+	$('.modal-content').load('$rooturl/site/muban_xm.php',{"mbname":ming,"xm":jie,"ajax":"1"});
+	$('body').css("overflow","hidden")
+	$("#cover").show();
+}
+
+function guanbi(){
+	$('body').css("overflow","auto")
+	$("#cover").hide();
+}
+function gamp(){
+	var id=document.getElementsByName("site_id")[0].value;
+	var actions=document.getElementsByName("actions")[0].value;
+	var site_type=document.getElementsByName("site_type")[0].value;
+	var group_name=document.getElementsByName("current_group_name")[0].value;
+	var jd=document.getElementsByName("jd")[0].value;
+	var wd=document.getElementsByName("wd")[0].value;
+	window.location.href="site_gmap.php?sid="+id+"&group_name="+group_name+'&site_type='+site_type+"&jd="+jd+"&wd="+wd+"&action="+actions;
+	
+}
+//ajax项目随着水样类型变
+function showCustomer()
+{ 
+	xmlHttp=GetXmlHttpObject();
+	if (xmlHttp==null)
+	  {
+	  alert ("您的浏览器不支持AJAX！");
+	  return;
+	  }
+	var num = document.getElementsByName("water_type");
+	var numm = document.getElementsByName("site_id");
+	var str=num[0].value; 
+	var site=numm[0].value; 
+	var url="$rooturl/site/site_info.php";
+	url=url+"?q="+str;
+	url=url+"&site_id="+site;
+	url=url+"&ajax=1";
+	url=url+"&sid="+Math.random();
+	xmlHttp.open("GET",url,true);
+	xmlHttp.onreadystatechange=stateChanged;
+	xmlHttp.send(null);
+}
+function stateChanged()
+{ 
+	if (xmlHttp.readyState==4)
+	{ 
+		var arr=xmlHttp.responseText.split("@");
+		document.getElementById("txtHint").innerHTML=arr[0];
+		document.getElementById("txtHint3").innerHTML=arr[1]; 
+		document.getElementById("txtHint2").innerHTML=arr[2];
+		document.getElementById("txtHint4").innerHTML='0';
+	}
+	load_height();
+}
+
+function GetXmlHttpObject()
+{
+var xmlHttp=null;
+try
+  {
+  // Firefox, Opera 8.0+, Safari
+  xmlHttp=new XMLHttpRequest();
+  }
+catch (e)
+  {
+  // Internet Explorer
+  try
+    {
+    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+    }
+  catch (e)
+    {
+    xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+  }
+return xmlHttp;
+}
+function site_nameyz(th){//相同站名提醒 
+	var hd=th.value;
+	var num = document.getElementsByName("old_name")[0].value;
+	if(hd!=num){
+	if(hd!=''){
+		$.getJSON("$rooturl/site/site_ajax.php?site_name="+hd,function(json){
+			if(json.zt=='已存在'){
+			th.nextSibling.innerHTML ="<span style='color:#ff3300'>*已存在</span>";
+			}else{th.nextSibling.innerHTML ="<span style='color:#ff3300'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";}
+		});
+	}else{th.nextSibling.innerHTML ="<span style='color:#ff3300'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";}}
+}
+function zhanmayz(th){//相同站码提醒
+	var hq=th.value;
+	var code = document.getElementsByName("old_code")[0].value;
+	if(hq!=code){
+	if(hq!=''){
+		$.getJSON("$rooturl/site/site_ajax.php?code="+hq,function(json){
+			if(json.zt=='已存在'){
+			th.nextSibling.innerHTML ="<span style='color:#ff3300'>*已存在</span>";
+			}else{th.nextSibling.innerHTML ="<span style='color:#ff3300'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";}
+		});
+	}else{th.nextSibling.innerHTML ="<span style='color:#ff3300'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";}}
+}
+</script>
+
+<form action='site_info_save.php' method="post" onsubmit="return check_site_info()">
+<h3 class="header smaller center title">$site_info[group_name] 下的： $site_info[site_name]站点</h3>
+<div class="widget-box no-border" style="width:100%;margin-left: auto;
+margin-right: auto;">
+  <div class="widget-header header-color-blue4 center">
+	<div class="widget-toolbar">
+		<input type="hidden" name="site_id" value="$site_info[id]" />
+		<input type="hidden" name="sgid" value="$site_info[sgid]" />
+		<input type="hidden" name="old_name" value="$site_info[site_name]" />
+		<input type="hidden" name="old_code" value="$site_info[site_code]" />
+		<input type="hidden" name="sites_type" value="$site_info[site_type]" />
+		<input type="hidden" name="site_type" value="$_GET[site_type]" />
+		<input type="hidden" name="current_group_name" value="$site_info[group_name]" />
+		<input type="hidden" name="jd" value="$site_info[jingdu]" />
+		<input type="hidden" name="wd" value="$site_info[weidu]" />
+		<input type="hidden" name="old_tjcs" value="$site_tjcs" />
+		<input type="hidden" name="old_vid" value="$site_info[assay_values]" />
+		<input type="hidden" name="actions" value="$_GET[action]" />
+		站点性质:$site_type
+	</div>
+  </div>
+  <div class="widget-body">
+	<table class="table table-striped table-bordered table-hover center">
+		<tbody id="myTable">
+		<tr>
+			<td align="center" style='width:13%'>站名:</td>
+			<td><input name="site_name" type="text" onblur='site_nameyz(this)' placeholder="不能为空" required="required" value='$site_info[site_name]'><span style='color:#ff3300'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+			<td align="center" style='width:13%'>样品类型:</td>
+			<td id="sylx"><select name="water_type" class='sl' onchange="showCustomer()" id='sl'>$leix</select></td>
+			<td align="center" >站址:</td>
+			<td><input name="site_address" type="text" size='35' value='$site_info[site_address]'></td>
+		</tr>
+		<tr>
+			<td align="center">行政区:</td>
+            <td><input name="xz_area" type="text" value='$site_info[xz_area]'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td align="center">经度:</td>
+			<!--re = /^(-?((180)|(((1[0-7]\d)|(\d{1,2}))(\.\d+)?)))$/g;(?:[0-9]|[1-9][0-9]|1[0-7][0-9])\.[0-5]|180-->
+			<td><input onclick='up_jwd("经度",this,"$rooturl/site/site_modi.php?goback=$goback&site_id=$site_info[id]&field=jingdu&data=","修改[$site_info[site_name]]的经度,格式:[+|-]xxx度xx分xx.nnnn秒,如果不填写，从下一次现场采样收集实际的数值","$site_info[jingdu]");' name="jingdu" type="text"  value='$site_info[jingdu]'readonly="readonly">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <!--/^(-?((90)|((([0-8]\d)|(\d{1}))(\.\d+)?)))$/g-->
+            <td align="center">纬度:</td>
+			<td><input onclick='up_jwd("纬度",this,"$rooturl/site/site_modi.php?goback=$goback&site_id=$site_info[id]&field=weidu&data=","修改[$site_info[site_name]]的纬度,格式:[+|-]xxx度xx分xx.nnnn秒,如果不填写，从下一次现场采样收集实际的数值","$site_info[weidu]");' name="weidu" type="text"  value='$site_info[weidu]' readonly="readonly"style="background-color:white"></td>
+        </tr>
+		<tr>
+			<td align="center">水源限制:</td> 
+			<td colspan="2">$syxz $cc</td>
+			<td align="center"><span >采样范围:</span></td>
+			<td align="center"><input  name="banjing" onclick='modi("$rooturl/site/site_modi.php?goback=$goback&site_id=$site_info[id]&field=banjing&data=","修改[$site_info[site_name]]的采样点半径(米)","$site_info[banjing]");' type="text" value='$site_info[banjing]'>(米)&nbsp;&nbsp;&nbsp;</td> 
+			<td colspan="2"><a title="设置坐标" href="javascript:gamp();">查看地图</a></td>
+			
+		</tr>
+		<tr>
+			<td align="center">备注:</td>
+			<td colspan="2"><textarea name="note" style="width:100%" id="cttt1">$site_info[note]</textarea></td>
+			<td align="center">统计参数:<img src="$rooturl/img/tianjia.jpg" name="tianjia" width="51px" height="24px" class="bianse tianjia" id='bianshe'/> <img src="$rooturl/img/bianji.jpg" name="bianji" class='bianse bianji' id='bianshe2'/></td>
+			<td colspan="2"><p class="duoxuan">$tjcs </P>
+                <p class="srk" style="display:none;">$tjcs2</p>
+				<input type="text" name='tjlx' onkeyup="value=value.replace(/[(\ )(\~)(\`)(\!)(\@)(\#)(\$)(\￥)(\%)(\^)(\&)(\……)(\*)(\()(\))(\-)(\——)(\_)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\；)(\：)(\:)(\')(\‘)(\“)(\”)(\,)(\，)(\.)(\。)(\/)(\<)(\>)(\《)(\》)(\?)(\？)(\、)(\)]+/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[(\ )(\~)(\`)(\!)(\@)(\#)(\$)(\￥)(\%)(\^)(\&)(\……)(\*)(\()(\))(\-)(\——)(\_)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\；)(\：)(\:)(\')(\‘)(\“)(\”)(\,)(\，)(\.)(\。)(\/)(\<)(\>)(\《)(\》)(\?)(\？)(\、)(\)]+/g,''))" value="" class="tjk" placeholder="此处输入统计参数名称" /></td>
+        </tr>
+        </tbody>
+	</table>
+	$pici
+	<table class="table table-striped table-bordered table-hover center">
+		<tbody>
+		<tr align="center" >
+			<td><b>该站点目前关联的化验项目:(<span id="txtHint4">$glxmsum</span> 个)</b></td> 
+		</tr>
+		<tr><td style="padding-left:50px;" id="txtHint">
+			$glxm</td>
+		</tr>
+		</tbody>
+	</table>
+	<table class="table table-striped table-bordered table-hover center"> 
+		<tbody>
+		<tr align="center" >
+			<td ><b>该站点尚未关联的化验项目:(<span id="txtHint2">$wglxmsum</span> 个)选择模板:<select name="mbxm" onchange="quan(this)" id='mb1'><option value="$site_info[assay_values]">----请选择----</option>$mbxm</select>&nbsp;<button type="button" class="btn btn-xs btn-primary" onclick='gt()' >项目模板设定</button></b></td>
+		</tr>
+		<tr><td style="padding-left:50px;" id="txtHint3">
+			$wglxm</td>
+		</tr>
+		<tr align="center" >
+			<td ><input  name="action" type="submit" class="btn btn-xs btn-primary" value='保存'></td>
+		</tr>
+		</tbody>
+	</table>
+  </div>
+</div>
+</form>
+<!-- 弹出层 -->
+		<div id="cover" class="modal" role="dialog" style='background-color:rgba(15, 15, 15, 0.7)!important;'>
+			<div class="modal-dialog" style='width:800px;'>
+				<div id="con" class='modal-content' style='width:800px;'></div>
+			</div>
+		</div>
+<!-- 弹出层 -->
+<script>
+function tjsy(){
+	var syxz = prompt('请输入要添加的文件','');
+	var lianjie = window.location.search;
+	var ljarr = lianjie.split('&syxz');
+	if(syxz){
+		location = "site_info.php"+ljarr[0]+"&syxz="+syxz;
+	}
+	
+}
+$("#bianshe").mouseover(function (){
+	if(this.name!='fanhui')
+        this.src='$rooturl/img/'+this.name+'2.jpg';
+});
+$("#bianshe").mouseout(function (){
+	this.src='$rooturl/img/'+this.name+'.jpg';
+});
+$("#bianshe2").mouseover(function (){
+	if(this.name!='fanhui')
+        this.src='$rooturl/img/'+this.name+'2.jpg';
+});
+$("#bianshe2").mouseout(function (){
+	this.src='$rooturl/img/'+this.name+'.jpg';
+});
+//点击“填加”按钮后，显示出“添加输入框”，并把“添加”图片换成“返回”
+  $(".tianjia").click(function(){
+        $(".tjk").toggle().focus();
+        if(this.name!='fanhui'){
+                //$(".tjk").focus();
+                this.src='$rooturl/img/fanhui.jpg';
+                this.name='fanhui';
+        }
+        else{
+                this.src='$rooturl/img/tianjia.jpg';
+                this.name='tianjia';
+        }
+
+  });
+
+//点击 编辑按钮后，把“多选框”换成“输入框”，并把“编辑”图片换成“返回”
+  $(".bianji").click(function(){
+        $(".duoxuan").toggle();
+        $(".srk").toggle();
+        if(this.name!='fanhui'){
+                this.src='$rooturl/img/fanhui.jpg';
+                this.name='fanhui';
+        }
+        else{
+                this.src='$rooturl/img/bianji.jpg';
+                this.name='bianji';
+        }
+  });
+  function uplx(weizhi){
+        var lxid = weizhi.attributes["lxid"].nodeValue;
+        var zhi  = weizhi.value;
+	if(lxid!=''&&zhi!=''){
+		if(zhi!=weizhi.attributes["huifu"].nodeValue){
+        	$.getJSON("$rooturl/site/ajax_rwlx.php?qufen=xiugai&id="+lxid+"&name="+zhi,function(json){
+                	if(json.zt=='成功'){
+                        	document.getElementById(lxid).innerHTML="<input name='tjcs_name[]' value='"+lxid+"' type='checkbox'>"+zhi;
+							weizhi.setAttribute("huifu",zhi);
+                        	alert('修改成功');
+                	}else {
+						alert('该名称已存在');
+						weizhi.value = weizhi.attributes["huifu"].nodeValue;
+						weizhi.focus();
+					}
+        	});
+			}
+	}
+	else{
+		alert('参数名称不能为空');
+		weizhi.value = weizhi.attributes["huifu"].nodeValue;
+		weizhi.focus();
+	}
+}
+  //鼠标离开“添加输入框”后，增加“多选框”和“编辑输入框”
+  $(".tjk").blur(function(){//重复判断
+        var name = this.value;
+        if(name!=''){
+                $.getJSON("$rooturl/site/ajax_rwlx.php?lxName="+name,function(json){
+                        if(json.zt=='成功'){
+                                $(".duoxuan").append("<label id='"+json.labelId+"'><input type='checkbox' name='tjcs_name[]' value='"+name+"' />"+name+"</label>");
+
+                                $(".srk").append("<span><input type='text' lxid='"+json.labelId+"'  onblur='uplx(this)' value='"+name+"' /></span>");//<img src='../images/shanchu.png' name='shanchu' class='bianse' /></span>");
+                        }
+                        if(json.zt=='分中心中已存在该参数'){alert('分中心中已存在该参数');}
+						if(json.zt=='总中心中已存在该参数'){alert('总中心中已存在该参数');}
+						if(json.zt=='已存在该参数'){ alert('该名称已存在');}
+                        $(".tjk").focus().val('');
+                });
+        }
+  });
+
+//经纬度验证，如果要是常用的带小数点的，那么直接保存，如果要是以“度分秒”的形式，就进行转换
+function up_jwd(name , obj , url , hint , old_jwd){
+	var val = prompt("请输入"+name+"坐标");
+	var reg = /^[0-9]+.?[0-9]*$/;
+	if(reg.test(val)){
+		var u = url + val +'&handle=direct_save'
+		window.location.href=u;
+	}else{
+		modii(url , val , old_jwd);
+	}
+}
+function modii( url, text, Defaulttext ) { 
+	if( text && text != Defaulttext ){
+		location.replace( url + text );
+	}
+}
+</script>

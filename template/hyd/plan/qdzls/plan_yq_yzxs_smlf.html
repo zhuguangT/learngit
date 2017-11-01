@@ -1,0 +1,77 @@
+<!-- 原子吸收 -->
+<h1>原子吸收光谱仪无火焰法检验{$arow['assay_element']}原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:16%"></td>
+    <td style="width:18%"></td>
+    <td style="width:16%"></td>
+    <td style="width:17%"></td>
+    <td style="width:17%"></td>
+    <td style="width:17%"></td>
+  </tr>
+  <tr>
+    <td>检验方法依据</td>
+    <td colspan="3">{$arow['td2']}</td>
+    <td>检出限（{$arow['unit']}）</td>
+    <td>{$arow['td3']}</td>
+  </tr>
+  <tr>
+    <td>仪器型号</td>
+    <td>{$arow['td5']}</td>
+    <td>仪器编号</td>
+    <td>{$arow['yq_bh']}</td>
+    <td>波长</td>
+    <td><input type="text" class="inputc" name="td11" value="{$arow['td11']}" /></td>
+  </tr>
+  <tr>
+    <td>狭缝</td>
+    <td><input type="text" class="inputc" name="td12" value="{$arow['td12']}" /></td>
+    <td>灯电流</td>
+    <td><input type="text" class="inputc" name="td13" value="{$arow['td13']}" /></td>
+    <td>能量</td>
+    <td><input type="text" class="inputc" name="td14" value="{$arow['td14']}" /></td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td colspan="2">{$zhanming}</td>
+    <td>样品浓度C（{$arow['unit']}）</td>
+    <td>平均值/<br />理论浓度<br />（{$arow['unit']}）</td>
+    <td>相对偏差<br />/回收率<br />（％）</td>
+  </tr>
+    {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="5"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+  function jsgs () {
+    var vid = '{$arow['vid']}';
+    var jg  = vs['vd0'];
+    if($.inArray(vid,['611','613','615'])> -1 && $.isNumeric(jg)){
+      var m  = jg*1000;
+      if(vid == '611'){
+        var m0 = 10;
+        jg = ((m/1000)/(m0*5/1000))*100;
+        var Pb_gs = '铅（Pb）质量分数 ω₇ = [(m×10⁻³)/(m₀×5/1000)]×100';
+        var td30 = $("textarea").val();
+        $("textarea").val(td30.replace(Pb_gs,'')+Pb_gs);
+      }else if(vid == '613'){
+        var m0 = 5.00;
+        jg = ((m/1000)/(m0*5/1000))*100;
+        var Cd_gs = '镉（Cd）质量分数 ω₈ = [(m×10⁻³)/(m₀×5/1000)]×100';
+        var td30 = $("textarea").val();
+        $("textarea").val(td30.replace(Cd_gs,'')+Cd_gs);
+      }else if(vid == '615'){
+        var m0 = 10;
+        jg = ((m/1000)/m0)*100;
+        var Ljg_gs = '六价铬质量分数 ω₁₁ = [(m×10⁻³)/m₀]×100';
+        var td30 = $("textarea").val();
+        $("textarea").val(td30.replace(Ljg_gs,'')+Ljg_gs);
+      }
+      vs['vd0'] = jsws(jg);
+    }
+    
+  }
+</script>

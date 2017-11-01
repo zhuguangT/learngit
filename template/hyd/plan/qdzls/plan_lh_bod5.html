@@ -1,0 +1,190 @@
+<!-- 容量法检测五日生化需氧量原始记录表 -->
+<h1>容量法检测{$arow['assay_element']}原始记录表</h1>
+<table style="width:100%">  
+  <tr>
+  <td style="width:50%;text-align:left;padding-left:10px;">
+    分析日期：<input type="text" class="date_Ymd" name="td31" id="td31" value="{$arow['td31']}" size="12" />
+  </td>
+  <td style="width:50%;text-align:right;padding-right:10px;">采样日期: {$arow['cy_date']}</td>
+  </tr>
+</table>
+<table class="single">
+  <tr class="noborder">
+    <td style="width:6%"></td><td style="width:8%"></td>
+    <td style="width:5%"></td><td style="width:5%"></td><td style="width:6%"></td>
+    <td style="width:6%"></td><td style="width:6%"></td><td style="width:6%"></td>
+    <td style="width:6%"></td><td style="width:6%"></td><td style="width:6%"></td>
+    <td style="width:6%"></td><td style="width:6%"></td><td style="width:6%"></td>
+    <td style="width:9%"></td><td style="width:9%"></td>
+  </tr>
+  <tr>
+    <td>检测项目</td>
+    <td colspan="2">{$arow['assay_element']}</td>
+    <td colspan="2">检测依据</td>
+    <td colspan="3">{$arow['td2']}</td>
+    <td colspan="1">检出限</td>
+    <td colspan="2">
+      {$arow['td3']}{$arow['unit']}
+      <input type="hidden" name="td3"  value="{$arow['td3']}" />
+      <input type="hidden" name="unit" value="{$arow['unit']}" />
+    </td>
+    <td colspan="3">指示剂名称</td>
+    <td colspan="2"><input type="text" name="td8"  class="inputl" value="{$arow['td8']}" /></td>
+  </tr>
+  <tr class="bt_hidden">
+    <td colspan="2">滴定管校正值设置
+      <input type="hidden" name="td20" class="ddg_fw" value="{$arow['td20']}" />
+      <input type="hidden" name="td21" class="ddg_jz" value="{$arow['td21']}" /></td>
+    <td>≤ <input type="text" name="fw0" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td colspan="2">  <input type="text" name="jz0" value="" class="jiaozheng" /></td>
+    <td colspan="2">≤ <input type="text" name="fw1" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td colspan="2">  <input type="text" name="jz1" value="" class="jiaozheng" /></td>
+    <td colspan="2">≤ <input type="text" name="fw2" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td colspan="2">  <input type="text" name="jz2" value="" class="jiaozheng" /></td>
+    <td colspan="2">≤ <input type="text" name="fw3" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz3" value="" class="jiaozheng" /></td>
+  </tr>
+  <tr class="bt_hidden">
+    <td colspan="2"></td>
+    <td>≤ <input type="text" name="fw4" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td colspan="2">  <input type="text" name="jz4" value="" class="jiaozheng" /></td>
+    <td colspan="2">≤ <input type="text" name="fw5" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td colspan="2">  <input type="text" name="jz5" value="" class="jiaozheng" /></td>
+    <td colspan="2">≤ <input type="text" name="fw6" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td colspan="2">  <input type="text" name="jz6" value="" class="jiaozheng" /></td>
+    <td colspan="2">≤ <input type="text" name="fw7" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz7" value="" class="jiaozheng" /></td>
+  </tr>
+  <tr>
+    <td>滴定管规格</td>
+    <td colspan="1"><input type="text" name="td9" value="{$arow['td9']}" class="inputl" /></td>
+    <td colspan="1">颜色</td>
+    <td colspan="2"><input type="text" name="td10" class="inputl" value="{$arow['td10']}" /></td>
+    <td colspan="3">标准溶液名称</td>
+    <td colspan="3"><input type="text" name="td11" class="inputl" value="{$arow['td11']}" /></td>
+    <td colspan="3">标准溶液浓度(mol/L)</td>
+    <td colspan="2"><input type="text" name="td12" class="inputl" value="{$arow['td12']}" /></td>
+  </tr>
+  <tr class="auto">
+    <td>培养前</td>
+    <td nowrap colspan="4">
+    日期：<input type="text" class="date_Ymd" name="td13" value="{$arow['td13']}" size="10" />
+    时间：<div class="input-group bootstrap-timepicker" style="display:inline">
+          <input type="text" class="timepicker1" name="td14" value="{$arow['td14']}" size="8" /></div>
+    </td>
+    <td>温度</td><td colspan="2"><input type="text" name="td15" value="{$arow['td15']}" size="5" /> ℃</td>
+    <td>湿度</td><td colspan="2"><input type="text" name="td16" value="{$arow['td16']}" size="5" />  %</td>
+    <td colspan="3">稀释水溶解氧ρ3</td>
+    <td colspan="3"><input type="text" name="td17" value="{$arow['td17']}" style="width:100%" /></td>
+  </tr>
+  <tr class="auto">
+    <td>培养后</td>
+    <td nowrap colspan="4">
+    日期：<input type="text" class="date_Ymd" name="td18" value="{$arow['td18']}" size="10" />
+    时间：<div class="input-group bootstrap-timepicker" style="display:inline">
+          <input type="text" class="timepicker1" name="td19" value="{$arow['td19']}" size="8" /></div>
+    </td>
+    <td>温度</td><td colspan="2"><input type="text" name="td32" value="{$arow['td32']}" size="5" /> ℃</td>
+    <td>湿度</td><td colspan="2"><input type="text" name="td33" value="{$arow['td33']}" size="5" />  %</td>
+    <td colspan="3">稀释水溶解氧ρ4</td>
+    <td colspan="2"><input type="text" name="td22" value="{$arow['td22']}" style="width:100%" /></td>
+  </tr>
+  <tr>
+    <td>计算公式</td>
+    <td colspan="2">
+    f<sub>1</sub> = (Vt-Ve)/Vt</td>
+    <td colspan="3">
+    f<sub>2</sub> = Ve/Vt</td>
+    <td colspan="10">
+    ρ = [(ρ<sub>1</sub>-ρ<sub>2</sub>)-f<sub>1</sub>×(ρ<sub>3</sub>-ρ<sub>4</sub>)]/f<sub>2</sub>
+    </td>
+  </tr>  
+
+  <tr>
+    <td rowspan="2">序号</td>
+    <td rowspan="2">{$zhanming}</td>
+    <td rowspan="2">取样体积<br />Ve (mL)</td>
+    <td rowspan="2">定容体积<br />Vt (mL)</td>
+    <td colspan="3">培养前滴定 (mL)</td>
+    <td rowspan="2">培养前<br />溶解氧<br />浓度ρ1</td>
+    <td colspan="3">培养后滴定 (mL)</td>
+    <td rowspan="2">培养后<br />溶解氧<br />浓度ρ2</td>
+    <td rowspan="2" colspan="2">含量<br />ρ({$arow['unit']})</td>
+    <td colspan="1" rowspan="2">平均值/理论浓度(mg/L)</td>
+    <td colspan="1" rowspan="2">相对偏差/加标回收率(%)</td>
+  </tr>
+  <tr>
+    <td>始读</td>
+    <td>终读</td>
+    <td>用量</td>
+    <td>始读</td>
+    <td>终读</td>
+    <td>用量</td>
+  </tr>
+    {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="15"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+function jsgs(){
+	//运算函数在lib.js
+  //加 accAdd 减 accsub 乘 accMul 除 accDiv
+  var bzyr = parseFloat($("input[name=td12]").val());
+  if(''==bzyr || isNaN(bzyr)){
+    $("input[name=td12]").val('');
+    $("input[name=td12]").focus();
+    return false;
+  }
+  var vd5_split = String(vs['vd5']).split('.');
+  if(vd5_split.length==2){
+    var diding_ws = vd5_split[1].length;
+  }else{
+    var diding_ws = 2;
+  }
+  if($.isNumeric(vs['vd5']) && $.isNumeric(vs['vd6'])){
+    vs['vd7'] = parseFloat(accsub(parseFloat(vs['vd5']),parseFloat(vs['vd6']))).toFixed(diding_ws);
+  }
+  if($.isNumeric(vs['vd9']) && $.isNumeric(vs['vd10'])){
+    vs['vd11'] = parseFloat(accsub(parseFloat(vs['vd9']),parseFloat(vs['vd10']))).toFixed(diding_ws);
+  }
+
+  if($.isNumeric(vs['vd9'])){
+    var jjz = get_jzz(vs['vd5']);//获取校正值
+    vs['vd8']= roundjs(accMul(accMul(8000/97,bzyr),accAdd(vs['vd7'],jjz)),1);
+  }
+  if($.isNumeric(vs['vd11'])){
+    var jjz = get_jzz(vs['vd9']);//获取校正值
+    vs['vd12']= roundjs(accMul(accMul(8000/97,bzyr),accAdd(vs['vd11'],jjz)),1);
+  }
+  if($.isNumeric(vs['vd1']) && $.isNumeric(vs['vd3'])){
+    //f1 = (Vt-Ve)/Vt
+    var Ve = parseFloat(vs['vd1']);
+    var Vt = parseFloat(vs['vd3']);
+    var f1 = accDiv(accsub(Vt,Ve),Vt);
+    //f2 = Ve/Vt
+    var f2 = accDiv(Ve,Vt);
+    if(vs['vd1'] != vs['vd3']){
+      var p3 = parseFloat($("input[name=td17]").val());
+      var p4 = parseFloat($("input[name=td22]").val());
+      if(''==p3 || isNaN(p3)){
+        $("input[name=td17]").focus();return false;
+      }else if(''==p4 || isNaN(p4)){
+        $("input[name=td22]").focus();return false;
+      }
+      //f1*(p3-p4)  稀释水的溶解氧
+      var f1_3_4 = accMul(f1,accsub(p3,p4));
+    }else{
+      var f1_3_4 = 0;
+    }
+    //p1-p2
+    var p1_p2  = accsub(parseFloat(vs['vd8']),parseFloat(vs['vd12']));
+    //(p1_p2-f1_3_4)/f2
+    var jg = accDiv(accsub(p1_p2,f1_3_4),f2);
+    vs['vd0'] = jsws(jg);
+  }else{
+    vs['vd0'] = '';
+  }
+}
+</script>  

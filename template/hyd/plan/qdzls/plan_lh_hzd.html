@@ -1,0 +1,70 @@
+<!-- 浑浊度 -->
+<h1>浑浊度检验原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:16%"></td>
+    <td style="width:18%"></td>
+    <td style="width:17%"></td>
+    <td style="width:17%"></td>
+    <td style="width:16%"></td>
+    <td style="width:16%"></td>
+  </tr>
+  <tr>
+    <td>检验方法依据</td>
+    <td colspan="5">{$arow['td2']}</td>
+  </tr>
+  <tr>
+    <td>仪器名称</td>
+    <td>{$arow['td4']}</td>
+    <td>仪器型号</td>
+    <td>{$arow['td5']}</td>
+    <td>仪器编号</td>
+    <td>{$arow['yq_bh']}</td>
+  </tr>
+  <tr>
+    <td rowspan="2">仪器校正</td>
+    <td colspan="2">最近一次标准校正日期</td>
+    <td><input type="text" class="inputc date_Ymd" name="td11" value="{$arow['td11']}" /></td>
+    <td>二次标准标定值</td>
+    <td><input type="text" class="inputc" name="td12" value="{$arow['td12']}" /></td>
+  </tr>
+  <tr>
+    <td colspan="2">实测二次标准值</td>
+    <td><input type="text" class="inputc" name="td13" value="{$arow['td13']}" /></td>
+    <td>相对误差（％）</td>
+    <td><input type="text" class="inputc" name="td14" value="{$arow['td14']}" /></td>
+  </tr>
+  <tr>
+    <td rowspan="2">序号</td>
+    <td rowspan="2">{$zhanming}</td>
+    <td colspan="4">样品浑浊度（{$arow['unit']}）</td>
+  </tr>
+  <tr>
+    <td colspan="2">C</td>
+    <td colspan="2">平均值</td>
+  </tr>
+    {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="5"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+  function jsgs () {
+    if($.isNumeric(vs['vd3'])&&!$.isNumeric(vs['vd4'])){
+      vs['vd4'] = vs['vd3'];
+    }
+    if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd4'])){
+      var vd3_split = String(vs['vd3']).split('.');
+      if(vd3_split.length==2){
+        var diding_ws = vd3_split[1].length;
+      }else{
+        var diding_ws = 1;
+      }
+      vs['vd0'] = roundjs((parseFloat(vs['vd3'])+parseFloat(vs['vd4']))/2,diding_ws);
+    }else{
+      vs['vd0'] = '';
+    }
+  }
+</script>

@@ -1,0 +1,58 @@
+<h1>聚合氯化铝水不溶物原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+		<tr class="noborder">
+		<td style="width:7%"></td>
+		<td style="width:13%"></td>
+		<td style="width:10%"></td>
+		<td style="width:9%"></td>
+		<td style="width:9%"></td>
+		<td style="width:10%"></td>
+		<td style="width:10%"></td>
+		<td style="width:12%"></td>
+		<td style="width:10%"></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td colspan="2">检测方法依据</td>
+		<td colspan="8"> {$arow['td2']}</td>
+	</tr>
+	<tr>
+		<td colspan="2">计算公式</td>
+		<td colspan="8">X=(M<sub>2</sub>-M<sub>1</sub>)/m×100 <input type="hidden" name="td28" value="X=(M<sub>1</sub>-M<sub>2</sub>)/m×100" /></td>
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td>样品编号</td>
+		<td>材料质量m（g）</td>
+		<td colspan="2">滤纸质量M<sub>1</sub>（g）</td>
+		<td colspan="2">滤渣+滤纸质量M<sub>2</sub>（g）</td>
+		<td>水不溶物含量X（%）</td>
+		<td>平均值（mg/L）</td>
+   		<td>相对偏差（％）</td>
+	</tr>
+	{$aline}
+	<tr>
+	     <td colspan="2" >备注</td>
+	     <td colspan="8"><textarea name=td29  rows=2 cols=70>{$arow['td29']}</textarea></td>
+	</tr> 
+
+</table>
+<script type="text/javascript">
+function jsgs()
+{
+	if($.isNumeric(vs['vd4']) && $.isNumeric(vs['vd6']))
+	{
+		var vd4   = parseFloat(vs['vd4']);
+		var vd6   = parseFloat(vs['vd6']);
+		var jg    = accsub(vd6,vd4);
+        if($.isNumeric(vs['vd1'])){
+	        var vd1 = parseFloat(vs['vd1']);
+	       	var vd0 = accMul(accDiv(jg,vd1),100);
+        	vs['vd0']=jsws(vd0);
+        }
+    }else{
+    	vs['vd0']='';
+    }
+}
+</script>

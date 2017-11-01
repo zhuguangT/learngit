@@ -1,0 +1,64 @@
+<h1>液质分析原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+		<td style="width:12%"></td><td style="width:12%"></td><td style="width:12%"></td>
+		<td style="width:17%"></td><td style="width:17%"></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="3">分析项目：{$arow['assay_element']}</td>
+		<td class="left" colspan="3">分析方法：{$arow['td2']}</td>
+		<td class="left" colspan="2">分析日期：<input class="date_Ymd" type="text" name="td31" size="10" value="{$arow['td31']}" /></td>
+	</tr>
+	<tr>
+		<td class="left" colspan="4">样品类别：{$arow['water_type']}</td>
+		<td class="left" colspan="4">仪器型号及编号：{$arow['td4']} {$arow['yq_bh']}</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="3">进样体积：<input type="text" name="td18" size="8" value="{$arow['td18']}" /> ml</td>
+		<td class="left" colspan="3">溶剂比：<input type="text" name="td19" size="6" value="{$arow['td19']}" /></td>
+		<td class="left" colspan="2">载液流速：<input type="text" name="td7" size="6" value="{$arow['td7']}" /></td>
+	</tr>
+	<tr>
+		<td class="left" colspan="2">离子源温度：<input type="text" name='td8' size="4" value="{$arow['td8']}" /></td>
+		<td class="left" colspan="2">干燥气流速：<input type="text" name="td9" size="4" value="{$arow['td9']}" /></td>
+		<td class="left" colspan="2">雾化气压力：<input type="text" name="td10" size="4" value="{$arow['td10']}" /></td>
+		<td class="left">毛细管电压：<input type="text" name="td11" size="4" value="{$arow['td11']}" /></td>
+		<td class="left">扫描模式：<input type="text" name="td12" size="4" value="{$arow['td12']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="4">
+			标准曲线编号：<input type="text" name="td13" size="10" value="{$arow['td13']}" />　
+			率定日期：<input class="date_Ymd" type="text" name="td14" size="10" value="{$arow['td14']}" />
+		</td>
+		<td class="left" colspan="4">计算公式：C（mg/L）=C<sub>0</sub> × f</td>
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td colspan="2">{$zhanming}</td>
+		<td>直读含量C<sub>0</sub><br />（mg/L）</td>
+		<td>稀释倍数<br />（f）</td>
+		<td>含量<br />（mg/L）</td>
+		<td>平均值</td>
+		<td>相对偏差（％）/<br>加标回收率（％）</td>
+	</tr>
+	{$aline}
+	<tr class="auto">
+		<td colspan="2">加标量：<input type="text" name="td16" size="5" value="{$arow['td16']}" /> mL</td>
+		<td colspan="6">P%=<input type="text" name="td17" size='30' value="{$arow['td17']}" /></td>
+	</tr>
+	<tr>
+		<td>备注</td>
+		<td colspan="7"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	function jsgs(){
+		if($.isNumeric(vs['vd27']) && $.isNumeric(vs['vd2'])){
+			vs['vd0'] = jsws(vs['vd27']*vs['vd2']);
+		}else{
+			vs['vd0'] = '';
+		}
+	}
+</script>

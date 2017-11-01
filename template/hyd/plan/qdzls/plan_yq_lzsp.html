@@ -1,0 +1,58 @@
+<!-- 离子色谱 -->
+<h1>离子色谱法检验{$arow['assay_element']}原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:16%"></td>
+    <td style="width:18%"></td>
+    <td style="width:16%"></td>
+    <td style="width:17%"></td>
+    <td style="width:16%"></td>
+    <td style="width:8%"></td>
+    <td style="width:9%"></td>
+  </tr>
+  <tr>
+    <td>检验方法依据</td>
+    <td colspan="2">{$arow['td2']}</td>
+    <td>检出限：{$arow['td3']}{$arow['unit']}</td>
+    <td>淋洗液</td>
+    <td colspan="2"><input type="text" class="inputc" name="td11" value="{$arow['td11']}" /></td>
+  </tr>
+  <tr>
+    <td>仪器编号</td>
+    <td>{$arow['yq_bh']}</td>
+    <td>色谱柱</td>
+    <td><input type="text" class="inputc" name="td12" value="{$arow['td12']}" /></td>
+    <td>检测器</td>
+    <td colspan="2"><input type="text" class="inputc" name="td13" value="{$arow['td13']}" /></td>
+  </tr>
+  <tr>
+    <td>仪器型号</td>
+    <td>{$arow['td5']}</td>
+    <td>流速<br />（mL/min）</td>
+    <td><input type="text" class="inputc" name="td14" value="{$arow['td14']}" /></td>
+    <td>进样体积（μL）</td>
+    <td colspan="2"><input type="text" class="inputc" name="td15" value="{$arow['td15']}" /></td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>{$zhanming}</td>
+    <td>稀释倍数</td>
+    <td>仪器读数（{$arow['unit']}）</td>
+    <td>样品浓度（{$arow['unit']}）</td>
+    <td nowrap="nowarp">平均值/理论浓度<br />（{$arow['unit']}）</td>
+    <td nowrap="nowarp">相对偏差/回收率<br />(％)</td>
+  </tr>
+    {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="6"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+  function jsgs (argument) {
+    if($.isNumeric(vs['vd2'])&&$.isNumeric(vs['vd27'])){
+      vs['vd0'] = parseFloat(vs['vd2'])*parseFloat(vs['vd27']);
+    }
+  }
+</script>

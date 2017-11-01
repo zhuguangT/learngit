@@ -1,0 +1,76 @@
+<h1>{$arow['assay_element']}分析原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+<tr class="noborder">
+	<td style="width:5%"></td><td style="width:10%"></td><td style="width:7%"></td><td style="width:7%"></td>
+	<td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td>
+	<td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td>
+	<td style="width:7%"></td><td style="width:7%"></td>
+</tr>
+	<tr class="auto">
+		<td class="left" colspan="3">分析方法:{$arow['td2']}</td>
+		<td class="left" colspan="3">样品类别:{$arow['water_type']}</td>
+		<td class="left" colspan="5">仪器名称及编号：{$arow['td4']}{$arow['yq_bh']}</td>
+		<td colspan="3" class="left">分析日期：<input class="date_Ymd" type="text" name="td31"  size="10" value="{$arow['td31']}" /></td>
+	</tr>
+</tr>
+<tr class="auto">
+	<td class="left" colspan="3">烘干温度:<input type="text" name="td11" size="5"  value="{$arow['td11']}" />℃</td>
+	<td class="left" colspan="3">烘干时间:<input type="text" name="td7" size="5"  value="{$arow['td7']}" />小时</td>
+	<td class="left" colspan="5">冷却时间:<input type="text" name='td8' size="5"  value="{$arow['td8']}" />小时</td>
+	<td class="left" colspan="3">容器恒重日期:<input type="text" name="td10" size="8"  value="{$arow['td10']}" /></td>
+</tr>
+<tr>
+	<td class="left" colspan="14">计算公式: C（mg/L） = （ W - W<sub>0</sub> ） × 10<sup>6</sup> / V + 1/2C<sub>1</sub></td>
+</tr>
+<tr  >
+	<td  rowspan="2">序号</td>
+	<td rowspan="2">{$zhanming}</t
+		><td colspan="3">容器重W<sub>0</sub>（g）</td>
+		<td colspan="3">容器+残渣重W（g）</td>
+		<td rowspan="2">W-W<SUB>0</SUB>（g）</td>
+		<td rowspan="2">取样体积<br />V（mL）</td>
+		<td rowspan="2">C<sub>1</sub><br />（{$arow['unit']}）</td>
+		<td rowspan="2">含量（{$arow['unit']}）</td>
+		<td rowspan="2">平均值（{$arow['unit']}）</td>
+		<td rowspan="2">相对偏差（％）</td>
+	</tr>
+	<tr>
+		<td>第一次</td>
+		<td>第二次</td>
+		<td>平均</td>
+		<td>第一次</td>
+		<td>第二次</td>
+		<td>平均</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td colspan="2">备注</td>
+		<td colspan="12" ><input type="text" name='td29' id="td29" size="12"0  value='{$arow['td29']}' /></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	function jsgs(){
+		if(vs['vd8'] && vs['vd2']){
+			vs['vd3']=roundjs(accAdd(vs['vd8'],vs['vd2'])/2,4);
+		}
+		else
+			vs['vd3']='';
+		if(vs['vd4'] && vs['vd5'])
+			vs['vd6']=roundjs(accAdd(vs['vd4'],vs['vd5'])/2,4);
+		else
+			vs['vd6']='';
+		if(vs['vd3'] && vs['vd6'])
+			vs['vd7']=roundjs(accsub(vs['vd6'],vs['vd3']),4);
+		else
+			vs['vd7']='';
+		if(vs['vd7'] && vs['vd1'] && vs['vd9'])
+			vs['vd0']=vs['vd7']*1000000/vs['vd1']+vs['vd9']/2;
+		else
+			vs['vd0']='';
+	}
+	var td29 = document.getElementById('td29');
+	if(''==td29.value){
+		td29.value = '式中：C1：水中重碳酸根含量(mg/L)。';
+	}
+</script>

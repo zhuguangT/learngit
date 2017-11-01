@@ -1,0 +1,83 @@
+* {
+	font-size: 12px;
+	list-style-type: none;
+}
+#waipi {
+	font-size: 12px;
+	padding: 0px;
+	width: 639px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+	background-color: #FFFFFF;
+	border: 2px solid #000000;
+}
+.lizf {
+	float: left;
+	border: 1px solid #999999;
+	line-height: 22px;
+	text-align: center;
+	width: 150px;
+}
+
+.tbl {
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-bottom-color: #000000;
+	border-left-color: #000000;
+}
+.xmbiao {
+	width: 760px;
+	list-style-type: none;
+	margin-right: auto;
+	margin-left: auto;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+	border-left-color: #666666;
+}
+#wttj {
+	clear: both;
+	font-size: 16px;
+	line-height: 22px;
+}
+.tbx {
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #000000;
+}
+.tbj {
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-right-color: #000000;
+	border-bottom-color: #000000;
+}
+
+.tbi {
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #000000;
+}
+
+#bti {
+	font-size: 18px;
+	line-height: 26px;
+	font-weight: bold;
+	color: #000000;
+	text-align: center;
+	letter-spacing: 10px;
+}
+.higt {
+	line-height: 22px;
+}
+

@@ -1,0 +1,70 @@
+
+<style type="text/css">
+.tooltip {
+	background-color: #000000;
+	border: 1px solid #FFFFFF;
+	box-shadow: 0 0 10px #000000;
+	color: #FFFFFF;
+	display: none;
+	font-size: 12px;
+	padding: 10px 15px;
+	text-align: left;
+	width: 200px;
+}
+</style>
+<h3 class="header smaller center title">客户管理</h3>
+	<div class="widget-header header-color-blue4 center">
+		<div class="widget-toolbar">
+			客户筛选
+			<select id='khsx' name='khsx'   class="chosen-select"  style="position:absolute; top: 40px;width: 170px; height: 22px; clip: rect(0 170 22 150)" >
+				<option value='全部'>全部</option>
+				$kh_list
+			</select>
+			<!--共<input type="text" class=inputc name="yeshu"  size="2" value="$yeshu" />页
+			第
+			<select name="ye" id="ye" onchange="getval(this.value);">
+				<option selected="selected" >$ye</option>
+				$listyeshu
+			</select>页-->
+			<input type=button class="btn btn-xs btn-primary" value="新建客户" onclick="location='newkh.php?action=新建';">
+			<input type=button class="btn btn-xs btn-primary" value="下载本页" onclick="location='?xiazai=xiazai'"><span>注：下载后请先另存为再使用，避免因excel版本问题导致不兼容</span>
+		</div>
+	</div>
+	<br />
+	<table  class="table table-bordered table-hover center">
+		<tr align=center>
+			<th rowspan='2'>序号</th>
+			<th rowspan='2'>委托单位</th>
+			<th rowspan='2'>联系人</th>
+			<th rowspan='2'>联系电话</th>
+			<th rowspan='2'>地址</th>
+			<th colspan='7' width='55%'>委托信息</th>
+			<th rowspan='2'>操作</th>
+		</tr>
+		<tr align=center>
+			<th>编号</th>
+			<th>委托日期</th>
+			<th width='30%'>委托样品<select id='year'>$ytime</select></th>
+			<th>完成时限</th>
+			<th>分类</th>
+			<th>费用</th>
+			<th>修改</th>
+		</tr>
+		$lines       
+	</table>
+<script>
+$(document).ready(function() {
+	$(".chosen-select").chosen();
+	$('#year,#khsx').change(function() {
+		gotourl('kh_list.php?year='+$('#year').val()+'&khsx='+$("#khsx").val());
+	});
+});
+	function wtsc(aa){
+		if(aa){
+			var pd = confirm("确定要删除吗？");
+			if(pd){
+				location = 'kh_list.php?year='+$('#year').val()+'&khsx='+$("#khsx").val()+'&wtid='+aa+'&action=wtsc';
+			}
+		}
+	}
+</script>

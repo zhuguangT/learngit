@@ -1,0 +1,476 @@
+<!-- 增加仪器的显示页面 -->
+<style type="text/css">
+td {font-weight:blod}
+</style>
+<link href='$rooturl/js/date_input.css' rel="stylesheet" type="text/css">
+<script language="javascript" src="$rooturl/js/jquery.date_input.js"></script>
+
+<script>
+$($.date_input .initialize);
+var tspat = /^\d+$/;
+var rqpat = /^\d{4}[-\.\/]\d{1,2}[-\.\/]\d{1,2}$/;
+function check(form) {
+  if  (document.myform.yq_mingcheng.value.length  =="")
+ {
+  alert( "请填写仪器名称！");
+  document.myform.yq_mingcheng.focus();
+  return  false;
+ }
+ var ts = document.getElementById('ts');
+ if(!tspat.test(ts.value) && ts.value!=''){
+  alert( "提醒天数必须为整数");
+  ts.focus();
+  return  false;
+ }
+ // var xj = document.getElementById("yq_firstjianding");
+  // if(!rqpat.test(xj.value) && xj.value!=''){
+  //  alert( "下次检定日期 年月日 之间用 .或者/或者-");
+  //  xj.focus();
+  //  return false;
+  // }
+}
+window.onload=function(){
+  var inp = document.getElementsByTagName("input");
+  zhuru(inp);
+
+}
+function zhuru(obj){
+  var len = obj.length -1;
+  for(var i=0;i<len;i++){
+    if(obj[i].type=='text'){
+      obj[i].onblur=function(){
+      var str = this.value;
+      str= str.replace(/'/g,"‘");
+      str= str.replace(/"/g,"“");
+      this.value = str.replace(/;/g,"；");
+      }
+    }
+  }
+}
+/** * 对Date的扩展，将 Date 转化为指定格式的String * 月(M)、日(d)、12小时(h)、24小时(H)、分(m)、秒(s)、周(E)、季度(q)
+    可以用 1-2 个占位符 * 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字) * eg: * (new
+    Date()).pattern("yyyy-MM-dd hh:mm:ss.S")==> 2006-07-02 08:09:04.423
+ * (new Date()).pattern("yyyy-MM-dd E HH:mm:ss") ==> 2009-03-10 二 20:09:04
+ * (new Date()).pattern("yyyy-MM-dd EE hh:mm:ss") ==> 2009-03-10 周二 08:09:04
+ * (new Date()).pattern("yyyy-MM-dd EEE hh:mm:ss") ==> 2009-03-10 星期二 08:09:04
+ * (new Date()).pattern("yyyy-M-d h:m:s.S") ==> 2006-7-2 8:9:4.18
+ */
+Date.prototype.pattern=function(fmt) {
+    var o = {
+    "M+" : this.getMonth()+1, //月份
+    "d+" : this.getDate(), //日
+    "h+" : this.getHours()%12 == 0 ? 12 : this.getHours()%12, //小时
+    "H+" : this.getHours(), //小时
+    "m+" : this.getMinutes(), //分
+    "s+" : this.getSeconds(), //秒
+    "q+" : Math.floor((this.getMonth()+3)/3), //季度
+    "S" : this.getMilliseconds() //毫秒
+    };
+    var week = {
+    "0" : "/u65e5",
+    "1" : "/u4e00",
+    "2" : "/u4e8c",
+    "3" : "/u4e09",
+    "4" : "/u56db",
+    "5" : "/u4e94",
+    "6" : "/u516d"
+    };
+    if(/(y+)/.test(fmt)){
+        fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    }
+    if(/(E+)/.test(fmt)){
+        fmt=fmt.replace(RegExp.$1, ((RegExp.$1.length>1) ? (RegExp.$1.length>2 ? "/u661f/u671f" : "/u5468") : "")+week[this.getDay()+""]);
+    }
+    for(var k in o){
+        if(new RegExp("("+ k +")").test(fmt)){
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+        }
+    }
+    return fmt;
+}
+function riqi(shijian){
+  var s = $(shijian).val();
+  var date = new Date();
+  dd = date.pattern("yyyy-MM-dd HH:mm:ss");
+  if(s=='封存'){
+    $("input[name='yq_fengcun']").val(dd);
+    $("input[name='yq_baofei']").val('');
+  }else if(s=='报废'){
+    $("input[name='yq_baofei']").val(dd);
+  }else if(s=='启用'){
+    $("input[name='yq_qiyong']").val(dd);
+    $("input[name='yq_fengcun']").val('');
+    $("input[name='yq_baofei']").val('');
+    //若上次检定日期为空，那么启用时间默认为上次检定时间
+  $(".table").mouseover(function(){
+    var yq_qiyong = $("#yq_qiyong").val();
+    if($("#yq_jiandingriqi").val()==''){
+      $("#yq_jiandingriqi").val(yq_qiyong);
+    }
+  });
+  }
+}
+
+//计算下次检定日期
+$(window).ready(function(){
+  $("input[name='yq_jdriqi']").keyup(function(){
+    var yq_jiandingriqi = $("#yq_jiandingriqi").val();
+    var yq_jdriqi = $("input[name='yq_jdriqi']").val();
+    $.post('yiqi_save.php' , {'handle' : 'show_xc_jdriqi' , 'yq_jiandingriqi' : yq_jiandingriqi , 'yq_jdriqi' : yq_jdriqi} , function(data){
+        if(data){
+          $("#yq_firstjianding").val(data);
+        }
+    });
+  });
+});
+//下拉框同步到input
+function sele(){
+  var content=$("#yq_type option:selected").text();
+  $("input[name='yq_type']").val(content);
+}
+//点击输入框显示类型
+function show_type(){
+  $("#yq_type").click();
+}
+//判断是否为需要检定的仪器
+function if_jian(){
+ var options=$("#yq_jiliang option:selected");
+  if(options.val()=='非计量器具'){
+    $(".ifhide").hide();
+    $("input[name='yq_tixingriqi']").removeAttr("required");
+    $("input[name='yq_jdriqi']").removeAttr("required");
+  }else{
+ $(".ifhide").show();
+ $("input[name='yq_tixingriqi']").attr("required",true);
+ $("input[name='yq_jdriqi']").attr("required",true);
+  }
+}
+//检定完成
+function jdwc(){
+  yid=$("input[name='yid']").val();
+  zhouqi=$("input[name='yq_jdriqi']").val();
+   $.post('yiqi_save.php' , {'handle' : 'jdwc' , 'yid' : yid,'zhouqi' : zhouqi } , function(data){
+       $("input[name='yq_firstjianding']").val(data);
+       var d = new Date();
+       date=d.getFullYear() + "-"+(d.getMonth()+1) +"-"+d.getDate();
+       $("input[name='yq_jiandingriqi']").val(date);
+    });
+}
+</script>
+<br />
+<h3 class="header smaller center title">$biaotou</h3>
+<br /><br />
+<form name="myform" action="yiqi_save.php" method="post" onSubmit= "return check(this);" enctype="multipart/form-data">
+    <input name=yid type=hidden value='$yid'>
+
+  <table  class="table table-striped table-bordered table-hover center" style="width:20cm">
+  <tr align="center" >
+    <th>设备名称</th>
+    <td  class=inputl><input type="text" class=inputc name="yq_mingcheng" size="20"  value="$yq_mingcheng" required placeholder="请输入仪器名称（必填）"/></td>
+    <th style="width:2cm">生产厂商</th>
+     <td ><input type="text" class=inputc name="yq_zzcangjia"  size="20" value="$yq_zzcangjia" /></td>
+  </tr>
+  <tr align="center">
+    <th>设备型号</th>
+    <td><input type="text" class=inputc name="yq_xinghao"  size="20" value="$yq_xinghao" /></td>
+    <th>设备序列号</th>
+    <td><input type="text" class=inputc name="yq_chucangbh"  size="20" value="$yq_chucangbh" /></td>
+  </tr>
+  <tr align="center">
+    <th>出厂日期</th>
+    <td><input type="text" class='inputc date_input' name="yq_ccdate"  size="20" value="$yq_ccdate" /></td>
+     <th>启用日期</th>
+    <td><input type="text" class="inputc date_input" name="yq_qiyong" id="yq_qiyong" size="20" value="$yq_qiyong" onclick="opentime('yq_qiyong','all');getxy(this);" readonly  required/>
+     </td>
+  </tr>
+  <tr align="center" >
+    <th>设备配置清单</th>
+    <td  colspan='3'><textarea name='yq_list_show' style='width: 561px;'>$yq_list_show</textarea></td>
+  </tr>
+  <tr align="center" >
+    <th>设备技术指标</th>
+    <td  colspan='3'><textarea name='yq_jishu_zb' style='width: 561px;'>$yq_jishu_zb</textarea></td>
+  </tr>
+  <tr align="center" ><!-- 设备软件名称，软件版本号-->
+    <th>设备软件名称</th>
+    <td><input type="text" class=inputc name="yq_ruanjian"  size="20" value="$yq_ruanjian" /></td>
+    <th>软件版本号</th>
+    <td><input type="text" class=inputc name="ruanjian_id"  size="20" value="$ruanjian_id" /></td>
+  </tr>
+   <tr align="center" >
+    <th>购置日期</th>
+    <td><input type="text" class="inputc date_input" name="yq_gouzhirq"  id="yq_gouzhirq" size="20" value="$yq_gouzhirq" onclick="opentime('yq_gouzhirq','all');getxy(this);" readonly/></td>
+    <th style="width:2cm;">设备原值</th>
+    <th  style="width:7cm;"><input type="text" class=inputc name="yq_jiage" size="20"  value="$yq_jiage" /> 元</th>
+    </tr>
+  <!--<tr align="center" >
+    <th>制造厂家</th>
+    <td colspan="3"><input type="text" class=inputc name="yq_zzcangjia"  size="64" value="$yq_zzcangjia" /></td>
+  </tr>
+  <tr align="center" >-->
+
+    <!-- <th>设备现值</th>
+    <td><input type="text" class=inputc name="yq_xianzhi"  size="20" value="$yq_xianzhi" id="ts"/>元</td> -->
+  <tr align="center">
+    <th>供货商</th>
+    <td colspan="3"><input type="text" class=inputc name="yq_daima"  size="64" value="$yq_daima" /></td>
+  </tr>
+<tr align="center" >
+    <th>设备管理编号</th>
+    <td><input type="text" class=inputc name="yq_sbbianhao"  size="20" value="$yq_sbbianhao" /></td>
+     <th>财务资产编码</th>
+    <td><input type="text" class=inputc name="yq_sbglbh"  size="20" value="$yq_sbglbh" /></td>
+  </tr>
+ <tr align="center" >
+    <th>设备管理部门</th>
+    <td><input type="text" class=inputc name="yq_guanlibm"  size="20" value="$yq_guanlibm" /></td>
+    <th>设备使用部门</th>
+    <td><input type="text" class=inputc name="yq_shiyongbm"  size="20" value="$yq_shiyongbm" /></td>
+  </tr>
+  <tr align="center">
+    <th>设备存放地点</th>
+    <td><input type="text" class=inputc name="yq_sbdidian"  size="20" value="$yq_sbdidian" /></td>
+    <th>责任人</th>
+    <td><input type="text" class=inputc name="yq_baoguanren"  size="20" value="$yq_baoguanren" /></td>
+  </tr>
+<tr align="center" >
+    <th>设备状态</th>
+    <td>
+            <select name="yq_state"   onchange='riqi(this)'>
+              $yq_state_content
+                </select>
+    </td>
+    <th>已使用年限</th>
+    <td><input type="text" class=inputc name="yq_synx"  size="20" value="$yq_synx" readonly /></td>
+   <!-- <th>仪器存放房间</th>
+    <td><input type="text"  name="yq_room" class="inputc" size="20" value="$yq_room" /></td>  -->
+  </tr>
+  <tr align="center" >
+    <th>停用日期</th>
+    <td><input type="text"  name="yq_fengcun" class="inputc date_input" size="20" value="$yq_fengcun" /></td>
+    <th>报废日期</th>
+    <td><input type="text" name="yq_baofei" class="inputc date_input" size="20" value="$yq_baofei" /></td>
+  </tr>
+  <tr align="center" >
+    <th>仪器类型</th>
+    <td>
+      <div style="position:relative;">
+      <span style="margin-left:100px;width:18px;overflow:hidden;position: absolute;left:130px;top:-15px">
+        <select style="width:118px;margin-left:-100px;display:black" onchange="sele();" id='yq_type'  name='yq_type'>
+          $type
+        </select>
+      </span>
+      <input name="yq_type" style="width:185px;;height: 29px;position:absolute;left:45px;top:-14px" value="$yq_type" placeholder="请选择仪器类型或直接输入" onclick="show_type(this);"/>
+      </div>
+    </td>
+  <th>设备档案号</th>
+ <td><input type="text" class=inputc name="yq_file"  size="20" value="$yq_file" /></td>
+  </tr>
+  <tr align="center" >
+    <th>国产/进口分类</th>
+    <td >$zhongwai</td>
+    <th>溯源方式</th>
+    <td>
+        <select name="yq_suyuan">
+          $yq_suyuan_content
+        </select>
+    </td>
+  </tr>
+  <tr align="center">
+    <th>设备维修记录</th>
+    <td colspan="3"><textarea name='yq_jxjl' style='width: 561px;'>$yq_jxjl</textarea></td>
+  </tr>
+  <tr align="center" >
+   <th>是否属计量器具</th>
+    <td><select name="yq_jiliang" id="yq_jiliang" onchange="if_jian()">
+             $yq_jiliang_content
+        </select>
+   </td>
+    <th class="ifhide">提醒天数</th>
+    <td class="ifhide"><input type="text" class=inputc name="yq_tixingriqi"  size="20" value="$yq_tixingriqi" id="ts"  required placeholder="请输入提醒天数（必填）"/></td>
+  </tr>
+   <tr align="center">
+    <th class="ifhide">计量器具编号</th>
+   <td class="ifhide"><input type="text" class=inputc name="yq_jiliangbh"  size="20" value="$yq_jiliangbh" /></td>
+    <th class="ifhide">检定/校准周期(月)</th>
+    <td class="ifhide"><input type="text" class="inputc" name="yq_jdriqi"  size="20" value="$yq_jdriqi" required placeholder="请输入检定周期（必填）"/></td>
+  </tr>
+  <!--
+  <tr align="center" >
+    <th>维修电话</th>
+    <td><input type="text" class=inputc name="yq_weixiutel"  size="20" value="$yq_weixiutel" /></td>
+    <th>预计使用年限</th>
+    <td><input type="text" class=inputc name="yq_yjnx"  size="20" value="$yq_yjnx" /></td>
+  </tr>
+  <tr align="center" >
+    <th>检测项目</th>
+    <td colspan="3">$yq_xm</td>
+  </tr>
+
+  <tr align="center">
+    <th>预计使用年限</th>
+    <td>$yq_synx</td>
+    <th></th>
+    <td></td>
+  </tr>-->
+  <tr align="center" class="ifhide">
+    <th>上次检定/校准日期</th>
+    <td><input type="text" class="inputc date_input" name="yq_jiandingriqi" id="yq_jiandingriqi"  size="20" value="$yq_jiandingriqi" onclick="opentime('yq_jiandingriqi','all');getxy(this);"/>
+   </td>
+    <th>下次检定/校准日期</th>
+    <td title="下次检定日期是根据上次检定日期和检定周期计算出来的"><input type="text"  class="inputc date_input " name="yq_firstjianding"  id="yq_firstjianding" title="下次检定日期是根据上次检定日期和检定周期计算出来的" size="20" value="$yq_firstjianding" readonly/>
+    </td>
+  </tr>
+  <tr align="center"class="ifhide">
+    <th>检定/校准单位</th>
+    <td colspan="3"><input type="text" class=inputc name="yq_jiandingdanwei"  size="64" value="$yq_jiandingdanwei" /></td>
+  </tr>
+  <!--end
+  <tr align="center">
+    <th>检定/校准证书</th>
+    <td colspan="3">
+      $yq_jdzs
+      <input type='file' name='yq_jdzs'>
+    </td>
+  </tr>
+  <tr align="center">
+    <th>设备照片</th>
+    <td colspan="3">
+        <a style="cursor:pointer;" data-toggle="modal" data-target="#myModal">$yq_image</a>$delete_png
+        <input type="file" name="yq_image"  size="20" value="$yq_image" />
+    </td>
+  </tr>
+  <tr id="have_file" align="center">
+    <td>设备归档</td>
+    <td align=center>
+       此行原本就是注释<input type="file" name="upfile[]" id="file">
+      <input type="file" id="input" name="yq_record[]"  multiple="multiple">
+    </td>
+    这两行原本就是注释 <td>已添加文件</td>
+    <td id="content" name="yq_cord[]"></td>
+    <td>已上传的文件</td>
+    <td>$record_file</td>
+  </tr>
+  <tr align="center" >
+    <th>备注</th>
+    <td  colspan='5'><textarea name='yq_beizhu' style='width: 561px;'>$yq_beizhu</textarea></td>
+  </tr>
+
+  <tr align="center" >
+
+    </td>
+
+     <th>提醒天数</th>
+    <td><input type="text" class=inputc name="yq_tixingriqi"  size="20" value="$yq_tixingriqi" id="ts" required placeholder="请输入提醒天数（必填）"/></td>
+  </tr>
+   <tr align="center" >
+    <th>档案位置</th>
+    <td><input type="text" class=inputc name="yq_fenlei"  size="20" value="$yq_fenlei" /></td>
+    <th>权属单位</th>
+    <td><input type="text" class=inputc name="yq_quanshudw"  size="20" value="$yq_quanshudw" /></td>
+  </tr>
+  <tr align="center" >
+    <th>准确度等级</th>
+    <td><input type="text" class=inputc name="yq_zhunquedu"  size="20" value="$yq_zhunquedu" /></td>
+    <th>测量范围</th>
+    <td><input type="text" class=inputc name="yq_celiang"  size="20" value="$yq_celiang" /></td>
+  </tr>
+  <tr align="center" >
+    <th>检定/校准费用</th>
+    <td><input type="text" class=inputc name="yq_jiandingfeiyong"  size="20" value="$yq_jiandingfeiyong" /></td>
+  </tr>
+  <tr align="center" >
+    <th>资产类别</th>
+    <td>
+      <select name="yq_zichan">
+        $yq_zichan
+      </select>
+    </td>
+    <th>管理类别</th>
+    <td><input type='text' name="yq_guanli" class="inputc" size="20" value="$yq_guanli"/></td>
+  </tr>-->
+  <tr><td colspan="6"><center>$submit</td></tr>
+  </table></form>
+<!--为了实验室仪器一览返回功能-->
+<script type="text/javascript">
+//如果是非计量器具 去掉非空验证 隐藏校准属性
+if($('#yq_jiliang').val()=='非计量器具'){
+  $(".ifhide").hide();
+  $("input[name='yq_tixingriqi']").removeAttr("required");
+  $("input[name='yq_jdriqi']").removeAttr("required");
+}
+  function go_back(){
+    history.back();
+  }
+</script>
+<!--图片遮罩层-->
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">仪器图片:$yq_mingcheng</h4>
+      </div>
+      <div class="modal-body">
+        <img src="$rooturl/yiqi/files/$yq_image_src" title="$yq_mingcheng"  style="width:50%;"/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').focus()
+})
+  //仪器图片隐藏功能
+  function delete_image(obj,id){
+    $.post('yiqi_save.php' , {'handle' : 'delete_image' , 'id' : id } , function(data){
+        if(data=='ok'){
+          alert('删除成功');
+          $(obj).parent('td').find('a').detach();
+        }else{
+          alert('删除失败！');
+        }
+    });
+  }
+  //删除检定证书
+  function delete_jdzs(obj , id){
+    $.post("yiqi_save.php" , {'handle' : "del_jdzs" , "id" : id } , function(data){
+        if(data == 'ok'){
+          alert('删除成功');
+          $(obj).prev().remove();
+          $(obj).remove();
+        }else{
+          alert("删除失败");
+        }
+    });
+  }
+  //删除仪器档案
+  function del_record(obj , id , key){
+    $.post("yiqi_save.php" , {'handle' : "del_record" , "id" : id , "key" : key} , function(data){
+        if(data == 'ok'){
+          alert('删除成功');
+          $(obj).prev().remove();
+          $(obj).remove();
+        }else{
+          alert("删除失败");
+        }
+    });
+  }
+  //将浏览按钮转换为可上传多个文件的按钮
+var inputElement = document.getElementById("input");
+inputElement.addEventListener("change", handleFiles, false);
+function handleFiles(){
+  fileList= this.files;
+  var dd  = document.getElementById('content');
+  dd.innerHTML  = '';
+  var html_files= '';
+  for( var i = 0 ; i < fileList.length ; i++ ){
+    html_files +="<div id='del_one"+i+"'>" +fileList[i].name;
+  }
+  dd.innerHTML  = html_files;
+}
+</script>

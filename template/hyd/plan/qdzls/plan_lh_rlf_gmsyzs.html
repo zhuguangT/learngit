@@ -1,0 +1,139 @@
+<h1>$arow[assay_element]检验原始记录</h1>
+{$hjtj_bt}
+<input type="hidden" name="yq_bh" value="{$arow['yq_bh']}" />
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:10%"></td><td style="width:13%"></td><td style="width:11%"></td>
+    <td style="width:11%"></td><td style="width:11%"></td><td style="width:11%"></td>
+    <td style="width:11%"></td><td style="width:11%"></td><td style="width:11%"></td>
+  </tr>
+  <tr>
+    <td colspan="1">检验方法依据</td>
+    <td colspan="3">{$arow['td2']}</td>
+    <td colspan="1">检验方法</td>
+    <td colspan="4">{$arow['td1']}</td>
+  </tr>
+  <tr class="bt_hidden">
+    <td>滴定管校正值设置
+      <input type="hidden" name="td16" class="ddg_fw" value="{$arow['td16']}" />
+      <input type="hidden" name="td17" class="ddg_jz" value="{$arow['td17']}" /></td>
+    <td>≤ <input type="text" name="fw0" value="" class="fanwei" style="width:auto" size="3" /></td>
+    <td>  <input type="text" name="jz0" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw1" value="" class="fanwei" style="width:auto" size="3" /></td>
+    <td>  <input type="text" name="jz1" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw2" value="" class="fanwei" style="width:auto" size="3" /></td>
+    <td>  <input type="text" name="jz2" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw3" value="" class="fanwei" style="width:auto" size="3" /></td>
+    <td>  <input type="text" name="jz3" value="" class="jiaozheng" /></td>
+  </tr>
+  <tr class="bt_hidden">
+    <td>≤ <input type="text" name="fw4" value="" class="fanwei" style="width:auto" size="3" /></td>
+    <td>  <input type="text" name="jz4" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw5" value="" class="fanwei" style="width:auto" size="3" /></td>
+    <td>  <input type="text" name="jz5" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw6" value="" class="fanwei" style="width:auto" size="3" /></td>
+    <td>  <input type="text" name="jz6" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw7" value="" class="fanwei" style="width:auto" size="3" /></td>
+    <td colspan="2">  <input type="text" name="jz7" value="" class="jiaozheng" /></td>
+  </tr>
+  <tr>
+    <td colspan="1">标准溶液名称</td>
+    <td colspan="3"><input type="text" class="inputl" name="td11" value="{$arow['td11']}"/></td>
+    <td colspan="2">标准溶液浓度（mol/L）</td>
+    <td colspan="3"><input type="text" class="inputl" id="c_v" name="td12" value="{$arow['td12']}"/></td>
+  </tr>
+  <tr>
+    <td>滴定管编号</td>
+    <td><input type="text" class="inputl" name="td13" value="{$arow['td13']}"/></td>
+    <td>滴定管校正值</td>
+    <td><input type="text"  class="inputl" id="ddg_jzz" name="td14" value="{$arow['td14']}" /></td>
+    <td colspan="2">空白消耗体积 V<sub>0</sub>（mL）</td>
+    <td><input type="text" name="td29" id="kb"  class="inputl" value="{$arow['td29']}" /></td>
+    <td>V<sub>2</sub>（mL）</td>
+    <td><input type="text" name="td15" id="kv"    class="inputl" value="{$arow['td15']}" /></td>
+  </tr>
+  <tr>
+  	<td>计算公式</td>
+  	<td colspan="3"> ρ = [(10+V<sub>1</sub>)×k-10]×0.8 &nbsp;&nbsp;&nbsp;&nbsp;k=10/V<sub>2</sub></td>
+  	<td colspan="5"> ρ = {[(10+V<sub>1</sub>)×k-10]-[(10+V<sub>0</sub>)×k-10]×R}×0.8 &nbsp;&nbsp;&nbsp;&nbsp;R=(100-V<sub>3</sub>)/100</td>
+  </tr>
+  <tr>
+    <td rowspan="2">序号</td>
+    <td rowspan="2">样品编号</td>
+    <td rowspan="2">取样体积<br/> V<sub>3</sub>（mL）</td>
+    <td colspan="3">标准溶液消耗量（mL）</td>
+    <td rowspan="2">样品浓度<br/>（mg/L）</td>
+    <td rowspan="2">平均值/<br />理论浓度<br />（mg/L）</td>
+    <td rowspan="2">相对偏差/<br />加标回收率<br />（％）</td>
+
+  </tr>
+  <tr>
+    <td>始读</td>
+    <td>终读</td>
+    <td>消耗量</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="8"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+function jsgs(){
+  var v2    = parseFloat($("#kv").val());
+  var k		  = 10/parseFloat(v2);
+  var kb    = parseFloat($("#kb").val());
+  var mr_v  = parseFloat($("input[name=td9]").val());
+  if(''==$("#c_v").val()){
+    $("#c_v").val('0.01');
+  }
+  var C   = parseFloat($("#c_v").val());
+  mr_v = $.isNumeric(mr_v) ? mr_v : 100;
+  //默认体积与实际取样体积比较判断是否稀释
+  if(mr_v!=vs['vd1'] && 0!=kb&&(''==kb || !$.isNumeric(kb))){
+    $("#kb").focus(); return false;
+  }
+  if(''==k || !$.isNumeric(k)){
+    $("#kv").focus(); return false;
+  }
+  var vd3_split = String(vs['vd3']).split('.');
+  if(vd3_split.length==2){
+    var diding_ws = vd3_split[1].length;
+  }else{
+    var diding_ws = 2;
+  }
+  if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd4'])){
+    vs['vd5'] = roundjs(accsub(parseFloat(vs['vd4']),parseFloat(vs['vd3'])),diding_ws);
+  }else{
+    vs['vd5'] = '';
+  }
+  if(''!==vs['vd5']){
+    //计算公式
+    //默认体积与实际取样体积比较判断是否稀释
+    // C 草酸钠标准溶液 0.010mol/L
+    //系数   k*C*8000/v3
+    var jjz = get_jzz(vs['vd4']);//获取校正值
+    //填充表头中校正值
+    var result =[];
+    $("input[name*='vd4[']").each(function(i){
+      result.push(get_jzz($(this).val()));
+    })
+    result = unique(result);
+    $("#ddg_jzz").val(result.join(','));
+    if(mr_v==vs['vd1']){
+      //不稀释 (10+v1)*k*C*8000/v3
+      var xishu = 0.8;//parseFloat(k*8000*C/parseFloat(vs['vd1']));
+      vs['vd0'] = jsws(((10+parseFloat(parseFloat(vs['vd5'])+parseFloat(jjz)))*k-10)*xishu);
+    }else{
+      //稀释 {[(10+v1)*k-10]-[(10+v0)*k-10]*f}*C*8000/V3
+      var xishu = parseFloat(8000*C/parseFloat(vs['vd1']));
+      var f   = (mr_v-parseFloat(vs['vd1']))/mr_v;
+      var p1  = (10+parseFloat(parseFloat(vs['vd5'])+parseFloat(jjz)))*k-10;
+      var p2  = ((10+kb)*k-10)*f;
+      var p3  = (p1-p2)*xishu;
+      vs['vd0'] = jsws(p3);
+    }
+  }
+}
+</script> 

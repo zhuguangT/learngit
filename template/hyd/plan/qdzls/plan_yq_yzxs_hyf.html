@@ -1,0 +1,67 @@
+<!-- 原子吸收 -->
+<h1>原子吸收光谱仪火焰法原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:16%"></td>
+    <td style="width:18%"></td>
+    <td style="width:16%"></td>
+    <td style="width:16%"></td>
+    <td style="width:16%"></td>
+    <td style="width:9%"></td>
+    <td style="width:9%"></td>
+  </tr>
+  <tr>
+    <td>分析项目</td>
+    <td>{$arow['assay_element']}</td>
+    <td>检验方法依据</td>
+    <td>{$arow['td2']}</td>
+    <td>检出限（{$arow['unit']}）</td>
+    <td colspan="2">{$arow['td3']}</td>
+  </tr>
+  <tr>
+    <td>仪器型号</td>
+    <td>{$arow['td5']}</td>
+    <td>仪器编号</td>
+    <td>{$arow['yq_bh']}</td>
+    <td>波长</td>
+    <td colspan="2"><input type="text" class="inputc" name="td11" value="{$arow['td11']}" /></td>
+  </tr>
+  <tr>
+    <td>狭缝</td>
+    <td><input type="text" class="inputc" name="td12" value="{$arow['td12']}" /></td>
+    <td>灯电流</td>
+    <td><input type="text" class="inputc" name="td13" value="{$arow['td13']}" /></td>
+    <td>能量</td>
+    <td colspan="2"><input type="text" class="inputc" name="td14" value="{$arow['td14']}" /></td>
+  </tr>
+  <tr>
+    <td rowspan="2">序号</td>
+    <td rowspan="2">{$zhanming}</td>
+    <td colspan="3">样品浓度</td>
+    <td rowspan="2">平均值/<br />理论浓度<br />（{$arow['unit']}）</td>
+    <td rowspan="2">相对偏差<br />/回收率<br />（％）</td>
+  </tr>
+  <tr>
+    <td>C<sub>1</sub>（{$arow['unit']}）</td>
+    <td>C<sub>2</sub>（{$arow['unit']}）</td>
+    <td>C（{$arow['unit']}）</td>
+  </tr>
+    {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="6"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+  function jsgs(){
+    if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd4'])){
+      vs['vd0'] = (parseFloat(vs['vd3'])+parseFloat(vs['vd4']))/2;
+    }else if($.isNumeric(vs['vd3'])){
+      vs['vd4'] = '';
+      vs['vd0'] = parseFloat(vs['vd3']);
+    }else{
+      vs['vd0'] = vs['vd3'] = vs['vd3'] = '';
+    }
+  }
+</script>

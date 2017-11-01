@@ -1,0 +1,39 @@
+<head>
+<style>
+a{text-decoration:none}
+a:hover{color:red}
+input{background:#AACCFF;}
+.inputWidth{width:222px;}
+.hand{cursor:pointer;}
+</style>
+<script language='javascript'>
+function yanzheng(e){
+	var ti = e.pifile.value;
+	if(ti==''){
+		alert("请先选择要上传的文件");
+		return false;
+	}else{
+		return true;
+	}
+}
+</script>
+</head>
+<div>
+	<form method="post" action="" enctype="multipart/form-data" style='margin-top:30px;' onsubmit="return yanzheng(this);">
+		<table width='320px'>
+		  <tr>
+		     <td colspan='2' align='center'><h2>标准物质上传</h2><br/></td>
+		  </tr>
+		  <tr>
+		  <td align='left'>选择文件:<p/><p/></td><td align='left'><input type="file" name="pifile" title="请上传excel文件"/><p/><p/></td>
+		  </tr>
+		  <tr>
+		    <td align='center' colspan='2'><p/><p/><input type = 'submit' name="fsub" value="上传" class='btn btn-xs btn-primary'/><p/></td>
+		  </tr>
+		  <tr>
+			<td colspan='2' align='center'>规定excel格式&nbsp;&nbsp;&nbsp;<a href="$rooturl/bzwz/upfile/biaowu.xls" >下载标准物质上传的excel模版</a><br/></td>
+		  </tr>
+		</table>
+		<center><font color='red'><B><p/>使用说明：<p/></B></font><img src="$rooturl/water/images/shuoming.png" width="970px" height='400px'/></center>
+	</form>
+</div>

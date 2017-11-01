@@ -1,0 +1,131 @@
+<!-- 气相色谱 -->
+<h1>气相色谱质谱法检验记录</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+    <td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+    <td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td>
+  </tr>
+  <tr>
+    <td>检验项目</td>
+    <td colspan="5">{$arow['assay_element']}</td>
+    <td>检验地点</td>
+    <td colspan="5"><input type="text" class="inputc" name="td7"   value="{$arow['td7']}" /></td>
+  </tr>
+   <tr>
+    <td>检验方法</td>
+    <td colspan="5">{$arow['td1']}</td>
+    <td>检验依据</td>
+    <td colspan="5">{$arow['td2']}</td>
+  </tr>
+  <tr>
+    <td colspan="1">仪器型号</td>
+    <td colspan="5">{$arow['td5']}</td>
+    <td colspan="1">仪器编号</td>
+    <td colspan="5">{$arow['yq_bh']}</td>
+  </tr>
+  <tr class='auto'> 
+    <td colspan="12">仪器条件</td>
+  </tr>
+    <tr> 
+    <td colspan="2">色谱柱型号及规格</td>
+    <td colspan="10"><input type="text" class="inputc" name="td9"   value="{$arow['td9']}" /></td>
+  </tr>
+  <tr> 
+    <td colspan="2">载气名称</td>
+    <td colspan="2"><input type="text" class="inputc" name="td10"   value="{$arow['td10']}" /></td>
+    <td colspan="2">进样模式</td>
+    <td colspan="2"><input type="text" class="inputc" name="td11"   value="{$arow['td11']}" /></td>
+    <td colspan="2">气体流量</td>
+    <td colspan="2"><input type="text" class="inputc" name="td12"   value="{$arow['td12']}" /></td>
+  </tr>
+  <tr> 
+    <td colspan="2">进样口温度℃</td>
+    <td colspan="2"><input type="text" class="inputc" name="td13"   value="{$arow['td13']}" /></td>
+    <td colspan="2">传输线温度℃</td>
+    <td colspan="2"><input type="text" class="inputc" name="td14"   value="{$arow['td14']}" /></td>
+    <td rowspan="2">炉温</td>
+    <td colspan="3" rowspan="2"><textarea name="td15" rows="4">{$arow['td15']}</textarea></td>
+  </tr>
+  <tr> 
+    <td colspan="2">离子源类型</td>
+    <td colspan="2"><input type="text" class="inputc" name="td16"   value="{$arow['td16']}" /></td>
+    <td colspan="2">电离电压</td>
+    <td colspan="2"><input type="text" class="inputc" name="td17"   value="{$arow['td17']}" /></td>
+  </tr>
+  <tr> 
+    <td colspan="2">定量离子</td>
+    <td colspan="2"><input type="text" class="inputc" name="td18"   value="{$arow['td18']}" /></td>
+    <td colspan="2">定量方法</td>
+    <td colspan="2"><input type="text" class="inputc" name="td19"   value="{$arow['td19']}" /></td>
+    <td colspan="2">离子源温度℃</td>
+    <td colspan="2"><input type="text" class="inputc" name="td20"   value="{$arow['td20']}" /></td>
+  </tr>
+  <tr> 
+    <td colspan="2">扫描方式</td>
+    <td colspan="2"><input type="text" class="inputc" name="td21"   value="{$arow['td21']}" /></td>
+    <td colspan="2">溶剂延迟 min</td>
+    <td colspan="2"><input type="text" class="inputc" name="td22"   value="{$arow['td22']}" /></td>
+    <td colspan="2">四级杆温度</td>
+    <td colspan="2"><input type="text" class="inputc" name="td23"   value="{$arow['td23']}" /></td>
+  </tr>
+  <tr> 
+    <td colspan="12">样品处理及计算公式</td>
+  </tr>
+  <tr> 
+    <td colspan="2">水样体积V1(mL)</td>
+    <td colspan="2"><input type="text" class="inputc" name="td24"   value="{$arow['td24']}" /></td>
+    <td colspan="2">萃取液V2(mL)</td>
+    <td colspan="2"><input type="text" class="inputc" name="td25"   value="{$arow['td25']}" /></td>
+    <td colspan="2">进样体积(mL)</td>
+    <td colspan="2"><input type="text" class="inputc" name="td26"   value="{$arow['td26']}" /></td>
+  </tr>
+    <tr> 
+    <td colspan="2">计算公式</td>
+    <td colspan="10">C(mg/L)=C(测定结果mg/L)×V2(萃取液体积)/V1(水样体积)</td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td colspan="2">样品仪器编号</td>
+    <td colspan="2">{$zhanming}</td>
+    <td>检测结果<br />（mg/L）</td>
+    <td>空白结果<br />（mg/L）</td>
+    <td>检测结果-空白结果（mg/L）</td>
+    <td>浓缩倍数</td>
+    <td>实际检验结果<br />（mg/L）</td>
+    <td>平均值<br />（mg/L）</td>
+    <td>质控结果<br />%</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="11"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+  function jsgs () {
+
+    var vd27_split = String(vs['vd27']).split('.');
+    if(vd27_split.length==2){
+      var diding_ws = vd27_split[1].length;
+    }else{
+      var diding_ws = 2;
+    }
+    var vd2=parseFloat(vs['vd2'])?parseFloat(vs['vd2']):1;
+    var vd3=parseFloat(vs['vd3'])?parseFloat(vs['vd3']):0;
+    if( $.isNumeric(vs['vd27']) && $.isNumeric(vd3)){
+      vs['vd5']=roundjs(accsub(parseFloat(vs['vd27']),vd3),diding_ws);
+    }
+    var v1 = parseFloat($("input[name=td24]").val());
+    var v2 = parseFloat($("input[name=td25]").val());
+    if($.isNumeric(v1) && $.isNumeric(v2)&& $.isNumeric(vs['vd5']))
+    {
+      vs['vd0'] = accDiv(vs['vd5'],vd2);
+    }
+    else
+    {
+      vs['vd0'] ='';
+    }
+  }
+</script>

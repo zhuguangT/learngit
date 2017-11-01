@@ -1,0 +1,136 @@
+<h1>分光光度法检验记录</h1>
+{$hjtj_bt}
+<table  class="single">
+  <tr class="noborder">
+    <td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:11%"></td><td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+  </tr>
+  <tr>
+    <td>检验项目</td>
+    <td colspan="2">{$arow['assay_element']}</td>
+    <td>检验地点</td>
+    <td colspan="2"><input type="text" name="td7" value="$arow[td7]" /></td>
+    <td colspan="1">检验方法</td>
+    <td colspan="3">{$arow['td1']}</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">方法依据</td>
+    <td colspan="2">{$arow['td2']}</td>
+    <td>仪器型号</td>
+    <td colspan="2">{$arow['td5']}</td>
+    <td nowrap="nowrap">仪器编号</td>
+    <td colspan="3">{$arow['yq_bh']}</td>
+  </tr>
+  <tr>
+    <td class="change_qx blue_a" title="点击选择曲线">回归方程</td>
+    <td colspan="9">
+      {$arow['quxian']}
+      &nbsp;&nbsp;&nbsp;&nbsp;截距a={$arow['CA']} 斜率b={$arow['CB']} 相关系数r={$arow['CR']}
+      <input type="hidden" name = "CA" id="qa" value="$arow[CA]" />
+      <input type="hidden" name = "CB" id="qb" value="$arow[CB]" /> <span class="view_qx blue_a">曲线范围</span>：{$arow['qx_xx']} - {$arow['qx_sx']}</td>
+  </tr>
+  <tr>
+    <td>计算公式</td>
+    <td colspan="9">检验浓度 = b×（A-A<sub>0</sub>）+ a</td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>{$zhanming}</td>
+    <td class="qy_v_{$tid}">样品体积<br />（mL）</td>
+    <td>稀释倍数</td>
+    <td>吸光度A</td>
+    <td>空白吸光度A<sub>0</sub></td>
+    <td>A-A<sub>0</sub></td>
+    <td class="yp_c_{$tid}">检验浓度（{$arow['unit']}）</td>
+    <td>平均值（{$arow['unit']}）</td>
+    <td>质控结果（%）</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="9"><textarea name="td30" >{$arow['td30']}</textarea></td>
+  </tr>
+  
+</table>
+<script type="text/javascript">
+//聚氯化铝单子修改
+if($.inArray('{$arow['vid']}',['617','619'])){
+  //$(".qy_v_{$tid}").html('样品体积V（g）');
+  $(".yp_c_{$tid}").html('{$arow['assay_element']}（{$arow['unit']}）');
+}
+function jsgs(){
+	
+      //运算函数在lib.js
+      var vid = '{$arow['vid']}';
+      var sc_unit = '$arow[sc_unit]';
+      if(sc_unit.split('/').length == 2 || sc_unit=='度'){
+        var qy_v = 1;
+      }else{
+        var qy_v = vs['vd1'];
+      }
+      var vd3_split = String(vs['vd3']).split('.');
+      if(vd3_split.length==2){
+        var diding_ws = vd3_split[1].length;
+      }else{
+        var diding_ws = 3;
+      }
+      if( $.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4']) ){
+        var vd3 = parseFloat(vs['vd3']);//E₀
+        var vd4 = parseFloat(vs['vd4']);//E
+        var vd2 = parseFloat(vs['vd2']);//稀释倍数
+        var gmd = vs['vd5'] = roundjs(accsub(vd4,vd3),diding_ws);//获取回归方程中Y的值，即(A)-(A0)的值
+        var CA  = parseFloat($('#qa').val());
+        var CB  = parseFloat($('#qb').val());
+        var han1  = accMul(gmd,CB); //计算公式
+        var han2  = accAdd(han1,CA);
+        var jg    = parseFloat(accMul(han2,vd2));
+        if(vid=='108'){
+          jg *= vs['vd1']/$("input[name=td9]").val();
+        }else if(vid=='217'){
+          jg *= 1.56;
+          var shj_gs = '水合肼 ρ（N₂H₄·H₂O）= m×1.56/V';
+          var td30 = $("textarea").val();
+          $("textarea").val(td30.replace(shj_gs,'')+shj_gs);
+        }
+        // else if(vid=='380' && '-4'!=vs['vd6']){
+        //   //苯胺  因检测方法特殊需要蒸馏，所以需要在最终结果里乘以2倍的稀释倍数,但是单点标液是不经过这种处理的， 所以不需要乘2
+        //   jg *= 2;
+        // }
+        else if(vid=='617'){
+          //做单点标液时取的是体积而不是质量，所以做法和普通样品有点区别，需要除以定容体积得出浓度，这时是mg/mL的浓度，需要转换单位为mg/L
+          if('-4'==vs['vd6']){
+            qy_v = parseFloat($("input[name=td9]").val());
+            jg = jg*1000;
+          }else{
+            qy_v = 1;
+            //聚合氯化铝项目：砷（As）质量分数
+            var m  = jg;//从校准曲线查出的砷的质量的数值，单位为毫克(mg)
+            var m0 = 10;//试料的质量的数值，单位为克(g)
+            jg = ((m/1000)/(m0*10/100))*100;
+            var As_gs = '砷（As）质量分数 ω₆ = [(m×10⁻³/(m₀×10/100))]×100';
+            var td30 = $("textarea").val();
+            $("textarea").val(td30.replace(As_gs,'')+As_gs);
+          }
+        }else if(vid=='619'){
+          //做单点标液时取的是体积而不是质量，所以做法和普通样品有点区别，需要除以定容体积得出浓度，这时是mg/mL的浓度，需要转换单位为mg/L
+          if('-4'==vs['vd6']){
+            qy_v = parseFloat($("input[name=td9]").val());
+            jg = jg*1000;
+          }else{
+            qy_v = 1;
+            //聚合氯化铝项目：汞（Hg）质量分数
+            var m  = jg;//从校准曲线查出的汞的质量的数值，单位为毫克(mg)
+            var m0 = 25;//试料的质量的数值，单位为克(g)
+            jg = (m/1000/m0)*100;
+            var Hg_gs = '汞（Hg）质量分数 ω₉ = [(m×10⁻³)/m₀]×100';
+            var td30 = $("textarea").val();
+            $("textarea").val(td30.replace(Hg_gs,'')+Hg_gs);
+          }
+        }
+        vs['vd0'] = jsws(accDiv(jg,qy_v));
+      }else{
+        vs['vd5']=vs['vd0']='';
+      }
+}
+</script>

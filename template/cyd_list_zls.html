@@ -1,0 +1,294 @@
+  <style type="text/css">     
+.mask{position: absolute;
+        top: 0px; 
+        left: 0px; 
+        filter: alpha(opacity=50);
+        -moz-opacity:0.5;   
+        opacity:0.5; 
+        background-color: #ffffff;
+        z-index: 2; 
+        display: none; border:}
+    
+ /*  弹出基本资料div */
+div.sample_popup {  height:auto; width: 770px;} 
+div.menu_form_header{ 
+      text-align: center;
+      background-color: #6666FF;
+}
+div.sample_popup div.menu_form_header {
+    border-bottom: 0px; 
+    cursor: default; 
+    width:100%;
+    height:22px; 
+    line-height: 22px; 
+    vertical-align: middle; 
+    text-decoration: none; 
+    font-family: "Times New Roman", Serif; 
+    font-weight: 800; 
+    font-size: 13px; 
+    color: #FFFFFF; 
+} 
+div.menu_form_body 
+{ 
+ 
+  width: 100%;
+  height: auto;
+  font-size:12px;
+  background-color: #f1f8fe;
+} 
+.menu_form_body table tr td{
+  height: 23px;
+  line-height: 23px;
+}
+span.bar_code{ cursor: pointer;}
+span.bar_code img{ width:13px; height: 13px;}
+div.sample_popup input.menu_form_exit 
+{ 
+  /*float: right;*/
+  margin: 4px 5px 0px 0px; 
+  /*cursor: pointer;*/
+}
+/*end:  弹出信息div */
+
+td{white-space: nowrap;}/*td里的文字不换行*/
+</style>
+  <script language='javascript' src="$rooturl/js/jquery.date_input.js"></script>
+  <link rel="stylesheet" href="$rooturl/js/date_input.css" type="text/css">
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $($.date_input .initialize);
+  $("span.bar_code").next("input").each(function(){
+    $(this).hide();
+  });
+  $("span.bar_code").click(function(){
+    $(this).hide();
+    $(this).next("input").show();
+    $(this).next("input").focus();
+    $(this).next("input").blur(function(){
+      $(this).hide();
+      $(this).prev("span.bar_code").html($(this).val()+'<img src="images/b_edit.png">');
+      $(this).prev("span.bar_code").show();
+    });
+  });
+});
+function select_all(aButton){
+    var forms = aButton.form;
+    for(j=0;j<forms.length;j++){
+      with(forms.elements[j]){
+        if(type=='checkbox' && name=="cid[]"){
+          checked=(aButton.value=='全选')?true:false;
+        }
+      }
+    }
+    aButton.value=(aButton.value=='全选')?'取消全选' : '全选';
+}
+function sub(form){
+if(!confirm('您确定要将数据提交到建设部吗？')){
+  return false;
+}
+  for(i=0;i<form.length;i++){
+    with(form.elements[i]){
+      if(checked == true && name=="cid[]"){
+        var json = $("input[name='json["+value+"]']").val();
+        var bar_code = $("input[name='bar_code["+value+"]']").val();
+        var fcg = $("input[name='fcg["+value+"]']").attr('checked') == undefined ? 0:1;
+        $("#state"+value).html('<img src="$rooturl/images/loading.gif" width="15" height="15">');
+        $.getJSON(form.action, {cid:value,json:json,bar_code:bar_code,fcg:fcg},function(data){
+          var item = new Array('常规','非常规');
+          var str  = data[0]['zxbz']+'<br />';
+          for(j=0;j<data.length;j++){
+            if(data[j].state == 'Y')
+              str += item[j]+'：<img src="$rooturl/images/right.gif"> ';
+            else if(data[j].state == 'N')
+              str += item[j]+'：<img src="$rooturl/images/wrong.gif"> '+data[j].info+'<br />';
+            else str += item[j]+'：<img src="$rooturl/images/wrong.gif"> '+data[j].info+'<br />';
+
+            $("#state"+value).html(str);
+          }
+         });
+      }
+    }
+  }
+  return false;
+}
+/**************************************************
+ * DivWindow.js
+ **************************************************/
+var DivWindow= function(popup/*最外层div id*/,popup_drag/*拖动div id*/,popup_exit/*退出按钮id*/ ,exitButton/*触发服务器端退出按钮id*/,varwidth,varheight,zindex){
+  this.popup =popup ; //窗口名称
+  this.popup_drag=popup_drag;
+  this.height =varheight ; //窗口高度，并没用来设置窗口高度宽度，用来定位在屏幕的位置
+  this.width =varwidth ; //窗口宽度
+  this.popup_exit=popup_exit;
+  this.exitButton=exitButton;
+  this.zindex=zindex;
+this.init = function(){ //初始化窗口
+  
+this.popupShow();
+this.startDrag(); //设置拖动
+
+this.setCommond(); //设置关闭
+DivWindow.ArrayW.push(document.getElementById(this.popup)); //存储窗口到数组
+
+};this.init();
+};
+
+//存储窗口到数组
+DivWindow.ArrayW = new Array();
+
+//字符串连接类
+DivWindow.StringBuild = function(){
+ this.arr = new Array();
+ this.push = function(str){
+  this.arr.push(str);
+ };
+ this.toString = function(){
+  return this.arr.join("");
+ };
+};
+
+//拖动类
+DivWindow.Drag = function(o ,oRoot){
+ var _self = this;
+ //拖动对象
+ this.obj = (typeof oRoot != "undefined") ?oRoot : o;
+ this.relLeft = 0; //记录横坐标
+ this.relTop = 0; //记录纵坐标
+ o.onselectstart = function(){
+  return false;
+ };
+ o.onmousedown = function(e){ //鼠标按下
+  e = _self.fixE(e);
+  _self.relLeft = e.clientX - _self.fixU(_self.obj.style.left); 
+  _self.relTop = e.clientY - _self.fixU(_self.obj.style.top); 
+  document.onmousemove = function(e){
+   _self.drag(e);
+   //_self.obj.style.border = "1px dashed #000000";
+   //_self.obj.style.filter = "alpha(opacity=30)";
+   //_self.obj.style.opacity = "0.3";
+  };
+  document.onmouseup  = function(){
+   _self.end();
+   //_self.obj.style.border = "1px solid #cccccc";
+   //_self.obj.style.borderBottom = "2px solid #E0E0E0";
+   //_self.obj.style.borderRight = "2px solid #E0E0E0";
+   //_self.obj.style.filter = "alpha(opacity=100)";
+   //_self.obj.style.opacity = "1";
+  };
+ };
+ this.drag = function(e){ //拖动
+  e = this.fixE(e);
+  var l = e.clientX - this.relLeft;
+  var t = e.clientY - this.relTop;
+  if (t < 0)
+  {
+   t = 0; //防止头部消失
+  }
+  this.obj.style.left = l +"px";
+  this.obj.style.top = t +"px"; 
+ };
+ this.end = function(){ //结束拖动
+  document.onmousemove = null;
+  document.onmouseup = null;
+ };
+ this.fixE = function(e){ //修复事件
+  if (typeof e == "undefined") e = window.event;
+  return e;
+ };
+ this.fixU = function(u){ //处理px单位
+  return parseInt(u.split("p")[0]);
+ };
+};
+
+
+
+//窗口拖动
+DivWindow.prototype.startDrag = function(){
+ var obj = document.getElementById(this.popup);
+        var drag = document.getElementById(this.popup_drag);   
+ new DivWindow.Drag(drag,obj);
+};
+
+
+//设定窗口优先级
+DivWindow.prototype.setTop = function(){
+ document.getElementById(this.popup).onclick = 
+ document.getElementById(this.popup).onmousedown = 
+ function(){
+  for(var i=0;i<DivWindow.ArrayW.length;i++)
+  {
+   DivWindow.ArrayW[i].style.zIndex = 1;
+  }
+  this.style.zIndex = 100;
+ }; 
+};
+//显示
+DivWindow.prototype.popupShow=function() 
+{       document.getElementById('mask').style.display="block";   
+        document.getElementById('mask').style.width=window.screen.width +20;
+        document.getElementById('mask').style.height=window.screen.width +20;
+        var  element      = document.getElementById(this.popup); 
+        element.style.position   = "absolute"; 
+        element.style.visibility = "visible"; 
+        element.style.display    = "block"; 
+        element.style.width=this.width;
+        element.style.height='auto';
+        element.style.left = (window.screen.width - this.width)/2+"px";
+        //element.style.top  =(window.screen.height-this.height-100)/2+"px";
+         element.style.top  =20+"px";
+        element.style.zIndex=this.zindex;
+} 
+//设置关闭
+DivWindow.prototype.setCommond = function(){
+ var _self = this;
+ //根对象
+ var obj = document.getElementById(this.popup);
+ var exit = document.getElementById(this.popup_exit);
+ var triggServerEvent=document.getElementById(this.exitButton);
+
+ //设置关闭
+             exit.onclick = function(){
+      obj.style.display = "none";
+      obj.style.visibility = 'hidden'; 
+                    document.all.mask.style.display='none'//关闭遮罩层
+                    triggServerEvent.click();//触发服务器端退出事件
+     };
+};
+
+
+
+</script>
+<h3 class="header smaller center">$title</h3>
+
+<form>
+<div   class="widget-header header-color-blue4 center">
+
+任务性质:<select name='site_type' onchange='location="$script_name.php?year="+year.value+"&month="+month.value+"&site_type="+site_type.value;'><option value='{$_GET['site_type']}'>{$_GET['site_type']} $_site_types </select>
+年份选择:<select name='year' onchange='location="$script_name.php?year="+year.value+"&month="+month.value+"&site_type="+site_type.value;'><option value='{$_GET['year']}'>{$_GET['year']}</option> $year_list </select>
+月份选择:<select name='month' onchange='location="$script_name.php?year="+year.value+"&month="+month.value+"&site_type="+site_type.value;'><option value='{$_GET['month']}'>{$_GET['month']}</option> $month_list </select>
+<!--<input type='button' onclick='location="$script_name.php?cy_date=上周"+"&site_type="+site_type.value;' value='上周'> -->
+<!--<input type='button' onclick='location="$script_name.php?cy_date=本周"+"&site_type="+site_type.value;' value='本周'>-->
+
+$_next_week
+</div>
+
+</form>
+<table  width='88%'  class="table table-striped table-bordered table-hover center" >
+
+<tr align="center">
+  <td>序号</td>
+  <td>批次</td>
+  <td>采样单号</td>
+  <td>采样日期</td>
+  <td>样品组/瓶</td>
+  <td>采样人</td>
+  <td>进度</td>
+  <td>操作</td>
+</tr>
+$lines
+</table>
+  <!-- 遮罩层 -->
+ <div id="mask"  class="mask">
+ </div>
+$div

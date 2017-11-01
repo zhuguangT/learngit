@@ -1,0 +1,142 @@
+<h1>紫外分光光度法水质分析原始记录表</h1>
+$hjtj_bt
+<table  class="single">
+  <tr class="noborder">
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+    <td></td><td></td><td></td><td></td>
+  </tr>
+  <tr>
+  	<td colspan="2">检测项目</td>
+  	<td colspan="4">{$arow['assay_element']}</td>
+  	<td colspan="2">检测依据</td>
+  	<td colspan="2" align='left'>{$arow['td2']}</td>
+  	<td colspan="2">检出限({$arow['unit']})</td>
+    <td colspan="1">{$arow['td3']}</td>
+    <td colspan="2">取样体积(mL)</td>
+    <td colspan="1"><input type="text" name="td6" value="{$arow['td6']}" /></td>
+  </tr>
+  <tr>
+    <td colspan="2">仪器名称型号</td>
+    <td colspan="4"><input type="text" name="td4" value="$arow[td4]"/></td>
+
+    <td colspan="2">仪器型号</td>
+    <td colspan="2"><input type="text" name="td5" value="$arow[td5]"/></td>
+
+	  <td colspan="2">选用波长(nm)</td>
+	  <td colspan="4"><input type="text" name="td10" value="$arow[td10]"   /></td>
+  </tr>
+  <tr>
+  	<td colspan="2">标准溶液名称</td>
+  	<td colspan="4"><input type=text name='td12'  value='$arow[td12]' ></td> 
+  	<td colspan="2">标准溶液浓度(mg/L)</td>
+  	<td colspan="2"><input type="text" name="td13"   value="$arow[td13]"/></td>
+    <td colspan="2">比色皿规格(cm)</td>
+    <td colspan="1"><input type="text" name="td11" value="$arow[td11]"   /></td>
+    <td colspan="2">空白值(A<sub>b</sub>=A<sub>b220</sub>-2A<sub>b275</sub>)</td>
+    <td colspan="1"><input type="text"  id="kbz"  name="td14" value="{$arow['td14']}" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="change_qx blue_a" title="点击选择曲线">回归方程</td>
+    <td colspan="8">
+      {$arow['quxian']}
+      &nbsp;&nbsp;&nbsp;&nbsp;截距a={$arow['CA']} 斜率b={$arow['CB']}
+      <input type="hidden" name = "CA" id="qa" value="$arow[CA]" />
+      <input type="hidden" name = "CB" id="qb" value="$arow[CB]" /></td>
+    <td colspan="2" class="view_qx blue_a" title="查看曲线">标准曲线绘制日期</td>
+    <td colspan="4">{$arow['sc_ldrq']}</td>
+  </tr>
+  <tr>
+    <td colspan="1" rowspan="2" width="50" >序号</td>
+    <td colspan="2" rowspan="2" width="150">站名</td>
+    <td colspan="2" rowspan="2">取样体积V(mL)</td>
+    <td colspan="3" style="width:150px">A<sub>220</sub></td>
+    <td colspan="3" style="width:150px">A<sub>275</sub></td>
+    <td rowspan="2" width="75">A<sub>s</sub><br />(A<sub>s220</sub>-2A<sub>s275</sub>)</td>
+    <td rowspan="2" width="75">A<sub>r</sub>=A<sub>s</sub>-A<sub>b</sub></td>
+    <td colspan="1" rowspan="2" width="75">含量({$arow['unit']})</td>
+    <td colspan="1" rowspan="2" width="75">平均值/理论浓度({$arow['unit']})</td>
+    <td colspan="1" rowspan="2" width="75">相对偏差/加标回收率(%)</td>
+  </tr>
+  <tr>
+    <td style="width:50px">I</td>
+    <td style="width:50px">II</td>
+    <td style="width:50px">平均</td>
+    <td style="width:50px">I</td>
+    <td style="width:50px">II</td>
+    <td style="width:50px">平均</td>
+  </tr>
+  $aline
+  <tr>
+  	<td align="center">备注</td>
+  	<td colspan="15"><textarea name="td30" >{$arow['td30']}</textarea></td>
+  </tr>
+  
+</table>
+<script type="text/javascript">
+//曲线溶液的单位，如果存在“/”，可以判断出该计算公式是按照浓度的曲线计算的，否则，是按照质量曲线计算
+var sc_unit = '{$arow['sc_unit']}';
+$(document).ready(function(){
+  //填写或修改完空白 V1 V2后进行计算
+  $("#kbz,input[name=td6]").blur(function(){
+    $("input[name*='vd1']").each(function (i) {
+         $(this).blur();
+    });
+  })
+})
+function jsgs(){
+      //运算函数在lib.js
+      //加 accAdd 减 accsub 乘 accMul 除 accDiv
+      var vid = $arow[vid];
+      if(sc_unit.split('/').length == 2){
+        var qy_v = 1;
+        var f = parseFloat($("input[name=td6]").val()/vs['vd1']);//稀释倍数
+      }else{
+        //取样体积
+        var f =1;
+        var qy_v = parseFloat(vs['vd1']);
+      }
+      var vd3_split = String(vs['vd3']).split('.');
+      if(vd3_split.length==2){
+        var diding_ws = vd3_split[1].length;
+      }else{
+        var diding_ws = 2;
+      }
+      if($.isNumeric(vs['vd3']) && $.isNumeric(vs['vd3'])){
+        var A_1_1 = parseFloat(vs['vd3']);//A220 I
+        var A_1_2 = parseFloat(vs['vd4']);//A220 II
+        var A220  = roundjs(accDiv(accAdd(A_1_1,A_1_2),2),diding_ws+1);
+        vs['vd5'] = !isNaN(A220) ? A220:'';
+      }else{
+        vs['vd5'] = '';
+      }
+      if($.isNumeric(vs['vd6']) && $.isNumeric(vs['vd7'])){
+        var A_2_1 = parseFloat(vs['vd6']);//A275 I
+        var A_2_2 = parseFloat(vs['vd7']);//A275 II
+        var A275  = roundjs(accDiv(accAdd(A_2_1,A_2_2),2),diding_ws+1);
+        vs['vd8'] = !isNaN(A275) ? A275:'';
+      }else{
+        vs['vd8'] = '';
+      }
+      var Ab    = document.getElementById('kbz').value;//空白溶液的校正吸光度
+      if($.isNumeric(A220) && $.isNumeric(A275) && $.isNumeric(vs['vd1']) && $.isNumeric($("input[name=td6]").val())){
+        if( '' == Ab ){
+      		document.getElementById('kbz').focus();
+        }
+        var As    = vs['vd9'] = roundjs(accsub(A220,accMul(2,A275)),diding_ws+1);//As=A220-2*A275 标准溶液的校准吸光度
+        var Ar    = vs['vd10'] = roundjs(accsub(As,Ab),diding_ws+1);//Ar=As-Ab 标准溶液的校准吸光度 与 空白溶液的校正吸光度 的差
+        var CA    = parseFloat(document.getElementById('qa').value);
+        var CB    = parseFloat(document.getElementById('qb').value);
+        if($.isNumeric(CA) && $.isNumeric(CB)){
+          //计算公式 ρ=(Ar-a)*f/(b*V)
+          var han1  = parseFloat(accMul(accsub(Ar,CA),f));
+          var jie_g = parseFloat(accDiv(han1,accMul(qy_v,CB))).toFixed(5);
+          if(!isNaN(A275)){
+          	vs['vd0'] = vs['_vd0']= jsws(jie_g);
+          }
+        }
+      }else{
+        vs['vd9']=vs['vd10']=vs['vd0']=vs['_vd0']='';
+      }
+}
+</script>

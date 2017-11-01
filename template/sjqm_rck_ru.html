@@ -1,0 +1,87 @@
+<script type="text/javascript" src="$rooturl/js/jquery.date_input.js"></script>
+<link rel="stylesheet" type="text/css" href="$rooturl/js/date_input.css">
+<h3 class="header smaller center title">$title</h3>
+<form method='post' name='rk' id='rck' onsubmit="return ck()" action='sjqm_rck.php' style="text-align:center;">
+	<table class="table table-striped table-bordered table-hover center" style="max-width:80%;">
+		<tr>
+			<td>{$title}物品</td><td>{$r['name']}</td>
+			<td>级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</td><td><input type="text" class="width-auto" name="jibie" old_value="$r[jibie]" value="$r[jibie]" /></td>
+			<td>规&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</td><td><input type="text" class="width-auto" name="guige" old_value="$r[guige]" value="$r[guige]" /></td>
+		</tr>
+		<tr>
+			<td>单&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价</td><td><input type="text" class="width-auto" name="danjia" old_value="$r[danjia]" value="$r[danjia]"/> <span style="margin-left:-35px;margin-right:6px;width:35px;color:#6C6C6C;"><sup>元</sup>/<sub>$r[danwei]</sub></span> </td>
+			<td>生产批号</td><td><input type="text" class="width-auto" name="pihao" old_value="$r[pihao]" value="$r[pihao]" /></td>
+			<td>生产厂家</td><td><input type="text" class="width-auto" name="changjia" old_value="$r[changjia]" value="$r[changjia]" /></td>
+		</tr>
+		<tr>
+			<td>有&nbsp;&nbsp;效&nbsp;&nbsp;期</td><td><input type="text"  class="date_input width-auto"  name="youxiaoqi" old_value="$r[youxiaoqi]" value="$r[youxiaoqi]" /></td>
+			<td>过期提醒</td><td><input type="text" class="width-auto" name="GQtixing" old_value="$r[GQtixing]" value="$r[GQtixing]" /></td>
+			<td>库存提醒</td><td><input type="text" class="width-auto" name="KCtixing" old_value="$r[KCtixing]" value="$r[KCtixing]" /></td>
+		</tr>
+		<tr>
+			<td colspan="6">&nbsp;</td>
+		</tr>
+		<tr>
+			<th>入库时间</td><td><input type="text" class="date_input" name="time" value="$date" id="rq"></th>
+			<th>入库数量</th>
+			<td>
+				<span style="position:relative;display: inline-block;">
+					<input type="text" name="shuliang" id="sl" required="required" placeholder="不能为空!" /> 
+					<font style="margin-left:-20px;margin-right:5px;width:35px;color:#6C6C6C;">$r[danwei]</font>
+					<!--<span style="color:blue;font-size:12px;position:absolute;right:-26px;top:-2px;">更换<br />单位</span>-->
+				</span>
+			</td>
+			<th>入&nbsp;&nbsp;库&nbsp;&nbsp;人</th><td><select name="user" style="min-width:160px;">$u[useralllist];</select></td>
+		</tr>
+		<tr align=center>
+			<td>摘&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;要</td>
+			<td colspan='5'><input type='text' name='zhaiyao' style="width:100%"></td>
+		</tr>
+	</table>
+	<input type=hidden name=ssl id=ssl value="$r[kucun]">
+	<input type='hidden' name='insert' id='insert' value="">
+	$hidid
+	$sub
+</form>
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<script type="text/javascript">
+$("input.width-auto").blur(function(){
+	var insert_val	= $("#insert").val();
+	var now_val	= $(this).val();
+	var old_val	= $(this).attr("old_value");
+	var val_name= $(this).attr('name');
+	if(now_val != old_val || val_name == 'youxiaoqi'){
+		insert_val	+= "|#|"+val_name;
+		$("#insert").val(insert_val);
+	}else{
+		//清除之前记录的东西
+	}
+});
+$($.date_input .initialize);
+$ck_kucun
+function ck(){
+	var reg = /^\d+$/;
+	var rqreg = /^\d{4}-\d{1,2}-\d{1,2}$/;
+	var rq = document.getElementById('rq').value;
+	var sl = document.getElementById('sl').value;
+	if(sl == ''){
+		alert('数量不能为空');
+		document.getElementById('sl').focus();
+		return false;
+	}else if(!reg.test(sl)){
+		alert('数量必须为整数');
+		document.getElementById('sl').value='';
+		document.getElementById('sl').focus();
+		return false;
+	}
+	if(rq == ''){
+		alert('日期不能为空');
+		return false;
+	}else if(!rqreg.test(rq)){
+		alert('日期格式必须为YYYY-mm-dd');
+		document.getElementById('rq').value='';
+		document.getElementById('rq').focus();
+		return false;
+	}
+}
+</script>

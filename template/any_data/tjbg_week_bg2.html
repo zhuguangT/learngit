@@ -1,0 +1,73 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+<title>
+	水质周报公报
+</title>
+		
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name></x:Name><x:WorksheetOptions><x:Selected/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
+    <style type="text/css">
+        .td1
+        {
+            width: {$cy_date_width}px;
+        }
+		.td2{
+			width:{$wt_width}px;
+		}
+		.td3{
+			width:{$vid_width}px
+		}
+        .gdtjContainer .tb tr
+        {
+            text-align: center;
+            vertical-align: middle;
+			font-family:宋体;
+        }
+        .gdtjContainer .tb td
+        {
+			white-space : normal;
+			border:0.5pt solid;
+            text-align: center;
+			font-family:宋体;
+            font-weight: normal;
+            font-size: 8pt;
+			height:30px;}
+		.gdtjContainer .tb .bz td{
+			height:88px;
+			font-size:10.5pt;
+		}
+
+    </style>
+</head>
+<body>
+    <div class="gdtjContainer">
+        <table class="tb"  style="margin:0 auto;width:1000px;border-collapse:collapse;">
+            <colgroup>
+				<col class="td1"/>
+				<col class="td2" />
+				<col  class="td3" span="{$cols1}" />
+               
+            </colgroup>
+			<thead style="display:table-header-group;" >
+				<tr>
+					<td align="center" style="font-weight:bold;font-size:14pt;font-family:宋体;border:0px;height:40px" colspan={$z_cols} >$title</td>
+				</tr> 
+				<tr>
+					<td align="left" style="font-size:12pt;font-family:宋体;text-align:left;border:0px;height:80px" colspan={$z_cols}>&nbsp;&nbsp;&nbsp;&nbsp;{$cy_date_fw}，青岛市城市管理局对我市市内三区城市供水水质进行了抽检，现将抽检结果公报如下：<br  style="mso-data-placement:same-cell;"/>&nbsp;&nbsp;&nbsp;&nbsp;市内三区共抽检3个水厂出厂水水样和18个管网水水样。所有受检出厂水的9项常规指标和管网水的7项常规指标全部符合《生活饮用水卫生标准》（GB5749-2006），出厂水和管网水受检水样合格率均为100%。</td>
+				</tr>
+				<tr align="center" style="height:2cm"><td rowspan="2">抽检日期</td><td rowspan="2">水样类型</td>{$xm_name_td}</tr>
+				<tr align="center" style="height:2cm">{$data_cs_td}</tr>
+			</thead>
+			{$week_bg_line}
+			<tr align="center" class="bz">
+				<td colspan="2">国家标准<br style="mso-data-placement:same-cell;"/>（GB5749-2006)</td>{$xz_td}
+			</tr>
+			<tr>
+				<td colspan={$z_cols} style="text-align:left;font-size:12pt;font-family:宋体;height:45px">备注：1、管网水抽检浑浊度、色度、余氯、细菌总数、总大肠菌群、耗氧量、嗅和味共7项指标，出厂水除上述7项指标外，还包括耐热大肠菌群、肉眼可见物2项，共9项指标。2、管网末梢水耗氧量每月抽检二次。</td>
+			</tr>
+        </table>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<h1>容量法检测$arow[assay_element]记录</h1>
+{$hjtj_bt}
+<input type="hidden" name="td6" value="$arow[td6]" />
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:10%"></td><td style="width:15%"></td><td style="width:10%"></td>
+		<td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td>
+		<td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td><td style="width:6%"></td>
+		<td style="width:6%"></td><td style="width:6%"></td><td style="width:6%"></td><td style="width:6%"></td>
+	</tr>
+	<tr align="center">
+		<td colspan="1">检验地点</td>
+		<td colspan="2"><input type="text" name="td7" class="inputl" value="{$arow['td7']}" /></td>
+		<td colspan="3">标准溶液名称</td>
+		<td colspan="3"><input type="text" name="td12" class="inputl" value="{$arow['td12']}" /></td>
+		<td colspan="4">标准溶液浓度 C (mol/L)</td>
+		<td colspan="2"><input type="text" name="td13" class="inputl" id="c_v" value="{$arow['td13']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="1">方法依据</td>
+		<td colspan="2">{$arow['td2']}</td>
+		<td colspan="3">检验方法</td>
+		<td colspan="9">{$arow['td1']}</td>
+	</tr>
+		<tr class="bt_hidden">
+		<td colspan="2">当量或分子量</td>
+		<td colspan="8"><input type="text" name="td11" value="{$arow['td11']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="3">计算公式</td>
+		<td colspan="12" id="jsgs_">{$arow['td28']}</td>
+		<input type="hidden" name="td28" value="" />
+	</tr>
+	<tr align="center">
+		<td>序号</td>
+		<td>{$zhanming}</td>
+		<td>水样体积<br/> V<sub>水样</sub> (mL)</td>
+		<td colspan="2">终点<br/>V<sub>1</sub> (mL)</td>
+		<td colspan="2">初始<br/>V<sub>0</sub> (mL)</td>
+		<td colspan="2">实际耗用标准<br/>V(mL)</td>
+		<td colspan="2">样品浓度<br/>({$arow['unit']})</td>
+		<td colspan="2">平均值({$arow['unit']})</td>
+		<td colspan="2">质控结果（%）</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td align="center">备注</td>
+		<td colspan="14"><textarea name="td30">$arow[td30]</textarea></td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+//容量法的计算一般是：水样的含量=（标准溶液用量-空白）*标准溶液浓度 *  当量 / 取体积。
+var jsgs_html = '';	//计算公式
+var dl_fzl = '{$arow['td11']}';	//当量，分子量
+var dl_emp = (''== dl_fzl || !$.isNumeric(dl_fzl)) ? true:false;
+if('103'=='{$arow['vid']}'){
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 100.09;	//总硬度
+	jsgs_html = 'ρ = V×C×'+dl_fzl+'×1000/V<sub>水样</sub>';
+}else if('114'=='{$arow['vid']}'){
+	var xkp_v  = parseFloat($("input[name=td12]").val());
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 8;	//溶解氧
+	var jsgs_html = 'ρ = M<sub>r</sub>V×C×250×1000/400×(250-3)';
+	var dl_fzl = dl_fzl*250/(250-3);
+}else if('118'=='{$arow['vid']}'){
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 8;	//化学需氧量COD
+	var jsgs_html = 'ρ = (V<sub>1</sub>-V<sub>0</sub>)×C×'+dl_fzl+'×1000/V<sub>水样</sub>';;
+}else if('126'=='{$arow['vid']}'){
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 22;	//二氧化碳
+}else if('127'=='{$arow['vid']}'){
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 22;	//游离二氧化碳
+	jsgs_html = 'ρ = V×C×'+dl_fzl+'×1000/V<sub>水样</sub>';
+}else if('128'=='{$arow['vid']}'){
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 22;	//侵蚀性二氧化碳钙
+}else if('173'=='{$arow['vid']}'){
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 40.08;  //钙
+	jsgs_html = 'ρ = V×C×A×1000/V<sub>水样</sub>';
+}else if('174'=='{$arow['vid']}'){
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 24.32;  //镁
+	jsgs_html = 'ρ = V×C×24.32×1000/V<sub>水样</sub>';
+}else if('125'=='{$arow['vid']}'){//总碱度
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 50.04;  //
+	jsgs_html = 'ρ = V×C×'+dl_fzl+'×1000/V<sub>水样</sub>';
+}else if('595'=='{$arow['vid']}'){//碳酸盐硬度
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 50.04;  //
+	jsgs_html = 'ρ = V×C×'+dl_fzl+'×1000/V<sub>水样</sub>';
+}else{
+	var dl_fzl = !$.isNumeric(dl_fzl) ? 1 : dl_fzl;
+}
+jsgs_html = (''!=jsgs_html) ? jsgs_html : '样品浓度 = C×V×'+dl_fzl+'×1000/V<sub>水样</sub>';
+$("input[name=td28]").val(jsgs_html);
+$("#jsgs_").html(jsgs_html);
+function jsgs(){
+	if(''==$("#c_v").val()){ $("#c_v").focus(); return false;}
+	var C = parseFloat($("#c_v").val());
+	//默认体积与实际取样体积比较判断是否稀释
+	if( ''==kb || !$.isNumeric(kb)){
+		//$("#kb").val(0.00);
+		var kb = 0.00;
+	}
+	var vd3_split = String(vs['vd3']).split('.');
+	if(vd3_split.length==2){
+		var diding_ws = vd3_split[1].length;
+	}else{
+		var diding_ws = 0;
+	}
+	if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd4'])){
+		vs['vd5'] = roundjs(accsub(parseFloat(vs['vd4']),parseFloat(vs['vd3'])),diding_ws);
+	}else{
+		vs['vd5']= '';
+	}
+		var jg = (parseFloat(vs['vd5']))*parseFloat(C)*parseFloat(dl_fzl)*1000/parseFloat(vs['vd1']);
+	if(jg)
+	{
+		vs['vd0'] = jsws(jg);
+
+	}else{
+		vs['vd0'] = '';
+	}
+}
+</script> 

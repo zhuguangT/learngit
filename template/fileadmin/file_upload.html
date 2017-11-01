@@ -1,0 +1,100 @@
+﻿<style>
+.tablelv { border:1px #0CF solid; border-collapse:collapse; width:1250px;margin:auto}
+.tablelv *{ color:#363636}
+.tablelv tr td{ font-size:12px; height:20px; line-height:20px; border:1px solid #00CCFF}
+a{text-decoration:none}
+a:hover{color:red}
+#file{background:#AACCFF}
+.size_same{min-width:215px !important;}
+</style>
+<script type="text/javascript">
+	function back(){
+		window.location.href="fileadmin.php";
+	}
+	$(function(){
+		//日期插件
+		$('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+			$(this).prev().focus();
+		});
+		//名称为文件名称时，自动根据新文件更新
+		$("#file").change(function(){
+			var now_name	= $("input[name='data[name]']").val();
+			var old_name	= $("#file_name").val();
+			if(now_name == old_name){
+				var new_name= $(this).val();
+				var pos1	= new_name.lastIndexOf("/");
+				var pos2	= new_name.lastIndexOf(".");
+				var new_name= new_name.substring(pos1 + 1, pos2);
+				$("input[name='data[name]']").val(new_name);
+				$("#file_name").val(new_name);
+			}
+		});
+	})
+</script>
+<table class="table table-striped table-bordered table-hover center" style='width:800px'>
+<h3 class="header smaller center title">更改文件</h3>
+<form method="post" action="adddeal.php" enctype="multipart/form-data">
+		<tr align="center">
+			<td>名称</td>
+			<td><input type="text" name="data[name]" class='size_same' placeholder="默认为文件名称" value="{$v['name']}" ></td>
+		</tr>
+		<tr align="center">
+			<td>文件编号</td>
+			<td><input type="text" name="data[file_num]"  class='size_same' value="{$v['file_num']}"  ></td>
+		</tr>
+		<tr align="center">
+			<td>发布日期</td>
+			<td><input type="text" name="data[fb_date]" class='size_same date-picker' value="{$v['fb_date']}" readonly ></td>
+		</tr>
+		<tr align="center">
+			<td>适用范围</td>
+			<td><input type="text" name="data[use_range]"  class='size_same' value="{$v['use_range']}" ></td>
+		</tr>
+		<tr>
+			<td>状态</td>
+			<td><input type="text" name="data[namebak]"  class='size_same' value="{$v['namebak']}" ></td>
+		</tr>
+		<tr align="center">
+			<td>备注</td>
+			<td><input type="text" name="data[note]"  class='size_same' value="{$v['note']}" ></td>
+		</tr>
+		<tr>
+			<td>原文件</td>
+			<td>$old_file_name</td>
+		</tr>
+		<tr>
+		<td>上传文件</td>
+		<input type="hidden" name="data[pid]"  value="$id"/>
+		<td align=center>
+			<!-- <input type="file" name="upfile[]" id="file">-->
+		 	<input type="file" id="input" name="upfile[]"  multiple="multiple">    
+		</td>
+		</tr>
+		<tr id="have_file">
+			<td>已上传的文件</td>
+			<td id="content" name="upfile[]"></td>
+		</tr>
+			<input type="hidden" name="id"  value="$id"/>
+			<input type="hidden" name="data[pid]"  value="$pid"/>
+			<input type='hidden' name='old_url' value='{$old_url}'>
+			<input type='hidden' id='file_name' value='{$file_name}'>
+		<tr>
+			<td align=center colspan="2"><input class='btn btn-xs btn-primary' type="submit" name="upload"  value="更改"/></td>
+		</tr>
+</form>
+</table>
+<script> 
+//将浏览按钮转换为可上传多个文件的按钮
+var inputElement = document.getElementById("input");    
+inputElement.addEventListener("change", handleFiles, false);  
+function handleFiles(){  
+	fileList= this.files;  
+	var dd	= document.getElementById('content');
+	dd.innerHTML	= '';
+	var html_files= '';
+	for( var i = 0 ; i < fileList.length ; i++ ){
+		html_files +="<div id='del_one"+i+"'>" +fileList[i].name;
+	}
+	dd.innerHTML	= html_files;
+}
+</script> 

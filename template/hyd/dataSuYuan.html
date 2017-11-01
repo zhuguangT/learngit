@@ -1,0 +1,52 @@
+<!-- 化验单溯源报告 -->
+<h3 class="header smaller center title">{$header}</h3>
+{$syHtml}
+<script type="text/javascript">
+	$(document).ready(function(){
+		var suYuanID = $(".tabs_3").prop("id");
+		var suYuanBox = $("div[aria-labelledby='"+suYuanID+"']");
+		suYuanBox.find(".blue_a").removeClass("blue_a");
+		suYuanBox.find("button,input[type!=text]").hide();
+		suYuanBox.find("input[type=text],select").each(function(){
+			$(this).replaceWith($(this).val());
+		});
+		//替换掉任何空白字符，包括空格、制表符、换页符等
+		String.prototype.trim = function() {
+			return this.replace( /[\s]/g, "" );
+		}
+		String.prototype.removeHtml = function() {
+			return this.replace(/<[^>]+>/g,"");
+		}
+		var random = Math.ceil(Math.random()*20151029);
+		suYuanBox.find(".assay_form").each(function(i){
+			var that = $(this);
+			that.prop("id",that.prop("id")+random+i);
+			that.prop("data",random+i);
+			if(i>0){
+				pre_box = suYuanBox.find(".assay_form").eq(i-1);
+				var now_len = that.find("td").length;
+				var pre_len = pre_box.find("td").length;
+				var n = (pre_len > now_len) ? pre_len : now_len;
+				for(var i=0;i<n;i++){
+					var now_td = that.find("td").eq(i);
+					var pre_td = pre_box.find("td").eq(i);
+					var now_html = (!now_td.find("span:last").length) ? now_td.html() : now_td.find("span:last").html();
+					var pre_html = (!pre_td.find("span:last").length) ? pre_td.html() : pre_td.find("span:last").html();
+					if(pre_html.trim() != now_html.trim()){
+						var now_html = now_html.removeHtml();
+						var pre_html = pre_html.removeHtml();
+						now_td.css({"margin":0,"padding":0,"background-color":"#F00"});
+						now_td.html('<span>'+now_html+'</span>').find("span").addClass("tooltip-error").addClass("data_error").attr({"data-trigger":"hover focus","data-placement":"top","data-rel":"popover","data-animation":"true","data-original-title":"<i class='icon-warning-sign red'></i>&nbsp;数据更改提示","data-content":'数据由【<strong><span class="red">'+pre_html+'</span></strong>】更改为了【<strong><span class="green">'+now_html+'</span></strong>】'}).popover({html:true});
+					}
+				}
+			}
+		});
+		suYuanBox.find("div[id^=accordion_]").each(function(i){
+			var that = $(this);
+			that.find("div[id^=collapseTwo_]").prop("id","collapseTwo_"+random+i);
+			that.find("a[data-parent^='#accordion_']").prop("href","#collapseTwo_"+random+i);
+			that.find("a[data-parent^='#accordion_']").attr("data-parent","#accordion_"+random+i);
+			that.prop("id","accordion_"+random+i);
+		})
+	})
+</script>

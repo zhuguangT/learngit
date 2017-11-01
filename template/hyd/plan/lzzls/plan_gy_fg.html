@@ -1,0 +1,108 @@
+<h1>分光光度法检验记录（工艺）</h1>
+{$hjtj_bt}
+<table  class="single">
+  <tr class="noborder">
+    <td style="width:9%"></td><td style="width:10%"></td><td style="width:9%"></td>
+    <td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td>
+    <td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td>
+  </tr>
+  <tr>
+    <td>检验项目</td>
+    <td colspan="3">{$arow['assay_element']}</td>
+    <td>检验地点</td>
+    <td colspan="2"><input type="text" name="td7" value="$arow[td7]" /></td>
+    <td colspan="1">检验方法</td>
+    <td colspan="3">{$arow['td1']}</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">方法依据</td>
+    <td colspan="3">{$arow['td2']}</td>
+    <td>仪器型号</td>
+    <td colspan="2">{$arow['td5']}</td>
+    <td nowrap="nowrap">仪器编号</td>
+    <td colspan="3">{$arow['yq_bh']}</td>
+  </tr>
+  <tr>
+    <td class="change_qx blue_a" title="点击选择曲线">回归方程</td>
+    <td colspan="10">
+      {$arow['quxian']}
+      &nbsp;&nbsp;&nbsp;&nbsp;截距a={$arow['CA']} 斜率b={$arow['CB']} 相关系数r={$arow['CR']}
+      <input type="hidden" name = "CA" id="qa" value="$arow[CA]" />
+      <input type="hidden" name = "CB" id="qb" value="$arow[CB]" /> 曲线范围：{$arow['qx_xx']} - {$arow['qx_sx']}
+    </td>
+  </tr>
+  <tr>
+    <td>计算公式</td>
+    <td colspan="3" class="noright right">氨态氮（以N计，%）= </td>
+    <td colspan="3" class="noborder">m×10<sup>-3</sup> <hr /> (m<sub>0</sub>×25/V<sub>1</sub>)×(50/100)</td>
+    <td colspan="4" class="noleft left">×100</td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>{$zhanming}</td>
+    <td>试样质量<br />m<sub>0</sub>（g）</td>
+    <td>试样吸光度A</td>
+    <td>空白吸光度A<sub>0</sub></td>
+    <td>A-A<sub>0</sub></td>
+    <td>相当标准m（mg）</td>
+    <td>试样稀释体积V<sub>1</sub>（mL）</td>
+    <td>氧化铝含量</td>
+    <td>计算结果（10%Al<sub>2</sub>O<sub>3</sub>%计）（{$arow['unit']}）</td>
+    <td>报告结果（10%Al<sub>2</sub>O<sub>3</sub>%计）（{$arow['unit']}）</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="10"><textarea name="td30" >{$arow['td30']}</textarea></td>
+  </tr>
+  
+</table>
+<script type="text/javascript">
+function jsgs(){
+      //运算函数在lib.js 
+      var vid = '{$arow['vid']}';
+      var vd_split = String(vs['vd4']).split('.');
+      if(vd_split.length==2){
+        var diding_ws = vd_split[1].length;
+      }else{
+        var diding_ws = 3;
+      }
+      var vd5 = parseFloat(vs['vd5']);//E₀
+      var CA = parseFloat($('#qa').val());
+      var CB = parseFloat($('#qb').val());
+      if( $.isNumeric(vs['vd4']) && $.isNumeric(vs['vd5']) ){
+        var vd4 = parseFloat(vs['vd4']);//E
+        vs['vd6'] = roundjs(accsub(vd4,vd5),diding_ws);
+        var han1 = accMul(vs['vd6'],CB); //计算公式
+        var han2 = accAdd(han1,CA);
+        var jg = parseFloat(han2);
+        vs['vd7'] = roundjs(jg,6);
+      }else{
+        vs['vd7']='';
+      }
+      if( $.isNumeric(vs['vd11']) && $.isNumeric(vs['vd5']) ){
+        var vd11 = parseFloat(vs['vd11']);//E
+        vs['vd12'] = roundjs(accsub(vd11,vd5),diding_ws);
+        var han1 = accMul(vs['vd12'],CB); //计算公式
+        var han2 = accAdd(han1,CA);
+        var jg = parseFloat(han2);
+        vs['vd8'] = roundjs(jg,6);
+      }else{
+        vs['vd8']='';
+      }
+
+      if( $.isNumeric(vs['vd7']) && $.isNumeric(vs['vd8']) && $.isNumeric(vs['vd20'])&& $.isNumeric(vs['vd21']) && $.isNumeric(vs['vd9']) && $.isNumeric(vs['vd13']) ){
+        vs['vd14'] = 4*parseFloat(vs['vd7'])/vs['vd3']/parseFloat(vs['vd20'])*10;
+        vs['vd14'] = roundjs( vs['vd14'],6);
+        vs['vd15'] = 4*parseFloat(vs['vd8'])/vs['vd3']/parseFloat(vs['vd21'])*10;
+        vs['vd15'] = roundjs( vs['vd15'],6);
+        vs['vd0'] = accAdd(vs['vd14'],vs['vd15'])/2;
+      }else{
+        vs['vd0']='';
+      }
+      if('-40'==vs['vd22'])
+    {
+      vs['vd0'] = '/';
+    }
+}
+</script>

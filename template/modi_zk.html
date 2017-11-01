@@ -1,0 +1,39 @@
+<style type="text/css">
+	a{cursor:pointer}
+</style>
+<script>
+function check(t,name){
+	if(name=='snpx'){
+		if(!t.checked){
+			if(!confirm('确定要取消室内平行')){
+				t.checked=true;
+			}
+		}
+	}else{
+		if(!t.checked){
+			if(!confirm('确定要取消加标回收')){
+				t.checked=true;
+			}
+		}
+	}
+}
+</script>
+<form  action="sn_zk_save.php" method="post">
+<input type="hidden" name="cyd_id" value={$_GET[cyd_id]} id="cyd_id">
+<h3 class="header smaller center title">添加室内质控</h3>
+<div class="widget-box no-border">
+
+  <div class="widget-body">
+<table class="table table-striped table-bordered table-hover center" >
+<tr>
+	<td>样品编号</td>
+	<td>站名</td>
+	<td>室内平行</td>
+	<td>加标回收</td>
+</tr>
+$lines
+</table>
+</div>
+</div>
+{$save_button}
+</form>

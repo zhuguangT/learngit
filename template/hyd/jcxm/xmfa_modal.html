@@ -1,0 +1,301 @@
+<div class="modal-content" style="width:800px;margin:0 auto;overflow:auto;">
+	<form name="xmfa_new" action="#">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="关闭窗口">&times;</button>
+		<div class="xmfa_modal_msg alert-danger center hide" style="height:30px;margin:0 auto;width:300px;padding:0;line-height:30px;"></div>
+	</div>
+	<div class="modal-body">
+		<h3 class="header smaller center title"><strong class="leixing"></strong>检测方法详细信息配置</h3>
+		<div class="widget-box no-border">
+		  <div class="widget-body">
+			<table id="xmfa_modal_table" class="table table-striped table-bordered center">
+				<thead>
+				<tr style="font-weight:bold;text-align:center;">
+					<th >参数名</th>
+					<th colspan="5">参数值</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td>水样类型：</td>
+					<td data-field="lxid" colspan="5" style="text-align:left;"></td>
+				</tr>
+				<tr>
+					<td>检测项目：</td>
+					<td data-field="xmid" colspan="2"><select name="xmid"></select></td>
+					<td>检测方法：</td>
+					<td data-field="fangfa" colspan="2"></td>
+				</tr>
+				<tr>
+					<td>表格模板：</td>
+					<td data-field="hyd_bg_id" colspan="2"></td>
+					<td>使用仪器：</td>
+					<td data-field="yiqi" colspan="2"></td>
+				</tr>
+				<tr>
+					<td>检出限：</td>
+					<td data-field="jcx" colspan="2">
+						<input type="text" onkeyup="value=value.replace(/[^\d.-]/g,'')" name="jcx" value="" placeholder="不能为空" maxlength="10" required style="width:200px;" />
+					</td>
+					<td>单位：</td>
+					<td data-field="unit" colspan="2"></td>
+				</tr>
+				<tr>
+					<td>设为默认：</td>
+					<td data-field="mr"colspan="2">
+						<select name="mr" style="width: 200px;">
+							<option value="1">是</option>
+							<option value="0">否</option>
+						</select>
+					</td>
+					<td>资质认证：</td>
+					<td data-field="zzrz" colspan="2">
+						<select name="zzrz" style="width: 200px;">
+							<option value="1">已认证</option>
+							<option value="0">未认证</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>主测：</td>
+					<td data-field="userid" colspan="2"><select name="userid"></select></td>
+					<td>辅测：</td>
+					<td data-field="userid2" colspan="2"><select name="userid2"></select></td>
+				</tr>
+				<tr>
+					<td>备注（限制15字以内）：</td>
+					<td data-field="beizhu" colspan="5">
+						<input type="text" name="beizhu" value="" maxlength="15" style="width:100%" />
+					</td>
+				</tr>
+				<tr>
+					<td rowspan="2">默认修约位数<br />（结果值小数点后保留位数）：</td>
+					<td>结果&lt;1</td>
+					<td>1≤结果&lt;10</td>
+					<td>10≤结果&lt;100</td>
+					<td>100≤结果&lt;1000</td>
+					<td>结果≥1000</td> 
+				</tr>
+				<tr>
+					<td data-field="w1">{echo PublicApp::get_select('w1',array('无',0,1,2,3,4,5,6,7,8),false,false);}</td>
+					<td data-field="w2">{echo PublicApp::get_select('w2',array('无',0,1,2,3,4,5,6,7,8),false,false);}</td>
+					<td data-field="w3">{echo PublicApp::get_select('w3',array('无',0,1,2,3,4,5,6,7,8),false,false);}</td>
+					<td data-field="w4">{echo PublicApp::get_select('w4',array('无',0,1,2,3,4,5,6,7,8),false,false);}</td>
+					<td data-field="w5">{echo PublicApp::get_select('w5',array('无',0,1,2,3,4,5,6,7,8),false,false);}</td>
+				</tr>
+				<tr>
+					<td>
+						修约位数设置：
+						<a href="javascript:void();" class="glyphicon glyphicon-question-sign tooltip-info" data-rel="tooltip" title="" data-original-title="强制保留几位小数时，将区间和有效位数都设置为0即可。"></a>
+						<input type="checkbox" name="is_blws" value="1" />
+					</td>
+					<td data-field="blws" colspan="5" style="text-align:left;" class="visible-lg action-buttons"></td>
+				</tr>
+				</tbody>
+			</table>
+		  </div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<input type="hidden" name="fid" value="" />
+		<button type="button" class="btn btn-primary btn-sm form_submit">确定</button>
+		<button type="button" class="btn btn-sm" data-dismiss="modal" aria-hidden="true" title="关闭窗口">关闭</button>
+	</div>
+	</form>
+</div>
+<script id="temp_blws_step" type="text/template">
+	<div class="blws_step step_int form-group">
+		<a class="icon bigger-130 text-indent" style="display:none;" href="javascript:void(0)">&nbsp;&nbsp;&nbsp;</a>
+		<a class="icon icon-plus-sign bigger-130" style="display:none;" href="javascript:void(0)" onclick="add_blws_step(this)"></a>
+		区间（≥）：<input type="text" name="blws[]" value="0" size="5" maxlength="5" onkeyup="value=value.replace(/[^\d.-]/g,'')" onblur="order_blws_step()" />
+		有效数字：<input class="input-mini spinner1" type="text" name="yxsz[]" value="0" size="3" maxlength="2" onkeyup="value=value.replace(/[^\d.-]/g,'')" onblur="order_blws_step()" />
+		小数最大位数：<input class="input-mini spinner1" type="text" name="zdws[]" value="0" size="3" maxlength="2" onkeyup="value=value.replace(/[^\d.-]/g,'')" onblur="order_blws_step()" />
+		<a class="icon icon-remove-sign bigger-130" style="display:none" href="javascript:void(0)" onclick="del_blws_step(this)"></a>
+		<span class="badge badge-transparent tooltip-error" style="display:none;" title="" data-original-title="ddd">
+			<i class="icon-warning-sign red bigger-130"></i>
+		</span>
+	</div>
+</script>
+<script type="text/javascript">
+// 限制区间的个数为1-5个
+var check_blws_step_length = function(){
+	if( $(".blws_step").length <= 1 ){
+		$(".blws_step .icon-remove-sign").hide();
+	}else{
+		$(".blws_step .icon-remove-sign").show();
+	}
+	if( $(".blws_step").length >= 5 ){
+		$("a.text-indent").show();
+		$(".blws_step .icon-plus-sign").hide();
+	}else{
+		$("a.text-indent").hide();
+		$(".blws_step .icon-plus-sign").show();
+	}
+};
+// spinner初始化函数
+var blws_spinner_init = function(){
+	// $("#xmfa_modal .blws_step.step_int .spinner")
+	// 	.ace_spinner({
+	// 		value:0,min:0,max:10,step:1, on_sides: true,
+	// 		btn_up_class:'btn-success' , btn_down_class:'btn-danger',
+	// 		icon_up:'icon-plus smaller-75', icon_down:'icon-minus smaller-75'
+	// 	}).parents(".ace-spinner").css({"position": "relative", "top": "9px"})
+	// 	.parents(".blws_step").removeClass("step_int");
+	$("#xmfa_modal .tooltip-error").tooltip();
+	check_blws_step_length();
+};
+// 区间排序
+var order_blws_step = function(){
+	var blws_obj = [],blws_step = [], has_error = false, error_mag = '';
+	$("#xmfa_modal .blws_step").each(function(i){
+		var blws = $(this).find("input[name^=blws]").val();
+		var yxsz = $(this).find("input[name^=yxsz]").val();
+		var zdws = $(this).find("input[name^=zdws]").val();
+		if( !$.isNumeric(blws) ){
+			has_error = true;
+			error_mag = '必须为数字！';
+			$(this).find("input[name^=blws]").focus();
+		}else if( $.inArray(blws, blws_step) >=0 ){
+			has_error = true;
+			error_mag = '数据区间重复！';
+			$(this).find("input[name^=blws]").focus();
+		}/*else if( '0' == yxsz && '0' == zdws ){
+			has_error = true;
+			error_mag = '有效数字和小数位数不能同时';
+			$(this).find("input[name^=zdws]").focus();
+		}*/
+		if( blws >= 1 && zdws > 0 ){
+			zdws = yxsz;
+			$(this).find("input[name^=zdws]").val(zdws);
+		}
+		if( has_error && error_mag ){
+			$(this).addClass("has-error").find(".tooltip-error").attr("data-original-title",error_mag).tooltip().show();
+			return false;
+		}else{
+			blws_step[i] = blws;
+			$(this).removeClass("has-error").find(".tooltip-error").hide();
+			blws_obj[i] = [blws, yxsz, zdws];
+		}
+	});
+	if( has_error ){
+		return false;
+	}
+	// 必须含有大于等于0的区间
+	if( $.inArray('0', blws_step) < 0 ){
+		add_blws_step();
+	}
+	// 根据数据区间从大到小排序
+	blws_obj.sort(function(a, b){
+		return b[0]-a[0];
+	});
+	// 重新组合数据
+	$.each(blws_obj, function(i){
+		$("#xmfa_modal input[name^=blws]:eq("+i+")").val(blws_obj[i][0]);
+		$("#xmfa_modal input[name^=yxsz]:eq("+i+")").val(blws_obj[i][1]);
+		$("#xmfa_modal input[name^=zdws]:eq("+i+")").val(blws_obj[i][2]);
+	});
+	return true;
+}
+// 添加区间
+var add_blws_step = function(obj){
+	if( typeof obj == "undefined" ){
+		obj = "#xmfa_modal .blws_step:last .icon-plus-sign";
+	}
+	var temp_blws_step = $("#temp_blws_step").html();
+	$(obj).parents(".blws_step").after(temp_blws_step);
+	// 初始化spnner
+	blws_spinner_init();
+}
+// 删除区间
+var del_blws_step = function(obj){
+	$(obj).parents(".blws_step").remove();
+	check_blws_step_length();
+}
+// 绑定提交按钮事件
+$("#xmfa_modal .form_submit").click(function(){
+	$("#xmfa_modal form[name=xmfa_new]").submit();
+});
+// 数据提交
+$("#xmfa_modal form[name=xmfa_new]").submit(function(){
+	var xmfa_form = function(name){
+		return $("#xmfa_modal form[name=xmfa_new] [name="+name+"]");
+	};
+	// 检查不能为空的属性
+	var check_field = ['lxid','xmid','fangfa','hyd_bg_id','jcx','unit','userid'];
+	for (var i = 0; i < check_field.length; i++) {
+		if( 'jcx' == check_field[i] ){
+			if( '' == xmfa_form("jcx").val() ){
+				xmfa_form("jcx").focus();
+				return false;
+			}
+		}else if( !xmfa_form(check_field[i]).val() ){
+			xmfa_form(check_field[i]).select2("open");
+			return false;
+		}
+	};
+	// 检测保留位数设置是否有问题并进行排序
+	if( !order_blws_step() ){
+		return false;
+	}
+	$("#xmfa_modal form[name=xmfa_new]").ajaxSubmit({
+		type: 'get',
+		data: {ajax: 1},
+		dataType: 'json',
+		url: 'ahlims.php?app=jcxm&act=xmfa_save',
+		success: function(data){
+			if(data.error == '0'){
+				//修改数据
+				if($.isNumeric(xmfa_form("fid").val())){
+					//不更新序号信息
+					delete(data.data.xuhao);
+					//更新数据
+					theTable.bootstrapTable("updateByUniqueId", {id: data.fid, row: data.data});
+					theTable.scrollToID = data.data.id;
+					scrollToActiveRow();
+					$("#xmfa_modal").modal("hide");
+				}else{
+					//如果是新增记录，需要更新数据
+					var vid = 0;
+					theTable.scrollToID = 0;
+					if( '' == data.content ){
+						theTable.bootstrapTable("refresh",{silent: true, url: get_xmfa_set_bootstrapTable_url()});
+						$("#xmfa_modal").modal("hide");
+					}else{
+						$.alert({
+							title: '温馨提示',
+							autoClose: false,
+							content: '<div class="alert alert-success">'+data.content+'</div>',
+							onClose: function(){
+								if( !$.isNumeric(data.fid) || parseInt(data.fid) == 0 ){
+									data.fid = 'top';
+								}
+								theTable.bootstrapTable("refresh",{silent: true, url: get_xmfa_set_bootstrapTable_url()});
+								// 不自动关闭窗口
+								// $("#xmfa_modal").modal("hide");
+							}
+						});
+					}
+				}
+			}else{
+				$.alert({
+					autoClose: false,
+					icon: 'icon-remove red bigger-130',
+					title: '错误',
+					content: '<div class="alert alert-danger"><p style="text-align:left"><strong>错误信息：</strong></p>'+data.content+'</div>'
+				});
+			}
+		},error: function(data){
+			return alert_error(data.responseText);
+		}
+	});
+	return false; //阻止表单自动提交事件
+});
+// 滚动至指定数据行位置
+function scrollToActiveRow(){
+	//清除已有的success样式
+	$('#bootstrapTable tr.success').removeClass("success");
+	theTable.bootstrapTable("scrollTo", parseInt(theTable.positionTop[theTable.scrollToID])-50);
+	$("#bootstrapTable tr[data-uniqueid='"+theTable.scrollToID+"']").addClass("success");
+	theTable.scrollToID = '';
+}
+</script>

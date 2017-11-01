@@ -1,0 +1,50 @@
+<style type="text/css">
+	a{cursor:pointer}
+	span,li{text-align:center;}
+	.chosen-single div{padding-right:5px}
+	.ss_hidden{display:none}
+</style>
+<h3 class="header smaller center title">质控计算设置</h3>
+<form method="post" action="zk_set.php" name="zkff">
+<div class="widget-box no-border" style="width:95%;margin:0 auto;">
+
+  <div class="widget-header center" style="padding-top:10px">
+<!--   	水样类型：<select id="water_type" onchange="document.location='zk_range_set.php?water_type='+this.value;">$water_type_option</select> -->
+	项目：<select id="value_C" class="chosen-select"><option value='全部'>全部</option>$valueOption</select>
+	<div class="ss_hidden">
+	计算公式：<select id="data_jsgs" >$jsgs</select>
+	体积系数：<select id="data_tjxs" >$tjxs</select>
+	计算数值：<select id="data_sj_jg" >$sj_jg</select>
+	小于检出限数值：<select id="data_jcx_jg" >$jcx_jg</select>
+	保留位数：<select id="data_blws">$blws</select>
+	</div>
+	<span class="widget-toolbar">
+	
+	</span>
+  </div>
+  <div class="widget-body">
+	<table class="table table-striped table-bordered table-hover center" id="tab">
+		<thead class="center">
+		  <tr align=center>
+			<th width="15%" rowspan="2">项目</th>
+			<th width="80%" colspan="5"><h4>加标回收率设置</h4></th>
+			<th width="5%" rowspan="2">操作</th>
+		  </tr>
+		  <tr align=center>
+			<th width="20%">计算公式</th>
+			<th width="14%">是否需要乘以体积系数</th>
+			<th width="15%">参与计算的数值</th>
+			<th width="15%">小于检出限时<br />参与计算的数值</th>
+			<th width="16%">保留位数</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  $lines
+		</tbody>
+	</table>
+	</form>
+</div></div>
+<script type="text/javascript">
+//可输入搜索条件的下拉列表
+$(document).ready(function(){ $(".chosen-select").chosen();});
+</script>

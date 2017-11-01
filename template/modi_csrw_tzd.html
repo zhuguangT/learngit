@@ -1,0 +1,147 @@
+<script type="text/javascript">
+	$(document).ready(function(){ $(".chosen-select").chosen();
+	
+		$(".date_input").date_input();//日期输入框
+		//采样日期格式判定
+		$("input[name='jcwc_date']").blur(function(){
+			if(this.value.match(/\d{4}\-{1}\d{2}\-{1}\d{2}/)==null){
+				$("#tishi_jcwc_date").html('*检测完成日期格式不对');
+			}else{
+				$("#tishi_jcwc_date").html('');
+			}
+		});
+	});
+	//ajax删除站点信息
+	function ajax_del_site(t,rec_id,cyd_id,sid){
+		if(confirm('确定要删除此站点？')){
+			$.post('modi_csrw_tzd_save.php?ajax=1',{action:'del_site',rec_id:rec_id,cyd_id:cyd_id},function(data){
+				if(data.no_site=='1'){
+					gotourl("cyrw_list.php");
+				}
+				if(data.del=='1'){
+					$("#water_types").html("样品类型:"+data.water_types);
+					$("."+sid).remove();
+					$("#yp_nums").html("样品数量:"+data.yp_nums);
+					$(t).parent().parent().remove();
+				}
+			},'json');
+		}
+		return false;
+	}
+	//验证检测完成时间
+	function check_date(){
+		var jcwc_date=$("#jcwc_date").val();
+		if(jcwc_date.match(/\d{4}\-{1}\d{2}\-{1}\d{2}/)==null){
+			alert("检测完成时间格式不对");
+			$("#tishi_jcwc_date").html('*检测完成日期格式不对');
+			return false;
+		}else{
+			$("#tishi_jcwc_date").html('');
+		}
+	}
+
+</script>
+<style type="text/css">
+	img {opacity:0.8;;filter(alpha=80)}
+	img:hover {opacity:1;filter(alpha=100)}
+
+</style>
+<h3 class="header smaller center title">修改及确认检测任务</h3>
+		<div class="widget-box no-border">
+
+		  <div class="widget-body">
+
+		<form action="modi_csrw_tzd_save.php" method="POST" onsubmit="return check_date()">
+		<input type="hidden" name="hid" value="1"/>
+		<input type="hidden" name="cyd_id"       id="cyd_id"       value="$_GET[cyd_id]" />
+		<input type='hidden' name='action'     id="action"     value='1' />
+		<div style="text-align:left;width:70%;margin:0 auto;padding-left:10px">文件编号:</div>
+		<table class="table table-striped table-bordered table-hover center" style="width:100%">
+		<tr>
+			<td colspan="2" align="left">批次名称:{$cyd['group_name']}</td>
+			<td align="left" style="width:30%">采样时间:<label>
+					<img src="$rooturl/img/date_input.png" height='26px' alt="点击设置采样日期" /><input type="text" id="cy_date" class="date_input" style="height:26px;vertical-align:middle;"title='在此处输入检测完成日期' name="cy_date" maxlength="10" value="{$cyd['cy_date']}" oninput="this.value=this.value.replace(/[^\d\- :]/g,'');" />
+					<span id="tishi_jcwc_date" style="color:red;"></span>
+				</label></td>
+		</tr>
+		<tr>
+			<td   align="left" id="water_types">样品类型:{$water_types}</td>
+			<td align="left" id="yp_nums">样品数量:{$yp_nums}</td>
+			<td align="left">检测完成时间:<label>
+					<img src="$rooturl/img/date_input.png" height='26px' alt="点击设置采样日期" /><input type="text" id="jcwc_date" class="date_input" style="height:26px;vertical-align:middle;"title='在此处输入检测完成日期' name="jcwc_date" maxlength="10" value="{$cyd['jcwc_date']}" oninput="this.value=this.value.replace(/[^\d\- :]/g,'');" />
+					<span id="tishi_jcwc_date" style="color:red;"></span>
+				</label></td>
+		</tr>
+		<tr>
+			<td  align="left">检测单位:<textarea type="text" class="inputl" name="jc_dept" style="width:250px;height:45px">{$cyd['jc_dept']}</textarea></td>
+			<td colspan="2" align="left">委托单位:<input type="text" class="inputl" name="cy_dept" size="55" value="{$cyd['cy_dept']}"></td>
+		</tr>
+		<tr>
+			<td align="left">采样单号:<input type="text" class="inputl" name="cyd_bh" style='width:250px' value="{$cyd['cyd_bh']}"></td>
+			<td colspan="2" align="left">采样人:{$cy_users}</td>
+		</tr>
+			<input type="hidden" id="act" name="act" value="" />
+			<input type="hidden" name="cyd_id" value="{$cyd['id']}" />
+			<input type="hidden" name="qx" value="{$u['admin']}" id="qx"/>
+			<tr align="center">
+			<td width="330px" class="action-buttons">站点名称
+				<a class="green" href="#" onclick="show_xdcy('{$cyd['group_name']}','{$cyd['site_type']}','{$cyd['id']}')"><i class="icon-edit bigger-130" title="修改采样任务"></i></a>
+			</td>
+			<td >检测项目</td>
+			<td width="30%">删除或添加的项目</td></tr>
+			$add_hy_item_lines
+			<tr><td colspan="3">
+			<input class="btn btn-xs btn-primary" type="submit" name='sub' value="添加" >
+			<input class="btn btn-xs btn-primary" type="submit" name='sub' value="删除" onclick="add_del_item(this)">
+			</td></tr>
+		<tr>
+			<td >检测依据</br>和其他要求</td>
+			<td colspan="2" align="left">
+			<textarea style="width:100%;height:100%" name="jc_yiju">{$cyd['jc_yiju']}</textarea>
+			</td>
+		</tr>
+		<tr height="60px">
+			<td >备注</td>
+			<td colspan="2">
+			<textarea style="width:99%;height:99%" name="csrw_tzd_note">{$cyd['csrw_tzd_note']}</textarea>
+			</td>
+		</tr>
+		</table>
+		</div>
+		</div>
+		<center>{$cyd['save_input']}</center>
+		<table align="center" style="width:100%"> 
+		<tr> 
+		<td align="center" width="50%">采样任务下达人: {$cyd['csrw_xdcy_user']}</td><td align="center">检测任务下达人:{$cyd['csrw_xdcs_user']}</td> 
+		</tr> 
+		<tr> 
+		<td align="center">日期:{$cyd[xdcy_qz_date]}</td><td align="center">日期:{$cyd[xdcs_qz_date]}</td> 
+		</tr> 
+		</table> 
+	</form>
+	</div>
+	</div>
+
+<script type="text/javascript">
+		//把下达采样的页面加载过来
+	function show_xdcy(group_name,site_type,cyd_id){
+		var qx=$("#qx").val();
+		if(qx!='1'){
+			alert("正在开发，敬请期待！！");
+			return false;
+		}
+		$.get('modi_csrw_tzd.php?ajax=1',{action:'check_status',cyd_id:cyd_id},function(data){
+			if(data=='1'){
+				alert('采样人已签字无法进入修改采样任务页面');
+			}
+			else{
+				var url = "../xd_cyrw/xd_cyrw_index.php?ajax=1&action=load&site=0&group_name="+group_name+"&site_type="+site_type+"&cyd_id="+cyd_id;
+				if(url!=''){
+					location.href=url;
+				}
+				load_height();
+			}
+		},'html');
+	}
+	
+</script>

@@ -1,0 +1,75 @@
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name></x:Name><x:WorksheetOptions><x:Selected/><x:FreezePanes/><x:FrozenNoSplit/>
+	<x:SplitHorizontal>2</x:SplitHorizontal><x:TopRowBottomPane>2</x:TopRowBottomPane><x:ActivePane>2</x:ActivePane></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
+    <style type="text/css">
+    	tr{height: 31px;}
+        .td1
+        {
+            width: {$cy_date_width}px;
+        }
+		.td2{
+			width:{$site_width}px;
+		}
+		.td3{
+			width:{$water_type_width}px;
+		}
+		.td4{
+			width:{$vid_width}px
+		}
+        .gdtjContainer .tb tr
+        {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .gdtjContainer .tb td
+        {
+			white-space : normal;
+			border:0.5pt solid;
+            text-align: center;
+            font-weight: normal;
+            font-size: 10pt;
+			mso-height-source:auto;}
+		 .gdtjContainer .no_border td
+		{
+			border:0pt;
+		}
+		td{min-width:{$mintd_width}px;}
+		table {page-break-before:always;}
+    </style>
+
+    <div class="gdtjContainer">
+        <table class="tb"  style="margin:0 auto;width:1000px;border-collapse:collapse;font-size:10pt;text-align:center;font-family:宋体;margin-bottom:100px"  border="0"  cellpadding="4">
+            <colgroup>
+				<col class="td1"/>
+				<col class="td2" />
+				<col class="td3"/>
+				<col  class="td4" span="{$cols1}" />
+               
+            </colgroup>
+			<thead style="display:table-header-group;" >
+				<tr>
+					<td align="center" style="font-weight:bold;font-size:20pt;font-family:宋体;border:0px solid;" colspan={$z_cols}>$title</td>
+				</tr>
+				<tr>
+					<td style="font-weight:bold;font-size:16pt;font-family:宋体;border:0px solid;text-align:center" colspan={$z_cols}>$cy_time</td>
+				</tr> 
+				<tr align="center" style="mso-height-source:auto;">
+					<td colspan="2">水库名称</td>{$site_name_td}<td rowspan="2">最高</td><td rowspan="2">最低</td><td rowspan="2">平均</td>
+				</tr>
+				<tr align="center" style="mso-height-source:auto;">
+				<td colspan="2">项目</td>
+				</tr>
+				<tr align="center" style="mso-height-source:auto;">
+				<td colspan="2">时间</td>{$cy_time_td}<td>&frasl;</td><td>&frasl;</td><td>&frasl;</td>
+				</tr>
+			</thead>
+			{$week_bg_line}
+			<tr>
+				<td colspan={$z_cols} style="text-align:left;font-size:11pt;border:1px solide;">
+					主任：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;审核：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;填报：</span>
+				</td>
+			</tr>
+        </table>
+    </div>
+

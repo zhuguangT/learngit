@@ -1,0 +1,155 @@
+<style type="text/css">
+    form{min-width: 10cm;max-width: 18cm;margin: 0 auto;}
+</style>
+$print
+<form name="bzry" action="bzry_modi.php" method="POST" onSubmit="return(verify(this))">
+  <h1 class="center">标准溶液标定原始记录表</h1>
+  <input type="hidden" name="bd_id" value="$r[id]">
+  <input type="hidden" name="action" value="$_GET[action]">
+  <input type="hidden" name="fx_user" value="$r[fx_user]">
+  <table class="single center" style="width:18cm;">
+    <tr class="noborder">
+        <td style="width:15%"></td><td style="width:20%"></td>
+        <td style="width:16%"></td><td style="width:17%"></td>
+        <td style="width:15%"></td><td style="width:17%"></td>
+    </tr>
+    <input type="hidden" name="vid" value="$r[vid]" />
+    <tr>
+        <td>分析项目</td>
+        <td><select name='vid' style="width:100%">$xm_list</select></td>
+        <td>检测依据</td>
+        <td><input type="text" name="jcyj" value="$r[jcyj]" /></td>
+        <td>标定日期</td>
+        <td><input type="text" class="date-picker" name="bzry_bdrq" value="$r[bzry_bdrq]" /></td>
+    </tr>
+    <input type="hidden" name="bzry_id" value="$r[bzry_id]" />
+    <tr>
+        <td>标准溶液名称</td>
+        <td><input type="text" name="bzry_name" value="$r[bzry_name]" /></td>
+        <td>配制日期</td>
+        <td><input type="text" class="date-picker" name="bzry_pzrq" value="$r[bzry_pzrq]" /></td>
+        <td>近似浓度</td>
+        <td><input type="text" name="bzry_pznd" value="$r[bzry_pznd]" /></td>
+    </tr>
+    <input type="hidden" name="jzry_id" value="$r[jzry_id]" />
+    <tr>
+        <td>基准溶液名称</td>
+        <td><input type="text" name="jzry_name" value="$r[jzry_name]" /></td>
+        <td>配制日期</td>
+        <td><input type="text" class="date-picker" name="jzry_pzrq" value="$r[jzry_pzrq]" /></td>
+        <td>浓度</td>
+        <td><input type="text" name="jzry_nd" value="$r[jzry_nd]" /></td>
+    </tr>
+    <tr>
+        <td>指示剂名称</td>
+        <td><input type="text" name="zsj_name" value="$r[zsj_name]" /></td>
+        <td>V(mL)/W(g)</td>
+        <td><input type="text" name="jzry_tiji" value="$r[jzry_tiji]" /></td>
+        <td>摩尔质量(g/mol)</td>
+        <td><input type="text" name="mol_k" value="$r[mol_m]" /></td>
+    </tr>
+    <tr>
+        <td>计算公式</td>
+        <td colspan="5">C=(基准溶液浓度×基准溶液体积)/平均用量</td>
+    </tr>
+    <tr><td colspan="6">标定方法</td></tr>
+    <tr>
+        <td colspan="6"><textarea name="bzry_bdff" >$r[bzry_bdff]</textarea></td>
+    </tr>
+    <tr>
+        <td colspan="6">标定记录</td>
+    </tr>
+    <tr>
+        <td colspan="2">始点(mL)</td>
+        <td colspan="2">终点(mL)</td>
+        <td>实际用量(mL)</td>
+        <td>平均(mL)</td>
+    </tr>
+    <tr>
+        <td colspan="2"><input type="text" class="inputc" name="sd0" value="$r[sd0]" /></td>
+        <td colspan="2"><input type="text" class="inputc" name="zd0" value="$r[zd0]" /></td>
+        <td>$r[sj0]</td>
+        <td rowspan=6>$r[pingjun]</td>
+    </tr>
+    <tr>
+        <td colspan="2"><input type="text" class="inputc" name="sd1" value="$r[sd1]" /></td>
+        <td colspan="2"><input type="text" class="inputc" name="zd1" value="$r[zd1]" /></td>
+        <td>$r[sj1]</td>
+    </tr>
+    <tr>
+        <td colspan="2"><input type="text" class="inputc" name="sd2" value="$r[sd2]" /></td>
+        <td colspan="2"><input type="text" class="inputc" name="zd2" value="$r[zd2]" /></td>
+        <td>$r[sj2]</td>
+    </tr>
+    <tr>
+        <td colspan="2"><input type="text" class="inputc" name="sd3" value="$r[sd3]" /></td>
+        <td colspan="2"><input type="text" class="inputc" name="zd3" value="$r[zd3]" /></td>
+        <td>$r[sj3]</td>
+    </tr>
+    <tr>
+        <td colspan="2"><input type="text" class="inputc" name="sd4" value="$r[sd4]" /></td>
+        <td colspan="2"><input type="text" class="inputc" name="zd4" value="$r[zd4]" /></td>
+        <td>$r[sj4]</td>
+    </tr>
+    <tr>
+        <td colspan="2"><input type="text" class="inputc" name=sd5 value="$r[sd5]" /></td>
+        <td colspan="2"><input type="text" class="inputc" name=zd5 value="$r[zd5]" /></td>
+        <td>$r[sj5]</td>
+    </tr>
+    <tr>
+        <td>空白</td><td><input type="text" class="inputc" name=sd6 value="$r[sd6]" /></td>
+        <td>空白</td><td><input type="text" class="inputc" name=zd6 value="$r[zd6]" /></td>
+        <td>$r[sj6]</td>
+        <td>-</td>
+    </tr>
+    <tr>
+        <td colspan="1">标准溶液浓度</td>
+        <td colspan="1" class="noright">$r[bzry_nongdu]$danwei</td>
+        <td colspan="4" class="noleft"></td>
+    </tr>
+    <tr class="auto">
+        <td>备注</td>
+        <td colspan="5"><textarea $readonly></textarea></td>
+    </tr>
+  </table>
+  <h3 class="center"> $save_button </h3>
+</form>
+<form name="shehe" method="POST" action=bzry_sh.php>
+  <input type="hidden" name=bzry_id value="$r[id]">
+  <input type="hidden" name=did value="$r[did]">
+  <input type="hidden" name=bzry_name value="$r[bzry_name]">
+ <table style="width:18cm;">
+    <tr>
+        <td width="25%">分析人员:$fx_user<input type="hidden" name="fx_user" value="$r[fx_user]" /></td>
+        <td width="25%">校核:$jh_user<input type="hidden" name="jh_user" value="$r[jh_user]" /></td>
+        <td width="25%">复核:$fh_user<input type="hidden" name="fh_user" value="$r[fh_user]" /></td>
+        <td>审核:$sh_user<input type="hidden" name="sh_user" value="$r[sh_user]" /></td>
+    </tr>
+    <tr>
+        <td>$r[fx_qz_date]<input type="hidden" name="fx_qz_date" value="$r[fx_qz_date]" /></td>
+        <td>$r[jh_qz_date]<input type="hidden" name="jh_qz_date" value="$r[jh_qz_date]" /></td>
+        <td>$r[fh_qz_date]<input type="hidden" name="fh_qz_date" value="$r[fh_qz_date]" /></td>
+        <td>$r[sh_qz_date]<input type="hidden" name="sh_qz_date" value="$r[sh_qz_date]" /></td>
+    </tr>
+ </table>
+</form>
+<script type="text/javascript">
+//日期插件
+$('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+	$(this).prev().focus();});
+//按钮样式
+$("input[type=submit]").addClass('btn btn-xs btn-primary');
+//
+var vid = '{$_SESSION[assayvalueC][$r[vid]]}';
+$(document).ready(function(){
+	$("select[name=vid] option[value="+vid+"]").attr('selected',true);
+})
+
+function verify(para){
+    aaa='';
+    for(i=0;i<para.length;i++)
+        if(para.elements[i].name.charCodeAt(0)>127 && para.elements[i].value=='')
+            aaa+='数据项"'+para.elements[i].name+'"不许为空n';
+    if(aaa!=''){alert(aaa);return false;} else return true;
+}
+</script>

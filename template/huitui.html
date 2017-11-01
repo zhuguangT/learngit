@@ -1,0 +1,11 @@
+<style>
+body{background-color:#F0F8FF;}
+form{text-align:center;}
+</style>
+<form name='huituiForm' action='#' method='post'>
+<textarea name='yuanYin' style="width:560px;height:160px;" placeholder='$placeholder' required></textarea>
+<input type="hidden" name="id" value="$_GET[id]" />
+<input type="hidden" name="action" value="{$_GET['action']}" />
+<input type="hidden" name="button_name" value="{$_GET['button_name']}" />
+<input type='submit' name='submit' value='$button_value' />&nbsp;&nbsp;&nbsp;<input type='button' value='取消' onclick="parent.location.reload();" />
+</form>

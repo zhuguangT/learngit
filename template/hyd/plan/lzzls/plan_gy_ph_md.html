@@ -1,0 +1,53 @@
+<!-- PH -->
+<h1>PH值检验原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:16%"></td><td style="width:20%"></td><td style="width:16%"></td>
+		<td style="width:16%"></td><td style="width:16%"></td><td style="width:16%"></td>
+	</tr>
+	<tr>
+		<td>检验项目</td>
+		<td colspan="2">{$arow['assay_element']}</td>
+		<td>检验地点</td>
+		<td colspan="2"><input type="text" class="inputc" name="td7"   value="{$arow['td7']}" /></td>
+		
+	</tr>
+	<tr>
+		<td>检验方法</td>
+		<td colspan="2">{$arow['td2']}</td>
+		<td>仪器型号</td>
+		<td colspan="2">{$arow['td5']}</td>
+	</tr>
+	<tr>
+		<td colspan="6">校正用标准缓冲溶液</td>
+	</tr>
+	<tr>
+		<td>甲</td>
+		<td colspan="2">邻苯二甲酸氢钾</td>
+		<td colspan="3" class="auto">ph=<input type="text" class="inputc" name="td9" size="10" value="{$arow['td9']}" />（<input type="text" class="inputc" name="td10" size="10" value="{$arow['td10']}" />℃）</td>
+	</tr>
+	<tr>
+		<td>乙</td>
+		<td colspan="2">磷酸盐</td>
+		<td colspan="3" class="auto">ph=<input type="text" class="inputc" name="td11" size="10" value="{$arow['td11']}" />（<input type="text" class="inputc" name="td12" size="10" value="{$arow['td12']}" />℃）</td>
+	</tr>
+	<tr>
+		<td>丙</td>
+		<td colspan="2">硼砂</td>
+		<td colspan="3" class="auto">ph=<input type="text" class="inputc" name="td13" size="10"  value="{$arow['td13']}" />（<input type="text" class="inputc" name="td14" size="10"  value="{$arow['td14']}" />℃）</td>
+	</tr>
+	<tr class="auto">
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td>{$zhanming}</td>
+		<td colspan="2">样品温度（℃）</td>
+		<td colspan="2">检验结果</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td>备注</td>
+		<td colspan="5"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>

@@ -1,0 +1,114 @@
+<h3 class="header smaller center title">{$_GET['wz_type']}登记表</h3>
+<form name="bzwz" action="bzwz.php" method="post"  enctype="multipart/form-data">
+	<input name="wz_id" type="hidden" value='$r[id]'>
+	<input name="wz_type" type="hidden" value='$_GET[wz_type]'>
+	<table class="table table-striped table-bordered table-hover center" style="width:20cm">
+	  <tbody>
+		<tr class="auto">
+			<td nowrap="nowrap">产品编号：<input type="text" name="编号" class="inputl" size="15" value="{$r['wz_bh']}"></td>
+			<td nowrap="nowrap">名称:<input type="text" name="名称" size="25" class="inputl" value="{$r['wz_name']}"></td>
+			<td nowrap="nowrap">有效期(年-月-日):<input type="text" name="有效期" class="inputl date_input" size=10 value="{$r['time_limit']}"></td>
+			<td nowrap="nowrap">${_op}数量:<input type="text" name="数量" class="inputr" size="1"  value="{$r['amount']}">$_unit</td>
+			<td>提醒数量:<input type="text" name="提醒数量" value="{$r['limit_num']}" size="5"/></td>
+		</tr>
+		<tr class="auto">
+			<td nowrap="nowrap" >管理编号：<input type='text' class="inputl" value="{$r['gl_bh']}" name='gl_bh' /></td>
+			<td nowrap="nowrap"align="left" colspan="2">生产单位:
+				<input type="text" name="生产单位" size="40" class="inputl" value="{$r['manufacturer']}" />
+			</td>
+			
+			<td nowrap="nowrap" align="left">单价：
+				<input type="text" name="danjia" size="10" class="inputl" value="{$r['danjia']}" /></td>
+			<td width="130">
+			<div style="position:relative;">      
+		      <span style="margin-left:100px;width:18px;overflow:hidden;position: absolute;left:41px;top:-14px;">     
+		        <select style="width:118px;margin-left:-100px;display:black" onchange="sele();" id='wz_type_subdivide'  name='wz_type_subdivide'>     
+		          $type_subdivide_select
+		        </select>
+		      </span>
+		      <span style="width:60%;;height: 29px;position:absolute;left:-40px;top:-10px;">类型:</span>
+		      <input name="wz_type_subdivide" style="width:60%;;height: 29px;position:absolute;left:45px;top:-14px" value="{$r['wz_type_subdivide']}" placeholder="选择类型或直接输入" onclick="show_type(this);"/>  
+		     </div> 
+	    </td>
+				
+		</tr>
+		<tr  >
+			<td nowrap="nowrap" >使用方法:
+					<!-- <input type="file" name="upfile[]" id="file">-->
+				 	<input type="file" id="input" name="upfile[]"  multiple="multiple">   <span id="content" name="upfile[]"></span>
+				</td>
+				<td>已上传的使用方法:</br>$files</td>
+				<td nowrap="nowrap">基体：<input type='text' class="inputl" value="{$r['jiti']}" name='jiti' /></td>
+				<td nowrap="nowrap" colspan="2">储存条件：<input type='text' class="inputl" value="{$r['cc_tj']}" name='cc_tj' /></td>
+		</tr>
+
+		<tr>
+			<td colspan="5" align="center">保 证 值</td>
+		</tr>
+		<tr class="center">
+			<td>化验项目</td>
+			<td>标准值</td>
+			<td>不确定度</td>
+			<td style="min-width:180px;">单位</td>
+			<td>$note</td>
+		</tr>
+		$lines
+		<tr class="auto center">
+			<td colspan="6">&nbsp;$_action</td>
+		</tr>
+	  </tbody>
+	</table>
+</form>
+<script type="text/javascript">
+	$($.date_input .initialize);
+	$("input[name=action]").click(function(){
+		var action_name = $(this).val();
+		if(''==bzwz.编号.value){bzwz.编号.focus();return false;}
+		if(''==bzwz.名称.value){bzwz.名称.focus();return false;}
+		if(''==bzwz.有效期.value){bzwz.有效期.focus();return false;}
+		if(!parseInt(bzwz.数量.value)){bzwz.数量.value='';bzwz.数量.focus();return false;}
+	});
+//下拉框同步到input
+function sele(){
+  var content=$("#wz_type_subdivide option:selected").text();
+  $("input[name='wz_type_subdivide']").val(content);
+}
+//点击输入框显示类型
+function show_type(){
+  $("#wz_type_subdivide").click();
+}
+//将选中的单位放入 input 输入框中
+function check_unit(obj){
+	var val = $(obj).val();
+	$(obj).prev().val(val);
+}
+//将浏览按钮转换为可上传多个文件的按钮
+var inputElement = document.getElementById("input");    
+inputElement.addEventListener("change", handleFiles, false);  
+function handleFiles(){  
+	fileList= this.files;  
+	var dd	= document.getElementById('content');
+	dd.innerHTML	= '';
+	var html_files= '';
+	for( var i = 0 ; i < fileList.length ; i++ ){
+		html_files +="<div id='del_one"+i+"'>" +fileList[i].name;
+	}
+	dd.innerHTML	= html_files;
+}
+//删除文件
+function delete_file(obj , name , key , id){
+	$.post("bzwz_file_delete.php" , {"handle" : "delte_file" , 'id' : id , "dilution_method_file" : name , "key" : key} , function(data){
+		if(data == 'ok'){
+			$(obj).prev('a').remove();
+			$(obj).next('br').remove();
+			$(obj).remove();
+		}else if(data == 'wrong'){
+
+		}
+	});
+}
+</script>
+
+
+
+

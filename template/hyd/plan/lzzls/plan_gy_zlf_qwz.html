@@ -1,0 +1,61 @@
+<!-- 轻物质 -->
+<h1>重量法检验记录（工艺）</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+		<td style="width:14%"></td><td style="width:14%"></td><td style="width:14%"></td><td style="width:14%"></td>
+	</tr>
+	<tr align="center">
+		<td>样品名称</td>
+		<td colspan="2"><input type="text" name="td8" class="inputc" value="{$arow['td8']}" /></td>
+		<td>检验项目</td>
+		<td>{$arow['assay_element']}</td>
+		<td>检验地点</td>
+		<td><input type="text" name="td7" class="inputc" value="{$arow['td7']}" /></td>
+	</tr>
+	<tr>
+		<td >方法依据</td>
+		<td colspan="2">{$arow['td2']}</td>
+		<td>天平型号</td>
+		<td>{$arow['td5']}</td>
+		<td>天平编号</td>
+		<td>{$arow['yq_bh']}</td>
+	</tr>
+	<tr>
+		<td>计算公式</td>
+		<td class="noright right">W(%)=</td>
+		<td class="noborder">G<sub>1</sub><hr />G</td>
+		<td class="noborder" style="text-align:left">×100</td>
+		<td colspan="3" class="noleft"></td>
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td colspan="2">{$zhanming}</td>
+		<td>干燥的轻物质的质量G<sub>1</sub>（g）</td>
+		<td>干燥滤料样品质量G（g）</td>
+		<td colspan="2">检验结果<br/>({$arow['unit']})</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td>备注</td>
+		<td colspan="6"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+function jsgs(){
+	var vd_split = String(vs['vd1']).split('.');
+	if(vd_split.length==2){
+		var diding_ws = vd_split[1].length;
+	}else{
+		var diding_ws = 2;
+	}
+	if($.isNumeric(vs['vd1'])&&$.isNumeric(vs['vd4'])){
+		vs['vd0'] = roundjs(vs['vd1']*100/vs['vd4'],diding_ws);
+	}
+	else{
+		vs['vd0'] = '';
+	}
+}
+</script> 

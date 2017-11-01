@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html manifest="bjsw.manifest">
+    <head>
+      <title>安恒手机采样</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="format-detection" content="telephone=no" />
+		<link href="iphone.css"   rel="stylesheet" type="text/css" />
+   <script src="js/jquery.js"></script>
+      <script src="js/sticky.js"></script>
+      <script src="js/xccy.js"></script>
+    </head>
+    <body>
+		     <section id="login" class="reverse">
+				 <form >
+        <div class="toolbar">
+          <h1>登录系统</h1>
+        </div>
+        <ul class="menu">
+          <li >用户名：<select id="uname"  >
+   
+    </select></li>
+          <li>密&nbsp;&nbsp;码：<input id="pass" style="border: none;background: #C6CAE4;border-radius: 8px;font-size: 16px;" type="password" ></li>
+        </ul>
+        </form>
+      </section>
+      <section id="liebiao" class="reverse">
+        <div class="toolbar">
+          <h1 id="listtop">任务列表<span id="lastdate" style="font-size:12px"></span></h1>
+        </div>
+        <ul id=zdlist class="menu">
+ 
+        </ul>
+              <div class="toolbar">
+          <h1 id="listbut"><input type="button" class=butcd   value="当月" onclick="showsite(dqym)">
+          <input type="button" class=butcd  value="前月" onclick="showsite(lastym)">
+          <input type="button" class=butcd   value="同步" onclick="dbsync()">
+          <input type="button" class=butcd  value="退出" onclick="exit()"></h1>
+        </div>
+      </section>
+      <section id="cyrec" class="reverse">
+        <div class="toolbar">
+			<a href="#liebiao" id="back" class="back">后退</a>
+          <h1 class="cy" name=site_name data-t=0></h1>
+        </div>
+        <ul class="menu">
+			 $sitecy;
+
+        </ul>
+      </section>
+
+      <script>
+        $(document).ready(function(){
+			init();
+          })
+	var db = new StickyStore({
+    name: 'cy',
+    adapters: ['localStorage', 'indexedDB', 'webSQL', 'cookie'],
+    ready: function() {},
+    expires: (24*60*60*1000),
+    size: 5
+})
+var syncphp='$syncphp'
+</script>
+    </body>
+</html>

@@ -1,0 +1,126 @@
+<form name="jcxm_set" action="#">
+	<!-- <div class="space-8"></div> -->
+	{php $i=0;}
+	<div class="row alert alert-info" style="margin-bottom:5px;">
+		<div class="col-xs-4">
+			<strong>已启用项目，共<span class="checked_total_{$i}"></span>项</strong>
+			<!-- <button class="btn btn-xs btn-primary sel_click" type="button" data-row="0">取消</button> -->
+		</div>
+		<div class="col-xs-8">
+			<strong>水样类型：</strong>
+			{echo PublicApp::get_select('leixing',$this->get_all_leixing(),true,false);}
+<!-- 			<strong>选择模板：</strong>
+			<select name="xmmb">
+				<option value="">--请选择--</option>
+				{loop $xmmb $row}
+				<option value="{$row['module_value1']}">({$row['count']}){$row['module_value2']}</option>
+				{/loop}
+			</select> -->
+		</div>
+	</div>
+	<div class="row item" data-item="0">
+		{loop $seted_values $vid $value_C}
+		<div class="col-xs-1 checked reseted">
+			<label>
+				<input type="checkbox" name="vid[]" value="{$vid}" checked />
+				<span class="value_C" title="{$value_C}">{$value_C}</span>
+			</label>
+		</div>
+		{/loop}
+		<div class="new_add">
+			<div class="msg_success">新增</div>
+			<div class="box"></div>
+		</div>
+		<div class="item new_del">
+			<div class="msg_danger">已删除</div>
+			<div class="box"></div>
+		</div>
+	</div>
+	{loop $other_values $fl_name $fenlei}
+	{php if(!count($fenlei)) continue; $i++;}
+	<div class="row alert alert-info" style="margin-bottom:5px;">
+			<strong>{$fl_name}，共<span class="checked_total_{$i}"></span>项</strong>&nbsp;&nbsp;&nbsp;
+			<!-- <button class="btn btn-xs btn-primary sel_click" type="button" data-row="{$i}">全选</button> -->
+	</div>
+	<div class="row item" data-item="{$i}">
+		{loop $fenlei $vid $value_C}
+		<div class="col-xs-1">
+			<label>
+				<input type="checkbox" name="vid[]" value="{$vid}" />
+				<span class="value_C" title="{$value_C}">{$value_C}</span>
+			</label>
+		</div>
+		{/loop}
+	</div>
+	{/loop}
+	<div class="fixed_button_box">
+		<div class="fixed_button_bg_box"></div>
+		<div class="fixed_button">
+			<input class="btn btn-primary btn-sm" type="submit" value="保存配置信息" />
+		</div>
+	</div>
+</form>
+<script type="text/javascript">
+	$("#jcxm_set .msg_not_be_cancel").click(function(){
+		$("#jcxm_set .not_be_cancel").slideToggle();
+		$("#jcxm_set .msg_not_be_cancel .msg").toggle();
+	});
+	//每一次点击复选框都更新项目选中详情
+	$("#jcxm_set input[type=checkbox]").click(function(){
+		jcxm_set_total("#jcxm_set");
+	});
+	$("#jcxm_set select[name=leixing]").change(function(){
+		$("a[href='#jcxm_set']").data('refresh',true).trigger('click');
+	});
+	//使用模板快速选中项目
+	$("#jcxm_set select[name=xmmb]").change(function(){
+		if( '' != $(this).val() ){
+			$("#jcxm_set input[type=checkbox]").prop("checked",false).parents("[class*='col-']").removeClass("checked");
+			var xmmbArr = $(this).val().split(',');
+			for (var i = 0; i < xmmbArr.length; i++) {
+				$("#jcxm_set input[type=checkbox][value="+xmmbArr[i]+"]").prop("checked",true).parents("[class*='col-']").addClass("checked");
+			};
+			jcxm_set_total("#jcxm_set");
+		}
+	});
+	//数据提交
+	$("form[name=jcxm_set]").submit(function(){
+		var leixing = $("#jcxm_set select[name=leixing]").val();
+		$(this).ajaxSubmit({
+			type: 'post',dataType:'json',data: {'ajax': 1},
+			url: trade_global.rooturl+'/huayan/ahlims.php?app=jcxm&act=jcxm_set_save',
+			success: function(data) {
+				if(data.error == '0'){
+						//除了第一个item里面被选中的都表示是新添加的项目，统一放进new_add区域
+						$("#jcxm_set .item:gt(0) input[type=checkbox]:checked").parents("div[class^=col-xs-]").appendTo("#jcxm_set .new_add>.box");
+						//第一个item里面没有被选中的都是被删掉的项目，放进new_del区域
+						var hasBeDel = [];
+						$("#jcxm_set .new_del>.box input[type=checkbox]").each(function(i){
+							hasBeDel[i] = '[value='+$(this).val()+']';
+						});
+						console.log(hasBeDel.join(','))
+						$("#jcxm_set .item:eq(0) input[type=checkbox]").not(":checked").not(hasBeDel.join(',')).parents("div[class^=col-xs-]").appendTo("#jcxm_set .new_del>.box");
+						//如果新增和新删区域里面没有项目就隐藏
+						$("#jcxm_set .new_add,#jcxm_set .new_del").each(function(){
+							if($(this).find(".box label").length > 0){
+								$(this).show();
+							}else{
+								$(this).hide();
+							}
+						});
+						jcxm_set_total("#jcxm_set");
+						if($("#jcxm_set .item:eq(0) input[type=checkbox]").length){
+							$("#jcxm_set .row:eq(0) .sel_click").removeClass("hide");
+						}
+						$("html").animate({scrollTop:0},100);
+				}else{
+					alert_error('修改失败，请刷新页面重试！');
+				}
+			},
+			error: function(data){
+				return alert_error(data.responseText);
+			}
+		});
+		return false; //阻止表单自动提交事件
+	});
+</script>

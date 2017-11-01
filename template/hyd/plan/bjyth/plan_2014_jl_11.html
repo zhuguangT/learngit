@@ -1,0 +1,78 @@
+<h1>溶解氧原始记录表</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:8%"></td><td style="width:16%"></td>
+		<td style="width:13%"></td><td style="width:13%"></td>
+		<td style="width:13%"></td><td style="width:13%"></td>
+		<td style="width:12%"></td><td style="width:12%"></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="4">分析方法：{$arow['td2']}</td>
+		<td class="left" colspan="4">分析日期：<input class="date_Ymd" type="text" name="td31" size="10" value="{$arow['td31']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="2">样品类别：{$arow['water_type']}</td>
+		<td class="left" colspan="4">
+			滴定管规格：<input type="text" name="td8" size="8" value="{$arow['td8']}" /> mL
+			颜色：<input type="text" name="td9" size="8" value="{$arow['td9']}" />
+		</td>
+		<td colspan="2">指示剂名称：{$arow['zsj_name']}</td>
+	</tr>
+	<tr>
+		<td class="left" colspan="5" rowspan="2">
+			<span class="blue_a change_bd">硫代硫酸钠</span>浓度（C₁）:
+			&nbsp;&nbsp;&nbsp;{$arow['CB']}&nbsp;&nbsp;&nbsp;mol/L
+		</td>
+		<td class="left noborder" colspan="3"><span class="blue_a view_pz">配制日期：</span>{$arow['bzry_pzrq']}</td>
+	</tr>
+	<tr>
+		<td class="left noborder" colspan="4"><span class="blue_a view_bd">标定日期：</span>{$arow['bzry_bdrq']}</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="3">
+			取样体积（V）:
+			<input type="text" name="td6" size="10" value="{$arow['td6']}" onblur="$('input[name^=\'vd2[\']').blur()" /> mL
+		</td>
+		<td class="left" colspan="5">计算公式:DO（mg/L） = C₁×V₁×8000/V</td>
+	</tr>
+	<tr>
+		<td rowspan="2">序号</td>
+		<td rowspan="2">{$zhanming}</td>
+		<td colspan="3">标准溶液用量（mL）</td>
+		<td rowspan="2">含量<br />（{$arow['unit']}）</td>
+		<td rowspan="2">平均值（{$arow['unit']}）</td>
+		<td rowspan="2">相对偏差（％）</td>
+	</tr>
+	<tr>
+		<td>终点</td>
+		<td>始点</td>
+		<td>实际用量（V₁）</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td>备注</td>
+		<td colspan="7"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	function jsgs()
+	{
+		var C1 = parseFloat('{$arow['CB']}');
+		var tj = vs['vd1'] = parseFloat($("input[name=td6]").val());
+		if($.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4'])){
+			var vd3_split = String(vs['vd3']).split('.');
+			if(2==vd3_split.length){
+				var diding_ws = vd3_split[1].length;
+			}else{
+				var diding_ws = 0;
+			}
+			vs['vd5'] = parseFloat(accsub(parseFloat(vs['vd4']),parseFloat(vs['vd3']))).toFixed(diding_ws);
+		}
+		if($.isNumeric(C1) && $.isNumeric(tj)){
+			vs['vd0'] = jsws(C1*vs['vd5']*8000/tj);
+		}else{
+			vs['vd0'] = '';
+		}
+	}
+</script>

@@ -1,0 +1,409 @@
+<!--全程序空白项目、现场平行项目、站点项目 修改页面-->
+<style>
+div,p,label{margin:0px;}
+p{line-height:30px;text-align:center;font-weight:bold;}
+.fixed{position:fixed;top:126px;width:50%;}
+#checked_fixed{border-right:1px solid #56932C;}
+#checkbox_fixed{border-left:1px solid #FFCC99;}
+h2{text-align:center;}
+.widget-header{position:static;}
+.show{text-align:left;}
+</style>
+<div style="height:126px;"></div>
+<div style="position:fixed;top:0px;width:100%;background-color:#FFF;height:126px;">
+$close
+<h2  class="header smaller center title"> {$title}项目设置</h2>
+<div class="widget-header header-color-blue4 center">
+<div class="center widget-toolbar" style="text-align:center;">
+	选择模板：
+	<select class='chosen' name="xmmb" id='mb1'>
+		<option>----请选择----</option>
+		$xmmb_options
+	</select>
+	&nbsp;<button type="button" class="btn btn-xs btn-primary" onclick='gt()' >项目模板设定</button> 
+	搜索项目：
+	<select class="chosen" name="select_value" id='mb2'>
+		<option>----请选择----</option>
+		$value_options
+	</select> 
+	<input type="button" style="display:none;height:31px;line-height:26px;vertical-align:middle;" class="checked_value" value="选中/取消选中" />
+<!--	<input type="button" style="display:none;" class="check_value" value="取消选中" /> -->
+</div>
+</div>
+</div>
+<form action="$rooturl/xd_cyrw/values_modify_save.php" method="POST" name="vlaues_modify" onsubmit="return submitTest();">
+<input type="hidden" name="site_type" value="$site_type" />
+<input type="hidden" name="action" value="$action" />
+<input type="hidden" name="id" value="{$id_html}" />
+<div id='aaa'>
+$fp_sites
+$lines		   </div>
+<div style="position:fixed;bottom:0px;left:0px;width:100%;z-index: 999;text-align:center;background:rgba(120,120,120,0.5);">
+	<input  style="width:100px;height:28px;" type="submit" name="submit" value="保存现有修改" />
+</div>
+<div style="clear:both;height:30px;text-align:center;">
+</div>
+</form>
+<!-- 弹出层 -->
+		<div id="cover" class="modal" style='background-color:rgba(15, 15, 15, 0.7)!important;'>
+			<div class="modal-dialog modal-lg" style='width:800px'>
+				<div id="con" class='modal-content' style='width:800px;'></div>
+			</div>
+		</div>
+<!-- 弹出层 -->
+<script type="text/javascript">
+function gt(){
+	jie = $("#mb1 option:selected").val();
+	ming = $("#mb1 option:selected").html();
+	if(ming == '----请选择----')
+	{
+		jie = $("#mb1 option:selected").next().val();
+		ming = $("#mb1 option:selected").next().html();
+	}
+	$('.modal-content').load('$rooturl/site/muban_xm.php',{"mbname":ming,"xm":jie,"ajax":"1"});
+	$("#cover").show();
+}
+function guanbi(){
+	$("#cover").hide();
+
+}
+
+function quan(a)
+{
+	var xmmb_value	= a.value.split(",");
+	$("input[name='vid[]']").attr("checked",false).parent("label").css("background-color","#FFF");
+	for(i=0;i<xmmb_value.length;i++){
+		$("input[name='vid[]'][value='"+xmmb_value[i]+"']").prop("checked",true).parent("label").css("background-color","#C9F2D1");
+	}
+	$("#checked_num").text($("#checked input[name='vid[]']:checked").length);
+	$("#num_tishi").text($("#checkbox input[name='vid[]']:checked").length);
+}
+
+function submitTest(){
+	//批内全程序空白和
+	if('{$action}'=='xdrw' || '{$action}'=='jdrw_site_value' || '{$action}'=='jdrw_group_value'){
+		//获取选中的项目id 及数量
+		var check_values	= '';
+		var check_values_num	= 0;
+		var group_id	= $("input[name='id']").val();
+		$("input:checkbox[name='vid[]']:checked").each(function(i){
+			check_values_num++;
+			if(0==i){
+				check_values	 = $(this).val();
+			}else{
+				check_values	+= (','+$(this).val());
+			}
+		});
+		//获取设置项目之前默认的项目数量
+		if ('{$action}'=='xdrw') {
+			var old_value	= $("span[name='{$_GET['group_name']}[qckb_num]']").attr("value");
+			//如果之前有默认值，清空后恢复为默认值
+			if(check_values_num=='0' && old_value!=''){
+			//	check_values_num	= old_value;
+				check_values_num	= '(默认)';
+			}else{
+				check_values_num	= "("+check_values_num+" 项)";
+			}
+			$("span[name='{$_GET['group_name']}[qckb_num]']").text(check_values_num);
+			//选中 点击设置的 位置
+			$("input[name='{$_GET['group_name']}[qckb]']").val(check_values).prop("checked",true);
+		}else{
+			var is_more	= group_id.indexOf(',');
+			if(is_more<0){
+				$(".tishi_site_value_num[group_id='"+group_id+"']").text(check_values_num);
+				$("input[name='jdrw[sites_value]["+group_id+"]']").val(check_values);
+				//如果项目被清空，就不允许站点被选择
+				if(check_values_num==0){
+					$("input[name='jdrw[sites][]'][group_id='"+group_id+"']").attr("checked",false).attr("disabled",true);
+					$("#xdrw_content input[name='jdrw[xcpx][]'][group_id='"+group_id+"']").attr("disabled",true);
+					$("input[name='jdrw[sites_value]["+group_id+"]']").val('00');
+				}else{
+					$("input[name='jdrw[sites][]'][group_id='"+group_id+"']").attr("disabled",false);
+				}
+			}else{
+				var group_id_arr	= group_id.split(',');
+				for(i=0;i<group_id_arr.length;i++){
+					$("input[name='jdrw[sites_value]["+group_id_arr[i]+"]']").val(check_values);
+				}
+				//如果项目被清空，就不允许站点被选择
+				if(check_values_num==0){
+					$("input[name='jdrw[sites][]']").attr("checked",false).attr("disabled",true);
+					$("#xdrw_content input[name='jdrw[xcpx][]']").attr("disabled",true);
+					$("input[name*='jdrw[sites_value]']").val('00');
+				}else{
+					$("input[name='jdrw[sites][]']").attr("disabled",false);
+				}
+				$(".tishi_site_value_num").text(check_values_num);
+			}
+		}
+		//隐藏父级元素的覆盖层（下达采样任务页面）
+        $("#mask,#qckb_value_modify").css("display","none");
+		$("#content").html('加载中......');
+		$("body").css({"overflow":"auto"});
+		return false;
+    }else if('{$action}'=='xdrw_xcpx' || '{$action}'=='site_value' || '{$action}'=='group_value'){
+		//获取POST信息
+		var options = {    
+			dataType: "json",
+			success:function(result){
+            	if(result.jieGuo=='yes'){
+					//隐藏父级元素的覆盖层（下达采样任务页面）
+			        $("#mask,#qckb_value_modify").css("display","none");
+					$("#content").html('加载中......');
+					$("body").css({"overflow":"auto"});
+					if(result.num || result.num==0){
+						if(result.action=='site_value'){
+							$("span.tishi_site_value_num[gr_id='"+result.gr_id+"']").text(result.num);
+							$("span[xcpx_num_id='"+result.gr_id+"'][xcpx_value_zt='no']").text("("+result.num+" 项)");
+							//如果站点的项目更改了，相应更改 站点的可选状态
+							if(result.num>0){
+								$("input[name*='[sites][]'][group_id='"+result.gr_id+"']").removeAttr('disabled');
+							}else{
+								$("input[name*='[sites][]'][group_id='"+result.gr_id+"']").attr("disabled",true).attr("checked",false);
+								$("input[name*='[xcpx][]'][value='"+$("input[name*='[sites][]'][group_id='"+result.gr_id+"']").val()+"']").attr("disabled",true);
+							}
+						}else if(result.action=='group_value'){
+							//如果项目数小于0，那么所有的站点将都不可选
+							if(result.num>0){
+								if({$site_type}=='0'){
+	                            	$("tr[tjcs='"+result.gr_name+"']").find("input[name*='[sites][]']").removeAttr('disabled');
+	                            }else{
+									$("input[name='"+result.gr_name+"[sites][]']").removeAttr('disabled');
+								}
+							}else{
+								if({$site_type}=='0'){
+                                	$("tr[tjcs='"+result.gr_name+"']").find("input[name*='[sites][]']").attr("disabled",true);
+                            	}else{
+									$("input[name='"+result.gr_name+"[sites][]']").attr("disabled",true);
+								}
+							}
+							$("span[xcpx_group_name='"+result.gr_name+"'][xcpx_value_zt='no']").text("("+result.num+" 项)");
+							//改变整个批次内站点的项目数量
+							if({$site_type}=='0'){
+                            	$("tr[tjcs='"+result.gr_name+"']").find(".tishi_site_value_num").text(result.num);
+                            }else{
+								$("tr[gr_name='"+result.gr_name+"'] .tishi_site_value_num[fp_sites_id='']").text(result.num);
+							}
+						}else if(result.action=='xdrw_xcpx'){
+							if(result.num==0){
+								result.num	= $(".tishi_site_value_num[gr_id='"+result.gr_id+"']").text();
+								$("span[xcpx_num_id='"+result.gr_id+"']").text("("+result.num+" 项)").attr("xcpx_value_zt","no");
+							}else{
+								$("span[xcpx_num_id='"+result.gr_id+"']").text("("+result.num+" 项)").removeAttr("xcpx_value_zt");;
+							}
+						}
+					}
+				}else{
+					alert('修改失败，请重试');
+				}
+            },
+            timeout:10000    
+        }; 
+		$("form[name='vlaues_modify']").ajaxSubmit(options);//ajax提交
+        return false;
+	}
+}
+$(function(){
+	$('body').height($('body').parent().height());
+	$("#close").click(function(){
+                //隐藏父级元素的覆盖层（下达采样任务页面）
+                $("#mask,#qckb_value_modify").css("display","none");
+		$("#content").html('加载中......');
+		$("body").css({"overflow":"auto"});
+        }).mouseover(function(){
+		$(this).css({"opacity":"1"});
+	}).mouseout(function(){
+		$(this).css({"opacity":"0.8"});
+	});
+	$("#mb2").chosen();//可搜索下拉菜单
+	$("input[name='vid[]']").each(function(){//把已经选中的项目高亮显示
+		if($(this).is(":checked")){
+			$(this).parent("label").css("background-color","#C9F2D1");
+		}
+	});
+	$("label.show").mouseover(function(){//鼠标移动到项目上或者选中的项目，高亮显示
+		$(this).css({"background-color":"#C9F2D1","cursor":"pointer"});
+	}).mouseout(function(){
+		if(!$(this).children("input").is(":checked")){
+			$(this).css("background-color","#FFF");
+		}
+	});
+	$("#checkbox input[name='vid[]']").click(function(){//点击项目后 更新选中项目的数量
+		var value_num	= parseInt($("#num_tishi").text());
+		if($(this).is(":checked")){
+			value_num = value_num+1;
+		}else{
+			value_num = value_num-1;
+		}
+		$("#num_tishi").text(value_num);
+	});
+	$("#checked input[name='vid[]']").click(function(){//点击项目后 更新选中项目的数量
+                var value_num   = parseInt($("#checked_num").text());
+                if($(this).is(":checked")){
+                        value_num = value_num+1;
+                }else{
+                        value_num = value_num-1;
+                }
+                $("#checked_num").text(value_num);
+        });
+	//未选择项目的 全选/反选 功能
+	$("input.all_check").click(function(){
+		var pd = $(this).val();
+		$("#checkbox input:checkbox").each(function(){
+			if(pd=='反选'){
+				$(this).attr("checked",false).parent("label").css("background-color","#FFF");;
+			}else{
+				$(this).prop("checked",true).parent("label").css("background-color","#C9F2D1");
+			}
+		});
+                $("#num_tishi").text($("#checkbox input[name='vid[]']:checked").length);
+	});
+	
+	//已选择项目的 全选/反选 功能
+	$(".all_checked").click(function(){
+		var pd = $(this).val();
+		$("#checked input:checkbox").each(function(){
+                        if(pd=='反选'){
+                                $(this).attr("checked",false).parent("label").css("background-color","#FFF");
+                        }else{
+                                $(this).prop("checked",true).parent("label").css("background-color","#C9F2D1");
+                        }
+			
+                });
+		$("#checked_num").text($("#checked input[name='vid[]']:checked").length);
+	});
+	
+	//点击“选中”按钮，选中该项目
+	$(".checked_value").click(function(){
+		var xm_id	= $("select[name='select_value']").val();
+		if(xm_id){
+			var parend_id   = $("input[name='vid[]'][value='"+xm_id+"']").parent("label").parent("div").attr("id");
+			if(parend_id=='checkbox'){
+				var value_num   = parseInt($("#num_tishi").text());
+			}else{
+				var value_num   = parseInt($("#checked_num").text());
+			}
+			if($("input[name='vid[]'][value='"+xm_id+"']").is(":checked")){
+				$("input[name='vid[]'][value='"+xm_id+"']").attr("checked",false);//.parent("label").css("background-color","#FFF");
+				value_num = value_num-1;
+			}else{
+				$("input[name='vid[]'][value='"+xm_id+"']").prop("checked",true);//.parent("label").css("background-color","#C9F2D1");
+				value_num = value_num+1;
+			}
+			if(parend_id=='checkbox'){
+				$("#num_tishi").text(value_num);
+			}else{
+				$("#checked_num").text(value_num);
+			}
+		}
+	});
+	//点击“取消选中”按钮，取消选中下拉菜单里的项目
+	/*$(".check_value").click(function(){
+		var xm_id       = $("select[name='select_value']").val();
+                if(xm_id){
+			$("input[name='vid[]'][value='"+xm_id+"']").attr("checked",false).parent("label").css("background-color","#FFF");
+		}
+        });*/
+	//选择项目后 出现选中和未选中的 按钮
+	$("select[name='select_value']").change(function(){
+		if(this.value=='' || this.value=='----请选择----'){
+			$(".checked_value,.check_value").hide();
+		}else{
+			$(".checked_value,.check_value").show();
+			var scroll_offset = $("input[name='vid[]'][value='"+this.value+"']").offset(); //获取选择项目的位置
+                	//$("body,html").animate({
+			
+			//$("#qckb_value_modify").animate({
+			if($("#qckb_value_modify").attr("id")){
+				var dui_xiang	= "#qckb_value_modify";
+			}else{
+				var dui_xiang	= "body,html";
+			}
+			//获取窗口的滚动条的垂直位置      
+        	var s = $("#aaa").scrollTop();
+			$(dui_xiang).animate({
+                        	scrollTop:(scroll_offset.top+s) //滑动条 滚动到 该项目的地方
+                	},0);
+			$("input[name='vid[]']").parent("label").css("background-color","#FFF");
+			$("input[name='vid[]']:checked").parent("label").css("background-color","#C9F2D1");
+			$("input[name='vid[]'][value='"+this.value+"']").parent("label").css("background-color","#38D878");
+		}
+	});
+	//根据项目模板选
+
+	$("select[name='xmmb']").change(function(){
+		var xmmb_value	= this.value.split(",");
+		$("input[name='vid[]']").attr("checked",false).parent("label").css("background-color","#FFF");
+		for(i=0;i<xmmb_value.length;i++){
+			$("input[name='vid[]'][value='"+xmmb_value[i]+"']").prop("checked",true).parent("label").css("background-color","#C9F2D1");
+		}
+		$("#checked_num").text($("#checked input[name='vid[]']:checked").length);
+		$("#num_tishi").text($("#checkbox input[name='vid[]']:checked").length);
+		
+	});
+	//分类滑动到顶部自动浮动
+	fixed = 'no';
+	//下达采样任务调用时和直接访问时对象不一样，这里定义一下
+	if($("#qckb_value_modify").attr("id")){
+		var dui_xiang	= "#qckb_value_modify";
+	}else{
+		var dui_xiang	= window;
+	}
+	//$(window).scroll(function(){
+	$(dui_xiang).scroll(function(){
+        	//获取窗口的滚动条的垂直位置      
+        	//var s = $("#aaa").scrollTop();
+		var top = 0;
+            	if (document.documentElement && document.documentElement.scrollTop) {
+                	top = document.documentElement.scrollTop;
+            	}else if (document.body) {
+                	top = document.body.scrollTop;
+            	}
+		var jieguoB2= jieguoB = jieguo = jieguo2 = 0;
+		var yiXuan_value = $(".checked_fenlei").length;
+		var weiXuan_value = $(".checkbox_fenlei").length;
+		var noNum = $("#checked .checked_fenlei[classs='no']").length;
+		var noNum2= $("#checkbox .checkbox_fenlei[classs='no']").length;
+		if(noNum && yiXuan_value>0){
+			var s = $("#checked .checked_fenlei[classs='no']:eq(0)").offset().top;
+			var jieguo = s-top;
+		}
+		if(noNum2 && weiXuan_value>0){
+			var s2 = $("#checkbox .checkbox_fenlei[classs='no']:eq(0)").offset().top;
+			var jieguo2= s2-top;
+		}
+		if(fixed=='yes'){
+			if(yiXuan_value>0){
+				var num = $("#checked .checked_fenlei[classs='yes']").length;
+				var ss = $("#checked .checked_fenlei[classs='yes']:eq("+(num-1)+")").offset().top;
+				var jieguoB = ss-top;
+			}
+			if(weiXuan_value>0){
+				var num2 = $("#checkbox .checkbox_fenlei[classs='yes']").length;
+				var ss2 = $("#checkbox .checkbox_fenlei[classs='yes']:eq("+(num2-1)+")").offset().top;
+				var jieguoB2= ss2-top;
+			}
+		}
+		if(jieguo<=155 && yiXuan_value>0){
+			fixed = 'yes';
+			$("#checked .checked_fenlei[classs='no']:eq(0)").attr('classs','yes');
+			if(!num)var num = 0;
+			if(noNum)$("#checked_fixed").text($("#checked .checked_fenlei[classs='yes']:eq("+(num)+")").text()).show();
+		}
+		if(jieguo2<=155 && weiXuan_value>0){
+			fixed = 'yes';
+			$("#checkbox .checkbox_fenlei[classs='no']:eq(0)").attr('classs','yes');
+			if(!num2)var num2 = 0;
+                        if(noNum2)$("#checkbox_fixed").text($("#checkbox .checkbox_fenlei[classs='yes']:eq("+(num2)+")").text()).show();
+		}
+		if(jieguoB>=155 && yiXuan_value>0){
+			$("#checked .checked_fenlei[classs='yes']:eq("+(num-1)+")").attr('classs',"no");
+			$("#checked_fixed").text($("#checked .checked_fenlei[classs='yes']:eq("+(num-2)+")").text());
+		}
+		if(jieguoB2>=155 && weiXuan_value>0){
+                        $("#checkbox .checkbox_fenlei[classs='yes']:eq("+(num2-1)+")").attr('classs',"no");
+                        $("#checkbox_fixed").text($("#checkbox .checkbox_fenlei[classs='yes']:eq("+(num2-2)+")").text());
+                }
+	});
+});
+</script>

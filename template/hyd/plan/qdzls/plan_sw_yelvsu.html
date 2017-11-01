@@ -1,0 +1,123 @@
+<!-- 叶绿素 -->
+<h1>{$arow['assay_element']}测定原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+  <tr class="noborder">
+    <td style="width:9%"></td><td style="width:13%"></td>
+    <td style="width:12%"></td><td style="width:12%"></td>
+
+    <td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td>
+    <td style="width:7%"></td>
+
+    <td style="width:10%"></td><td style="width:8%"></td>
+    <td style="width:8%"></td>
+  </tr>
+  <tr>
+    <td colspan="2">检验方法依据</td>
+    <td colspan="3">{$arow['td2']} </td>
+    <td colspan="2">检验方法</td>
+    <td colspan="4">{$arow['td1']}</td>
+  </tr>
+  <tr>
+    <td>仪器型号</td>
+    <td colspan="4">{$arow['td5']}</td>
+    <td colspan="2">仪器编号</td>
+    <td colspan="4">{$arow['yq_bh']}</td>
+  </tr>
+  <tr>
+    <td>波长</td>
+    <td colspan="7"> 
+      D<sub>1</sub>=663&nbsp;&nbsp;&nbsp; 
+      D<sub>2</sub>=750&nbsp;&nbsp;&nbsp; 
+      D<sub>3</sub>=645&nbsp;&nbsp;&nbsp; 
+      D<sub>4</sub>=630 </td>
+    <td colspan="2">比色皿规格（cm）</td>
+    <td colspan="1"><input type="text" name="td9"  value="{$arow['td9']}" /></td>
+  </tr>
+  <tr>
+    <td>计算公式</td>
+    <td colspan="1" class="noborder right" id="js_gs_1"></td>
+    <td colspan="6" class="noborder" id="js_gs_2"></td>
+    <td colspan="3" class="noleft"></td>
+  </tr>
+  <tr>
+  </tr>
+  <tr>
+    <td nowrap='nowrap' rowspan="2">序号</td>
+    <td nowrap='nowrap' rowspan="2">{$zhanming}</td>
+    <td nowrap='nowrap' colspan="2">样品处理</td>
+    <td nowrap='nowrap' colspan="4">光 密 度</td>
+    <td nowrap='nowrap' rowspan="2">含量<br />({$arow['unit']})</td>
+    <td rowspan="2">平均值（{$arow['unit']}）</td>
+    <td rowspan="2">相对偏差（％）</td>
+  </tr>
+  <tr>
+   <td>提取液体积&nbspV<sub>1</sub>(mL)</td>
+   <td>抽滤水样体积V(L)</td>
+   <td>D<sub>663</sub></td>
+   <td>D<sub>750</sub></td>
+   <td>D<sub>645</sub></td>
+   <td>D<sub>630</sub></td>
+  </tr>
+    {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="10"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+$("#bsm_gc").blur(function(){
+  $("input[name*='vd1']").each(function (i) {
+       $(this).blur();
+  });
+})
+var yelvsu = [[11.85,1.54,0.08],[21.03,5.43,2.66],[24.52,7.60,1.67]];
+var yelvsu = [[11.64,2.16,0.10],[21.03,5.43,2.66],[24.52,7.60,1.67]];
+//{$arow['vid']}
+if('86' == 86){
+  //叶绿素a
+  var yls_key = 0;
+  var gongshi = 'ρ<sub>chl-a</sub> = ';
+}else if('{$arow['vid']}' == 85){
+  //叶绿素
+  var yls_key = 1;
+  var gongshi = 'ρ<sub>chl-b</sub> = ';
+}else if('{$arow['vid']}' == 565){
+  var yls_key = 2;
+  var gongshi = 'ρ<sub>chl-c</sub> = ';
+}else{
+  //alert('次化验单模板仅用于检测叶绿素，请选择其他模板做化验');
+}
+$("#js_gs_1").html(gongshi);
+
+var gongshi = 'V<sub>1</sub>×['+yelvsu[yls_key][0]+'(D<sub>663</sub>-D<sub>750</sub>)-'+yelvsu[yls_key][1]+'(D<sub>645</sub>-D<sub>750</sub>)+'+yelvsu[yls_key][2]+'(D<sub>630</sub>-D<sub>750</sub>)]<hr />V×L';
+$("#js_gs_2").html(gongshi);
+  
+function jsgs(){
+  //加 accAdd 减 accsub 乘 accMul 除 accDiv
+	//运算函数在lib.js
+	if( $.isNumeric(vs['vd1']) && $.isNumeric(vs['vd2']) && $.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4']) && $.isNumeric(vs['vd5']) && $.isNumeric(vs['vd6']) ){
+		var v2    = parseFloat(vs['vd2']);
+		var v1    = parseFloat(vs['vd1']);
+    var A663  = parseFloat(vs['vd3']);
+		var A750  = parseFloat(vs['vd4']);
+		var A645  = parseFloat(vs['vd5']);
+    var A630  = parseFloat(vs['vd6']);
+
+		var d664  = accsub(A663,A750);
+		var d645  = accsub(A645,A750);
+		var d630  = accsub(A630,A750);
+		var l     = parseFloat($("input[name=td9]").val());
+		var res1  = accMul(yelvsu[yls_key][0],d664);
+		var res2  = accMul(yelvsu[yls_key][1],d645);
+		var res3  = accMul(yelvsu[yls_key][2],d630);
+		var res   = accAdd(accsub(res1,res2),res3);//第一 减 第二 减三
+
+		var jg    = (res*v1)/(v2*l);
+		vs['vd0']=vs['_vd0']=jsws(jg);
+	}else{
+		 vs['vd0']=vs['_vd0']='';
+	}
+}
+
+</script>

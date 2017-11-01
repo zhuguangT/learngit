@@ -1,0 +1,26 @@
+<H1>描述性检测项目原始记录表</h1>
+	{$hjtj_bt}
+	<table class="single">
+		<tr class="noborder">
+			<td style="width：10%"></td><td style="width：25%"></td>
+			<td style="width：25%"></td><td style="width：40%"></td>
+		</tr>
+		<tr  >
+			<td class="left"  colspan="2">分析项目：{$arow['assay_element']}</td>
+			<td class="left" colspan="2">分析方法： {$arow['td2']}</td>
+		</tr>
+		<tr class="auto" >
+			<td class="left" colspan="2">样品类别：{$arow['water_type']}</td>
+			<td class="left" colspan="2">分析日期：<input class="date_Ymd" type="text" name="td31" size="10" value="{$arow['td31']}" ></td>
+		</tr>
+		<tr >
+			<td>序号</td>
+			<td>{$zhanming}</td>
+			<td colspan="2">文字描述</td>
+		</tr>
+		{$aline}
+		<tr>
+			<td>备注</td>
+			<td colspan="3" ><textarea name="td30">{$arow['td30']}</textarea></td>
+		</tr>
+	</table>

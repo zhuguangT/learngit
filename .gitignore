@@ -1,0 +1,21 @@
+#这里面是Git版本库共享的忽略文件配置
+upfile/ #忽略所有upfile文件夹下的文件，此文件夹下一般是用户上传的本地文档，不需要版本控制
+yiqi/upfile/
+*/upfile/
+ceshi/
+yiqi/record/
+yiqi/files/
+aotuload/files/
+PHPExcel/
+img/user/
+*.sql
+*.pdf
+*.xls
+*.xlsx
+*.doc
+*.docx
+*.swp
+*.tar.gz
+
+template/ahlims_cache/
+data_backup/*

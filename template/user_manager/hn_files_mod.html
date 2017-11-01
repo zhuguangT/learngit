@@ -1,0 +1,30 @@
+    <h1 align="center">修改{$username}档案</h1>
+    <form method='post' action="hn_files_mod.php" enctype="multipart/form-data">
+      <input name='uid' type=hidden value='$uid'>  
+      <input name='pid' type=hidden value='$pid'>
+      <input name='r' type=hidden value='$username'>
+      <input name='qj_name' type=hidden value='$qj_name'>
+      <input name= 'id' type='hidden' value=$id>
+      <input type=hidden name='oid' id='oid' value=$row[id]>           
+    <table align=center class='table table-striped table-bordered table-hover center' style="width:15cm;text-align:center">
+      <tr> 
+      <td>名称</td>
+      <td style='text-align:left;padding-left:100px'><input type="text" id="mod_name" name="bdname" class = 'inputc' value='$row[name]' ></td>
+      </tr>
+      <tr> 
+      <td>上传文件</td>
+      <td style='text-align:left;padding-left:100px'><input type="file" name="file"  >
+	  <span id='mod_file' style='position:relative;left:0px;'><a href='./upload/$row[src]'>$check_file</a></span>
+	  <a href='hn_files_mod.php?m=del_file&file=$row[src]&uid=$uid&r=$username&oid=$row[id]'>$del_file</a></td>
+      </tr>
+      <tr> 
+      <td>备注</td>
+      <td style='text-align:left;padding-left:100px'><input type="text" id='mod_beizhu' class = 'inputc' value='$row[remark]' name="beizhu">
+      </td>
+      </tr>
+      <tr>
+      <td colspan=2><input class="btn btn-xs btn-primary" type="submit" value="提交">
+	  <input class="btn btn-xs btn-primary" type='button' id='quxiao' onclick="location.href='hn_files.php?r=$username&uid=$uid';" value='取消'></td>
+      </tr>
+    </table>
+    </form>

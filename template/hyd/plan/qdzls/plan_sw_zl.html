@@ -1,0 +1,30 @@
+<h1>{$arow['assay_element']}检验原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:16%"></td>
+    <td style="width:18%"></td>
+    <td style="width:16%"></td>
+    <td style="width:17%"></td>
+    <td style="width:17%"></td>
+    <td style="width:17%"></td>
+  </tr>
+  <tr>
+    <td>分析项目</td>
+    <td>{$arow['assay_element']}<{$arow['assay_element']}/td>
+    <td>检验方法依据</td>
+    <td colspan="3">{$arow['td2']}</td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td colspan="2">{$zhanming}</td>
+    <td>{$arow['assay_element']}({$arow['unit']})</td>
+    <td nowrap="nowrap">平均值（{$arow['unit']}）</td>
+    <td nowrap="nowrap">相对偏差（％）</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="5"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>

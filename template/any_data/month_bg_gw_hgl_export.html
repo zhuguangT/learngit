@@ -1,0 +1,38 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+	<title>$title</title>
+	<!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name></x:Name><x:WorksheetOptions><x:Selected/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
+<style>
+	@page{mso-page-orientation:landscape;}
+	table tr{height:30px}
+	table td{border:0.5px solid;text-align: center;}
+</style>
+</head>
+<body>
+<table style="margin:0 auto;width:25cm;border-collapse:collapse;font-size:11pt;font-family:宋体" class="td_border" cellspacing="0" cellpadding="0">
+	<tr>
+		<td colspan='8' style="font-weight:bold;font-size:20pt;border:none;">$title</td>
+	</tr>
+	<tr>
+		<td colspan='4' style="border:none;text-align:left;">监测部门：{$_POST[jc_bm]}</td><td colspan='4' style="border:none;text-align:right;">填表日期：{$_POST[tb_date]}</td>
+	</tr>
+	<tr>
+		<td colspan='2' rowspan='2'>指标</td>
+		<td colspan='3'>本月</td>
+		<td colspan='3'>自年初累计</td>
+	</tr>
+	<tr>
+		<td>合格瓶次<br>(项目)</td>
+		<td>化验瓶次<br>(项目)</td>
+		<td>合格率<br>(%)</td>
+		<td>合格瓶次<br>(项目)</td>
+		<td>化验瓶次<br>(项目)</td>
+		<td>合格率<br>(%)</td>
+	</tr>
+	$lines
+	<tr>
+		<td colspan='2' style='text-align:left;border:none;'>单位负责人:</td><td colspan="3" style="border:none;">审核:</td><td colspan="3" style="border:none;text-align:right;padding-right:80px;"> 制表：</td>
+	</tr>
+</table>
+</body>
+</html>

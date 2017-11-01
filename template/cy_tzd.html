@@ -1,0 +1,93 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>采样通知单</title>
+<script language="javascript">
+
+function gourl(){
+	if(confirm('确定要修改容器信息')){
+		location.href='$rooturl/system_settings/cy_rq_manage/rq_list.php';
+	}
+	else{
+		return false;
+	}
+}
+//修改容器数量
+function modi_ps(rec_id,rq_id,site_name,rq_name){
+	var ps=prompt(site_name+rq_name+"的使用数量为");
+	 var reg = /^\d+$/;
+	 var cyd_id=$('#cyd_id').val();
+	if(ps!=null&&ps.match(reg)){
+		if(confirm("是否要修改此列所有的数量")){
+			location.href='$rooturl/cy/cy_tzd.php?action=modi_ps&is_modi_all=1&cyd_id='+cyd_id+'&id='+rec_id+'&rq_id='+rq_id+'&ps='+ps;
+		}else{
+			location.href='$rooturl/cy/cy_tzd.php?action=modi_ps&cyd_id='+cyd_id+'&id='+rec_id+'&rq_id='+rq_id+'&ps='+ps;
+		}
+	}
+	
+}
+//光标离开备注的文本框时动态的保存
+function modi_note(t,cyd_id){
+
+	var note=t.value;
+	$.post('cy_tzd.php?ajax=1',{action:'save_note',note:note,cyd_id:cyd_id},function(data){
+	},'html');
+}
+</script>
+<style>
+.xc_jcxm{padding-right:10px;line-height:30px}
+.cy_tzd_bt td{border-bottom:none}
+</style>
+</head>
+
+<body class='body_css'>
+
+<form id="rw">
+<div style="text-align:right;padding-right:50px">$dayin</div>
+<table width="90%" align="center" border="0" style="border-bottom:none"  cellspacing="0" cellpadding="0" >
+	<caption style="font-size:24px; line-height:48px; ">
+		采样通知单  
+	</caption>
+	<tr align="center" class="cy_tzd_bt">
+		<td align="left" style="padding-left:10px">任务性质：{$rwxz}</td>
+		<td>现场检测项目：{$xc_jcxm}</td>
+		<td align="right" style="padding-right:10px">采样时间：{$rs_cy[cy_date]}</td>
+	</tr>
+</table>
+<div border="10px solid;">
+<table  class="table  table-bordered  center">
+	<tr>
+    		<td width="4%" rowspan="2">序号</td>
+    		<td width="15%" rowspan="2">站点/站址</td>
+    		{$rq_name_td}
+   		<td rowspan="2">总数</td>
+  	</tr>
+  <tr>
+  {$rq_size_td}
+  </tr>
+{$cy_tzd_line}
+<tr height="42" align="center">
+  <td  colspan="2">保存剂说明</td>
+    <td width="300" height="40"  colspan={$zlie} align="left">$bcj_note</td>
+ </tr>
+<tr height="42" align="center">
+  <td  colspan="2">备注</td>
+    <td width="300" height="40"  colspan={$zlie}  align="left">
+      {$note_textarea}</td>
+ </tr>
+  <input type='hidden' name="id" id='cyd_id' value={$_GET[cyd_id]}  />
+</table>
+</div>
+<table align="center" style="width:80%"> 
+
+<tr> 
+<td align="center" width="50%">任务下达人: $cyd[cy_rwxd_user]</td><td align="center">任务接受人: $cyd[cy_users_qz]</td> 
+</tr> 
+<tr> 
+<td align="center">日期:&nbsp;$cyd[cy_rwxd_user_qz_date]</td><td align="center">日期:&nbsp;$cyd[cy_rwjs_qz_date] </td> 
+</tr> 
+</table> 
+</form>
+</body>
+</html>
+<p></p>

@@ -1,0 +1,71 @@
+<!--溶解氧电化学探头法-->
+<h1>{$arow['assay_element']}分析原始记录表</h1>
+{$hjtj_bt}
+<input type="hidden" id="L" value="{$arow['td6']}">
+<table class="single">
+<tr>
+  <td nowrap='nowrap'>检测项目</td>
+  <td nowrap="nowrap">{$arow['assay_element']}</td>
+  <td nowrap='nowrap'>检测依据</td>
+  <td nowrap="nowrap"><input type="text" name='td2' value="{$arow['td2']}" ></td>
+  <td nowrap='nowrap'>检出限({$arow['unit']})</td>
+  <td nowrap="nowrap">{$arow['td3']}</td>
+</tr>
+<tr>
+  <td nowrap="nowrap">仪器名称型号</td>
+  <td nowrap="nowrap"><input type="text" name='td4' value="{$arow['td4']}{$arow['td5']}"></td>
+  <td nowrap="nowrap">测量范围</td>
+  <td nowrap="nowrap"><input type="text" name='td10' value="{$arow['td10']}" ></td>
+  <td nowrap="nowrap">分辨率</td>
+  <td nowrap="nowrap"><input type="text" name='td11' value="{$arow['td11']}" ></td>
+</tr>
+<tr>
+  <td nowrap="nowrap">准确度</td>
+  <td nowrap="nowrap"><input type="text" name='td12' value="{$arow['td12']}" ></td>
+  <td nowrap="nowrap">温度补偿范围</td>
+  <td nowrap="nowrap"><input type="text" name='td13' value="{$arow['td13']}" ></td>
+  <td nowrap="nowrap">盐度补偿范围</td>
+  <td nowrap="nowrap"><input type="text" name='td14' value="{$arow['td14']}" ></td>
+</tr>
+<tr>
+    <td nowrap="nowrap">响应时间</td>
+    <td nowrap="nowrap"><input type="text" name='td15' value="{$arow['td15']}" ></td>
+    <td nowrap="nowrap">自动校准</td>
+    <td nowrap="nowrap"><input type="text" name='td16' value="{$arow['td16']}" ></td>
+    <td nowrap="nowrap">电极类型</td>
+    <td nowrap="nowrap"><input type="text" name='td17' value="{$arow['td17']}" ></td>
+</tr>
+<tr>
+    <td nowrap="nowrap">序号</td>
+    <td  colspan="2">{$zhanming}</td>
+    <td nowrap="nowrap">含量({$arow['unit']})</td>
+    <td>平均值/理论浓度({$arow['unit']})</td>
+    <td>相对偏差/加标回收率(%)</td>
+</tr>
+{$aline}
+<tr>
+  <td>备注</td>
+  <td colspan="10"><textarea name="td30">{$arow['td30']}</textarea></td>
+</tr>
+</table>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+  if({$xmid}==107)
+    var jig="{$arow['assay_element']}(℃)";
+  if({$xmid}==24 || {$xmid}==23 || {$xmid}==22)
+    var jig="{$arow['assay_element']}";
+  if({$xmid}==20)
+    var jig="{$arow['assay_element']}(度)";
+  if({$xmid}==21)
+    var jig="{$arow['assay_element']}(NTU)";
+  if({$xmid}==39 || {$xmid}==108)
+    var jig="{$arow['assay_element']}(mg/L)";
+  if({$xmid}==122)
+    var jig="{$arow['assay_element']}(μS/cm)";
+  if({$xmid}==141)
+    var jig="{$arow['assay_element']}(个/毫升)";
+  $(".dw").html(jig);
+})
+</script>

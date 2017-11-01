@@ -1,0 +1,71 @@
+<style>
+label{margin:0px;}
+.show input{margin:0px !important;float: none !important;}
+.show{text-align:left;float:left;margin-bottom:1px;margin-left:1px;height:43px;width:130px;border:1px #D7D7D7 solid;}
+p{line-height:30px;text-align:center;font-weight:bold;}
+form{margin-bottom: 40px;}
+</style>
+<form action="relate_value_set_save.php" method="POST">
+<input type="hidden" name="set_id" value="{$_GET['set_id']}" />
+<div style=""><!--position: fixed;top:0;-->
+	<h3 class="header smaller center title">关联项目设置</h3>
+	<div class="widget-header header-color-blue4 center">
+		<div class="center widget-toolbar" style="text-align:center;">
+			水样类型：
+			<select name="water_type">
+				<option value='全部'>全部</option>
+				$leixing_option
+			</select>
+			搜索项目：
+			<select class="chosen" name="select_value" id='mb2'>
+				<option>----请选择----</option>
+				$vid_option
+			</select> 
+			<input type="button" style="display:none;height:31px;line-height:26px;vertical-align:middle;" class="checked_value" value="选中/取消选中" />
+		</div>
+	</div>
+<div>
+<div>
+	<div style="width:50%;float:left;font-weight:bold;">判断依据：<br><textarea name="panduan_yiju" style="width:98%;">$panduan_yiju</textarea></div><div style="width:50%;float:left;font-weight:bold;">备注：<br><textarea name="note" style="width:98%;">$note</textarea></div>
+</div>
+<div class="widget-box no-border" style="clear:both;">
+	<fieldset style="border:1px solid #A8A8A8;">
+		<legend style="text-align:center;">已选择的项目：</legend>
+		$checked_label
+	</fieldset>
+	<fieldset style="border:1px solid #A8A8A8;">
+		<legend style="text-align:center;">未选择的项目：</legend>
+		$checkbox_label
+	</fieldset>
+
+</div>
+<div style="clear:both;heigth:40px;margin:0 10px;">&nbsp;<br></div>
+<div style="text-align:center;position:fixed;bottom:0;width:100%;heigth:40px;background:rgba(120,120,120,0.5);"><button class="btn btn-xs btn-primary" style="height:35px;min-width:60px;">保存</button></div>
+</form>
+<script type="text/javascript">
+$(".chosen").chosen();//可搜索下拉菜单
+$(".chosen").change(function(){
+	var	vid	= $(this).val();
+	$("input[value='"+vid+"']").parent("label").css('background-color',"#CEFF46");
+	var scroll_offset	= $("input[value='"+vid+"']").offset(); //获取选择项目的位置
+	var main_height		= document.documentElement.clientHeight//$(document.body).height() - 85;//窗口高度 减去 header和导航栏的高度
+	var vid_height		= scroll_offset.top + $("input[value='"+vid+"']").parent("label").height();
+	if(vid_height >= main_height){
+		$("body,html").animate({
+			scrollTop:(scroll_offset.top) //滑动条 滚动到 该项目的地方
+		},0);
+	}
+});
+$("input[type='checkbox']").each(function(){//把已经选中的项目高亮显示
+	if($(this).is(":checked")){
+		$(this).parent("label").css("background-color","#C9F2D1");
+	}
+});
+$("label.show").mouseover(function(){//鼠标移动到项目上或者选中的项目，高亮显示
+	$(this).css({"background-color":"#C9F2D1","cursor":"pointer"});
+}).mouseout(function(){
+	if(!$(this).children("input").is(":checked")){
+		$(this).css("background-color","#FFF");
+	}
+});
+</script>

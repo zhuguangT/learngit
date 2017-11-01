@@ -1,0 +1,136 @@
+<h1>容量法检验记录（工艺）</h1>
+{$hjtj_bt}
+<input type="hidden" name="td6" value="$arow[td6]" />
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:10%"></td><td style="width:15%"></td><td style="width:11%"></td>
+		<td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+		<td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+	</tr>
+	<tr align="center">
+		<td colspan="2">样品名称</td>
+		<td colspan="3"><input type="text" name="td8" class="inputl" value="{$arow['td8']}" /></td>
+		<td colspan="2">检验项目</td>
+		<td colspan="4">{$arow['assay_element']}</td>
+	</tr>
+	<tr>
+		<td colspan="2">检验地点</td>
+		<td colspan="3"><input type="text" name="td7" class="inputl" value="{$arow['td7']}" /></td>
+		<td colspan="2">检验方法</td>
+		<td colspan="4">{$arow['td1']}</td>
+	</tr>
+	<tr>
+		<td colspan="2">天平型号</td>
+		<td colspan="3">{$arow['td5']}</td>
+		<td colspan="2">天平编号</td>
+		<td colspan="4">{$arow['yq_bh']}</td>
+	</tr>
+	<tr>
+		<td colspan="11">标准溶液</td>
+	</tr>
+	<tr>
+		<td colspan="2">基准溶液名称</td>
+		<td colspan="3"><input type="text" name="td10" class="inputl" value="{$arow['td10']}" /></td>
+		<td colspan="2">基准溶液浓度 M<sub>1</sub></td>
+		<td colspan="4"><input type="text" name="td11" class="inputl" value="{$arow['td11']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">标准样品名称</td>
+		<td colspan="3"><input type="text" name="td12" class="inputl" value="{$arow['td12']}" /></td>
+		<td colspan="2">基准溶液体积 V<sub>1</sub></td>
+		<td colspan="4"><input type="text" name="td13" class="inputl" value="{$arow['td13']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">空白耗用标准溶液体V<sub>0</sub>（mL）</td>
+		<td colspan="3"><input type="text" name="td14" class="inputl" value="{$arow['td14']}" /></td>
+		<td colspan="2">基准耗用标准溶液体V<sub>2</sub>（mL）</td>
+		<td colspan="4"><input type="text" name="td15" class="inputl" value="{$arow['td15']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">标准溶液浓度计算公式</td>
+		<td colspan="9">C(Na<sub>2</sub>S<sub>2</sub>O<sub>3</sub>)=M<sub>1</sub>×V<sub>1</sub>/(V<sub>2</sub>-V<sub>0</sub>)</td>
+	</tr>
+	<tr>
+		<td colspan="2">标准溶液浓度C(Na<sub>2</sub>S<sub>2</sub>O<sub>3</sub>  mol/L)</td>
+		<td colspan="9"><input type="text" name="td23" class="inputl" value="{$arow['td23']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="11">标准溶液</td>
+	</tr>
+	<tr>
+		<td colspan="2">Na<sub>2</sub>S<sub>2</sub>O<sub>3</sub>标准滴定溶液浓度C<sub>0</sub>(mol/L)</td>
+		<td colspan="3"><input type="text" name="td16" class="inputl" value="{$arow['td16']}" /></td>
+		<td colspan="2">耗用Na<sub>2</sub>S<sub>2</sub>O<sub>3</sub>标准滴定溶液体积V<sub>1</sub>（mL）</td>
+		<td colspan="4"><input type="text" name="td17" class="inputl" value="{$arow['td17']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">亚甲蓝标准溶液体积V（mL）</td>
+		<td colspan="3"><input type="text" name="td18" class="inputl" value="{$arow['td18']}" /></td>
+		<td colspan="2">空白耗用体积V<sub>2</sub>（mL）</td>
+		<td colspan="4"><input type="text" name="td19" class="inputl" value="{$arow['td19']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">亚甲蓝摩尔质量M（g/mol）</td>
+		<td colspan="3"><input type="text" name="td20" class="inputl" value="{$arow['td20']}" /></td>
+		<td colspan="2">空白耗用体积V<sub>2</sub>（mL）</td>
+		<td colspan="4"><input type="text" name="td21" class="inputl" value="{$arow['td21']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">标准溶液浓度(p)计算公式</td>
+		<td colspan="9">p(mg/mL)  = C<sub>0</sub> (V<sub>2</sub>-V<sub>1</sub>) M/V</td>
+	</tr>
+	<tr>
+		<td colspan="2">标准溶液浓度(p)( mg/mL)</td>
+		<td colspan="9"><input type="text" id="c_v" name="td22" class="inputl" value="{$arow['td22']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="1">计算公式</td>
+		<td colspan="3" class="right noright">E= (p × V )/ m</td>
+	</tr>
+	<tr align="center">
+		<td>序号</td>
+		<td colspan="2">{$zhanming}</td>
+		<td colspan="2">试样质量m （g）</td>
+		<td colspan="2">耗用标准亚甲蓝V (mL)</td>
+		<td colspan="2">计算结果<br/>({$arow['unit']})</td>
+		<td colspan="2">报告结果<br/>({$arow['unit']})</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td align="center">备注</td>
+		<td colspan="10"><textarea name="td30">$arow[td30]</textarea></td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+//容量法的计算一般是：水样的含量=（标准溶液用量-空白）*标准溶液浓度 *  当量 / 取体积。
+function jsgs(){
+	if(''==$("#c_v").val()){ $("#c_v").focus(); return false;}
+	var C = parseFloat($("#c_v").val());
+	if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd4'])&&$.isNumeric(C)){
+		vs['vd5'] = accDiv(accMul(C,parseFloat(vs['vd4'])),parseFloat(vs['vd3']));
+	}
+	else
+	{
+		vs['vd5'] ='';
+	}
+	if($.isNumeric(vs['vd13'])&&$.isNumeric(vs['vd14'])&&$.isNumeric(C)){
+		vs['vd15'] = accDiv(accMul(C,parseFloat(vs['vd14'])),parseFloat(vs['vd13']));
+	}
+	else
+	{
+		vs['vd15'] ='';
+	}
+	if($.isNumeric(vs['vd5'])&&$.isNumeric(vs['vd15']))
+	{
+		vs['vd0'] = accDiv(accAdd(vs['vd5'],vs['vd15']),2);
+
+	}else if($.isNumeric(vs['vd5'])&&!$.isNumeric(vs['vd15']))
+	{
+		vs['vd0'] =vs['vd5'];
+	}
+	else{
+		vs['vd0'] = '';
+	}
+}
+</script> 

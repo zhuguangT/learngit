@@ -1,0 +1,100 @@
+<script type="text/javascript">
+//全选时选中所有站点
+function select_sites(t){
+var forms = t.form;
+for(j=0;j<forms.length;j++){
+  with(forms.elements[j]){
+    if(type=='checkbox' && name=="cids[]"){
+        if(t.checked){
+            checked="true";
+        }else{
+            checked="";
+        }
+    }
+  }
+}
+}
+//汇总查看时验证是否选择了样品
+function is_select(){
+    if(!$("input[name='cids[]']:checked").length){
+        alert("请先选择要查看的样品!");
+        return false;
+    }else{
+        return true;
+    }
+}
+//改变报告模板
+function change_bg_mb(rec_id,t){
+    $.post('bg_site_list.php?ajax=1',{rec_id:rec_id,te_id:t.value,action:'change_bg_mb'},function(data){
+    
+        if(data!=1){
+            alert("修改报告模板失败，请联系系统管理员！");
+            window.location.reload();
+        }
+    },'html');
+}
+
+//改变打印状态
+function change_print_status(rec_id,t){
+    var cyd_id=$("#cyd_id").val();
+    $.post('bg_site_list.php?ajax=1',{cyd_id:cyd_id,rec_id:rec_id,p_status:t.value,action:'change_print_status'},function(data){
+        if(data!=1){
+            alert(data);
+            window.location.reload();
+        }else{
+            $("#"+rec_id).remove();
+        }
+    },'html');
+}
+
+function change_show_pingjia(select){
+    var id  = select.getAttribute('shuju_id');
+    $.post('bg_site_list.php?ajax=1',{id:id,value:select.value,action:'change_show_pingjia'},function(data){
+        if(data!=1){
+            alert('修改失败，请刷新页面重试');
+            //window.location.reload();
+        }
+    },'html');
+
+}
+//报告项目设定
+function bg_xm_set(cyd_id,rec_id){
+    $('.modal-content').load("$rooturl/baogao/bg_xm_set.php",{"ajax":"1",'cyd_id':cyd_id,'rec_id':rec_id});
+    $('body').css("overflow","hidden")
+    $("#cover").show();
+}
+//关闭弹出层
+function guanbi(){
+    $('body').css("overflow","auto")
+    $("#cover").hide();
+}
+</script>
+<form action="bg_chakan_hz.php" target="_blank" method="post" onsubmit="return is_select()">
+<input type="hidden" name="cyd_id" id="cyd_id" value={$cyd_id}>
+<table class="table table-striped table-bordered table-hover center">
+    <tr align='center'>     
+        <td>编号</td>
+        <td>样品编号</td>
+        <td>水体类型</td>
+
+        <td>站点名称</td>
+        <td>完成度</td>
+        <td>使用模板</td>
+        <td>打印状态</td>
+        <td>查看报告</td>
+    </tr>
+    {$divline}
+    <tr> 
+        <td>全选<input type="checkbox"  onclick="select_sites(this)"></td>
+        <td colspan ="6">
+        <input type="submit" name="view_hz" value="查看中文汇总" class="btn btn-xs btn-primary">&nbsp;&nbsp;<input type="submit" name="load_word_hz" value="下载中文WORD汇总" class="btn btn-xs btn-primary">
+        <!--<a align="center"  href='bg_chakan_hz.php?cyd_id=$cyd_id' target='_blank'>查看汇总报告</a>|<a href='$rooturl/baogao/bg_chakan_hz.php?lx=2&cyd_id=$cyd_id'target='_blank'>下载WORD报告</a> |<a href='$rooturl/baogao/bg_chakan_hz.php?lx=3&cyd_id=$cyd_id' target='_blank'>下载EXCEL报告</a> -->
+        </td>
+    </tr>
+</table>
+</form>
+<div id="cover" class="modal" role="dialog" style='background-color:rgba(15, 15, 15, 0.7)!important;'>
+    <div class="modal-dialog" style='width:800px;'>
+        <div id="con" class='modal-content' style='width:800px;'></div>
+    </div>
+</div>

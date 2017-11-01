@@ -1,0 +1,75 @@
+<h1>容量分析法原始记录表(2)</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+		<td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+		<td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+		<td style="width:10%"></td>
+	</tr>
+	<tr class="auto">
+		<td colspan="3" class="left">分析项目：{$arow['assay_element']}</td>
+		<td colspan="3" class="left">分析方法：{$arow['td2']}</td>
+		<td colspan="4">分析日期：<input type="text" name="td31"  size="10" value="{$arow['td31']}" class="inputl"></td>
+	</tr>
+	<tr class="auto">
+		<td colspan="3" class="left">样品类别：{$arow['water_type']}</td>
+		<td colspan="5" class="left">
+		滴定管规格：<input type="text"  class="inputl" name="td9" size="5" value="{$arow['td9']}" />mL　　
+		颜色：<input type="text"  class="inputl" name="td10"  size="5" value="{$arow['td10']}" /></td>
+		<td colspan="2" class="left">检出限：{$arow['td3']} mg/L</td>
+	</tr>
+	<tr  >
+		<td colspan="6" rowspan="2" class="auto" class="left"><span class="blue_a change_bd">标准溶液名称：</span>{$arow['bzry_name']} 浓度（C<sub>1</sub>）：{$arow['bzry_nongdu']} mol/L</td>
+		<input type="hidden" name="bzry_nongdu" value={$arow['bzry_nongdu']}>
+		<td colspan="4" class="left"><span class="blue_a view_pz" >配制日期：</span>{$arow['bzry_pzrq']}</td>
+	</tr>
+	<tr >
+		<td  colspan="4" class="left"><span class="blue_a view_bd">标定日期：</span>{$arow['bzry_bdrq']}</td>
+	</tr>
+	<tr class="auto">
+		<td colspan="2" class="left">摩尔质量（M）：</td><td colspan="2"><input type="text" onblur="$('input[name^=\'vd2[\'').blur()" class="inputl" name="td15" size="5" value="{$arow['td15']}" />g/mol</td>
+		<td colspan="6" class="left">计算公式：C（mg/L）=C<sub>1</sub> ×（V<sub>1</sub> - V<sub>2</sub>）/V×M×1000</td>
+	</tr>
+	<tr>
+		<td width="nowrap" rowspan="2">序号</td>
+		<td rowspan="2" colspan="2">{$zhanming}</td>
+		<td rowspan="2">取样体积V（ml）</td>
+		<td COLSPAN="3">标准溶液用量（mL）</td>
+		<td rowspan="2">含量<br />C<br />（{$arow['unit']}）</td>
+		<td rowspan="2">平均值（{$arow['unit']}）</td>
+		<td rowspan="2">相对偏差（％）</td>
+	</tr>
+	<tr>
+		<td>总硬度消耗量V<sub>1</sub></td>
+		<td>钙消耗量V<sub>2</sub></td>
+		<td>实际<br />用量<br />（V<sub>1</sub>-V<sub>2</sub>）</td>
+	</tr>
+	{$aline}
+	<tr class="auto">
+		<td colspan="3" class="left">标准溶液浓度：<input type="text"  class="inputl" name="td16" size="5" value="{$arow['td16']}" /></td>
+		<td colspan="3" class="left">加标量：<input type="text"  class="inputl" name="td17" size="5" value="{$arow['td17']}" />mL</td>
+		<td colspan="2" class="left">原水样量：<input type="text"  class="inputl" name="td18" size="3" value="{$arow['td18']}" />mL</td>
+		<td colspan="2" class="left">P（％）：<input type="text"  class="inputl" name="td19" size="5" value="{$arow['td19']}" /></td>
+	</tr>
+	<tr>
+		<td>备注</td>
+		<td colspan="9"><textarea name="td30"  rows="2" cols="80">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script language="javascript" type="text/javascript">
+	function jsgs(){
+		var bzry_nongdu=$("input[name=bzry_nongdu]").val();
+		var td15=$("input[name=td15]").val();
+		if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd4']))
+			vs['vd5']=accsub(vs['vd3'],vs['vd4']);
+		else
+			vs['vd5']='';
+		if($.isNumeric(vs['vd1'])&&$.isNumeric(bzry_nongdu)&&$.isNumeric(td15)&&$.isNumeric(vs['vd5']))
+			var jg=accMul(accMul(accDiv(accMul(bzry_nongdu,vs['vd5']),vs['vd1']),td15),1000);
+		if($.isNumeric(jg))
+			vs['vd0']=vs['_vd0']=jg;
+		else
+			vs['vd0']='';
+	}
+</script>

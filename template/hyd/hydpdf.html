@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="$rooturl/css/lanrenzhijia.css" />
+<script type="text/javascript" src="$rooturl/js/jquery-1.8.0.min.js"></script>
+<style type="text/css">
+	.canclick{color:#2A6496;cursor:pointer}
+</style>
+<script type="text/javascript">
+
+//取消关联pdf
+function pdf_qxgl(lx,rid,pid) {
+	if(confirm('确定要取消关联？')){
+		$.getJSON("$rooturl/huayan/hydpdf.php?ajax=1&tid=$tid",
+		  {action: lx,rowid: rid,pid:pid},
+		  function(json) {
+			if(json.jg>0){
+				window.location.reload();
+			}
+		});
+	}else{
+		return false;
+	}
+}
+//关联pdf
+function pdf_gl(lx,pid,beizhu){
+
+	if(confirm('确定要关联？')){
+		$.getJSON("$rooturl/huayan/hydpdf.php?ajax=1&tid=$tid",
+		  {action: lx,rowid: pid,beizhu:beizhu},
+		  function(json) {
+			if(json.jg>0){
+				window.location.reload();
+			}
+		});
+	}else{
+		return false;
+	}
+}
+//修改文件备注信息
+function pdfbz(rid,note,tab){
+	var text=prompt('输入文件的备注信息:',note);
+	if(text!=null){
+		$.getJSON("$rooturl/huayan/hydpdf.php?ajax=1&tid=$tid",{rowid:rid,note:text,table:tab},function(json){
+				if(json.jg>0){
+					window.location.reload();//从服务器重新 刷新页面
+				}
+			}
+		);
+	}
+}
+//删除pdf文件及数据库内容
+function pdfDel(id,file,del){
+	if(confirm("删除后数据和文件无法恢复,请谨慎删除！")){
+		$.getJSON("$rooturl/huayan/hydpdf.php?ajax=1&tid=$tid",{pid: id,files: file,action:del},function(json){
+				if(json.jg>0){
+					window.location.reload();//从服务器重新 刷新页面
+				}
+			}
+		);
+	}
+}
+
+//改变图谱的类型
+function change_pdf_type(t){
+	if(confirm("您确定要修改图谱类型？")){
+		$.getJSON("$rooturl/huayan/hydpdf.php?ajax=1&tid=$tid",{pid:t.name,pdf_type:t.value,action:'change'},function(json){
+				if(json.jg>0){
+				   window.location.reload();
+			    }
+			}
+		);
+	}else{
+		return false;
+	}
+}
+
+//清除已关联pdf在yqdaoru表中的数据
+function yqdaoru_del(lx,rid,pid) {
+	if(confirm('确定要清除关联的数据？')){
+		$.getJSON("$rooturl/huayan/hydpdf.php?ajax=1&tid=$tid",
+		  {action: lx,rowid: rid,pid:pid},
+		  function(json) {
+			if(json.jg>0){
+				window.location.reload();
+			}
+		});
+	}else{
+		return false;
+	}
+}
+</script>
+<script>
+jQuery(document).ready(function($) {
+	$('.theme-login').click(function(){
+		$('.theme-popover-mask').fadeIn(100);
+		$('.theme-popover').slideDown(200);
+	})
+	$('.theme-poptit .close').click(function(){
+		$('.theme-popover-mask').fadeOut(100);
+		$('.theme-popover').slideUp(200);
+	})
+
+})
+</script>
+</head>
+<body>
+
+<table width="540px"    class="table table-striped table-bordered table-hover center" >
+	 <caption>
+   <font size="4"> $tid 号化验单打印文件管理</font>&nbsp;
+   <a class="btn btn-primary btn-large theme-login" href="javascript:;"  title="图谱文件上传,请慎重！">上传图谱</a>
+  	<div class="theme-popover">
+  	     <div class="theme-poptit">
+  	          <a href="javascript:;" title="关闭" class="close">×</a>
+  	          <h3>上传图谱</h3>
+  	     </div>
+  	     <div class="theme-popbod dform">
+  	           <form class="theme-signin" name="loginform" method="post" action="wenjian.php" enctype="multipart/form-data">
+  	                <ol>
+  	                     <li><strong>上传文件：</strong><input type="file" id="input" name="upfile[]"  multiple="multiple" style="background:#AACCFF;"></li>
+  	                     <li><strong>已传文件：</strong><h6 id="content" name="upfile[]" style="border:1px solid #CCC;width:200px;"><br /><br /><br /><br /><br /><br /></h6></li>
+  	                     <li>
+  						 	<input type="hidden" name="hid" value="$tid" />
+  	                    	 <input class="btn btn-primary" type="submit" name="submit" value=" 上 传 " />
+  	                     </li>
+  	                </ol>
+  	           </form>
+  	     </div>
+  	</div>
+  	<div class="theme-popover-mask"></div> 
+  </caption>
+	<tr align="center">
+		<td colspan=7>已经关联的打印文件</td>
+	</tr>
+	<tr align="center">
+		<td width="50px">序号</td>
+		<td nowrap >打印时间</td>
+		<td colspan=2 width="180px">图谱详情</td>
+		<td width="120px">备注</td>
+		<td  width="90px">操作</td>
+	</tr>
+	{$gline}
+	<!-- <tr align="center">
+		<td colspan=7>最近打印文件</td>
+	</tr>
+	<tr align="center">
+		<td>序号</td> 
+		<td nowrap>打印时间</td>
+		<td>图谱详情</td>
+		<td >备注</td>
+		<td>操作</td>
+	</tr> -->
+   {$dyline}
+</table>
+<script> 
+//显示已经上传的文件
+var inputElement = document.getElementById("input");    
+inputElement.addEventListener("change", handleFiles, false);  
+function handleFiles(){  
+	fileList= this.files;  
+	var dd	= document.getElementById('content');
+	dd.innerHTML	= '';
+	var html_files= '';
+	for( var i = 0 ; i < fileList.length ; i++ ){
+		html_files +="<div id='del_one"+i+"'>" +fileList[i].name;
+	}
+	dd.innerHTML	= html_files;
+}
+</script>

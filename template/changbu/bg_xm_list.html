@@ -1,0 +1,67 @@
+<script type='text/javascript'> 
+$("#checkbox input[name='vid[]']").click(function(){//点击项目后 更新选中项目的数量
+		var value_num	= parseInt($("#num_tishi").text());
+		if($(this).is(":checked")){
+			value_num = value_num+1;
+		}else{
+			value_num = value_num-1;
+		}
+		$("#num_tishi").text(value_num);
+	});
+//未选择项目的 全选/反选 功能
+$("input.all_check").click(function(){
+	$("#checkbox input:checkbox").each(function(){
+		if($(this).is(":checked")){
+			$(this).attr("checked",false).parent("label").css("background-color","#FFF");;
+		}else{
+			$(this).prop("checked",true).parent("label").css("background-color","#C9F2D1");
+		}
+	});
+            $("#num_tishi").text($("#checkbox input[name='vid[]']:checked").length);
+});
+//已选择项目的 全选/反选 功能
+$(".all_checked").click(function(){
+	$("#checked input:checkbox").each(function(){
+                    if($(this).is(":checked")){
+                            $(this).attr("checked",false).parent("label").css("background-color","#FFF");
+                    }else{
+                            $(this).prop("checked",true).parent("label").css("background-color","#C9F2D1");
+                    }
+		
+            });
+	$("#checked_num").text($("#checked input[name='vid[]']:checked").length);
+});
+
+function tijiao()//保存操作的ajax
+{
+	var vid_nums=$("input[name='vid[]']:checked").length;
+	if(vid_nums>0){
+		$.post("$rooturl/changbu/bg_xm_save.php?ajax=1",$("#xmform").serializeArray(),
+		function(data){
+			if(data){
+				var water_type	= $("#water_type").val();
+				location.href = "?water_type="+water_type;
+			}else{
+				alert('保存失败，请联系系统管理员！');
+			}
+	   });
+	}else{
+		alert('项目不能为空！');
+	}
+	
+}
+</script>
+<style type='text/css'>
+	.clearfloat{clear:both} 
+</style>
+<form action="" method="post" id='xmform'>
+<input type='hidden' id='water_type' name='water_type' value="{$water_type}" />
+<br/>
+<span id="close" style="position: absolute; top: 0px; left: 1250px; font-size:18px;">
+        <B><a href='javascript:guanbi()'>关闭</a></B>
+</span>
+<h3 class="header smaller center title">厂部项目设定</h3>
+{$lines}
+<div class="clearfloat"></div> 
+<input class="btn btn-primary" style="display:block;margin:0 auto;margin-top:4px" name="bao" type="button" value="保存" onclick='tijiao()'>
+</form>

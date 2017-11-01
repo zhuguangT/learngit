@@ -1,0 +1,228 @@
+<style>
+#content h2,#content>form{text-align:center;padding:30px 0;MARGIN-RIGHT: auto; MARGIN-LEFT: auto;width:80%;}
+#content table{text-align:center;margin:0 auto;width:100%;border-collapse:collapse;border-spacing:0;}
+#content table td{border:black solid 1px;padding-left:30px;}
+.group_sites{float:left;margin:1px 0px 1px 1px;height:43px;width:130px;border:1px #D7D7D7 solid;text-align:left;opacity:1;cursor:pointer;}
+.group_sites{float:none;background-color:#C9F2D1;}
+.group_sites_old{float:left;margin:1px 0px 1px 1px;height:43px;width:130px;border:1px #D7D7D7 solid;text-align:left;opacity:1;cursor:pointer;}
+.group_sites_old{float:none;
+//background-color:#F4F4F4;
+background-color:#C9F2D1;
+}
+</style>
+<center><h2> {$title}</h2></center>
+<form name='group_add' method="POST" action="newwt_save.php" onsubmit="return submitTest();">
+	<input type='hidden' name='wtid' value="{$_GET['wtid']}">
+	<input type='hidden' name='fuzhi' value="{$_GET['fuzhi']}">
+	<table class="table table-bordered table-hover left" style="max-width:1000px;text-align:left!important;">
+		<tr style="display:none;">
+			<td align=right style="width:30%;">显示位置:</td>
+			<td align=left>
+				<label><input type="radio" name="sort" value="1"/>于页面最上层</label>&nbsp;&nbsp;&nbsp;<label>
+				<input type="radio" name="sort" checked value="{$_GET['sort']}"/>于&nbsp;&nbsp;<span class='sort_span'>{$_GET['group_name']}</span>&nbsp;&nbsp;之后</label>
+				<select name="sort_select" class="chosen">{$group_option}</select>
+			</td>
+		</tr>
+		<tr bgcolor="#DDDDDD">
+            <td colspan='4'><B>委托单位信息</B></td>
+        </tr>
+		<tr>
+            <td>委托单位名称:</td>
+            <td>$wtdw</td>
+            <td>联系人:</td>
+            <td id='lxr'>$lxr</td>
+        </tr>
+        <tr>
+            <td>联系电话:</td>
+            <td id='lxtel'>$lxtel</td>
+			<td>地址:</td>
+            <td id='dizhi'>$dizhi</td>
+        </tr>
+        <tr bgcolor="#DDDDDD">
+            <td colspan='4'><B>任务信息</B></td>
+        </tr>
+        <tr>
+            <td>委托日期:</td>
+            <td><label>
+					<img src="$rooturl/img/date_input.png" height='30px' alt="点击设置委托日期" /><input type="text" id="wt_date" class="date_input" style="height:30px;vertical-align:middle;" size=15 title='在此处输入日期' name="wt_date" maxlength="10" value="{$wt['wt_date']}" oninput="this.value=this.value.replace(/[^\d\- :]/g,'');" />
+					<span id="tishi_wt_date" style="color:red;"></span>
+				</label></td>
+			<td>委托类型:</td>
+            <td>$wt_leixing</td>
+        </tr>
+        <tr>
+            <td>委托性质:</td>
+            <td>$wt_xz</td>
+            <td>检测时限:</td>
+            <td><input type="text" name="jcsx" size='1' value="$wt[jcsx]"/>工作日</td>
+			
+        </tr>
+        <tr>
+            <td>样品交付方式:</td>
+            <td>$jffs</td>
+            <td>样品处置:</td>
+            <td>$chuzhi</td>
+        </tr>
+        
+        <tr>
+        	<td>报告交付方式:</td>
+            <td>$jf</td>
+            <td>检测费用:</td>
+            <td><input type="text" name="money" value="$wt[money]" style="height:30px;vertical-align:middle;" size=18/>&nbsp;<B>元</B></td>
+        </tr>
+        <tr>
+			<td>检测依据及要求:</td>
+            <td><textarea cols='35' rows='3' name='jcyj'>$wt[jcyj]</textarea>
+            	</td>
+             <td>其他说明:</td>
+            <td><textarea cols='35' rows='3' name='wt_note'>$wt[wt_note]</textarea></td>
+        </tr>
+        <tr bgcolor="#DDDDDD">
+            <td colspan='4'><B>委托双方约定</B></td>
+        </tr>
+        <tr>
+            <td>约定内容:</td>
+            <td colspan='3'><textarea cols='108' rows='3' name='yueding'>{$wt[yueding]}</textarea></td>
+        </tr>
+        <tr bgcolor="#DDDDDD">
+            <td colspan='4'><B>样品信息</B></td>
+        </tr>
+         <tr>
+            <td>任务批名:</td>
+            <td colspan='3'><input type="text" id='gr_name' name="group_name" value="{$wt[group_name]}" size='111'/>&nbsp;</td>
+        </tr>
+		<tr>
+            <td>样品数量:(<span id="sum_sites" >$i</span>个)</td>
+            <td id="group_sites" colspan='3'>{$site_label}<br /><input type="button" id="button_site_add" value="点击选择站点" /></td>
+        </tr>
+	</table>
+	<br /><center><input type="submit" name="submit" $xiu_flag value="$button_str" /></center>
+</form>
+<fieldset id="fieldset_site_add" style="display:none;max-width:1000px;margin:0 auto;border:2px dashed #A8A8A8;" align="center">
+	<legend style="width:auto;margin-left:30px;border:0px;"><BLINK>站点选择：</BLINK> </legend>
+	<div class="site_content">
+		数据加载中......<br /><br />
+	</div>
+</fieldset>
+<script  type="text/javascript">
+$(document).ready(function(){
+	$('#wtdw').change(function() {
+		//gotourl('gys_list.php?ye='+$('#ye').val()+'&riqiy='+$('#riqiy').val());
+		//gotourl('newwt.php?kid='+$('#wtdw').val());
+		var wtdw = $('#wtdw').val();
+		$.post('wt_ajax.php?ajax=1',{action:'wtdw',wtdw:wtdw},function(data){
+			if(data['name']){
+				$('#wtdw').val(data['id']);
+				$("#lxr").html(data['lxr']);
+				$("#lxtel").html(data['lxtel']);
+				$("#dizhi").html(data['dizhi']);
+			}
+		},'json');
+	});
+	//$(".date_input").date_input();//日期输入框
+	//采样日期格式判定
+
+		$("input[name='wt_date']").blur(function(){
+			if(this.value.match(/\d{4}\-{1}\d{2}\-{1}\d{2}/)==null){
+				$("#tishi_wt_date").html('*检测完成日期格式不对');
+			}else{
+				$("#tishi_wt_date").html('');
+			}
+		});
+});
+function checkgn(gn){
+	var gname = gn.value;
+	if(gname.indexOf('.')!='-1'){
+		$("#tishi_group_name").html("采样批次名称中存在非法字符");
+	}else{
+		$("#tishi_group_name").html("");
+	}
+}
+function submitTest(){
+	var sites	= $("label.group_sites,label.group_sites_old").length;
+	if(!sites){
+		alert('站点不能为空！');
+		return false;
+	}
+	var gr_name = $("#gr_name").val();
+	if(!gr_name){
+		alert('必须填写批次名称！');
+		return false;
+	}
+}
+$(function(){
+	$(".chosen").chosen();//可搜索下拉菜单
+        $("#close").click(function(){
+                //隐藏父级元素的覆盖层（下达采样任务页面）
+                $("#mask,#qckb_value_modify").css("display","none");
+		$("#content").html('加载中......');
+		$("body").css({"overflow":"auto"});
+        }).mouseover(function(){
+                $(this).css({"opacity":"1"});
+        }).mouseout(function(){
+                $(this).css({"opacity":"0.8"});
+        });
+	//点击 批次下拉菜单，自动选中对应的单选框
+	$("select[name='sort_select']").change(function(){
+		var select_text	= $(this).find("option:selected").text();
+		$("span.sort_span").text(select_text);
+		$("input[name='sort']:eq(1)").val(this.value).prop("checked",true);
+	}).next("div").click(function(){
+		$("input[name='sort']").prop("checked",true);
+	});
+	//检查 采样批次名称是否有重复
+	$("input[name='group_name']").keyup(function(){
+		this.value=this.value.replace(/[\'"\\\<> ]/g,'');
+		var repeat	= $("select[name='sort_select'] option[label='"+this.value+"']").text();
+		if(repeat!=''){
+			if("{$_GET['action']}"=='group_modify' && "{$_GET['group_name']}"==this.value){//批次修改时，原批次名称无需提示
+				$("#tishi_group_name").html('');
+			}else{
+				$("#tishi_group_name").html(' *此采样批次已存在');
+			}
+		}else{
+			$("#tishi_group_name").html('');
+		}
+	}).blur(function(){
+		var repeat      = $("select[name='sort_select'] option[label='"+this.value+"']").text();
+                if(repeat!=''){
+			if("{$_GET['action']}"=='group_modify' && "{$_GET['group_name']}"==this.value){//批次修改时，原批次名称无需提示
+                        	$("#tishi_group_name").html('');
+                        }else{
+				$("#tishi_group_name").html(' *此采样批次已存在');
+			}
+                }else{
+                        $("#tishi_group_name").html('');
+			//批名更改时，对应更改 添加新站点里面的批名
+			var str = "<option value='"+$(this).val()+"' selected>"+$(this).val()+"</option>";
+                	$("#tabs-2 select[name='group_name']").append(str);
+			$("form[name='playlist'] input[name='group_name']").val($(this).val());
+                }
+	});
+	//点击添加批内站点 显示站点添加区域
+	$("#button_site_add").click(function(){
+		var display	= $("#fieldset_site_add").css("display");
+		if(display=='none'){
+			$(this).val('点击隐藏站点添加窗口');
+		}else{
+			$(this).val('点击显示站点添加窗口');
+		}
+		$("#fieldset_site_add").toggle('2');//.css({"display":"block"});
+		//站点添加窗口只加载一次
+		if(!$("div.site_content:contains('添加新站点')").html()){
+			var lianJie = "./wt_site_add.php?ajax=1&site_type=$site_type&daohang_action={$_GET['daohang_action']}&group_name={$this_group_name}";
+			$("div.site_content").load(lianJie);
+		}
+		
+	});
+	//批次表格中  已选站点 取消选择时，要将其从表中删除掉
+        $("#group_sites").on("click","label.group_sites input",
+                function(){
+                        $(this).parent().remove();
+                        var sum_sites   = $("#sum_sites").text();
+                        $("#sum_sites").text(sum_sites - 1);
+                        $("label[group_id] input[value='"+this.value+"'],label.fp_sites[tjcs] input[value='"+this.value+"']").attr("checked",false).parent("label").css("background-color","#fff");
+                }
+        );
+});
+</script>

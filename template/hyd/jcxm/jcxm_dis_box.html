@@ -1,0 +1,169 @@
+<div class="modal-content" style="width:70%;margin:0 auto;overflow:auto;border:none;">
+	<div class="modal-header row" style="height:80px;padding:10px;margin: 0;">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="关闭窗口"><i class="icon icon-remove-circle"></i></button>
+		<h3>某某检测项目分配<span style="font-size:16px;">（已分配<span class="jcxm_total"></span>项）</span></h3>
+		<div class="nav-search" style="position: absolute; right: 50px; top: 26px;">
+			<form class="form-search" onsubmit="return false;">
+				<div class="ace-spinner touch-spinner" >
+					<div class="input-group">
+						<span class="search-info"></span>
+						<span class="input-icon">
+							<input type="text" class="nav-search-input" placeholder="搜索 ..." data-source='{$all_values_data}' data-items="10" data-provide="typeahead" />
+							<i class="icon-search nav-search-icon"></i>
+						</span>
+						<div class="spinner-buttons input-group-btn">
+							<button class="btn btn-xs btn-danger pre_search" type="button"><i class="icon-chevron-up"></i></button>
+							<button class="btn btn-xs btn-success next_search" type="button"><i class="icon-chevron-down"></i></button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<form name="jcxm_dis" action="#">
+	<div class="modal-body">
+		<div class="row alert alert-info" style="margin-bottom:5px;">
+			<div class=" col-xs-12">
+				<strong>已分配的项目，共<span class="checked_total_0"></span>项</strong>
+			</div>
+		</div>
+		<div class="row item" data-item="0">
+			<!-- 已停用的检测项目 -->
+			{if count($seted_values['hasTY']) && count($seted_values['hasQY']) }
+			<div class="msg_success">已停用的检测项目</div>
+			{/if}
+			{loop $seted_values['hasTY'] $vid $value_C}
+			<div class="col-xs-1 checked reseted">
+				<label>
+					<input type="checkbox" name="vid[]" value="{$vid}" checked />
+					<span class="value_C" title="{$value_C}">{$value_C}</span>
+				</label>
+			</div>
+			{/loop}
+			<!-- 使用中的检测项目 -->
+			{if count($seted_values['hasTY']) && count($seted_values['hasQY']) }
+			<div class="msg_success">使用中的检测项目</div>
+			{/if}
+			{loop $seted_values['hasQY'] $vid $value_C}
+			<div class="col-xs-1 checked reseted">
+				<label>
+					<input type="checkbox" name="vid[]" value="{$vid}" checked />
+					<span class="value_C" title="{$value_C}">{$value_C}</span>
+				</label>
+			</div>
+			{/loop}
+		</div>
+		<div class="row alert alert-info" style="margin-bottom:5px;">
+			<strong>未分配的项目，共<span class="checked_total_1"></span>项</strong>&nbsp;&nbsp;&nbsp;
+			<!-- <button class="btn btn-xs btn-primary sel_click" type="button" data-row="1">全选</button> -->
+		</div>
+		<div class="row item" data-item="1">
+			<!-- 实验室已配置，但是并没有分配给任何一个化验员的检测项目 -->
+			{if count($other_values['notDis']) && count($other_values['hasDis']) }
+			<div class="msg_success">尚未配置化验人员的检测项目，请优先选择</div>
+			{/if}
+			{loop $other_values['notDis'] $vid $value_C}
+			<div class="col-xs-{echo (strlen($value_C)>15) ? 2 : 1}">
+				<label>
+					<input type="checkbox" name="vid[]" value="{$vid}" />
+					<span class="value_C" title="{$value_C}">{$value_C}</span>
+				</label>
+			</div>
+			{/loop}
+			<div style="clear:both;"></div>
+			<!-- 未分配至当前化验员但已分配给其他化验员的项目 -->
+			{if count($other_values['notDis']) && count($other_values['hasDis']) }
+			<div class="msg_success">未分配至当前化验员但已分配给其他化验员的项目</div>
+			{/if}
+			{loop $other_values['hasDis'] $vid $value_C}
+			<div class="col-xs-{echo (strlen($value_C)>15) ? 2 : 1}">
+				<label>
+					<input type="checkbox" name="vid[]" value="{$vid}" />
+					<span class="value_C" title="{$value_C}">{$value_C}</span>
+				</label>
+			</div>
+			{/loop}
+		</div>
+	</div>
+	<input type="hidden" name="item_data" value='{$arow['data']}' />
+	<div class="modal-footer">
+		<input class="btn btn-primary btn-sm" type="submit" value="确定" />
+		<input class="btn btn-sm" type="button" data-dismiss="modal" aria-hidden="true" value="取消" />
+	</div>
+	<!-- <div class="fixed_button_box">
+		<div class="fixed_button_bg_box"></div>
+		<div class="fixed_button">
+			<input class="btn btn-primary btn-sm" type="submit" value="保存配置信息" />
+			<input class="btn btn-sm" type="button" data-dismiss="modal" aria-hidden="true" value="返回审核设置" />
+		</div>
+	</div> -->
+	</form>
+</div>
+<script type="text/javascript">
+//初始化项目查询功能，由于是在modal里面进行项目滚动，所以需要特殊处理
+nav_search_init($("#jcxm_dis_box .nav-search"),"#jcxm_dis_box",function(search_array,search_index){
+	//在第一次搜索项目是获取每个项目的当前位置记录下来以备检索时滚动至指定位置
+	if( !$("#jcxm_dis_box span.value_C[data-offsetTop]").length){
+		$("#jcxm_dis_box span.value_C").each(function(i){
+			$(this).attr("data-offsetTop",$(this).offset().top);
+		});
+	}
+	//滚动至指定位置。
+	$("#jcxm_dis_box").scrollTop(search_array[search_index].attr("data-offsetTop") - 100);
+});
+// 返回审核页面时，显示审核页面底部的保存按钮
+$("#jcxm_dis_box [data-dismiss='modal'][aria-hidden='true']").on("click",function(){
+	$("#shhe_set .fixed_button_box").show();
+});
+//数据提交
+$("#jcxm_dis_box form[name=jcxm_dis]").submit(function(){
+	// 返回审核页面时，显示审核页面底部的保存按钮
+	$("#shhe_set .fixed_button_box").show();
+	var item_data = $.parseJSON($("#jcxm_dis_box input[name=item_data]").val());
+	$(this).ajaxSubmit({
+		type: 'post',dataType:'json',data: {id:item_data.id,uid:item_data.uid,'ajax': 1},
+		url: trade_global.rooturl+'/huayan/ahlims.php?app=jcxm&act=jcxm_dis_save',
+		success: function(data) {
+			//更新所有提示信息
+			refresh_jcxm_all_msg();
+			if(data.error == '0'){
+				var i = j = k = -1;
+				var items = [];
+				var add_items = [];
+				var del_items = [];
+				$("#jcxm_dis_box .item[data-item=0] input[name='vid[]']").each(function(){
+					var checkbox = '<input class="jcxm" name="jcxm[]" type="checkbox" value="'+$(this).val()+'" />';
+					if( 'hidden' == $(this).attr("type") || true == $(this).prop("checked") ){
+						i++;
+						items[i] = '<label class="btn btn-white items">'+checkbox+$(this).next('span.value_C').text()+'</label>';
+					}else{
+						j++;
+						del_items[j] = '<label class="btn btn-white items bg_danger"><strong>'+checkbox+$(this).next('span.value_C').text()+'</strong></label>';
+					}
+				});
+				$("#jcxm_dis_box .item[data-item=1] input[type=checkbox]:checked").each(function(i){
+					k++;
+					var checkbox = '<input class="jcxm" name="jcxm[]" type="checkbox" value="'+$(this).val()+'" />';
+						add_items[k] = '<label class="btn btn-white items bg_info"><strong>'+checkbox+$(this).next('span.value_C').text()+'</strong></label>';
+				});
+				$("#shhe_set .jcxm_total_"+item_data.uid).html(items.length+add_items.length);
+				var add_items_html = add_items.length ? add_items.join('') : '';
+				var del_items_html = del_items.length ? del_items.join('') : '';
+				var jcxm_box = $("#shhe_set .fx_user[value="+item_data.uid+"]").parents("td").next("td");
+				var checked_vids = jcxm_box.find(".jcxm:checked");
+				jcxm_box.html(items.join('&nbsp;')+add_items_html+del_items_html);
+				checked_vids.each(function(){
+					jcxm_box.find(".jcxm[value="+$(this).val()+"]").prop("checked",true);
+				});
+				$("#jcxm_dis_box").modal("hide");
+			}else{
+				alert_error(data.content);
+			}
+		},
+		error: function(data){
+			return alert_error(data.responseText);
+		}
+	});
+	return false; //阻止表单自动提交事件
+});
+</script>

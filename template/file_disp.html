@@ -1,0 +1,15 @@
+<!-- 模板显示 -->
+<table>
+<form action='$rooturl/blue/file_edit.php' method=POST>
+<tr><td>补丁:</td><td><input type=text name=name value='$_GET[name]' onclick='unhide("sub2");unhide("sub1");'>
+<input type=submit name=action value='new' ><br></td></tr>
+<tr><td>-</td><td>
+<input type=submit value='modi'  id=sub1 style='visibility: hidden; display: none;' name=action></td></tr>
+<tr><td>内容:<br>
+<input type=submit value='modi'  id=sub3 style='visibility: hidden; display: none;' name=action></td><td>
+<textarea id=hidearea style="visibility:hidden; display:none;font-family:simsun"  name=data0 cols='120' rows="$_GET[line]" onclick='unhide("sub1");unhide("sub2");unhide("sub3");'>$lines_hidden</textarea>$unhide<br>
+<textarea  name=data id=data cols="120" rows="$linecount" style="font-family:simsun" onclick='unhide("sub1");unhide("sub2");unhide("sub3");'>$lines</textarea><br>
+<input type=submit value='modi' style='visibility: hidden; display: none;' id=sub2 name=action>
+</td></tr>
+</form>
+</table>

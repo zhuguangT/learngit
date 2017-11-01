@@ -1,0 +1,139 @@
+<h3 class="header smaller center title">{$_POST['title']}</h3>
+<form name='site_value_form'>
+<div class="widget-box no-border">
+	<div class="widget-header header-color-blue4 center">
+		<div class="widget-toolbar">
+			任务类型: <select id="site_type" name="site_type" onchange="redirect()">{$site_type_str}</select>
+			水样类型: <select id="water_type" name="water_type" onchange="redirect()"><option value="全部" selected="selected">全部</option>{$lxlist}</select>
+			站点分批: <select id="group_name" name="group_name" onchange="redirect()" class="chosen-select"><option value="">请选择</option>{$group_name_str}</select>  
+			统计参数: <select id="tjcs" name="tjcs" onchange="redirect()"><option value="">请选择</option>{$tjcs_str}</select>
+		</div>
+	</div>
+	<div class="widget-body">
+		<table  style="margin-top:20px;margin-bottom:35px;" class="table table-striped table-bordered table-hover">
+			<tr>
+				<td colspan="{$line_nums}" align='center'>
+					选择站点 <input type="button" class="btn btn-xs btn-primary" value="全选" onclick="qx(this,'sites[]')">
+				</td>
+			</tr>
+			$group_site_str
+			<tr>
+				<td colspan="{$line_nums}" align='center'>
+				   {$date_str}
+				</td>
+			</tr>
+			<tr>
+				<td colspan="{$line_nums}" align='center'>
+					项目选择模板：
+					<select class='chosen' onchange="quan(this)" name="xmmb" id='mb1'>
+					<option value="$xm_values">----请选择----</option>
+					$xmmb_options
+					</select>
+					项目排序模板：
+					<select  name="xm_px_id" id='xm_px_id'>
+						<option value="0">----请选择----</option>
+						{$option_px_mb}
+					</select>
+					<input type="button" value="项目全选" class="btn btn-xs btn-primary" onclick="qx(this,'vid[]')">
+				</td>
+			</tr>
+			$vid_str
+		</table>
+		<div style="text-align:center;position:fixed;bottom:0;width:80%;heigth:40px;background:rgba(120,120,120,0.5);">
+			<button class="btn btn-xs btn-primary" style="height:35px;min-width:60px;" id='site_value_save' type='button'>保存</button>&nbsp;&nbsp;&nbsp;
+			<button class="btn btn-xs btn-primary" style="height:35px;min-width:60px;" id='site_value_reset' type='button'>取消</button>
+		</div>
+	</div>
+</div>
+</form>
+<script type="text/javascript">
+$(function(){
+$("#site_value_save").click(function(){
+	//获取项目id并更新到页面中
+	//<span class='s_float'><label><input type='checkbox' name='alone_vid[]' value='1' checked />总大肠菌群</label></span>
+	if("{$_POST[action]}" == 'alone_set'){
+		var vid_name	= "alone_vid[]";
+		var vid_td		= "#alone_vid_td";
+		var group_name	= "alone_group_name[]";
+		var sites_name	= "alone_sites";
+		var sites_td	= "#alone_sites_td";
+	}else if("{$_POST[action]}" == 'merger_set'){
+		var vid_name	= "merger_vid[]";
+		var vid_td		= "#merger_vid_td";
+		var group_name	= "merger_group_name[]";
+		var sites_name	= "merger_sites";
+		var sites_td	= "#merger_sites_td";
+	}else{
+		var vid_name	= "vid[]";
+		var vid_td		= "#vid_td";
+		var group_name	= "group_name[]";
+		var sites_name	= "sites";
+		var sites_td	= "#sites_td";
+	}
+	var alone_vid_html	= '';
+	$("form[name='site_value_form'] input[name='vid[]']:checked").each(function(i){
+		alone_vid_html	+= "<span class='s_float'><label><input type='checkbox' name='"+vid_name+"' value='"+this.value+"' checked />"+$(this).parent("label").text()+"</label></span>";
+	});
+	$(vid_td).html(alone_vid_html);
+	
+	var sites_html	= '';
+	$("form[name='site_value_form'] input[name='group_name[]']:checked").each(function(i){
+		var this_group_name	= this.value;
+		var this_id	= $(this).attr("id");
+		sites_html	+= "<div style='clear:left;text-align:left;'><label><input name='"+group_name+"' type='checkbox' value='"+this_group_name+"' site_group='yes' bz='"+i+"' checked /><span class='pc_css'>"+this_group_name+"</span></label></div><div>";
+		$("input[class='"+this_id+"']:checked").each(function(a){
+			sites_html	+= "<span class='s_float'><label><input  name='"+sites_name+"["+this_group_name+"][]' type='checkbox' value='"+this.value+"' site='yes' bz='"+i+"' checked />"+$(this).parent("label").text()+"</label></span>";
+		});
+		sites_html	+= "</div>";
+	});
+	$(sites_td).html(sites_html);
+	$("#cover").hide();
+	$("body").css({"overflow":"auto"});
+});
+$("#site_value_reset").click(function(){
+	if(confirm("取消后本页面的修改将丢弃，确定取消？")){
+		$("#cover").hide();
+		$("body").css({"overflow":"auto"});
+	}
+});
+})
+//项目的全选或者取消全选
+function qx(aButton,aItem){
+    with(aButton.form){
+        var v=$("input[name*='"+aItem+"']");
+		if(aItem=='sites[]'){
+			var v2=$("input[name*='group_name[]']");
+			for(i=0;i<v2.length;i++){
+				v2[i].checked=(aButton.value!='全选') ? false :true;
+				//获得目前批次的对象
+				var v3=$("input[name='sites["+v2[i].value+"][]']");
+				for(j=0;j<v3.length;j++){
+					v3[j].checked=(aButton.value!='全选') ? false :true;
+				}
+			}
+			aButton.value=(aButton.value=='全选') ? '取消全选' : '全选' ;
+		}else{
+			for(i=0;i<v.length;i++) {
+				v[i].checked=(aButton.value!='项目全选') ? false :true;
+			}
+			aButton.value=(aButton.value=='项目全选') ? '取消全选' : '项目全选' ;
+		}
+    }
+}
+//根据项目模板选中项目
+function quan(th){
+	with(th.form){ 
+		var im=xmmb.value;
+		var t=im.split(",");
+		var	v=elements['vid[]'];
+		for(var i=0;i<v.length;i++) 
+		{
+			if(in_array(v[i].value,t)){
+				v[i].checked=true;
+			}else{
+				v[i].checked=false;
+			}
+		}   
+	}
+}
+</script>

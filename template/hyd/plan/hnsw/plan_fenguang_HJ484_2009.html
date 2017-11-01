@@ -1,0 +1,130 @@
+<h1>{$arow['assay_element']}分析原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+  <tr class="noborder">
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:10%"></td>
+  </tr>
+  <tr>
+  	<td>检测项目</td>
+  	<td colspan="2">{$arow['assay_element']}</td>
+  	<td colspan="1">检测依据</td>
+  	<td colspan="2">{$arow['td2']}</td>
+    <td colspan="1">检出限({$arow['unit']})</td>
+    <td colspan="1">{$arow['td3']}</td>
+    <td colspan="1">取样体积(mL)</td>
+    <td colspan="1"><input type="text" name="td6" value="{$arow['td6']}" /></td>
+  </tr>
+  <tr>
+	  <td>仪器名称</td>
+	  <td colspan="2"><input type="text" name="td4" value="{$arow['td4']}" /></td>
+    <td colspan="1">仪器型号</td>
+    <td colspan="2"><input type="text" name="td5" value="{$arow['td5']}" /></td> 
+    <td colspan="1">选用波长(nm)</td>
+    <td colspan="1"><input type="text" name="td8" value="{$arow['td8']}" /></td> 
+	  <td colspan="1">比色皿规格(cm)</td>
+	  <td colspan="1"><input type="text" name="td9" value="{$arow['td9']}" /></td>
+  </tr>
+  <tr>
+  	<td>标准溶液名称</td>
+  	<td colspan="2"><input type="text" name='td10' value="{$arow['td10']}" ></td> 
+  	<td>标准溶液浓度(mg/L)</td>
+  	<td colspan="2"><input type="text" name="td11" value="{$arow['td11']}"/></td>
+  	<td colspan="1">计算公式</td>
+  	<td colspan="3" id="js_gs">ρ=[(A-A<sub>0</sub>-a)/b]×[V<sub>1</sub>/(V<sub>2</sub>×V)]/V</td>
+  </tr>
+  <tr>
+    <td class="wei_a" onclick="qx();" title="点击选择曲线">回归方程</td>
+    <td colspan="3">
+      {$arow['quxian']}
+      &nbsp;&nbsp;截距a={$arow['CA']} 斜率b={$arow['CB']}
+      <input type="hidden" name = "CA" id="qa" value="{$arow['CA']}" />
+      <input type="hidden" name = "CB" id="qb" value="{$arow['CB']}" /></td>
+    <td class="wei_a" onclick="qx('{$arow['scid']}')" title="查看曲线">标准曲线<br />绘制日期</td>
+    <td colspan="1">{$arow['sc_ldrq']}</td>
+    <td>空白值(A<sub>0</sub>)</td>
+    <td><input type="text"  id="kbzA0"  name="td29" value="{$arow['td29']}" /></td>
+    <td colspan="2" class="auto">
+      V<sub>1</sub>: <input type="text" style="width:40px"  id="tj_v1"  name="td12" value="{$arow['td12']}" />mL
+      &nbsp;&nbsp;
+      V<sub>2</sub>: <input type="text" style="width:40px"  id="tj_v2"  name="td13" value="{$arow['td13']}" />mL
+    </td>
+  </tr>
+  <tr>
+    <td rowspan="2">序号</td>
+    <td rowspan="2">站名</td>
+    <td colspan="1" rowspan="2">取样体积V(mL)</td>
+    <td colspan="4">吸光度</td>
+    <td colspan="1" rowspan="2" width='100'>含量({$arow['unit']})</td>
+    <td colspan="1" rowspan="2">平均值/理论浓度({$arow['unit']})</td>
+    <td colspan="1" rowspan="2">相对偏差/加标回收率(%)</td>
+    </tr>
+  <tr>
+    <td width="100">Ⅰ</td>
+    <td width="100">Ⅱ</td>
+    <td width="100">平均值(A)</td>
+    <td width="100">A-A<sub>0</sub></td>
+  </tr>
+  {$aline}
+  <tr>
+  	<td>备注</td>
+  	<td colspan="9"><textarea name="td30" >{$arow['td30']}</textarea></td>
+  </tr>
+  
+</table>
+<script type="text/javascript">
+//曲线溶液的单位，如果存在“/”，可以判断出该计算公式是按照浓度的曲线计算的，否则，是按照质量曲线计算
+$(document).ready(function(){
+  //填写或修改完空白 V1 V2后进行计算
+  $("#kbzA0,#tj_v1,#tj_v2,input[name=td6]").blur(function(){
+    $("input[name*='vd1']").each(function (i) {
+         $(this).blur();
+    });
+  })
+  var _js_gs = "ρ=[(A-A<sub>0</sub>-a)/b]×[V<sub>1</sub>/(V<sub>2</sub>×V)]";
+  $('#js_gs').html(_js_gs+'/V');
+})
+function jsgs(){
+      //运算函数在lib.js
+      var kb  = $('#kbzA0').val();
+      if(kb==''){
+        $('#kbzA0').focus();
+      }
+      var vd3_split = String(vs['vd3']).split('.');
+      if(vd3_split.length==2){
+        var diding_ws = vd3_split[1].length;
+      }else{
+        var diding_ws = 2;
+      }
+      if($.isNumeric(kb) && $.isNumeric(vs['vd1']) && $.isNumeric($("input[name=td6]").val()) && $.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4'])){
+        var vd3 = parseFloat(vs['vd3']);//I
+        var vd4 = parseFloat(vs['vd4']);//II
+        var vd2 = parseFloat($("input[name=td6]").val()/vs['vd1']);//稀释倍数
+        var CA  = parseFloat(document.getElementById('qa').value);
+        var CB  = parseFloat(document.getElementById('qb').value);
+        var V   = vs['vd1'];
+        var V1  = parseFloat(document.getElementById('tj_v1').value);
+        var V2  = parseFloat(document.getElementById('tj_v2').value);
+
+        var pj  = vs['vd5'] = roundjs(accDiv(accAdd(vd3,vd4),2),diding_ws+1);//获取平均值
+        var gmd = vs['vd6'] = roundjs(accsub(pj,kb),diding_ws+1);//获取回归方程中Y的值，即(A)-(A0)的值
+        //(A-A0-a)/b
+        var han1  = accsub(gmd,CA); //计算公式
+        var han2  = accDiv(han1,CB);
+        //V1/(v2*V)
+        var han3  = accMul(V2,V);
+        var han4  = accDiv(V1,han3);
+        //han2*han4
+        var han5  = accMul(han2,han4);
+        //乘以稀释倍数
+        var jg    = parseFloat(accMul(han5,vd2));
+        if($.isNumeric(CA) && $.isNumeric(CB)){
+          vs['vd0'] = vs['_vd0']= jsws(jg);
+        }
+      }else{
+        vs['vd0']=vs['_vd0']="";
+      }
+}
+</script>  

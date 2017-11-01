@@ -1,0 +1,70 @@
+<h1>重量法检验记录（工艺）</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="">
+		<td style="width:10%"></td><td style="width:18%"></td><td style="width:12%"></td><td style="width:12%"></td>
+		<td style="width:12%"></td><td style="width:12%"></td><td style="width:12%"></td><td style="width:12%"></td>
+	</tr>
+	<tr align="center">
+		<td>样品名称</td>
+		<td colspan="2"><input type="text" name="td8" class="inputc" value="{$arow['td8']}" /></td>
+		<td>检验项目</td>
+		<td>{$arow['assay_element']}</td>
+		<td>检验地点</td>
+		<td colspan="2"><input type="text" name="td7" class="inputc" value="{$arow['td7']}" /></td>
+	</tr>
+	<tr>
+		<td >方法依据</td>
+		<td colspan="2">{$arow['td2']}</td>
+		<td>天平型号</td>
+		<td>{$arow['td5']}</td>
+		<td>天平编号</td>
+		<td colspan="2">{$arow['yq_bh']}</td>
+	</tr>
+	<tr>
+		<td>计算公式</td>
+		<td class="noright right"  colspan="2">W(%)=</td>
+		<td class="noborder">G-G<sub>1</sub><hr />G</td>
+		<td class="noborder" style="text-align:left">×100</td>
+		<td colspan="3" class="noleft"></td>
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td>{$zhanming}</td>
+		<td>处理前称重G（g）</td>
+		<td>处理后称重G<sub>1</sub>（g）</td>
+		<td>G-G<sub>1</sub>（g）</td>
+		<td>检验结果<br/>({$arow['unit']})</td>
+		<td>平均值</td>
+		<td>质控结果 <br /> (%)</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td>备注</td>
+		<td colspan="7"><textarea name="td30">$arow[td30]</textarea></td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+function jsgs(){
+	var vd_split = String(vs['vd1']).split('.');
+	if(vd_split.length==2){
+		var diding_ws = vd_split[1].length;
+	}else{
+		var diding_ws = 2;
+	}
+	if($.isNumeric(vs['vd1'])&&$.isNumeric(vs['vd3'])){
+		vs['vd4'] =roundjs(accsub(vs['vd1'],vs['vd3']),diding_ws);
+	}
+	else
+	{
+		vs['vd4'] ='';
+	}
+	if($.isNumeric(vs['vd1'])&&$.isNumeric(vs['vd4'])){
+		vs['vd0'] = roundjs(vs['vd4']*100/vs['vd1'],diding_ws);
+	}
+	else{
+		vs['vd0'] = '';
+	}
+}
+</script> 

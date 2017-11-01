@@ -1,0 +1,31 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>采样通知单</title>
+<link href="$rooturl/css/ace.min.css" rel="stylesheet" />
+<link href="$rooturl/css/bootstrap.min.css" rel="stylesheet" />
+<style media="print" type="text/css">
+	.Noprint{display:none;}
+	.body_css{width:100%}
+</style>
+$print
+<style type="text/css">
+	body{width:95%;margin:0 auto;}
+	.table.table-bordered.center td textarea{background-color:#FFFFFF;}
+</style>
+<script language="javascript">
+	function change_page_size(page_size){//根据设置的打印页数进行分页
+		if(!isNaN(page_size)&&page_size!=''){
+			var urlPage = String(self.location);
+			location.replace(urlPage+"&page_size="+page_size);
+		}
+	}
+</script>
+</head>
+<body>
+<div class='Noprint' style="text-align:center; margin-top:20px">
+	<input type='text' placeholder={$input_note} style='border:red 1px solid;width:200px;' oninput='this.value=this.value.replace(/\D/gi,"");' onblur="change_page_size(this.value);" value=''/>
+	<input class="btn btn-xs btn-primary" type='button' value='设置'>
+</div>
+</body>
+</html>

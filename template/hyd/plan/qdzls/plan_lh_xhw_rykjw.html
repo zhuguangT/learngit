@@ -1,0 +1,50 @@
+<!-- 嗅和味 -->
+<h1>嗅和味、肉眼可见物检验原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:16%"></td>
+    <td style="width:16%"></td>
+    <td style="width:13%"></td>
+    <td style="width:22%"></td>
+    <td style="width:13%"></td>
+    <td style="width:20%"></td>
+  </tr>
+  <tr>
+    <td>检验方法依据</td>
+    <td colspan="5">{$arow['td2']}</td>
+  </tr>
+  <tr>
+    <td rowspan="2">序号</td>
+    <td rowspan="2">{$zhanming}</td>
+    <td rowspan="2">肉眼可见物</td>
+    <td colspan="3">嗅和味</td>
+  </tr>
+  <tr>
+    <td colspan="2">等级及说明</td>
+    <td>强度</td>
+  </tr>
+    {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="5"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+  /*
+  var xhw_qd = ['无','微弱','弱','明显','强','很强'];
+  var xhw_sm = new Array();
+  xhw_sm[0] = '无任何臭和味';
+  xhw_sm[1] = '一般饮用者甚难察觉，但臭、味敏感者可以发觉';
+  xhw_sm[2] = '一般饮用者刚能察觉';
+  xhw_sm[3] = '已能明显察觉';
+  xhw_sm[4] = '已有很显著的臭味';
+  xhw_sm[5] = '有强烈的恶臭或异味';
+  function jsgs(){
+    if($.isNumeric(vs['vd0'])){
+      var vd0 = parseInt(vs['vd0']);
+      vs['vd3'] = (''==vs['vd3'])?xhw_qd[vd0]:vs['vd3'];
+      //vs['vd4'] = xhw_sm[vd0];
+    }
+  }*/
+</script>

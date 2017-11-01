@@ -1,0 +1,338 @@
+<div style="margin:20px;"><h3><i class="icon-user bigger-170"></i>&nbsp;帐户设置</h3></div> 
+<div style="border: 1px solid #e1e1e1;margin:20px;">
+  <div class="panel-section">
+	<p class="ace-nav" style="float:left;width:90px;">
+	  <a style="width:80px;" href="javascript:;" title="{$u['userid']}">
+		<span class="avatar-face portrait">{$portrait}</span>
+	  </a>
+	</p>
+	<p style="float:left;width:500px;padding:65px 0 0 20px;">
+	  你可以选择500KB以内的png/jpg图片作为头像
+	</p>
+	<div style="clear:both;"></div>
+	<form name="file_upload" class="file_upload" enctype="multipart/form-data" method="POST" action="userpass.php?ajax=1&action=file_upload&input_name=portrait&id={$u['id']}" >
+	  <span class="fileinput-button btn-local-upload" style="width:100px;">
+		<span class="btn btn-light">
+		  <span class="ng-hide"><i class="icon-spinner icon-spin icon-large"></i>上传中</span>
+		  <span class="">修改头像<input name="portrait" type="file" title="上传新头像" /></span>
+		</span>
+	  </span>
+	</form>
+	<hr />
+  </div>
+  <div class="panel-section"><h4>修改个人资料</h4></div>
+  <div class="panel-section col-xs-6">
+	<div class="form-horizontal">
+		<div class="form-group">
+			<label class="col-xs-2 control-label">姓名：</label>
+			<div class="col-xs-10" title="{$u[id]}">
+				{$u['userid']}
+			</div>
+		</div>
+		<div class="form-group" style="height:55px;line-height: 50px;">
+			<label class="col-xs-2 control-label">电子签名：</label>
+			<div class="col-xs-10">
+					<form name="form_userid_img" class="form_userid_img" enctype="multipart/form-data" method="POST" action="userpass.php?ajax=1&action=userid_img&input_name=userid_img&id={$u['id']}">
+						<a href="javascript:;" title="{$u[userid]}">
+							<span class="userid_img">{$userid_img_show}</span>
+						</a>
+						<span class="fileinput-button btn-local-upload" style="display:inline;">
+							<span class="btn btn-light">
+								<span class="ng-hide"><i class="icon-spinner icon-spin icon-large"></i>上传中</span>
+								<span class="">$file_button_name<input name="userid_img" type="file" title="你可以选择500KB以内的png/jpg图片作为电子签名" /></span>
+							</span>
+							<span style="color:#939393;">电子签名要求：白底，长100px,宽50px</span>
+						</span>
+					</form>
+			</div>
+		</div>
+    </div>
+      <form name="user_update_form" class="form-horizontal">
+	  <div class="form-group">
+		<label class="col-xs-2 control-label">用户名称：</label>
+		<div class="col-xs-10">
+		<input value="{$u['nickname']}" name="nickname" class="form-control" placeholder="用户名称" type="text" />
+		</div>
+	  </div>
+	  <div class="form-group">
+		<label class="col-xs-2 control-label">个性签名：</label>
+		<div class="col-xs-10">
+		<textarea name="desc" class="form-control" rows="4" maxLength="50" placeholder="个性签名（可空）">{$u['desc']}</textarea>
+		</div>
+	  </div>
+	  <div class="form-group ng-hide user_update_errors">
+		<label class="col-xs-2 control-label"></label>
+		<div class="col-xs-10">
+		  <div class="alert alert-danger ng-binding">
+			<i class="icon-remove-sign"></i><span></span>
+		  </div>
+		</div>
+	  </div>
+	  <div class="form-group ng-hide user_update_success">
+		<label class="col-xs-2 control-label"></label>
+		<div class="col-xs-10">
+		  <div class="alert alert-success">
+		  <i class="icon-ok"></i>修个人资料修改成功。 
+		  </div>
+		</div>
+	  </div>
+	  <div class="form-group">
+		<label class="col-xs-2 control-label"></label>
+		<div class="col-xs-10">
+		<span class="button btn btn-primary btn-sm">保存 </span>
+		</div>
+	  </div>
+	</form>
+	<hr />
+  </div>
+  <div class="password">
+	<div class="panel-section">
+	<h4>修改密码</h4>
+	</div>
+	<div class="panel-section col-xs-6">
+	  <form name="user_pwd_form" class="form-horizontal">
+	  <div class="form-group">
+		<label class="col-xs-2 control-label">原密码：</label>
+		<div class="col-xs-10">
+		<input name="pwd_old" class="form-control" placeholder="原密码" type="password" />
+		</div>
+	  </div>
+	  <div class="form-group">
+		<label class="col-xs-2 control-label">新密码：</label>
+		<div class="col-xs-10">
+		<input name="pwd_new" class="form-control" placeholder="新密码" type="password" />
+		</div>
+	  </div>
+	  <div class="form-group">
+		<label class="col-xs-2 control-label">重复密码：</label>
+		<div class="col-xs-10">
+		<input name="pwd_again" class="form-control" placeholder="再输入一次" type="password" />
+		</div>
+	  </div>
+	  <div class="form-group ng-hide user_pwd_errors">
+		<label class="col-xs-2 control-label"></label>
+		<div class="col-xs-10">
+		  <div class="alert alert-danger ng-binding">
+			<i class="icon-remove-sign"></i><span></span>
+		  </div>
+		</div>
+	  </div>
+	  <div class="form-group ng-hide user_pwd_success">
+		<label class="col-xs-2 control-label"></label>
+		<div class="col-xs-10">
+		  <div class="alert alert-success">
+		  <i class="icon-ok"></i>修改密码成功。 
+		  </div>
+		</div>
+	  </div>
+	  <div class="form-group">
+		<label class="col-xs-2 control-label"></label>
+		<div class="col-xs-10">
+		<span class="button btn btn-primary btn-sm">确认修改 </span>
+		</div>
+	  </div>
+	  </form>
+	  <hr />
+	</div>
+  </div>
+  <div class="panel-section"></div>
+</div>
+<script>
+var me = trade_global.u;
+var action_url = '$rooturl/user_manage/userpass.php?ajax=1&id='+me.id+'&action=';
+$(document).ready(function(){
+  var user_update_form = $("form[name=user_update_form]");
+  user_update_form.find(".button").click(function(){
+	var form_status_class = 'user_update';
+	 //^([\u4e00-\u9fa5]|[0-9a-zA-Z!@#$%^&*()_\-\+=\s]){1,100}$
+	$(".user_update_errors,.user_update_success").addClass("ng-hide");
+	var desc = user_update_form.find("[name='desc']").val();
+	var nickname = user_update_form.find("[name='nickname']").val();
+	if(''==nickname){
+	  user_update_form.find("[name='nickname']").addClass('error');
+	  return form_error('1',form_status_class,'用户名不能为空');
+	}
+	if(nickname==me.nickname&&desc==me.desc){
+	  return false;
+	}else{
+	  $.getJSON(action_url+'user_update_form',{nickname:nickname,desc:desc},function(data){
+		if(form_error(data.error,form_status_class,data.massage)){
+		  trade_global.u.nickname=nickname;
+		  trade_global.u.desc=desc;
+		  me=trade_global.u;
+		  $(window.parent.document).find('.user_nickname').html(nickname);
+		}
+	  });
+	}
+	return false;
+  });
+  var user_pwd_form = $("form[name=user_pwd_form]");
+  user_pwd_form.find(".button").click(function(){
+	var form_status_class = 'user_pwd';
+	$(".user_pwd_errors,.user_pwd_success").addClass("ng-hide");
+	var pwd_old = user_pwd_form.find("[name='pwd_old']").val();
+	var pwd_new = user_pwd_form.find("[name='pwd_new']").val();
+	var pwd_again = user_pwd_form.find("[name='pwd_again']").val();
+	if(''==pwd_old){
+	  user_pwd_form.find("[name='pwd_old']").addClass('error').focus();
+	  return form_error('1',form_status_class,'必须输入原密码!');
+	}
+	if(''==pwd_new||pwd_new.length<6){
+	  user_pwd_form.find("[name='pwd_new']").addClass('error').focus();
+	  return form_error('1',form_status_class,'密码不能为空并且长度不能少于6位！');
+	}
+	if(pwd_old==pwd_new){
+	  user_pwd_form.find("[name='pwd_new']").addClass('error').focus();
+	  return form_error('1',form_status_class,'您输入新旧密码一样！');
+	}
+	if(''!=pwd_new&&pwd_new==pwd_again){
+	  $.getJSON(action_url+'user_pwd_form',{pwd_old:pwd_old,pwd_new:pwd_new,pwd_again:pwd_again},function(data){
+		if(form_error(data.error,form_status_class,data.massage)){
+		  $("form[name^='"+form_status_class+"'] input").val('');
+		}
+	  });
+	}else{
+	  user_pwd_form.find("[name='pwd_new']").addClass('error').select();
+	  return form_error('1',form_status_class,'您输入的两次密码不一致！');
+	}
+	return false;
+  });
+  var file_upload_form = $("form[name='file_upload'],form[name='form_userid_img']");
+  file_upload_form.find("input[type='file']").change(function(){
+	if(this.name=='userid_img'){
+		var file_form	= $("form[name='form_userid_img']");
+		$(".form_userid_img .btn-local-upload .btn-light span:eq(0)").removeClass('ng-hide').next().addClass('ng-hide');
+	}else{
+		var file_form	= $("form[name='file_upload']");
+		$(".file_upload .btn-local-upload .btn-light span:eq(0)").removeClass('ng-hide').next().addClass('ng-hide');
+	}
+	file_form.ajaxSubmit({
+		  type: 'post',
+		  dataType:'json',
+		  //url: 'userpass.php?ajax=1&action=file_upload&id={$u['id']}',
+		  success: function(data) {
+			if(data.error == '1'){
+			  $.alert({
+				title: '失败',
+				backgroundDismiss: false,
+				icon: 'icon-remove red bigger-130',
+				content: '<div class="alert alert-danger">'+data.massage+'</div>'
+			  });
+			}else{
+				if(data.portrait){
+					$("span.portrait").html(data.portrait);
+					$(window.parent.document).find('.first_name').remove();
+					$(window.parent.document).find('span.portrait').html(data.portrait);
+				}else if (data.userid_img){
+					$("span.userid_img").html(data.userid_img);
+					$(window.parent.document).find('.first_name').remove();
+					$(window.parent.document).find('span.userid_img').html(data.userid_img);
+				}
+			}
+			$(".btn-local-upload .btn-light span:eq(1)").removeClass('ng-hide').prev().addClass('ng-hide');
+			$(".form_userid_img .btn-local-upload .btn-light span:eq(1)").removeClass('ng-hide').prev().addClass('ng-hide');
+		  },
+		  error: function(data){
+			//去掉html标签
+			var massage = data.responseText.replace(/<[^>]+>/g,"");
+			//最多显示200个字符
+			(massage.length > 200) && (massage = massage.substring(0,200));
+			$.alert({
+			  title: '失败',
+			  backgroundDismiss: false,
+			  icon: 'icon-remove red bigger-130',
+			  content: '<div class="alert alert-danger"><p style="text-align:left"><strong>错误信息：</strong></p>'+data.responseText+'</div>'
+			});
+		  }
+		});
+		return false; //阻止表单自动提交事件
+  })
+  function form_error(error,form_status_class,massage){
+	if('1'==error){
+	  $("."+form_status_class+"_success").addClass("ng-hide");
+	  $("."+form_status_class+"_errors").removeClass("ng-hide").find("span").html(massage);
+	  return false;
+	}else if('0'==error){
+	  $("form[name^='"+form_status_class+"'] input").removeClass("error");
+	  $("."+form_status_class+"_errors").addClass("ng-hide");
+	  $("."+form_status_class+"_success").removeClass("ng-hide").find("span").html(massage);
+	  return true;
+	}else{
+	  $("."+form_status_class+"_errors,."+form_status_class+"_success").addClass("ng-hide");
+	}
+	return false;
+  }
+});
+</script>
+<style type="text/css">
+.portrait img{
+  width: 80px;
+  height: 80px;
+}
+.userid_img img{
+	width:100px;
+	height:50px;
+}
+span.portrait:hover,span.userid_img:hover{
+	opacity: 0.6;
+	transition: opacity 0.15s linear 0s;
+}
+.ace-nav .nav-user-photo {
+  max-width: 80px;
+  width: 80px;
+  height: 80px;
+}
+.ace-nav .nav-user-name {
+  color: #428bca;
+  cursor:pointer;
+  background-color: #ccc;
+  border-radius: 100%;
+  display: block;
+  font-size: 60px;
+  text-align: center;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.14);
+  margin: 0;
+  line-height: 72px;
+  padding: 0 0 2px 0;
+  position: relative;
+  text-align: center;
+  height:80px;
+  width: 80px;
+}
+.panel-section{
+  clear: both;
+  margin: 10px;
+  margin-left: 50px;
+
+}
+.panel-section .form-group{
+  margin-bottom: 10px;
+}
+.fileinput-button input {
+  bottom: 0;
+  cursor: pointer;
+  direction: ltr;
+  font-size: 23px;
+  margin: 0;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translate(-300px, 0px) scale(4);
+}
+.fileinput-button {
+  display: block;
+  overflow: hidden;
+  position: relative;
+}
+.ng-hide {
+  display: none !important;
+}
+input.error {
+	border-color: #e9322d;
+	box-shadow: 0 0 6px #f8b9b7;
+}
+.col-xs-2{
+	white-space:nowrap;
+}
+</style>

@@ -1,0 +1,13 @@
+  <tr height="35px" >
+    <td>{$i}</td>
+	<td>{$row['site_name']}</td>
+	<td>{$row['water_type_name']}</td>
+	<td style="width:85px;" ><input type='text' class="date-picker" name='d[{$row[id]}][cy_date]'  value='{$row[cy_date]}' size='9'></td>
+	<td style="width:60px;" ><input type='text' name='d[{$row[id]}][cy_time]' oninput="time(this);" value='{$row[cy_time]}' size='4' onblur="return check_time(this)"></td>
+    {$cy_record_line}
+    $xc_xm_td
+	</td>
+	<td>$ypzt</td>
+	$cy_ping
+    <td style="padding:0;"><textarea name="d[$row[id]][cy_note]" style="width:60px;height:100%;margin:0;overflow:hidden;font-size:12px;" onFocus="show_wus($i)" id="cttt$i">{$row['cy_note']}</textarea>$act$tan</td>
+  </tr>

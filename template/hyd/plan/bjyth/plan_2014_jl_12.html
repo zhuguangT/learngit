@@ -1,0 +1,156 @@
+<h1>高锰酸盐/耗氧量原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:6%"></td><td style="width:14%"></td>
+		<td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+		<td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+		<td style="width:10%"></td><td style="width:10%"></td>
+	</tr>
+	<tr class="auto left">
+		<td class="left" colspan="5">分析方法：{$arow['td2']}</td>
+		<td class="left" colspan="5">
+			分析日期：<input class="date_Ymd" type="text" size="10" name="td31" value="{$arow['td31']}" />
+		</td>
+	</tr>
+
+	<tr class="auto left">
+		<td class="left" colspan="5">样品类别：{$arow['water_type']}</td>
+		<td class="left" colspan="5">
+			滴定管规格：<input type="text" name="td9"  size="8" value="{$arow['td9']}" /> mL　　
+			颜色：	  <input type="text" name="td10" size="8" value="{$arow['td10']}" />
+		</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="7">
+			标准溶液名称：<input type="text" name="td7" size="10" value="{$arow['td7']}" />
+			浓度C（1/2Na₂C₂O₄）：
+			<input type="text" name="td8" size="6" value="{$arow['td8']}" id="td8" onblur="$('input[name^=\'vd3\']').blur();" /> mol/L
+		</td>
+		<td class="left" colspan="3">配制日期： <input type="text" name="td26" size="13" class="date_Ymd" value="{$arow['td26']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td class="left noborder" colspan="8">
+			计算公式：<input type="checkbox" class="bttd" id="ck1" name="ck11" /> I<sub>Mn</sub>（mg/L）=[(10+V₁)×10/V₂-10]×C×80
+		</td>
+		<td class="left noborder" colspan="2">-----水样不经稀释</td>
+	</tr>
+	<tr class="auto">
+		<td class="left noborder" colspan="8">
+			<input type="checkbox" id="ck2" name="ck22" class="bttd" /> I<sub>Mn</sub>（mg/L）={[(10+V₁)×10/V₂-10]-[(10+V₀)×10/V₂-10]×f}×C×8000/V₃
+		</td>
+		<td class="left noborder" colspan="2">-------水样经稀释</td>
+	</tr>
+	<tr>
+		<td rowspan=2>序号</td>
+		<td rowspan=2>{$zhanming}</td>
+		<td colspan="3">高锰酸钾溶液用量（mL）</td>
+		<td rowspan=2>取样体积<br />V₃<br />（mL）</td>
+		<td rowspan=2>稀释系数<br />（f）</td>
+		<td rowspan=2>含量<br />（mg/L）</td>
+		<td rowspan=2>平均值<br />（mg/L）</td>
+		<td rowspan=2>相对偏差<br />（％）</td>
+	</tr>
+	<tr>
+		<td>终点</td>
+		<td>始点</td>
+		<td>实际用量<br />V₁</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td colspan="2">标定高锰酸钾V₂（mL）</td>
+		<td><input type="text" class="inputc bttd" id="td19"  onblur="$('input[name^=\'vd3\']').blur();"  name="td19" value="{$arow['td19']}" /></td> 
+		<td><input type="text" class="inputc bttd" id="td20"  onblur="$('input[name^=\'vd3\']').blur();"  name="td20" value="{$arow['td20']}" /></td> 
+		<td><input type="text" class="noinputc "   id="td21"  name="td21" value="{$arow['td21']}" /></td>  
+		<td></td><td></td><td></td><td></td><td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="2">空白V₀（mL）</td>
+		<td><input type="text" class="inputc bttd" id="td17"  onblur="$('input[name^=\'vd3\']').blur();" name="td17" value="{$arow['td17']}" /></td> 
+		<td><input type="text" class="inputc bttd" id="td18"  onblur="$('input[name^=\'vd3\']').blur();" name="td18" value="{$arow['td18']}" /></td> 
+		<td><input type="text" class="noinputc "   id="td16"  name="td16" value="{$arow['td16']}" /></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>备注</td>
+		<td colspan="9">
+			<textarea name="td30">{$arow['td30']}</textarea>
+		</td>
+	</tr>
+</table>
+<input type="hidden" name="td15" class="inputc bttd" id="td15" value="{$arow['td15']}" />
+<input type="hidden" name="td14" class="inputc bttd" id="td14" value="{$arow['td14']}" />
+<script type="text/javascript">
+	function jsgs(){
+		var C  = parseFloat($("#td8").val());
+		var v2 = parseFloat($("#td21").val());
+		var v0 = parseFloat($("#td16").val());
+		if($.isNumeric(vs['vd2'])){
+			xs_bs = parseFloat(vs['vd2']);
+		}else{
+			xs_bs = 1;
+			vs['vd2'] = ('-'==vs['vd2']) ? '-' : '';
+		}
+		if($.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4'])){
+			var vd_split = String(vs['vd3']).split('.');
+			if(2==vd_split.length){
+				var diding_ws = vd_split[1].length;
+			}else{
+				var diding_ws = 0;
+			}
+			var v1 = vs['vd5'] = parseFloat(vs['vd3']-vs['vd4']).toFixed(diding_ws);
+		}else{
+			var v1 = vs['vd5']='';
+		}
+		if(!$.isNumeric(v2) || !$.isNumeric(vs['vd1']) || !$.isNumeric(vs['vd5'])){
+			vs['vd0'] = '';
+			return false;
+		}
+		if(xs_bs==1){
+			vs['vd0'] = jsws(((10+parseFloat(v1))*10/v2-10)*C*80);
+		}else{
+			vs['vd0'] = jsws((((((10+parseFloat(v1))*10)/v2-10)-((((10+parseFloat(v0))*10)/v2-10)*xs_bs))*C*8000)/parseFloat(vs['vd1']));
+		}
+	}
+	$(document).ready(function (){
+		if($("#td14").val()=='1')
+			document.getElementById("ck1").checked=true;
+		else{
+			document.getElementById("ck1").checked=false;
+		}
+		if($("#td15").val()=='1')
+			document.getElementById("ck2").checked=true;
+		else{
+			document.getElementById("ck2").checked=false;	
+		}
+		function btgs(){
+			var xzf1=document.getElementById("ck1").checked;
+			var xzf2=document.getElementById("ck2").checked;
+			$("#td14").val((xzf1==true)?1:0);
+			$("#td15").val((xzf2==true)?1:0);
+			var td_split = String($("#td18").val()).split('.');
+			if(2==td_split.length){
+				var diding_ws = td_split[1].length;
+			}else{
+				var diding_ws = 0;
+			}
+			if($.isNumeric($("#td17").val()) && $.isNumeric($("#td18").val())){
+				$("#td16").val(parseFloat($("#td17").val()-$("#td18").val()).toFixed(diding_ws));
+			}else{
+				$("#td16").val('');
+			}
+			if($.isNumeric($("#td19").val()) && $.isNumeric($("#td20").val())){
+				$("#td21").val(parseFloat($("#td19").val()-$("#td20").val()).toFixed(diding_ws));
+			}else{
+				$("#td21").val('');
+			}
+		}
+		$('.bttd').bind('blur', function() {
+			btgs();
+		});
+	});
+</script>

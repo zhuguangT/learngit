@@ -1,0 +1,9 @@
+<tr align="center" >
+    <td  title="点击查看样品明细">{$i} {$cyd_id}</td>
+    <td>{$data[cy_date]}</td>
+    <td {$data[modify_cyd_bh]} title='id:$data[id]'>$cyd_bh</td>
+    <td style="text-overflow: ellipsis;overflow: hidden;" title={$data[group_name]}>{$data[group_name]}</td>
+    <td>{$cy_users}</td>
+    <td>{$data[status_text]}</td>
+    <td><a href="cy_tzd.php?cyd_id={$data[id]}">采样通知单</a>{$cy_record_str}{$modi_csrw_tzd_str}{$data[delete]}</td>
+</tr>

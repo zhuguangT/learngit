@@ -1,0 +1,21 @@
+<!-- 臭和味 -->
+<h1>{$arow['assay_element']}分析原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+  <tr >
+    <td style="width:16%">检测项目</td>
+    <td style="width:24%">{$arow['assay_element']}</td>
+    <td style="width:24%">检测依据</td>
+    <td style="width:24%">{$arow['td2']}</td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>{$zhanming}</td>
+    <td colspan="2">检测结果</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="3"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>

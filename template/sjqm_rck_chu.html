@@ -1,0 +1,59 @@
+<script type="text/javascript" src="$rooturl/js/jquery.date_input.js"></script>
+<link rel="stylesheet" type="text/css" href="$rooturl/js/date_input.css">
+<h3 class="header smaller center title">$title</h3>
+<form method='post' name='rk' id='rck' onsubmit="return ck()" action='sjqm_rck.php' style="text-align:center;">
+	<table class="table table-striped table-bordered table-hover center" style="max-width:800px;">
+		<tr>
+		<td>{$title}物品</td>
+		<td>{$r['name']}</td>
+		<td>{$title}时间</td>
+		<td><input type="text" class="date_input" name="time" value="$date" id="rq"></td>
+		</tr>
+		<tr align=center>
+			<td>{$title}数量</td>
+			<td><input type="text" name="shuliang" id="sl"> <font style="color:#6C6C6C;font-size:12px;">单位:$r[danwei]</font></td>
+			<td>$title2</td>
+			<td>
+				<select name="user" style="min-width:160px;">$u[useralllist];</select>
+			</td>
+		</tr>
+		<tr align=center>
+			<td>摘要</td>
+			<td colspan='3'><input type='text' name='zhaiyao' style="width:100%"></td>
+		</tr>
+	</table>
+	<input type=hidden name=ssl id=ssl value="$r[kucun]">
+	<input type='hidden' name='insert' id='insert' value="">
+	$hidid
+	$sub
+</form>
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<script type="text/javascript">
+$($.date_input .initialize);
+$ck_kucun
+function ck(){
+	var reg = /^\d+$/;
+	var rqreg = /^\d{4}-\d{1,2}-\d{1,2}$/;
+	var rq = document.getElementById('rq').value;
+	var sl = document.getElementById('sl').value;
+	if(sl == ''){
+		alert('数量不能为空');
+		document.getElementById('sl').focus();
+		return false;
+	}else if(!reg.test(sl)){
+		alert('数量必须为整数');
+		document.getElementById('sl').value='';
+		document.getElementById('sl').focus();
+		return false;
+	}
+	if(rq == ''){
+		alert('日期不能为空');
+		return false;
+	}else if(!rqreg.test(rq)){
+		alert('日期格式必须为YYYY-mm-dd');
+		document.getElementById('rq').value='';
+		document.getElementById('rq').focus();
+		return false;
+	}
+}
+</script>

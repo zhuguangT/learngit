@@ -1,0 +1,398 @@
+<style>
+table td{padding:5px !important;font-size:14px !important;}
+table th{padding:5px !important;font-size:14px !important;}
+</style>
+<div style="width:100%;margin:0 auto;" userid='$userid' id='hquser'>
+  <div id="tabs" style="width:100%;margin:0 auto;" class="center">
+	<ul>
+		<li>
+			<a href="#tabs-1" id="k1">仪器室检测任务汇总表</a>
+		</li>
+		<li {$display}>
+			<a href="#tabs-2" id="k2">理化室检测任务汇总表</a>
+		</li>
+		<li {$display}>
+			<a href="#tabs-3" id="k3">生物室检测任务汇总表</a>
+		</li>
+	</ul>
+	<div id="tabs-1">
+		<h3 class="header smaller center title">仪器室检测任务汇总表</h3>
+		<div class="widget-header header-color-blue4 center no-print">
+			<div class="widget-toolbar">
+				年份选择:<select class="year">
+					$year_list
+				</select>
+				月份选择:<select class="month">
+					$month_list
+				</select> 
+			</div>
+		</div>
+		<table style="width:24cm;" class="table table-striped table-bordered table-hover center">
+		$str_main
+		</table>
+		<table><tr><td>接样人：</td><td id='yiqijy'><input type='button' value='签字' onclick="hzqz('yiqijy')"></td><td width='200px'></td><td>发样人：</td><td id='yiqify'><input type='button' value='签字' onclick="hzqz('yiqify')"></td></tr></table>
+	</div>
+	<div id="tabs-2">
+		<h3 class="header smaller center title">理化室检测任务汇总表</h3>
+		<div class="widget-header header-color-blue4 center no-print">
+			<div class="widget-toolbar">
+				年份选择:<select class="year">
+					$year_list
+				</select>
+				月份选择:<select class="month">
+					$month_list
+				</select> 
+			</div>
+		</div>
+		<table style="width:24cm;" id='table2' class="table table-striped table-bordered table-hover center">
+		
+		</table>
+		<table id='lihua'><tr><td>接样人：</td><td id='lihuajy'><input type='button' value='签字' onclick="hzqz('lihuajy')"></td><td width='200px'></td><td>发样人：</td><td id='lihuafy'><input type='button' value='签字' onclick="hzqz('lihuafy')"></td></tr></table>
+	</div>
+
+	<div id="tabs-3" >
+		<h3 class="header smaller center title">生物室检测任务汇总表</h3>
+		<div class="widget-header header-color-blue4 center no-print">
+			<div class="widget-toolbar">
+				年份选择:<select class="year">
+					$year_list
+				</select>
+				月份选择:<select class="month">
+					$month_list
+				</select> 
+			</div>
+		</div>
+		<table style="width:24cm;" id='table3' class="table table-striped table-bordered table-hover center">
+		
+		</table>
+		<table id='shengwu'><tr><td>接样人：</td><td id='shengwujy'><input type='button' value='签字' onclick="hzqz('shengwujy')"></td><td width='200px'></td><td>发样人：</td><td id='shengwufy'><input type='button' value='签字' onclick="hzqz('shengwufy')"></td></tr></table>
+	</div>
+  </div>
+  <input type="button" value="打印汇总表" id='ceshi_dayin' bks='yiqi' class="btn btn-primary btn-sm" style="position:fixed;bottom:30px;right:60px;" />
+</div>
+<!-- 弹出层 -->
+		<div id="cover" class="modal" role="dialog" style='background-color:rgba(15, 15, 15, 0.7)!important;'>
+			<div class="modal-dialog" style='width:800px;'>
+				<div id="con" class='modal-content' style='width:800px;'>
+					<center><h3>请选择要打印的批次<span align='right'><a title="关闭" onclick="guanbi()" href='javascript:void(0);' class="red icon-remove bigger-130"></a></span></h3></center>
+					<center><font color='red'>您目前选中了&nbsp;&nbsp;<span id='shu'>0</span>&nbsp;&nbsp;个批次</font></center>
+					<center>打印筛选：
+						<input type='button' value='全选' onclick='saixuan(this)'><input type='button' value='反选' onclick='saixuan(this)'><input type='button' value='选中常规' onclick='saixuan(this)'><input type='button' value='选中委托' onclick='saixuan(this)'></center>
+					<table class="table table-striped table-bordered table-hover center" style='width:700px;' id='ceng'>
+							{$pistr}
+					</table>
+					<center><input type='button' value='确认' onclick='dayin()'>&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='关闭' onclick='guanbi()'></center>
+					<p/>
+				</div>
+			</div>
+		</div>
+<!-- 弹出层 -->
+
+<script type="text/javascript">
+function jishu(){
+	var keshi = $("#ceshi_dayin").attr('bks');
+	var shu = $("input[id='cypi'][keshi="+keshi+"]:checked").length;
+	$('#shu').html(shu);
+}
+function saixuan(ab){
+	var keshi = $("#ceshi_dayin").attr('bks');
+	if(ab.value=='全选'){
+		$("input[type=checkbox]").prop("checked",true);
+	}else if(ab.value=='反选'){
+		var checked = $("input[id='cypi'][keshi="+keshi+"]:checked");
+		$("input[id='cypi'][keshi="+keshi+"]").prop("checked",true);
+		checked.attr("checked",false);
+	}else if(ab.value=='选中常规'){
+		$("input[id='cypi'][keshi="+keshi+"]").each(function(){
+			type = $(this).attr('st');
+			if(type!='常规'){
+				$(this).attr("checked",false);
+			}else{
+				$(this).prop("checked",true);
+			}
+		});
+	}else if(ab.value=='选中委托'){
+		$("input[id='cypi'][keshi="+keshi+"]").each(function(){
+			type = $(this).attr('st');
+			if(type!='委托'){
+				$(this).attr("checked",false);
+			}else{
+				$(this).prop("checked",true);
+			}
+		});
+	}
+	jishu();
+}
+function guanbi(){
+	$('body').css("overflow","auto")
+	$("#cover").hide();
+}
+url	= '';
+function dayin(){
+	var keshi = $("#ceshi_dayin").attr('bks');
+	var xianshi = $("input[id='cypi'][keshi="+keshi+"]:checked");
+	var xianshistr = pan = '';
+	$.each(xianshi, function(i) {     
+   		pan += $(xianshi[i]).val();
+		xianshistr += ','+$(xianshi[i]).val();      
+	});
+	if(pan==''){
+		alert("你没有选择要打印的批次！");
+	}else{
+		if(!url){
+			url	 = window.location.href;
+		}
+		if(url.indexOf("?") > 0){
+			url		+='&action=print&ajax=1&xianshi='+xianshistr;
+		}else{
+			url		+='?action=print&ajax=1&xianshi='+xianshistr;
+		}
+		window.open( url);
+		location=location;
+	}
+}
+$("#ceshi_dayin").click(function(){
+	//$('.modal-content').load('$rooturl/wwc.php');
+	$('body').css("overflow","hidden")
+	$("#cover").show();	
+});
+
+$( "#tabs" ).tabs();
+$("#k1").click(function(){
+	var year        = $("#tabs-1 .year").val();
+        var month       = $("#tabs-1 .month").val();
+	url	= "keshi_renwu.php?keshi=yiqi&year="+year+"&month="+month+"&ajax=1";
+	location.href=url;
+	load_height();
+	//更改bks，让打印按钮判断当前打印什么内容
+	$("#ceshi_dayin").attr('bks','yiqi');
+});
+$("#tabs-1 .year,#tabs-1 .month").change(function(){
+	var year	= $("#tabs-1 .year").val();
+	var month	= $("#tabs-1 .month").val();
+	$(".year").val(year);
+        $(".month").val(month);
+	url	= "keshi_renwu.php?keshi=yiqi&year="+year+"&month="+month+"&ajax=1";
+	location.href=url;
+	load_height();
+});
+$("#k2").click(function(){
+	var year        = $("#tabs-2 .year").val();
+        var month       = $("#tabs-2 .month").val();
+	$.ajax({
+		async	: false,
+		cache	: false,      
+		type	: 'POST', 
+		dataType:'json',
+		url		: 'keshi_renwu.php?keshi=lihua&year='+year+'&month='+month+'&action=ajax&ajax=1',//请求的action路径
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+			//alert(XMLHttpRequest + textStatus + errorThrown);
+			alert('请求失败');
+		},
+		success:function(result){
+			url	= 'keshi_renwu.php?keshi=lihua&year='+year+'&month='+month+'&action=ajax&ajax=1';
+			$("#table2").html(result['tb']);
+			$('#ceng').html(result['mc']);
+		}
+	});
+	//更改bks，让打印按钮判断当前打印什么内容
+	$("#ceshi_dayin").attr('bks','lihua');
+	//切换签字
+	var qzdate = year+'-'+month;
+	var userid = $("#hquser").attr('userid');
+	var sarr = darr = [];
+	$.post('qz_ajax.php?ajax=1',{act:'jcqz',qzdate:qzdate,userid:userid},function(data){
+		if(data!='wrong'){
+			data = data.substr(1);
+			darr = data.split(',');
+			for(s in darr){
+				sarr = darr[s].split(':');
+				$("#"+sarr[0]).html(sarr[1]);
+			}
+		}else{
+			$("#lihua").html("<tr><td>接样人：</td><td id='lihuajy'><input type='button' value='签字' onclick=hzqz('lihuajy')></td><td width='200px'></td><td>发样人：</td><td id='lihuafy'><input type='button' value='签字' onclick=hzqz('lihuafy')></td></tr>");
+		}
+	},'html');
+	load_height();
+});
+$("#tabs-2 .year,#tabs-2 .month").change(function(){
+	var year	= $("#tabs-2 .year").val();
+	var month	= $("#tabs-2 .month").val();
+	$(".year").val(year);
+        $(".month").val(month);
+	$.ajax({
+		async	: false,
+		cache	: false,      
+		type	: 'POST', 
+		dataType:'json',
+		url		: 'keshi_renwu.php?keshi=lihua&action=ajax&year='+year+'&month='+month+'&ajax=1',//请求的action路径
+		error: function () {
+			alert('请求失败');
+		},
+		success:function(result){
+			url = 'keshi_renwu.php?keshi=lihua&action=ajax&year='+year+'&month='+month+'&ajax=1';
+
+			$("#table2").html(result['tb']);
+			$('#ceng').html(result['mc']);
+		}
+	});
+	//切换签字
+	var qzdate = year+'-'+month;
+	var userid = $("#hquser").attr('userid');
+	var sarr = darr = [];
+	$.post('qz_ajax.php?ajax=1',{act:'jcqz',qzdate:qzdate,userid:userid},function(data){
+		if(data!='wrong'){
+			data = data.substr(1);
+			darr = data.split(',');
+			for(s in darr){
+				sarr = darr[s].split(':');
+				$("#"+sarr[0]).html(sarr[1]);
+			}
+		}else{
+			$("#lihua").html("<tr><td>接样人：</td><td id='lihuajy'><input type='button' value='签字' onclick=hzqz('lihuajy')></td><td width='200px'></td><td>发样人：</td><td id='lihuafy'><input type='button' value='签字' onclick=hzqz('lihuafy')></td></tr>");
+		}
+	},'html');
+	load_height();
+});
+$("#k3").click(function(){
+	var year        = $("#tabs-3 .year").val();
+        var month       = $("#tabs-3 .month").val();
+	$.ajax({
+			async	: false,
+			cache	: false,      
+			type	: 'POST', 
+			dataType:'json',
+			url		: 'keshi_renwu.php?keshi=shengwu&year='+year+'&month='+month+'&action=ajax&ajax=1',//请求的action路径
+			error: function () {
+				alert('请求失败');
+			},
+			success:function(result){
+				url	= 'keshi_renwu.php?keshi=shengwu&r='+year+'&month='+month+'action=ajax&ajax=1';
+				$("#table3").html(result['tb']);
+				$('#ceng').html(result['mc']);
+			}
+	});
+	//更改bks，让打印按钮判断当前打印什么内容
+	$("#ceshi_dayin").attr('bks','shengwu');
+	//切换签字
+	var qzdate = year+'-'+month;
+	var userid = $("#hquser").attr('userid');
+	var sarr = darr = [];
+	$.post('qz_ajax.php?ajax=1',{act:'jcqz',qzdate:qzdate,userid:userid},function(data){
+		if(data!='wrong'){
+			data = data.substr(1);
+			darr = data.split(',');
+			for(s in darr){
+				sarr = darr[s].split(':');
+				$("#"+sarr[0]).html(sarr[1]);
+			}
+		}else{
+			$("#shengwu").html("<tr><td>接样人：</td><td id='shengwujy'><input type='button' value='签字' onclick=hzqz('shengwujy')></td><td width='200px'></td><td>发样人：</td><td id='shengwufy'><input type='button' value='签字' onclick=hzqz('shengwufy')></td></tr>");
+		}
+	},'html');
+	load_height();
+});
+$("#tabs-3 .year,#tabs-3 .month").change(function(){
+	var year	= $("#tabs-3 .year").val();
+	var month	= $("#tabs-3 .month").val();
+	$(".year").val(year);
+	$(".month").val(month);
+	$.ajax({
+		async	: false,
+		cache	: false,      
+		type	: 'POST', 
+		dataType:'json',
+		url		: 'keshi_renwu.php?keshi=shengwu&action=ajax&year='+year+'&month='+month+'&ajax=1',//请求的action路径
+		error: function () {
+			alert('请求失败');
+		},
+		success:function(result){
+			url	= 'keshi_renwu.php?keshi=shengwu&action=ajax&year='+year+'&month='+month+'&ajax=1';
+			$("#table3").html(result['tb']);
+			$('#ceng').html(result['mc']);
+		}
+	});
+	//切换签字
+	var qzdate = year+'-'+month;
+	var userid = $("#hquser").attr('userid');
+	var sarr = darr = [];
+	$.post('qz_ajax.php?ajax=1',{act:'jcqz',qzdate:qzdate,userid:userid},function(data){
+		if(data!='wrong'){
+			data = data.substr(1);
+			darr = data.split(',');
+			for(s in darr){
+				sarr = darr[s].split(':');
+				$("#"+sarr[0]).html(sarr[1]);
+			}
+		}else{
+			$("#lihua").html("<tr><td>接样人：</td><td id='shengwujy'><input type='button' value='签字' onclick=hzqz('shengwujy')></td><td width='200px'></td><td>发样人：</td><td id='shengwufy'><input type='button' value='签字' onclick=hzqz('shengwufy')></td></tr>");
+		}
+	},'html');
+	load_height();
+});
+function hzqz(aa){
+	if(aa=='yiqijy'||aa=='yiqify'){
+		var year	= $("#tabs-1 .year").val();
+		var month	= $("#tabs-1 .month").val();
+		var qzdate = year+'-'+month;
+		var userid = $("#hquser").attr('userid');
+		$.post('qz_ajax.php?ajax=1',{bz:aa,qzdate:qzdate,userid:userid},function(data){
+			if(data){
+				if(data=='wrong'){
+					alert('签字失败请重试')
+				}else{
+					url	= "keshi_renwu.php?keshi=yiqi&year="+year+"&month="+month+"&bz="+aa+"+ajax=1";
+					location.href=url;
+				}
+			}
+		},'html');
+	}else if(aa=='lihuajy'||aa=='lihuafy'){
+		var year	= $("#tabs-2 .year").val();
+		var month	= $("#tabs-2 .month").val();
+		var qzdate = year+'-'+month;
+		var userid = $("#hquser").attr('userid');
+		$.post('qz_ajax.php?ajax=1',{bz:aa,qzdate:qzdate,userid:userid},function(data){
+			if(data){
+				if(data=='wrong'){
+					alert('签字失败请重试')
+				}else{
+					url	= "keshi_renwu.php?keshi=yiqi&year="+year+"&month="+month+"&bz="+aa+"+ajax=1";
+					location.href=url;
+				}
+			}
+		},'html');
+	}else if(aa=='shengwujy'||aa=='shengwufy'){
+		var year	= $("#tabs-3 .year").val();
+		var month	= $("#tabs-3 .month").val();
+		var qzdate = year+'-'+month;
+		var userid = $("#hquser").attr('userid');
+		$.post('qz_ajax.php?ajax=1',{bz:aa,qzdate:qzdate,userid:userid},function(data){
+			if(data){
+				if(data=='wrong'){
+					alert('签字失败请重试')
+				}else{
+					url	= "keshi_renwu.php?keshi=yiqi&year="+year+"&month="+month+"&bz="+aa+"+ajax=1";
+					location.href=url;
+				}
+			}
+		},'html');
+	}
+}
+$(function(){
+	var year	= $("#tabs-1 .year").val();
+	var month	= $("#tabs-1 .month").val();
+	var qzdate = year+'-'+month;
+	var userid = $("#hquser").attr('userid');
+	var sarr = darr = [];
+	$.post('qz_ajax.php?ajax=1',{act:'jcqz',qzdate:qzdate,userid:userid},function(data){
+		if(data!='wrong'){
+			data = data.substr(1);
+			darr = data.split(',');
+			for(s in darr){
+				sarr = darr[s].split(':');
+				$("#"+sarr[0]).html(sarr[1]);
+			}
+		}
+	},'html');
+});
+</script>

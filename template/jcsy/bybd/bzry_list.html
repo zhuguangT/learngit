@@ -1,0 +1,55 @@
+<h3 class="header smaller center title">标准溶液标定原始记录表</h3>
+<div class="widget-box no-border">
+  <div class="widget-header header-color-blue4 center">
+    <div class="widget-toolbar">
+    <form action="bzry_list.php" name='new_sc'>
+        {$hub_info_select}
+        年份选择:
+        <select name='year'>$year_list</select>
+        月份选择:
+        <select name='month'>$month_list</select>
+        项目选择:
+        <select name='vid' style="min-width:150px;">
+          <option value="全部">全部</option>$xm_list</select>
+        溶液状态:
+        <select name='status'>
+          <option value='{$_GET['status']}'>{$_GET['status']}</option>$status_list</select>
+        配制员选择:
+        <select name='userid' style="min-width:150px;">
+          <option value="全部">全部</option>$pz_user_list</select>
+        <button class="btn btn-primary btn-sm" type="button" onclick="location='bzry_bd.php?action=add';">新配标液</button>
+    </form>
+    </div>
+  </div>
+  <div class="widget-body">
+    <table class="table table-striped table-bordered table-hover center">
+        <thead>
+          <th>编号</th>
+          <th>项目名称</th>
+          <th>标准溶液名称</th>
+          <th>浓度</th>
+          <th>标定日期</th>
+          <th>标定人</th>
+          <th>使用状态</th>
+          <th>签字状态</th>
+          <th>操作</th>
+        </thead>
+        <tbody>
+             $lines
+        </tbody>
+    </table>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    //列表查询
+      $("form[name=new_sc] select").change(function(){
+          new_sc.submit();
+      });
+      $(".icon-remove").click(function(){
+        if(confirm('您确定要删除该表定记录吗？')){
+            location.href='bzry_modify.php?act=删除&bzry_id='+$(this).attr('data');
+        }
+    });
+    });
+</script>

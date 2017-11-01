@@ -1,0 +1,18 @@
+<!-- 人员管理的行数据 -->
+<input name=_id[] type=hidden value='$r'>
+<tr align=center name='num'>
+        <input type='hidden' fzx='{$r['fzx_id']}' name='jid' value=$r[jid]>
+	<td $px_modify style="min-width:70px;cursor:pointer;" title="修改排序">$r[px_id]</td>
+	<td ><a href="hn_files.php?r=$r[userid]&uid=$r[id]&sex=$r[sex]">$r[userid]</a></td>
+	<td>$r[sex]</td>
+	<td>$r[csrq]</td>
+        <td>$r[whcd]</td>
+        <td>$r[zc]</td>
+        <td>$r[zy]</td>
+        <td name='gl'>$gzny_years</td>
+        <td>$jsnx_years</td>
+        <td>$r[gw]</td>
+	<!-- <td data='gwsj'>$r[gwsj]</td> -->
+        <td>$r[bz]</td>
+        <td nowrap>$op</td>
+</tr>

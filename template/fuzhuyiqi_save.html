@@ -1,0 +1,52 @@
+
+
+
+
+
+
+<script>
+function check(form) {
+  if  (document.myform.yq_mingcheng.value.length  =="")
+ { 
+  alert( "请填写仪器名称！");
+  document.myform.yq_mingcheng.focus();
+  return  false;
+ }
+}
+</script>
+
+
+<h1>$head</h1>
+<form name="myform" action="fuzhuyiqi_save.php" method="post" onSubmit= "return check(this);">
+    <input name=id type=hidden value='$id'>
+   <input name=action type=hidden value='$action'>
+  <table  class=single style="width:18cm">
+  <tr align="center" >
+    <td style="width:2cm;">分类</td>
+    <td  style="width:7cm;"><input type="text" class=inputc name="yq_fenlei" size="20"  value="$yq_fenlei" /></td>
+    <td style="width:2cm;">设备名称</td>
+    <td  ><input type="text" class=inputc name="yq_shebeimingcheng"  size="20" value="$yq_shebeimingcheng" /></td>
+  </tr>
+  <tr align="center" >
+    <td style="width:2cm;">安装使用地点</td>
+    <td><input type="text" class=inputc name="yq_anzhuangdidian"  size="20" value="$yq_anzhuangdidian" /></td>
+    <td>器具编号</td>
+    <td><input type="text" class=inputc name="yq_qijubianhao"  size="20" value="$yq_qijubianhao" /></td>
+  </tr>
+  <tr align="center" >
+    <td>管理人</td>
+    <td><input type="text" class=inputc name="yq_guanliren"  size="20" value="$yq_guanliren" /></td>
+    <td>仪器状态</td>
+    <td>
+            <select name="yq_state"> 
+                   <option >$yq_state</option>
+             <option value=1>合格</option>
+             <option  value=2>准用</option>
+             <option value=3>停用</option>
+                </select>
+      </td>
+  </tr>
+
+  <tr><td colspan="4"><center><input type="submit" value="保存"><input type="button"       onclick="window.location.href='hn_fuzhuyiqimanager.php'" value="取消"></td></tr>
+
+  </table></form>

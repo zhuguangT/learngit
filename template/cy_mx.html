@@ -1,0 +1,45 @@
+<script>
+  var   popUpWin=0;  
+  function   popUpWindow(URLStr,   left,   top,   width,   height)  
+  {  
+      if(popUpWin)  
+      {  
+          if(!popUpWin.closed)   popUpWin.close();  
+      }  
+      popUpWin   =   open(URLStr,   'popUpWin',   'toolbar=no,location=no,directories=no,status=no,menub   ar=no,scrollbar=no,resizable=no,copyhistory=yes,width='+width+',height='+height+',left='+left+',   top='+top+',screenX='+left+',screenY='+top+'');  
+  }  
+   
+function modify_bar_code(cid,old_bar_code){
+    new_bar_code=prompt('请输入新的样号编号',old_bar_code);
+    if(new_bar_code && new_bar_code!=old_bar_code)
+        location='modify_bar_code.php?cid='+cid+'&old_bar_code='+old_bar_code+'&new_bar_code='+new_bar_code+'&site_type=$_GET[site_type]';
+}
+function modify_wz_bh(cid,old_wz_bh){
+    new_wz_bh=prompt('请输入新的标样编号',old_wz_bh);
+    if(new_wz_bh && new_wz_bh!=old_wz_bh)
+        location='modify_wz_bh.php?cid='+cid+'&new_wz_bh='+new_wz_bh;
+}
+</script>
+<h1>有效样品列表</h1>
+<center>$downlink</center>
+$dayinbq
+<br />
+<table align="center" style="width:18cm">
+<tr align="center">
+	<td>任务性质:$temporder</td>
+	<td>采样单号:$cyd[cyd_bh]</td>
+	<td>采样时间:$cyd[cy_date]</td>
+	<td>采样人:$cyd[cy_user]</td>
+	<td>完成度:$cyd[flag]</td>
+</tr>
+</table>
+<table align="center" border="1px"  style="width:18cm" cellspacing="0" cellpadding="0">
+<tr align="center">
+	<td>编号</td>
+	<td>位置编号</td>
+	<td>样品编号</td>
+	<td>质控信息</td>
+	<td>备注</td>
+</tr>
+$lines
+</table> <br />

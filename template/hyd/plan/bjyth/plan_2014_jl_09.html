@@ -1,0 +1,90 @@
+<h1>容量分析法原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+	  <td style="width:7%"></td>
+	  <td style="width:13%"></td>
+	  <td style="width:10%"></td>
+	  <td style="width:10%"></td>
+	  <td style="width:10%"></td>
+	  <td style="width:10%"></td>
+	  <td style="width:10%"></td>
+	  <td style="width:10%"></td>
+	  <td style="width:10%"></td>
+	  <td style="width:10%"></td>
+	</tr>
+	<tr class="auto">
+	    <td class="left" colspan="3">分析项目：{$arow['assay_element']}</td>
+	    <td colspan="4">分析方法：{$arow['td2']}</td>
+	    <td colspan="3">分析日期：<input class="date_Ymd" type="text" name="td31" size="10" value="{$arow['td31']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="3">样品类别：{$arow['water_type']}</td>
+		<td colspan="5">
+			滴定管规格：<input type="text" name="td9" size="8" value="{$arow['td9']}" /> mL　　
+			颜色：<input type="text" name="td10" size="8" value="{$arow['td10']}" />
+		</td>
+		<td colspan="2">检出限：{$arow['td3']} {$arow['unit']}</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="7"><span class="blue_a change_bd">标准溶液名称：</span>{$arow['bzry_name']}&nbsp;&nbsp;浓度（C₁）：{$arow['bzry_nongdu']} mol/L</td>
+		<td class="left" colspan="3"><span class="blue_a view_pz">配制日期：</span>{$arow['bzry_pzrq']}</td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="3">指示剂名称：<input type="text" name="td15" size="10" value="{$arow['td15']}" /></td>
+		<td class="left" colspan="4">
+			摩尔质量（M）： <input type="text" name="td16" size='10' value="{$arow['td16']}" onblur="$('input[name^=\'vd1[\'').blur()" /> g/mol
+		</td>
+		<td class="left" colspan="3"><span class="blue_a view_bd">标定日期：</span>{$arow['bzry_bdrq']}</td>
+	</tr>
+	<tr>
+		<td class="left" colspan="10">计算公式：C（mg/L）= C₁×V/V×M×1000</td>
+	</tr>
+	<tr>
+		<td rowspan="2">序号</td>
+		<td rowspan="2">{$zhanming}</td>
+		<td rowspan="2">取样体积<br />V（mL）</td>
+		<td colspan="4">标准溶液用量（mL）</td>
+		<td rowspan="2">含量 C<br />（mg/L）</td>
+		<td rowspan="2">平均值<br>（mg/L）</td>
+		<td rowspan="2">相对偏差<br>（％）</td>
+	</tr>
+	<tr>
+		<td>终点</td>
+		<td>始点</td>
+		<td>空白</td>
+		<td>实际用量<br />（V₁）</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td>备注</td>
+		<td colspan="9"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	function jsgs(){
+		var mol_ = $("input[name=td16]").val();
+		var by_c = parseFloat('{$arow['bzry_nongdu']}');
+		if(!$.isNumeric(by_c) || !$.isNumeric(mol_)){
+			vs['vd0'] = '';
+			return false;
+		}
+		if(!$.isNumeric(vs['vd5'])){
+			var kb =0;
+		}else{
+			kb=vs['vd5'];
+		}
+		if($.isNumeric(vs['vd1']) && $.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4'])){
+			var vd3_split = String(vs['vd3']).split('.');
+			if(2==vd3_split.length){
+				var diding_ws = vd3_split[1].length;
+			}else{
+				var diding_ws = 0;
+			}
+			vs['vd6'] = parseFloat(accsub(accsub(vs['vd4'],vs['vd3']),kb)).toFixed(diding_ws);
+			vs['vd0'] = jsws(by_c * vs['vd6'] / vs['vd1'] * mol_ * 1000);
+	  	}else{
+	  		vs['vd0'] = '';
+	  	}
+	}
+</script>

@@ -1,0 +1,47 @@
+<link href='$rooturl/temp/time.css' rel="stylesheet" type="text/css">
+<script src='../js/jstime.js'></script>
+<h1 align="center">修改人员上岗项目</h1>
+<form method=post action="hw_userwork_action.php">
+<input type='hidden' name='id' value=$id>
+<table class=single width=450>
+<tr align=center>
+<td>化验人员</td>
+<td>$str3<input type='hidden' name='user' value="$str3"></td>
+<td>上岗项目</td>
+<td><input type=text name="assay_value" size=10 value="$str1"></td>
+</tr>
+<tr align=center>
+<td colspan = 1>化验方法</td>
+<td colspan = 3><input type=text size=45 name="method" value="$str2"></td>
+</tr>
+<tr align=center>
+<td>上岗证过期日期</td>
+<td><input type=text size=10 name="expiry_date" id="expiry_date1" value="$str5"><img src="../images/time.gif" onclick="opentime('expiry_date1','all');"></td>
+<td>上岗证过期提醒天数</td>
+<td><input type=text size=10 name="expiry_remind" value="$str4"></td>
+</tr>
+
+<tr align=center>
+<td colspan=4><input type = 'submit' name='save' value='保存'><input type='button' value='返回' onclick="history.go(-1)"></td></tr>
+</table>
+<script>
+window.onload=function(){
+	var inp = document.getElementsByTagName("input");
+	zhuru(inp);
+}
+function zhuru(obj){
+	var len = obj.length -1;
+	for(var i=0;i<len;i++){
+		if(obj[i].type=='text'){
+			obj[i].onblur=function(){
+				var str = this.value;
+				str= str.replace(/'/g,"‘");
+				str= str.replace(/"/g,"“");
+				this.value = str.replace(/;/g,"；"); 
+			}
+		}
+	}
+}
+</script>
+
+</form>

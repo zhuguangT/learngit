@@ -1,0 +1,218 @@
+@charset "utf-8";
+.single {
+	width: 100%;
+	margin: 5px 0;
+	border: 2px solid #000;
+}
+.single tr:nth-child(2) td {
+	border-top: none;
+}
+.single tr td.left {
+	text-indent: 1em;
+}
+.assay_form .right {
+	text-align: right;
+}
+.assay_form {
+	padding: 0;
+	margin: 0 auto;
+	text-align: center;
+}
+.bt_hidden{
+	display: none;
+}
+.bt_modi .bt_modi_table {
+	padding: 0;
+	width: 100%;
+	border-top: 0;
+	margin-left: -1px;
+}
+.assay_form form {
+	margin:0 auto;
+	padding:0;
+}
+.assay_form form table {
+	margin: 0 auto;
+	width: 100%;
+}
+.assay_form form h1,.bt_modi h1 {
+	cursor: default;
+	font-weight: 700;
+	font-family: 宋体;
+	text-align: center;
+	/*text-decoration: underline;*/
+}
+.assay_form .site_name{
+	cursor: default;
+	font-size: 14px;
+}
+.assay_form .dwname {
+	font-weight: 700;
+	font-size: 20px;
+	text-align: center;
+}
+.assay_form .dwname .file_code {
+	/**/
+}
+.blue_a {
+	color:blue;
+	cursor:pointer;
+}
+.single input.data_error {
+	color: #000;
+	background-color: #F00;
+
+}
+.single span.data_error {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	border: none;
+	display: block;
+	cursor: default;
+	line-height: 21px;
+	font-weight: bold;
+	color: #000 !important;
+	background-color: #F00;
+
+}
+div.zk_tooltip {
+	background-color: #000000;
+	border: 1px solid #FFFFFF;
+	box-shadow: 0 0 10px #000000;
+	color: #FFFFFF;
+	display: none;
+	font-size: 12px;
+	padding: 10px 15px;
+	text-align: left;
+	width: auto;
+	z-index: 100;
+}
+div.zk_tooltip button { 
+	margin: 2px 8px;
+}
+.assay_sign_form tr td {
+	min-width: 25%;
+}
+select.auto_select {
+	width:auto;
+	min-width:100px;
+	max-width:200px;
+}
+/*滚动监听导航样式*/
+.bs-docs-sidebar.affix {
+	position:static
+}
+.bs-docs-sidebar {
+	padding-left:20px
+}
+.bs-docs-sidenav {
+	margin-top:20px;
+	margin-bottom:20px
+}
+.bs-docs-sidebar .nav>li>a {
+	display:block;
+	padding:4px 20px;
+	font-size:13px;
+	font-weight:500;
+	color:#767676
+}
+.bs-docs-sidebar .nav>li>a:focus,.bs-docs-sidebar .nav>li>a:hover {
+	padding-left:19px;
+	color:#563d7c;
+	text-decoration:none;
+	background-color:transparent;
+	border-left:1px solid #563d7c
+}
+.bs-docs-sidebar .nav>.active:focus>a,.bs-docs-sidebar .nav>.active:hover>a,.bs-docs-sidebar .nav>.active>a {
+	padding-left:18px;
+	font-weight:700;
+	color:#563d7c;
+	background-color:transparent;
+	border-left:2px solid #563d7c
+}
+.bs-docs-sidebar .nav .nav {
+	display:none;
+	padding-bottom:10px;
+	margin: 0;
+}
+.bs-docs-sidebar .nav .nav>li>a {
+	padding-top:1px;
+	padding-bottom:1px;
+	padding-left:30px;
+	font-size:12px;
+	font-weight:400
+}
+.bs-docs-sidebar .nav .nav>li>a:focus,.bs-docs-sidebar .nav .nav>li>a:hover {
+	padding-left:29px
+}
+.bs-docs-sidebar .nav .nav>.active:focus>a,.bs-docs-sidebar .nav .nav>.active:hover>a,.bs-docs-sidebar .nav .nav>.active>a {
+	padding-left:28px;
+	font-weight:500
+}
+.bs-docs-sidebar .back-to-top{
+	display:block;
+	padding:4px 10px;
+	margin-top:10px;
+	margin-left:35px;
+	font-size:12px;
+	font-weight:500;
+	color:#999
+}
+.bs-docs-sidebar .back-to-top:hover {
+	color:#563d7c;
+	text-decoration:none
+}
+.bs-docs-sidebar .nav>.active>ul {
+display:block
+}
+.bs-docs-sidebar.affix,.bs-docs-sidebar.affix-bottom {
+	width:263px
+}
+.bs-docs-sidebar.affix {
+	position:fixed;
+	top:20px
+}
+.bs-docs-sidebar.affix-bottom {
+	position:absolute
+}
+.bs-docs-sidebar.affix .bs-docs-sidenav,.bs-docs-sidebar.affix-bottom .bs-docs-sidenav {
+	margin-top:0;
+	margin-bottom:0
+}
+.bs-docs-section {
+	margin-bottom:60px
+}
+.bs-docs-section:last-child {
+	margin-bottom:0
+}
+.bs-docs-header {
+	position:relative;
+	padding:30px 0;
+	color:#cdbfe3;
+	text-align:center;
+	text-shadow:0 1px 0 rgba(0,0,0,.1);
+	background-color:#6f5499;
+	background-image:-webkit-gradient(linear,left top,left bottom,from(#563d7c),to(#6f5499));
+	background-image:-webkit-linear-gradient(top,#563d7c 0,#6f5499 100%);
+	background-image:-o-linear-gradient(top,#563d7c 0,#6f5499 100%);
+	background-image:linear-gradient(to bottom,#563d7c 0,#6f5499 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#563d7c', endColorstr='#6F5499', GradientType=0);
+	background-repeat:repeat-x
+}
+.widget-box.assay_form_item .widget-header{
+	color: #FFF;
+	background:#6f5499;
+}
+.bs-docs-container{
+	width: 1400px;
+}
+.bs-docs-footer {
+	padding-top:40px;
+	padding-bottom:40px;
+	margin-top:100px;
+	color:#767676;
+	text-align:center;
+	border-top:1px solid #e5e5e5
+}

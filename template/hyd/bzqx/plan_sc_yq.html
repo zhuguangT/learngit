@@ -1,0 +1,57 @@
+<h1>标准曲线原始记录表（3）</h1>
+<input type="hidden" name="sc_type" value="2" />
+<table style="width:100%">  
+  <tr>
+    <td>
+      温度（℃）：<input type="text" name="td32" value="{$arow['td32']}" size="4" />
+      湿度（％）: <input type="text" name="td33" value="{$arow['td33']}" size="4" />
+    </td>
+  </tr>
+</table>
+<table  class="single">
+  <tr class="noborder">
+    <td style="width:11%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:11%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+  </tr>
+  <tr>
+    <td>检验项目</td>
+    <td colspan="2">{$arow['assay_element']}</td>
+    <td>检验地点</td>
+    <td colspan="2"><input type="text" name="td6" value="{$arow['td6']}" /></td>
+    <td>检验日期</td>
+    <td colspan="2"><input class="date_Ymd" type="text" name="td31" value="{$arow['td31']}" /></td>
+  </tr>
+  <tr>
+    <td>标液编号</td>
+    <td colspan="2"><input type="text" name="td7" value="{$arow['td7']}" /></td>
+    <td>标液浓度(µg/mL)</td>
+    <td colspan="2"><input type="text" name="td8" value="{$arow['td8']}" /></td>
+    <td>使用液浓度(µg/mL)</td>
+    <td colspan="2"><input type="text" name="td18" value="{$arow['td18']}" /></td>
+  </tr>
+  <tr>
+    <td colspan="3">曲线范围（{$arow['opp']}）</td>
+    <td colspan="3"><input type="text" name="qx_xx" value="{$arow['qx_xx']}" placeholder="请输入曲线上限" /></td>
+    <td colspan="3"><input type="text" name="qx_sx" value="{$arow['qx_sx']}" placeholder="请输入曲线下限" /></td>
+  </tr>
+  <tr>
+    <td>曲线信息</td>
+    <td>a</td>
+    <td><input type="text" name="CA" value="{$arow['CA']}" /></td>
+    <td>b</td>
+    <td><input type="text" name="CB" value="{$arow['CB']}" /></td>
+    <td>r</td>
+    <td><input type="text" name="CR" value="{$arow['CR']}" /></td>
+    <td>c</td>
+    <td><input type="text" name="CC" value="{$arow['CC']}" /></td>
+  </tr>
+    <tr>
+      <td>回归方程</td>
+      <td colspan="8" class="equation left">{$arow['equation']}</td>
+    </tr>
+  <tr>
+    <td>备注</td>
+    <td colspan="8"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>

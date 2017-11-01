@@ -1,0 +1,382 @@
+<div class="modal fade" id="modal_biaoye" style="width:800px;margin:0 auto;overflow:auto;" data-backdrop="static">
+  <form action="#" method="get" id="form_sel_by" name="form_select_by" class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>选择取用液/化学试剂/称重固体</h3>
+    </div>
+    <div class="modal-body">
+        <table style="width:100%">
+          <tr>
+            <td style="text-align:left">
+                选择项目：
+              <select style="border:1px solid #858585;min-width:150px;" name="vid" id="select_xm">$xm_list</select>
+                取用物质来源：
+              <select style="border:1px solid #858585;min-width:150px;" name="wz_type" id="wz_type">
+                  <option value="1">标准溶液</option>
+                  <option value="2">自配溶液</option>
+                  <option value="3">称重固体</option>
+                  <option value="4">化学试剂</option>
+              </select>
+            </td>
+          </tr>
+        </table>
+        <div style="clear:both"></div>
+        <div id="select_bzry_div"></div>
+    </div>
+    <div class="modal-footer">
+        <input type="hidden" name="data" value='' />
+        <input type="hidden" name="wz_id" value="" />
+        <input type="hidden" name="sj_id" value="" />
+        <a href="#" class="btn btn-primary btn-sm" id="form_add">确定</a>
+        <a href="#" class="btn btn-sm cancel" data-dismiss="modal">取消</a>
+    </div>
+  </form>
+  <form style="display:none" action="jzry_save.php" id="add_by_ry" method="get" name="add_by_ry" class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>新配标(基)准溶液</h3>
+    </div>
+    <div class="modal-body center">
+        <table style="width:100%" class="single">
+          <tr>
+            <td>配制日期</td>
+            <td><input type="text" name="pzrq" class="date-picker" value="$current_date" /></td>
+            <td>配制溶液名称</td>
+            <td><input type="text" name="sjmc" value=""></td>
+            <td>溶液类别</td>
+            <td>
+                <select name="ry_type" style="width:100%">
+                <option value="标准溶液">标准溶液</option>
+                <option value="基准溶液">基准溶液</option>
+                </select>
+            </td>
+          </tr>
+          <tr>
+            <td>取用液名称</td>
+            <td><input type="text" name="wz_mc" value="" /></td>
+            <td>批号</td>
+            <td><input type="text" name="wz_bh" value="" /></td>
+            <td>购买(配制)<br />日期</td>
+            <td><input type="text" name="start_date" class="date-picker" value="" /></td>
+          </tr>
+          <tr>
+            <td>浓度值</td>
+            <input type="hidden" name="gztj" value="" />
+            <td><input type="text" name="wz_nd" value=""></td>
+            <td>取用体积</td>
+            <td><input type="text" name="wz_z" value=""></td>
+            <td>定容体积</td>
+            <td><input type="text" name="drtj" value=""></td>
+          </tr>
+          <tr>
+            <td>所用溶剂</td>
+            <td><input type="text" name="sy_rj" value=""></td>
+            <td>配制溶液浓度</td>
+            <td><input type="text" name="sj_nd" value=""></td>
+            <td>有效日期</td>
+            <td>
+                <input type="text" name="sj_yxrq" class="date-picker" value="$sj_yxrq_date" />
+            </td>
+          </tr>
+          <tr>
+            <td>配制人</td>
+            <td>
+                <select style="width:100%" name="pz_user">$pz_user_list</select>
+            </td>
+            <td colspan="4"></td>
+          </tr>
+          <tr>
+            <td>备注</td>
+            <td colspan="5">
+                <textarea name="pz_note" style="height:80px"></textarea></td>
+          </tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <input type="hidden" name="action" value="add" />
+        <input type="hidden" name="vid" value="" />
+        <!-- 修改的时候需要用到本试剂id -->
+        <input type="hidden" name="byid" value="" />
+        <input type="hidden" name="wz_id" value="" />
+        <!-- 使用中间液配制时需要用到中间液试剂id -->
+        <input type="hidden" name="sj_id" value="" />
+        <input type="hidden" name="wz_type" value="" />
+        <a href="#" class="btn btn-primary btn-sm" id="jzry_add">确定</a>
+        <a href="#" class="btn btn-primary btn-sm fanhui">返回</a>
+        <a href="#" class="btn btn-sm cancel" data-dismiss="modal">取消</a>
+    </div>
+  </form>
+
+  <form style="display:none" action="jzry_save.php" id="add_by_gt" method="get" name="add_by_gt" class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>新配标(基)准溶液</h3>
+    </div>
+    <div class="modal-body center">
+        <table style="width:100%" class="single">
+          <tr>
+            <td>配制日期</td>
+            <td><input type="text" name="pzrq" class="date-picker" value="$current_date" /></td>
+            <td>配制溶液名称</td>
+            <td><input type="text" name="sjmc" value=""></td>
+            <td>溶液类别</td>
+            <td>
+                <select name="ry_type" style="width:100%">
+                <option value="标准溶液">标准溶液</option>
+                <option value="基准溶液">基准溶液</option>
+                </select>
+            </td>
+          </tr>
+          <tr>
+            <td>取用物质名称</td>
+            <td><input type="text" name="wz_mc" value="" /></td>
+            <td>批号</td>
+            <td><input type="text" name="wz_bh" value="" /></td>
+            <td>购买(配制)日期</td>
+            <td><input type="text" name="start_date" class="date-picker" value="" /></td>
+          </tr>
+          <tr>
+            <td>干燥条件</td>
+            <input type="hidden" name="wz_nd" value="" />
+            <td><input type="text" name="gztj" value="" /></td>
+            <td>试剂重</td>
+            <td><input type="text" name="wz_z" value=""></td>
+            <td>定容体积</td>
+            <td><input type="text" name="drtj" value=""></td>
+          </tr>
+          <tr>
+            <td>所用溶剂</td>
+            <td><input type="text" name="sy_rj" value=""></td>
+            <td>配制溶液浓度</td>
+            <td><input type="text" name="sj_nd" value=""></td>
+            <td>有效日期</td>
+            <td>
+                <input type="text" name="sj_yxrq" class="date-picker" value="$sj_yxrq_date" />
+            </td>
+          </tr>
+          <tr>
+            <td>配制人</td>
+            <td>
+                <select style="width:100%" name="pz_user">$pz_user_list</select>
+            </td>
+            <td colspan="4"></td>
+          </tr>
+          <tr>
+            <td>备注</td>
+            <td colspan="5">
+                <textarea name="pz_note" style="height:80px"></textarea></td>
+          </tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <input type="hidden" name="action" value="add" />
+        <input type="hidden" name="vid" value="" />
+        <!-- 修改的时候需要用到本试剂id -->
+        <input type="hidden" name="byid" value="" />
+        <input type="hidden" name="wz_id" value="" />
+        <!-- 使用中间液配制时需要用到中间液试剂id -->
+        <input type="hidden" name="sj_id" value="" />
+        <input type="hidden" name="wz_type" value="" />
+        <a href="#" class="btn btn-primary btn-sm" id="jzry_add2">确定</a>
+        <a href="#" class="btn btn-primary btn-sm fanhui">返回</a>
+        <a href="#" class="btn btn-sm cancel" data-dismiss="modal">取消</a>
+    </div>
+  </form>
+</div><!-- end -->
+
+<h3 class="header smaller center title">标(基)准溶液称量配制原始记录</h3>
+<div class="widget-box no-border">
+  <div class="widget-header header-color-blue4 center">
+    <div class="widget-toolbar">
+    <form action="jzry_list.php" name='new_sc'>
+        {$hub_info_select}
+        年份选择:
+        <select name='year'>$year_list</select>
+        月份选择:
+        <select name='month'>$month_list</select>
+        项目选择:
+        <select name='vid' style="min-width:150px;"><option value="全部">全部</option>$xm_list</select>
+        配制员选择:
+        <select name='userid' style="min-width:150px;"><option value="$_GET[userid]">$_GET[userid]</option>$pz_user_list<option value="全部">全部</option></select>
+        <button class="btn btn-primary btn-sm" type="button" id="new_jzsj">新配标液</button>
+    </form>
+    </div>
+  </div>
+  <div class="widget-body">
+    <table class="table table-striped table-bordered table-hover center">
+        <thead>
+            <th>序号</th>
+            <th>项目名称</th>
+            <th>配制日期</th>
+            <th>标(基)准溶液名称</th>
+            <th>所用试剂</th>
+            <th>浓度值</th>
+            <th>试剂重/取用体积</th>
+            <th>定容体积</th>
+            <th>配制溶液浓度</th>
+            <th>配制人</th>
+            <!-- <th>校核人</th>
+            <th>复核人</th><th>审核人</th> -->
+            <th>操作</th>
+        </thead>
+        <tbody>
+             $lines
+        </tbody>
+    </table>
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+        $(this).prev().focus();});
+    $('.date-picker').mask('9999-99-99');
+    //列表查询
+    $("form[name=new_sc] select").change(function(){
+        new_sc.submit();
+    });
+    //新配标液
+    $("#new_jzsj").click(function(){
+        $("#modal_biaoye").modal('show');
+        $.get("get_bzry.php", {vid:$("#select_xm").val(),wz_type:$("#wz_type").val(),ajax:1},
+            function(data){
+                $("#select_bzry_div").html(data);
+        });
+    });
+    $("#select_xm,#wz_type").change(function(){
+        $("#select_bzry_div").html('');
+        $("input[name=action]").val('add');
+        $("input[name=wz_type]").val($("#wz_type").val());
+        var xm_name = $("#select_xm option:selected").text();
+        $("#add_by_ry h3,#add_by_gt h3").html('为<b class="red">【'+xm_name+'】</b>配制标(基)准溶液');
+
+        $("input[name=sjmc],input[name=wz_mc]").val(xm_name);
+        $("input[name=pzrq]").val('$current_date');
+        $("input[name=vid]").val($("#select_xm").val());
+
+        $("input[name=wz_id],input[name=data],input[name=start_date],input[name=byid],input[name=sj_id],input[name=wz_bh],input[name=wz_nd],input[name=gztj],input[name=wz_z],input[name=drtj],input[name=sy_rj],input[name=sj_nd]").val('');
+        $("select[name=pz_user] option[value=$u[userid]]").attr('selected',true);
+        $("textarea[name=pz_note]").html('');
+
+
+        if($("#wz_type").val()==3){
+        	$("input[name=gztj]").val(' ℃、 h');
+            $("#modal_biaoye form").hide();
+            $("#add_by_gt").show();
+            return true;
+        }else if($("#wz_type").val()==4){
+            $("#modal_biaoye form").hide();
+            $("#add_by_ry").show();
+            return true;
+        }
+        $.get("get_bzry.php", {vid:$("#select_xm").val(),wz_type:$("#wz_type").val(),ajax:1},
+            function(data){
+                $("#select_bzry_div").html(data);
+        });
+    });
+    $(".fanhui").click(function(){
+        $("#modal_biaoye form").hide();
+        $("#form_sel_by").show();
+    });
+    $("#form_add").click(function(){
+        if($("#wz_type").val()>=3){
+            if($("#wz_type").val()==3){
+                $("#modal_biaoye form").hide();
+                $("#add_by_gt").show();
+            }else{
+                $("#add_by_ry").show();
+            }
+            return true;
+        }else if(''==$("#select_xm").val()){
+            alert('请选择化验项目');
+            return false;   
+        }else if(''==form_select_by.wz_id.value&&''==form_select_by.sj_id.value){
+            alert('请选择标准溶液');
+            return false;
+        }
+        var data = $.parseJSON(form_select_by.data.value);
+        add_by_ry.vid.value     = data.vid;
+        add_by_ry.wz_id.value   = data.wz_id;
+        add_by_ry.sj_id.value   = data.sj_id;
+        add_by_ry.wz_mc.value   = data.wz_mc;
+        add_by_ry.wz_bh.value   = data.wz_bh;
+        add_by_ry.sjmc.value    = data.sjmc;
+        add_by_ry.wz_nd.value   = data.wz_nd;
+        add_by_ry.start_date.value	= data.pzrq;
+        $("#modal_biaoye form").hide();
+        $("#add_by_ry").show();
+    });
+    $(".close,.cancel").click(function(){
+        $(".fanhui").removeAttr("disabled");
+        $("#modal_biaoye form").hide();
+        $("#form_sel_by").show();
+    });
+    $("#jzry_add,#jzry_add2").click(function(){
+        var is_empty = false;
+        if($("#wz_type").val()==3){
+            var add_by = add_by_gt;
+        }else{
+            var add_by = add_by_ry;
+        }
+        add_by.submit();
+    });
+    $(".icon-edit").click(function(){
+        var data = $.parseJSON($(this).attr('data'));
+        //禁用返回按钮
+        $(".fanhui").attr({"disabled":"disabled"});
+        //更改标题
+        var xm_name = $("#select_xm option[value="+data.vid+"]").text();
+        $("#add_by_ry h3,#add_by_gt h3").html('为<b class="red">【'+xm_name+'】</b>配制标(基)准溶液');
+        $("#modal_biaoye").modal('show');
+        $("#modal_biaoye form").hide();
+        $("#wz_type option[value="+data.wz_type+"]").attr('selected',true);
+        if(data.wz_type==3){
+            var add_by = add_by_gt;
+            $("#add_by_gt").show();
+        }else{
+            var add_by = add_by_ry;
+            $("#add_by_ry").show();
+        }
+        add_by.action.value='edit';
+        add_by.vid.value=data.vid;
+        add_by.byid.value=data.id;
+        add_by.wz_id.value=data.wz_id;
+        add_by.wz_mc.value=data.wz_mc;
+        add_by.wz_type.value=data.wz_type;
+        add_by.sj_id.value=data.sj_id;
+        add_by.pzrq.value=data.pzrq;
+        add_by.sjmc.value=data.sjmc;
+        $("option[value="+data.ry_type+"]").attr('selected',true);
+        add_by.wz_bh.value=data.wz_bh;
+        add_by.start_date.value=data.start_date;
+        add_by.wz_nd.value=data.wz_nd;
+        add_by.gztj.value=data.gztj;
+        add_by.wz_z.value=data.wz_z;
+        add_by.drtj.value=data.drtj;
+        add_by.sy_rj.value=data.sy_rj;
+        add_by.sj_nd.value=data.sj_nd;
+        add_by.sj_yxrq.value=data.sj_yxrq;
+        $("option[value="+data.pz_user+"]").attr('selected',true);
+        add_by.pz_note.innerHTML=data.pz_note;
+    });
+    $(".icon-remove").click(function(){
+        if(confirm('您确定要删除该标准溶液吗？')){
+            add_by_ry.action.value='delete';
+            add_by_ry.byid.value=$(this).attr('data');
+            add_by_ry.submit();
+        }
+    });
+    //光标进入输入框时即显示提示内容
+    //$.fn.typeahead.Constructor.prototype.focus = function(){var that = this;that.lookup()}
+    //$.fn.typeahead.Constructor.prototype.mouseleave = function() { };
+    //默认提示内容
+    // $('input[name="sjmc"]').typeahead({
+    //     source: function(query, process) {
+    //         var sjmc_fix = ['标准溶液','基准溶液','储备液'];
+    //         for (var i = 0; i < sjmc_fix.length ; i++) {
+    //             sjmc_fix[i] = query.replace('标准溶液','')+sjmc_fix[i];
+    //         };
+    //         return sjmc_fix;
+    //   }
+    // });
+})
+</script>

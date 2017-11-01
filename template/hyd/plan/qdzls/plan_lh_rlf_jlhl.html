@@ -1,0 +1,147 @@
+<h1>容量法检测$arow[assay_element]原始记录表</h1>
+{$hjtj_bt}
+<input type="hidden" name="yq_bh" value="{$arow['yq_bh']}" />
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+  </tr>
+  <tr>
+    <td colspan="1">检验方法依据</td>
+    <td colspan="2">{$arow['td2']}</td>
+    <td colspan="2">检验方法</td>
+    <td colspan="5">{$arow['td1']}</td>
+  </tr>
+  <tr class="bt_hidden">
+    <td colspan="2">当量或分子量</td>
+    <td colspan="8"><input type="text" name="td11" value="{$arow['td11']}" /></td>
+  </tr>
+  <tr class="bt_hidden">
+    <td colspan="2">滴定管校正值设置
+      <input type="hidden" name="td16" class="ddg_fw" value="{$arow['td16']}" />
+      <input type="hidden" name="td17" class="ddg_jz" value="{$arow['td17']}" /></td>
+    <td>≤ <input type="text" name="fw0" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz0" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw1" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz1" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw2" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz2" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw3" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz3" value="" class="jiaozheng" /></td>
+  </tr>
+  <tr class="bt_hidden">
+    <td>≤ <input type="text" name="fw4" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz4" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw5" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz5" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw6" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz6" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw7" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz7" value="" class="jiaozheng" /></td>
+    <td>≤ <input type="text" name="fw8" value="" class="fanwei" style="width:auto" size="4" /></td>
+    <td>  <input type="text" name="jz8" value="" class="jiaozheng" /></td>
+  </tr>
+  <tr>
+    <td colspan="1">标准溶液名称</td>
+    <td colspan="2"><input type="text" name="td12" class="inputl" value="{$arow['td12']}"/></td>
+    <td colspan="2">标准溶液浓度 c（mol/L）</td>
+    <td colspan="1"><input type="text" name="td13" class="inputl c_v" value="{$arow['td13']}" /></td>
+    <td colspan="3">空白消耗体积 V<sub>0</sub> （mL）</td>
+    <td colspan="1"><input type="text" name="td29" class="inputl kb" value="{$arow['td29']}" /></td>
+  </tr>
+  <tr>
+    <td colspan="1">滴定管编号</td>
+    <td colspan="1"><input type="text" class="inputl" name="td14" value="{$arow['td14']}"/></td>
+    <td colspan="1">滴定管校正值</td>
+    <td colspan="2"><input type="text" name="td15" class="inputl ddg_jzz" value="{$arow['td15']}" /></td>
+    <td colspan="1">计算公式</td>
+    <td colspan="4" class="jsgs"></td>
+  </tr>
+  <tr>
+    <td rowspan="2">序号</td>
+    <td rowspan="2">样品编号</td>
+    <td rowspan="2">取样体积<br/>（mL）</td>
+    <td colspan="4">滴定液读数（mL）</td>
+    <td rowspan="2">含量<br/>（{$arow['unit']}）</td>
+    <td rowspan="2">平均值/<br />理论浓度（{$arow['unit']}）</td>
+    <td rowspan="2">相对偏差/<br />加标回收率（%）</td>
+  </tr>
+  <tr>
+    <td>始读</td>
+    <td>终读</td>
+    <td>消耗量V</td>
+    <td>ω<sub>1</sub></td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="15"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  var a = $("form[name='as_form_{$arow['id']}']");
+  //计算公式
+  if('603'=='{$arow['vid']}'){
+    a.find(".jsgs").replaceWith('<td class="right noright">ω<sub>1</sub>&nbsp;&nbsp;=&nbsp;&nbsp;</td><td class="center noborder" colspan="2">(V<sub>0</sub>/1000-V/1000)cM/2<hr />m×10/250</td><td class="left noleft">×100</td>');
+  }else if('605'=='{$arow['vid']}'){
+    a.find(".jsgs").parents("tr").find("td:eq(3)").attr('colspan','1');
+    a.find(".jsgs").replaceWith('<td class="center noright">ω<sub>3</sub> = </td><td class="noborder center" colspan="3">[(V<sub>0</sub>/1000-V/1000)cM]/M<hr />(mω<sub>1</sub>/100)×(25/250)×(0.5293/8.994)</td><td class="left noleft" colspan="1">×100</td>');
+  }
+})
+function jsgs(){
+  var a  = $("form[name='as_form_{$arow['id']}']");
+  var kb = parseFloat(a.find(".kb").val());
+  if(''==a.find(".c_v").val()){ a.find(".c_v").focus(); return false;}
+  var c = parseFloat(a.find(".c_v").val());
+  //默认体积与实际取样体积比较判断是否稀释
+  if( ''==kb || !$.isNumeric(kb)){
+    var kb = 0.00;
+  }
+  var vd3_split = String(vs['vd3']).split('.');
+  if(vd3_split.length==2){
+    var diding_ws = vd3_split[1].length;
+  }else{
+    var diding_ws = 0;
+  }
+  if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd4'])){
+    vs['vd5'] = roundjs(accsub(parseFloat(vs['vd4']),parseFloat(vs['vd3'])),diding_ws);
+  }else{
+    vs['vd5'] = vs['vd6'] = '';
+  }
+
+  if(''!==vs['vd5']){
+  	var jjz = get_jzz(vs['vd4']);//获取校正值
+    //填充表头中校正值
+    var result =[];
+    $("input[name*='vd4[']").each(function(i){
+      result.push(get_jzz($(this).val()));
+    })
+    result = unique(result);
+    a.find(".ddg_jzz").val(result.join(','));
+
+    if('603'=='{$arow['vid']}'){
+      // c 是氯化锌标准滴定溶液的实际浓度的准确数值，单位为摩尔每升(mol/L)
+      var m  = 8.0;//试料的质量的数值，单位为克(g)
+      var M  = 101.96;//氧化铝的摩尔质量的数值，单位为克每摩尔(g/mol)
+      var jg = ((((kb-parseFloat(vs['vd5'])+parseFloat(jjz))/1000)*c*M/2)/(m*10/250))*100;
+      vs['vd0'] = jsws(jg);
+      vs['vd6'] = jsws(jg,4)
+    }else if($.isNumeric(vs['vd6'])&&'605'=='{$arow['vid']}'){
+      // c 是氢氧化钠标准滴定溶液的实际浓度的准确数值，单位为摩尔每升(mol/L)
+      var m  = 8.0;//试料的质量的数值，单位为克(g)
+      // ω₁ = vs['vd6']; //Al₂O₃的质量分数，%
+      var M  = 16.99;//氢氧根[HO⁻]的摩尔质量的数值，单位为克每摩尔(g/mol)
+      // 0.5293 Al₂O₃折算成Al的系数
+      // 8.994 [1/3Al]的摩尔质量，单位为克每摩尔(g/mol)
+      var jg = ((((kb-parseFloat(vs['vd5'])+parseFloat(jjz))/1000)*c*M/M)/((m*vs['vd6']/100)*(25/250)*(0.5293/8.994)))*100;
+      vs['vd0'] = jsws(jg);
+    }else{
+      vs['vd0'] = vs['vd6'] = '';
+    }
+  }
+}
+</script> 

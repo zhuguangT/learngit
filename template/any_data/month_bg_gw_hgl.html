@@ -1,0 +1,162 @@
+<script> 
+//js判断一个变量是否在一个数组中
+function in_array(stringToSearch, arrayToSearch) {
+	for (s = 0; s <arrayToSearch.length; s++) {
+		thisEntry = arrayToSearch[s].toString();
+		if (thisEntry == stringToSearch) {
+			return true;
+		}
+	}
+	return false;
+}
+//改变模板时ajax更新数据库
+function change_mb(t){
+	var mb_value=t.value;
+	var set_id=$("#set_id").val();
+	$.get('any_sites_result.php?ajax=1',{mb_value:mb_value,set_id:set_id},function(data){
+		$("#col_max").val(data.col_max);
+		$("#row_max").val(data.row_max);
+	},'json');
+}
+//关闭弹出层
+function guanbi(){
+	$('body').css("overflow","auto")
+	$("#cover").hide();
+}
+//验证起始时间和终止时间是否正确
+function date_check(){
+	var month_type=$("#month_type").val();
+	if(month_type=='本月'){
+		var day1=$("#day1").val();
+		var day2=$("#day2").val();
+		if(day2<day1){
+			alert("终止时间不能小于起始时间");
+			$("#month_type option[value='本月']").prop("selected", true); 
+			$("#day1 option[value='01']").prop("selected", true);
+			$("#day2 option[value='01']").prop("selected", true);
+		}
+	}
+}
+//点击站点或者取消勾选站点时判断是否要勾选批名
+function check_group(t){
+	var c=$(t).attr("class"); 
+	var c=parseInt(c);
+	var b=t.checked;
+	if(b){	
+		$('#'+c).prop('checked',true);
+	}
+	else{
+		var cl=$("input[class='"+c+"']:checked").length;
+		if(cl==0){
+			$("#"+c).prop('checked',false);
+		}
+	}
+}
+//选中批次后 同时操作所有站点
+function check_sites(t){
+	var id=t.id;
+	if(t.checked){
+		$('.'+id).prop("checked",true);
+	}else{
+		$('.'+id).prop("checked",false);
+	}
+}
+</script>
+<style type="text/css">
+	.s_float{display:block;margin-left:15px;float:left}
+	.pc_css{font-size:14px;font-weight:bold;}
+</style>
+<form  action="select_export_mb.php?ajax=1" method="post" onsubmit="return(verify(this))" {$target}>
+	<input type="hidden" name="set_id" id="set_id" value="{$_GET[set_id]}">
+	<input type="hidden" name="action" id="action" value="{$_GET[action]}">
+	<h3 class="header smaller center title">{$cg_rs['baogao_name']}内容设置</h3>
+	<div class="widget-box no-border">
+		<div class="widget-body">
+			<table  style="margin-top:20px;text-align:center;" class="table table-striped table-bordered table-hover">
+				<tr>
+					<th colspan='2' style="font-size:16px;">报告取值的时间范围</th>
+				</tr>
+				<tr>
+					<td colspan='2'>{$date_str}</td>
+				</tr>
+				<tr>
+					<th colspan='2'><span style="font-size:16px;">单独统计合格率的项目及站点</span> <button class="btn btn-xs btn-primary" type='button' name='alone_set' set_id='{$cg_rs['id']}'>设置</button></th>
+				</tr>
+				<tr>
+					<td style="width:10%;">项目</td><td id='alone_vid_td'>$alone_value_str</td>
+				</tr>
+				<tr>
+					<td style="">站点</td><td id='alone_sites_td'>$alone_sites_str</td>
+				</tr>
+				<tr>
+					<th colspan='2'><span style="font-size:16px;">综合统计合格率的项目及站点</span> <button class="btn btn-xs btn-primary" type='button' name='merger_set' set_id='{$cg_rs['id']}'>设置</button></th>
+				</tr>
+				<tr>
+					<td style="">项目</td><td id='merger_vid_td'>$merger_value_str</td>
+				</tr>
+				<tr>
+					<td style="">站点</td><td id='merger_sites_td' style="padding:0;margin:0;">$merger_sites_str</td>
+				</tr>
+			</table>
+			<br />
+			{$any_sites_result_body}
+			{$submit_str}
+			<div style="height:200px;width:100%"></div>
+		</div>
+	</div>
+</form>
+<!-- 弹出层 -->
+<div id="cover" class="modal" role="dialog" style='background-color:rgba(15, 15, 15, 0.7)!important;'>
+	<div class="modal-dialog" style='width:80%;margin:0 auto;'>
+		<div style="color:#0000FF;font-size:20px;cursor:pointer;width:75px;height:35px;line-height:35px;text-align:center;margin-bottom:-35px;position:relative;z-index:1051;float:right;" class='close_cover'>关闭</div>
+		<div id="con" class='modal-content' style='width:100%;'></div>
+	</div>
+</div>
+<!-- 弹出层 -->
+<script type="text/javascript">
+//日历弹出框
+$('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+	$(this).prev().focus();
+});
+$(function(){
+	//一个站点都没有的时候可能会报错，ajax添加后也可能会报错
+	//选中批次时，同时选中批内站点
+	$("input[site_group='yes']").click(function(){
+		var bz	= $(this).attr('bz');
+		if($(this).is(":checked")){
+			$("input[bz='"+bz+"']").prop("checked",true);
+		}else{
+			$("input[bz='"+bz+"']").prop("checked",false);
+		}
+	});
+	//选择站点时，同时选择批名。所有站点都取消选择时同时取消批次的选中状态
+	$("input[site='yes']").click(function(){
+		var bz	= $(this).attr('bz');
+		if($(this).is(":checked")){
+			$("input[site_group='yes'][bz='"+bz+"']").prop("checked",true);
+		}else{
+			var checked_input	= $("input[site='yes'][bz='"+bz+"']:checked").length;
+			if(checked_input == '0'){
+				$("input[site_group='yes'][bz='"+bz+"']").prop("checked",false);
+			}
+		}
+	});
+	//弹出层
+	$("button[name='alone_set'],button[name='merger_set']").click(function(){
+		$("#con").html('<center style="font-weight:bold;font-size:18px;">页面加载中......</center>');
+		var set_id	= $(this).attr("set_id");
+		var title	= $(this).prev("span").text();
+		var action	= $(this).attr("name");
+		$.post("ajax_site_value.php",{"action":action,'set_id':set_id,"title":title,"ajax":'1'},function(data){
+			$("#con").html(data);
+		},'html')
+		$("#cover").show();
+		$("body").css({"overflow":"hidden"});
+	});
+	$(".close_cover").click(function(){
+		$("#cover").hide();
+		$("body").css({"overflow":"auto"});
+	});
+})
+</script>
+

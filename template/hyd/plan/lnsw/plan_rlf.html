@@ -1,0 +1,149 @@
+<!-- 如果列line里的vd有所调整需要更改 huayan/assay_form_func.php 里面的Mg_hyd()函数，因为镁是通过总硬度和钙减差得出的结果 -->
+<h1>容量法检测$arow[assay_element]原始记录表</h1>
+$hjtj_bt
+<input type="hidden" name="td6" value="$arow[td6]" />
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:10%"></td><td style="width:15%"></td><td style="width:10%"></td>
+    <td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td>
+    <td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td>
+    <td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td><td style="width:5%"></td>
+    <td style="width:5%"></td>
+  </tr>
+  <tr align="center">
+    <td colspan="1">分析项目</td>
+    <td colspan="1">{$arow['assay_element']}</td>
+    <td colspan="1">检测依据</td>
+    <td colspan="3">$arow[td2]</td>
+    <td colspan="2">检出限({$arow['unit']})</td>
+    <td colspan="3">{$arow['td3']}</td>
+    <td colspan="2">指示剂名称</td>
+    <td colspan="3"><input type="text" class="inputl" name="td8" value="$arow[td8]"/></td>
+  </tr>
+  <tr class="bt_hidden">
+    <td>当量或分子量</td>
+    <td><input type="text" name="td7" value="{$arow['td7']}" /></td>
+    <td colspan="15"></td>
+  </tr>
+  <tr>
+    <td colspan="1">滴定管规格</td>
+    <td colspan="1"><input type="text" class="inputl" name="td9" value="$arow[td9]"/></td>
+    <td colspan="1">颜色</td>
+    <td colspan="3"><input type="text" name="td10"  class="inputl" value="$arow[td10]" /></td>
+    <td colspan="3">空白消耗体积 V<sub>2</sub> (mL)</td>
+    <td colspan="2"><input type="text" name="td11" id="kb"  class="inputl" value="$arow[td11]" /></td>
+    <td colspan="2">标准溶液名称</td>
+    <td colspan="3"><input type="text" name="td13" class="inputl" value="$arow[td13]" /></td>
+  </tr>
+  <tr>
+    <td colspan="1">标准溶液浓度 C (mmol/L)</td>
+    <td colspan="1"><input type="text" name="td14" class="inputl" id="c_v" value="$arow[td14]" /></td>
+    <td colspan="2">计算公式</td>
+    <td colspan="12" id="jsgs_"></td>
+    <input type="hidden" name="td28" value="" />
+  </tr>
+  <tr align="center">
+    <td rowspan="2">序号</td>
+    <td rowspan="2">样品编号</td>
+    <td rowspan="2">取样体积<br/> V<sub>0</sub> (mL)</td>
+    <td colspan="8">滴定液读数(mL)</td>
+    <td colspan="2" rowspan="2">含量<br/>({$arow['unit']})</td>
+    <td colspan="2" rowspan="2">平均值/理论浓度({$arow['unit']})</td>
+    <td colspan="1" rowspan="2">相对偏差/加标回收率(%)</td>
+  </tr>
+  <tr align="center">
+    <td colspan="2">始点</td>
+    <td colspan="2">终点</td>
+    <td colspan="2">用量</td>
+    <td colspan="2">平均值 V<sub>1</sub></td>
+  </tr>
+  $aline
+  <tr>
+    <td align="center">备注</td>
+    <td colspan="15"><textarea name="td29">$arow[td29]</textarea></td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+//容量法的计算一般是：水样的含量=（标准溶液用量-空白）*标准溶液浓度 *  当量 / 取体积。
+var jsgs_html = '';	//计算公式
+var dl_fzl = $("input[name=td7]").val();	//当量，分子量
+var dl_emp = (''== dl_fzl || !$.isNumeric(dl_fzl)) ? true:false;
+if('103'=='{$arow['vid']}'){
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 100.1;	//总硬度
+	jsgs_html = 'ρ = V<sub>1</sub>×C×'+dl_fzl+'/V<sub>0</sub>';
+}else if('114'=='{$arow['vid']}'){
+	var xkp_v  = parseFloat($("input[name=td12]").val());
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 8;	//溶解氧
+	var jsgs_html = 'ρ = M<sub>r</sub>V<sub>1</sub></sub>×C×f<sub>1</sub>/4V<sub>0</sub>';
+	jsgs_html += '&nbsp;&nbsp;&nbsp;';
+	jsgs_html += 'f<sub>1</sub> = V/(V-V\')';
+	var dl_fzl = dl_fzl*xkp_v/(xkp_v-3);
+}else if('118'=='{$arow['vid']}'){
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 8;	//化学需氧量COD
+	var jsgs_html = 'ρ = (V<sub>2</sub>-V<sub>1</sub>)×C×'+dl_fzl+'/V<sub>0</sub>';
+}else if('126'=='{$arow['vid']}'){
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 22;	//二氧化碳
+}else if('127'=='{$arow['vid']}'){
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 22;	//游离二氧化碳
+  jsgs_html = 'ρ = V<sub>1</sub>×C×'+dl_fzl+'/V<sub>0</sub>';
+}else if('128'=='{$arow['vid']}'){
+	var dl_fzl = (false==dl_emp) ? dl_fzl : 22;	//侵蚀性二氧化碳钙
+}else if('173'=='{$arow['vid']}'){
+  var dl_fzl = (false==dl_emp) ? dl_fzl : 40.08;  //钙
+  jsgs_html = 'ρ = V<sub>1</sub>×C×A/V<sub>0</sub>';
+}else if('182'=='{$arow['vid']}'){
+  var dl_fzl = (false==dl_emp) ? dl_fzl : 35.45;  //氯化物
+  var jsgs_html = 'ρ = (V<sub>1</sub>-V<sub>2</sub>)×C×'+dl_fzl+'/V<sub>0</sub>';;
+}else{
+	var dl_fzl = 1;
+}//alert(dl_fzl)
+jsgs_html = (''!=jsgs_html) ? jsgs_html : 'ρ = (V<sub>1</sub>-V<sub>2</sub>)×C×'+dl_fzl+'/V<sub>0</sub>';
+$("input[name=td28]").val(jsgs_html);
+$("#jsgs_").html(jsgs_html);
+function jsgs(){
+  var kb=vs['vd10']    = parseFloat($("#kb").val());
+  if(''==$("#c_v").val()){ $("#c_v").focus(); return false;}
+  var C =vs['vd11']   = parseFloat($("#c_v").val());
+  //默认体积与实际取样体积比较判断是否稀释
+  if( ''==kb || !$.isNumeric(kb)){
+    //$("#kb").val(0.00);
+    var kb = 0.00;
+  }
+
+  var vd3_split = String(vs['vd3']).split('.');
+  if(vd3_split.length==2){
+    var diding_ws = vd3_split[1].length;
+  }else{
+    var diding_ws = 0;
+  }
+  if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd4'])){
+    vs['vd5'] = roundjs(accsub(parseFloat(vs['vd4']),parseFloat(vs['vd3'])),diding_ws);
+  }else{
+    vs['vd5'] = '';
+  }
+  if($.isNumeric(vs['vd6'])&&$.isNumeric(vs['vd7'])){
+    vs['vd8'] = roundjs(accsub(parseFloat(vs['vd7']),parseFloat(vs['vd6'])),diding_ws);
+  }else{
+    vs['vd8'] = '';
+  }
+  if(''!=vs['vd5']||vs['vd8']){
+  	if($.isNumeric(vs['vd5'])&&$.isNumeric(vs['vd8'])){
+    	vs['vd9'] = roundjs(accDiv(accAdd(parseFloat(vs['vd5']),parseFloat(vs['vd8'])),2),diding_ws+1);
+  	}else if($.isNumeric(vs['vd5'])){
+  		vs['vd9'] = parseFloat(vs['vd5']);
+  	}else if($.isNumeric(vs['vd8'])){
+  		vs['vd9'] = parseFloat(vs['vd8']);
+  	}else{
+  		vs['vd9'] = '';
+  	}
+  }else{
+    vs['vd9'] = '';
+  }
+
+  if(''!==vs['vd9']){
+	var jg = Math.abs(parseFloat(vs['vd9'])-kb)*parseFloat(C)*parseFloat(dl_fzl)/parseFloat(vs['vd1']);
+	vs['vd0'] = jsws(jg);
+  }
+}
+</script> 

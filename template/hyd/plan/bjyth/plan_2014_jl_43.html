@@ -1,0 +1,126 @@
+<h1>臭氧分光光度法分析原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+		<td style="width:9%"></td><td style="width:8%"></td><td style="width:8%"></td>
+		<td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td>
+		<td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+	</tr>
+	<tr class="auto">
+		<td colspan="3" class="left">分析项目：{$arow['assay_element']}</td>
+		<td colspan="4" class="left">分析方法：{$arow['td2']}</td>
+		<td colspan="5" class="left">分析日期： <input type="text" name="td31" value="{$arow['td31']}" class="inputl" /></td>
+	</tr>
+	<tr>
+		<td colspan="3" class="left">样品类别：{$arow['water_type']}</td>
+		<td colspan="6" class="left">仪器名称及编号：{$arow['td4']} {$arow['yq_bh']}</td>
+		<td colspan="3" class="left">检出限：{$arow['td3']}mg/L</td>
+	</tr>
+	<tr class="auto">
+		<td colspan="3" class="left">调零方法：<input type="text" name="td12"  size="5" value="{$arow['td12']}" class="inputl" /></td>
+		<td colspan="3" class="left">定容体积V<sub>1</sub>：<input type="text" name="td6" size="8" onblur="$('input[name^=\'vd3[\'').blur()") class="inputl"  value="{$arow['td6']}" />mL</td>
+		<td colspan="3" class="left">比色皿规格：<input type="text" name="td13"  size="4" value="{$arow['td13']}" class="inputl" />cm</td>
+		<td colspan="3" class="left">波长：<input type="text" name="td7"  size="4" value="{$arow['td7']}" class="inputl" />nm</td>
+	</tr>
+	<tr>
+		<td colspan="12" class="left">计算公式：C（mg/L）=100×△A/f×b×V</td>
+	</tr>
+	<tr >
+		<td rowspan='2' colspan="2">序号</td>
+		<td rowspan='2' colspan="2">{$zhanming}</td>
+		<td colspan="4">吸光度（A）</td>
+		<td rowspan='2'>取样<br>体积<br />V（mL）</td>
+		<td rowspan='2'>含量C<br>（{$arow['unit']}）</td>
+		<td rowspan='2'>平均值<br/>（{$arow['unit']}）</td>
+		<td rowspan='2'>相对<br/>偏差（％）</td>
+	</tr>
+	<tr >
+		<td>I</td>
+		<td>II</td>
+		<td>平均（1）</td>
+		<td>△A<br/>(1)-(2)</td>
+	</tr>
+	{$aline}
+	<tr class="auto">
+		<td colspan="2" rowspan="2">空白实验</td>
+		<td>1</td>
+		<td><input type="text" name="td21" size="6" class="inputc" value="{$arow['td21']}" onblur="btgs()" /></td>
+		<td><input type="text" name="td22" size="6" class="inputc" value="{$arow['td22']}" onblur="btgs()" /></td>
+		<td><input type="text" name="td23" size="6" class="noinputc" value="{$arow['td23']}" /></td>
+		<td colspan="2">均值（2）</td>
+		<td colspan="2">相对偏差</td>
+		<td colspan="2">加标量：<input type="text" name="td15" size="3" class="inputl" value="{$arow['td15']}" />mL</td>
+	</tr>
+	<tr class="auto">
+		<td>2</td>
+		<td><input type="text" name="td24" size="6" class="inputc" value="{$arow['td24']}" onblur="btgs()" /></td>
+		<td><input type="text" name='td25' size="6" class="inputc" value="{$arow['td25']}" onblur="btgs()" /></td>
+		<td><input type="text" name="td26" size="6" class="noinputc" value="{$arow['td26']}" /></td>
+		<td colspan="2"><input type="text" name='td27' size="6" class="noinputc" value="{$arow['td27']}" /></td>
+		<td colspan="2"><input type="text" name="td14" size="6" class="noinputc" value="{$arow['td14']}" /></td>
+		<td colspan="2">P（％）=<input type="text" name='td8' size="5" class="inputl" value="{$arow['td8']}" /></td>
+	</tr>
+	<tr>
+		<td>备注</td>
+		<td colspan="11"><textarea name="td29"  rows="2" cols="80">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	function jsgs(){
+		var td27=$("input[name=td27]").val();
+		if($.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4'])){
+			vs['vd5']=roundjs((accAdd(vs['vd3'],vs['vd4'])/2),3);
+			if($.isNumeric(td27)&&$.isNumeric(vs['vd5']))
+				vs['vd6']=roundjs(accsub(vs['vd5'],td27),3);
+			else
+				vs['vd6']='';
+			if($.isNumeric(vs['vd1'])&&$.isNumeric(vs['vd6']))
+				vs['_vd0']=vs['vd0']=roundjs( (100*vs['vd6'])/(0.42*5*vs['vd1']) ,4);
+			else  
+				vs['_vd0']=vs['vd0']='';
+		}
+		else
+			vs['vd5']=vs['vd6']='';
+	}
+	function btgs(){
+		var td21=$("input[name=td21]").val();
+		var td22=$("input[name=td22]").val();
+		var td24=$("input[name=td24]").val();
+		var td25=$("input[name=td25]").val();
+		var sh=td21.indexOf('.');
+		var str1=0.0;
+		var strlen=1;
+		if(td21!==''){
+			if(sh>0){
+				str1=td21.toString().split('.');
+				strlen=str1[1].length;
+			}
+		}
+		if($.isNumeric(td21)&&$.isNumeric(td22))
+			var pj1=roundjs((accAdd(td21,td22)/2),strlen);
+		else
+			pj1='';
+		if($.isNumeric(td24)&&$.isNumeric(td25))
+			var pj2=roundjs((accAdd(td24,td25)/2),strlen);
+		else
+			pj2='';
+		if($.isNumeric(pj1)&&$.isNumeric(pj2))
+			var pj3=roundjs((accAdd(pj1,pj2)/2),strlen);
+		else
+			pj2='';
+		if($.isNumeric(pj1)&&$.isNumeric(pj2)&&$.isNumeric(pj3))
+			var pc=roundjs((accDiv(accsub(pj1,pj3),pj3)*100),1);
+		else
+			pc='';
+		if(pc==0)
+			pc=0;
+		if(pc<0)
+			pc='±'+pc.substr(1);
+		$("input[name=td23]").val(pj1);
+		$("input[name=td26]").val(pj2);
+		$("input[name=td27]").val(pj3);
+		$("input[name=td14]").val(pc);
+	}
+</script>
+

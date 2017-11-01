@@ -1,0 +1,399 @@
+<style>
+.hand,.update{cursor:pointer;}
+table tr{height:25px;}
+.red{color:red;}
+table,table td{border:1px black solid;border-collapse: collapse;font-size:13px;}
+form{text-align:center;}
+.liz {
+	list-style-type:none;
+    border: 0px solid #DDDDDD;
+    float: left;
+	padding-left:30px;
+    line-height: 22px;
+    text-align: left;
+    width: 219px;
+}
+.tdx {
+    border: 1px solid #DDDDDD;
+	}
+</style>
+<style type="text/css">
+.tjk{display:none;}
+.duoxuan input{vertical-align: -2px;_vertical-align: -1px;margin-right: 2px;}
+.srk input{width:90px;}
+.srk{display:inline-block;}
+.bianse,.duoxuan label,.duoxuan input{cursor:pointer;}
+//.duoxuan label{white-space:nowrap;}
+.duoxuan{display:inline-block;width:438px;}
+.duoxuan label{}
+</style>
+
+<script>
+//模板选择
+function quan(th){
+	with(th.form){ 
+		var im=mbxm.value;
+		var t=im.split(','); 
+		v=elements['xid[]'];
+		for(var i=0;i<v.length;i++) //根据模板循环选中项目
+		{
+			 if(in_array(v[i].value,t))
+				 v[i].checked=true;
+			 else
+				 v[i].checked=false;
+		}     
+	}
+	var p=tjxm();//统计选择的项目
+}
+ function in_array(stringToSearch, arrayToSearch) {
+
+	        for (s = 0; s <arrayToSearch.length; s++) {
+			      thisEntry = arrayToSearch[s].toString();
+			            if (thisEntry == stringToSearch) {
+					          return true;
+						        }
+			            }
+		      return false;
+}
+
+//统计选择的项目
+function tjxm(){
+ var total = 0;	//这个变量用来存放我们所要统计的个数值
+ var inputs = document.getElementsByName("xid[]"); 
+    for (var idx = 0; idx <inputs.length; idx++) 	//遍历所有checkbox
+    {
+	if(inputs[idx].checked){
+    total += 1;	  //计数器
+    }
+    }
+	$("#numes").html("你选择了 " + total + " 个选项");
+}
+
+//全选
+function selectAll(){
+	var ptpts=document.getElementsByName("xid[]");//得到所有的项目
+	//alert(ptpts.length);
+	for(var i=0;i<ptpts.length;i++){//循环选中
+		if(  ptpts[i].type =="checkbox"){
+			ptpts[i].checked="checked";
+		}
+	}
+	var p=tjxm();//统计选择的项目
+}
+//反选
+function reverse(){
+	var ptpts=document.getElementsByName("xid[]");
+	for(var i=0;i<ptpts.length;i++){
+		if(ptpts[i].type  =="checkbox"){
+			if(ptpts[i].checked){
+				ptpts[i].checked="";
+			}else{
+				ptpts[i].checked="checked";
+			}
+		}
+	}
+	var p=tjxm();//统计选择的项目
+}
+//取消选择
+function deSelectAll(){
+	var ptpts=document.getElementsByName("xid[]");//得到所有的项目
+	for(var i=0;i<ptpts.length;i++){//循环取消选中
+		if(ptpts[i].type  =="checkbox"){
+			ptpts[i].checked="";
+		}
+	}
+var p=tjxm();//统计选择的项目
+}
+</script>
+<script>
+//ajax项目随着水样类型变
+function showCustomer()
+{ 
+	xmlHttp=GetXmlHttpObject();
+	if (xmlHttp==null)
+	  {
+	  alert ("您的浏览器不支持AJAX！");
+	  return;
+	  }
+	var num = document.getElementsByName("customers[]");
+	var str="''";
+	for (var i = 0; i <num.length; i++)//遍历所有水样类型
+		{
+			if(num.length==1){
+				str=num[i].value;
+			}
+			if(num.length!=1){
+				if(num[i].value!=null){
+				nul=num[i].value;
+				}
+				if(!num[i].value){
+				nul="''";
+				}
+				str=str+","+nul;
+			}
+		}
+		str= str.replace(/'',/g,"").trim();
+		str= str.replace(/,''/g,"").trim();
+	var url="$rooturl/site/group_add_sites.php";
+	url=url+"?q="+str;
+	url=url+"&ajax=1";
+	url=url+"&sid="+Math.random();
+	xmlHttp.open("GET",url,true);
+	xmlHttp.onreadystatechange=stateChanged;
+	xmlHttp.send(null);
+}
+function stateChanged()
+{ 
+	if (xmlHttp.readyState==4)
+	{ 
+		var arr=xmlHttp.responseText.split("@");
+		document.getElementById("txtHint").innerHTML=arr[0];//公有项目
+		//alert(arr[1]);
+		document.getElementById("txtHint2").innerHTML=arr[1];//单测项目
+		//$("#txtHint2").after(arr[1]);
+		//document.getElementById("txtHint2").insertRow=;
+	}
+	//由于其他地方调用时，load_height()会改变高度，所以这里不能调用load_height()
+    //$(window.parent.document).find('iframe').height($('body').parent().height());
+	load_height();
+}
+
+function GetXmlHttpObject()
+{
+var xmlHttp=null;
+try
+  {
+  // Firefox, Opera 8.0+, Safari
+  xmlHttp=new XMLHttpRequest();
+  }
+catch (e)
+  {
+  // Internet Explorer
+  try
+    {
+    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+    }
+  catch (e)
+    {
+    xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+  }
+return xmlHttp;
+}
+
+function zhanmayz(th){
+	var hq=th.value;
+	if(hq!=''){
+		$.getJSON("$rooturl/site/site_ajax.php?code="+hq,function(json){
+			if(json.zt=='已存在'){
+			th.nextSibling.innerHTML ="<span style='color:#ff3300'>*"+json.ming+"中已存在</span>";
+			}else{th.nextSibling.innerHTML ="<span style='color:#ff3300'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";}
+		});
+	}else{th.nextSibling.innerHTML ="<span style='color:#ff3300'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";}
+}
+function site_nameyz(th){
+	var hd=th.value;
+	if(hd!=''){
+		$.getJSON("$rooturl/site/site_ajax.php?site_name="+hd,function(json){
+			if(json.zt=='已存在'){
+			th.nextSibling.innerHTML ="<span style='color:#ff3300'>*已存在</span>";
+			}else{th.nextSibling.innerHTML ="<span style='color:#ff3300'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";}
+		});
+	}else{th.nextSibling.innerHTML ="<span style='color:#ff3300'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";}
+}
+
+function gt(){
+	ming = $("#mb1 option:selected").html();
+	jie = $("#mb1 option:selected").val();
+	if(ming == '----请选择----')
+	{
+		$("input[name='xid[]']").each(function(){
+		    if($(this).is(":checked")){
+		      jie += ','+$(this).val();
+		    }
+	    });
+	    jie = jie.substring(1);
+	}
+    if(ming == '----请选择----'&&jie == '')
+    {
+    	jie = $("#mb1 option:selected").next().val();
+		ming = $("#mb1 option:selected").next().html();
+    }
+	$('.modal-content').load('$rooturl/site/muban_xm.php',{"mbname":ming,"xm":jie,"ajax":"1"});
+	$('body').css("overflow","hidden")
+	$("#cover").show();
+}
+
+function guanbi(){
+	$('body').css("overflow","auto")
+	$("#cover").hide();
+}
+</script>
+<script>
+$(document).ready(function() {
+	$(".chosen-select").chosen();});
+</script>
+<link href="$rooturl/js/wtjc.css" rel="stylesheet" type="text/css" />
+<h3 class="header smaller center title">添加站点</h3>
+<form id="tjzd" method="POST" name="playlist" action="$rooturl/site/group_add_sites_save.php">
+<div class="widget-box no-border">
+  <div class="widget-header header-color-blue4 center">
+	<div class="widget-toolbar">
+		<input name="site_type" value="$_GET[site_type]" type="hidden">
+		<input name="group_name" value="" type="hidden">
+		<input type="hidden" name="actions" value="$_GET[action]" />
+	</div>
+  </div>
+  <div class="widget-body">
+	<table class="table table-striped table-bordered table-hover center" id="th">
+		<tbody id="myTable">
+			$fzx
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="6">
+					<button name="add_zk_range" type="button"  id="add" class="btn btn-xs btn-primary">添加</button>&nbsp;<button name="add_zk_range" type="button"  id="del"  class="btn btn-xs btn-primary">删除</button>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+	<table class="table table-striped table-bordered table-hover center">
+		<tbody>
+			<tr align="center"><td  id="wuyongde">统计参数:<img src="$rooturl/img/tianjia.jpg" name="tianjia" width="51px" height="24px" class="bianse tianjia" id='bianshe'/> <img src="$rooturl/img/bianji.jpg" name="bianji" class='bianse bianji' id='bianshe2'/></td>
+			<td colspan="5" id="wuyongde"><p class="duoxuan">$tjcs </P>
+                <p class="srk" style="display:none;">$tjcs2</p>
+				<input type="text" onkeyup="value=value.replace(/[(\ )(\~)(\`)(\!)(\@)(\#)(\$)(\￥)(\%)(\^)(\&)(\……)(\*)(\()(\))(\-)(\——)(\_)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\；)(\：)(\:)(\')(\‘)(\“)(\”)(\,)(\，)(\.)(\。)(\/)(\<)(\>)(\《)(\》)(\?)(\？)(\、)(\)]+/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[(\ )(\~)(\`)(\!)(\@)(\#)(\$)(\￥)(\%)(\^)(\&)(\……)(\*)(\()(\))(\-)(\——)(\_)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\；)(\：)(\:)(\')(\‘)(\“)(\”)(\,)(\，)(\.)(\。)(\/)(\<)(\>)(\《)(\》)(\?)(\？)(\、)(\)]+/g,''))" name='tjlx' value="" class="tjk" placeholder="此处输入统计参数名称" /></td>
+			</tr>
+			<tr align="center" >
+				<td style="width:20%;">关联项目：</td>
+				<td style="color: red;"id="numes">你选择了 0 个选项</td>
+			</tr>
+			<tr align="center" >
+				<td colspan="2"><table style="border-style:none"><tr><td style="border-style:none">选择模板：<select name="mbxm" onchange="quan(this)" id='mb1'><option selected="selected"  value="">----请选择----</option> $mbxm</select>&nbsp;<button type="button" class="btn btn-xs btn-primary" onclick="gt()" >项目模板设定</button>
+				</td>
+				<td style="border-style:none;padding-left:50px"><input type="button" value="全选" onclick="selectAll()"><input type="button" value="反选" onclick="reverse()"><input type="button" value="取消选择" onclick="deSelectAll()"></td></tr></table></td>
+			</tr>
+			<tr ><td align="center" colspan="2">公测项目</td></tr>
+			<tr align="center" >
+				<td colspan="2" id="txtHint">
+				$xm
+				</td>
+			</tr>
+		</tbody>
+		<tbody id="txtHint2">
+		<tr align=center class='xm' ><td colspan='2'>*说明：没有显示的项目需要去检验方法配置中配置方法</td></tr>
+		</tbody>
+	</table><tr>
+		<td colspan='2'>
+		<input type="submit" name="submit" value="提交" />
+		</td>
+		</tr>
+  </div>
+</div></form>
+<!-- 弹出层 -->
+		<div id="cover" class="modal" style='background-color:rgba(15, 15, 15, 0.7)!important;'>
+			<div class="modal-dialog" style='width:800px;'>
+				<div id="con" class='modal-content' style='width:800px;'></div>
+			</div>
+		</div>
+
+<script>
+//多站点信息添加
+$("#add").click(function (){
+	//slx=$("#sylx").html();
+	dzd=$("#myTable").html();
+	$("#th").append("<tbody id='tbody'>"+dzd+"</tbody>");
+	showCustomer();
+	//由于其他地方调用时，load_height()会改变高度，所以这里不能调用load_height()
+        //$(window.parent.document).find('iframe').height($('body').parent().height());
+	load_height();
+})
+$("#del").click(function (){
+//if($('#zm').val()=='')
+$('#tbody:last-child').detach();
+showCustomer();
+})
+</script>
+<script>
+$("#bianshe").mouseover(function (){
+	if(this.name!='fanhui')
+        this.src='$rooturl/img/'+this.name+'2.jpg';
+});
+$("#bianshe").mouseout(function (){
+	this.src='$rooturl/img/'+this.name+'.jpg';
+});
+$("#bianshe2").mouseover(function (){
+	if(this.name!='fanhui')
+        this.src='$rooturl/img/'+this.name+'2.jpg';
+});
+$("#bianshe2").mouseout(function (){
+	this.src='$rooturl/img/'+this.name+'.jpg';
+});
+//点击“填加”按钮后，显示出“添加输入框”，并把“添加”图片换成“返回”
+  $(".tianjia").click(function(){
+        $(".tjk").toggle().focus();
+        if(this.name!='fanhui'){
+                //$(".tjk").focus();
+                this.src='$rooturl/img/fanhui.jpg';
+                this.name='fanhui';
+        }
+        else{
+                this.src='$rooturl/img/tianjia.jpg';
+                this.name='tianjia';
+        }
+
+  });
+//点击 编辑按钮后，把“多选框”换成“输入框”，并把“编辑”图片换成“返回”
+  $(".bianji").click(function(){
+        $(".duoxuan").toggle();
+        $(".srk").toggle();
+        if(this.name!='fanhui'){
+                this.src='$rooturl/img/fanhui.jpg';
+                this.name='fanhui';
+        }
+        else{
+                this.src='$rooturl/img/bianji.jpg';
+                this.name='bianji';
+        }
+  });
+  function uplx(weizhi){
+        var lxid = weizhi.attributes["lxid"].nodeValue;
+        var zhi  = weizhi.value;
+	if(lxid!=''&&zhi!=''){
+		if(zhi!=weizhi.attributes["huifu"].nodeValue){
+        	$.getJSON("$rooturl/site/ajax_rwlx.php?qufen=xiugai&id="+lxid+"&name="+zhi,function(json){
+                	if(json.zt=='成功'){
+                        	document.getElementById(lxid).innerHTML="<input name='tjcs_name[]' value='"+lxid+"' type='checkbox'>"+zhi;
+							weizhi.setAttribute("huifu",zhi);
+                        	alert('修改成功');
+                	}else {
+						alert('该名称已存在');
+						weizhi.value = weizhi.attributes["huifu"].nodeValue;
+						weizhi.focus();
+					}
+        	});
+			}
+	}
+	else{
+		alert('参数名称不能为空');
+		weizhi.value = weizhi.attributes["huifu"].nodeValue;
+		weizhi.focus();
+	}
+}
+
+  //鼠标离开“添加输入框”后，增加“多选框”和“编辑输入框”
+  $(".tjk").blur(function(){//重复判断
+        var name = this.value;
+        if(name!=''){
+                $.getJSON("$rooturl/site/ajax_rwlx.php?lxName="+name,function(json){
+                        if(json.zt=='成功'){
+                                $(".duoxuan").append("<label id='"+json.labelId+"'><input type='checkbox' name='tjcs_name[]' value='"+json.labelId+"' />"+name+"</label>");
+
+                                $(".srk").append("<span><input type='text' lxid='"+json.labelId+"'  onblur='uplx(this)' value='"+name+"' /></span>");//<img src='../images/shanchu.png' name='shanchu' class='bianse' /></span>");
+                        }
+                        else alert('该名称已存在');
+                        $(".tjk").focus().val('');
+                });
+        }
+  });
+</script>

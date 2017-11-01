@@ -1,0 +1,148 @@
+<script type="text/javascript">
+	//ajax自定义排序
+function order_by(name){
+   if($("input[name='z']").val()==''){
+      var tj =  1; 
+  }
+  if($("input[name='z']").val()=='1'){
+      var tj =  ''; 
+  }
+  $.post("wtyptjb.php" , {"action" : "order_by" , "name" : name} , function(data){
+      if(data.substring(0,2)=='ok'){
+        if(tj==1){
+          var order="ASC";
+        }
+        if(tj==''){
+          var order="DESC";
+        }  
+          var sql = data.substring(2);       
+          var year = $('input[name="year"]').val();
+          gotourl('wtyptjb.php?e='+sql+'&order='+order+'&z='+tj+"&year="+year);
+      }
+  });
+} 
+//查询年份
+function change_year(){
+	var year=$(".select_year").val();
+	window.location.href="wtyptjb.php?year="+year;
+}
+//查询月份
+function change_month(){
+	var month=$(".select_month").val();
+	var year = $('input[name="year"]').val();
+	window.location.href="wtyptjb.php?year="+year+"&month="+month;
+}
+//查询委托单位
+function find_wtdw(){
+	var year = $('input[name="year"]').val();
+	// $(this).mouseout(function(){
+		var name = $("input[name='wtdw']").val();
+		window.location.href="wtyptjb.php?name="+name+"&year="+year;
+	// });
+}
+//
+$(document).ready(function(){
+	$("td").mouseover(function(){
+		$(this).parent("tr").find('*').css({'background-color':'#DDDDFF'});
+	});	
+	$("td").mouseout(function(){
+		$(this).parent("tr").find('*').css({'background-color':''});
+	});
+	$("#menu").mouseover(function(){
+		$(this).find('*').css({"background-color":""});
+	});
+});
+
+
+//自定义显示
+function check(obj){
+	var val = $(obj).val();
+	if(val != ''){
+		var status = $(obj).is(':checked');
+		if(status){
+			$("td[name='"+val+"'").show();
+			$.post('wtyptjb.php' , {'action' : 'add_project' , 'name' : val} , function(data){
+				if(data=='ok'){
+					window.location=window.location;
+				}
+			});
+		}else{
+			$("td[name='"+val+"'").hide();
+			$.post('wtyptjb.php' , {'action' : 'up_project' , 'name' : val} , function(data){
+				if(data=='ok'){
+					window.location=window.location;
+				}
+			});
+		}
+	}
+	// else{
+	// 	$("input[type='checkbox']").attr("checked",true);
+	// }
+}
+
+$(window).ready(function(){
+	var re = /^-?\\d+$/;
+	$(".line").children("td").each(function(){
+    if(re.test($(this).attr('name'))){
+    	$(this).hide();
+    }
+  });
+});
+
+//下载委托样品统计表
+function download_wtdw(){
+	var year = $("input[name='year']").val();
+	var month = $("input[name='month']").val();
+	window.location.href="wtyptjb.php?year="+year+"&month="+month+"&handle=download";
+}
+</script>
+<style type="text/css">
+	.maodian{
+		position: fixed;
+		right:0;
+		top:800px;
+	}
+</style>
+<input type='hidden' name='z' value="$_GET[z]"/>
+<input type='hidden' name='year' value="$year"/>
+<input type='hidden' name='month' value="$_GET[month]"/>
+<div class="center">
+	<h1>委&nbsp;托&nbsp;样&nbsp;品&nbsp;统&nbsp;计&nbsp;表&nbsp;（ $year 年）( 共 $total 批 )</h1>
+	<div style="position:relative;">
+		$select_year
+		$select_month
+		<input type="text" name="wtdw" placeholder="请输入查找单位"/>
+		<input type="button" value="查询"  onclick="find_wtdw();" class="btn btn-primary"/>
+		<input type="button" value="下载"  onclick="download_wtdw();" class="btn btn-primary"/>
+		<div class="columns columns-right btn-group">
+		<div title="列" class="keep-open btn-group">
+				<button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
+					<i class="glyphicon glyphicon-th icon-th"></i>
+					<span class="caret"></span>
+				</button>
+				<ul role="menu" class="dropdown-menu">
+					$check_data
+				</ul>
+			</div>
+		</div>
+	</div>
+	<table border="1px solid" class="table center table-hover">
+		<tr style="height:2cm;">
+			$table_pro
+		</tr>
+		$lines
+	</table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

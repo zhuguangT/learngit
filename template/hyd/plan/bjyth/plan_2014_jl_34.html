@@ -1,0 +1,68 @@
+<!-- 粪/耐热/总大肠菌群/大肠埃希氏菌分析原始记录表 编号：BJSHJ-CX-11-2014-JL-34-->
+<h1>粪/耐热/总大肠菌群/大肠埃希氏菌分析原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:7%"></td><td style="width:13%"></td><td style="width:10%"></td>
+		<td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+		<td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+		<td style="width:10%"></td>
+	</tr>
+	<tr class="auto">
+		<td colspan="4" class="left">分析项目：{$arow['assay_element']}</td>
+		<td colspan="2" rowspan="2" class="left">培养温度：<br /> &nbsp;&nbsp;<input type="text" name="td9" size="5" class="inputl" value="{$arow['td9']}" /> ℃</td>
+		<td colspan="4" class="left">培养时间：<input type="text" name="td10"  size='22' class='input-mask-date' value="{$arow['td10']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td colspan="4" class="left">分析方法：{$arow['td2']}</td>
+		<td colspan="4" class="left">观察日期：<input type="text" name="td11" size='22' class='input-mask-date' value="{$arow['td8']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="4" class="left">样品类别：{$arow['water_type']}</td>
+		<td colspan="6" class="left">仪器名称及编号：{$arow['td4']} {$arow['yq_bh']}</td>
+	</tr>
+	<tr>
+		<td >序号</td>
+		<td>{$zhanming}</td>
+		<td colspan="5">水样体积（mL）</td>
+		<td >菌量<br/>（{$arow['unit']}）</td>
+		<td >平均值<br/>（{$arow['unit']}）</td>
+		<td >相对偏差（%）</td>
+	</tr>
+	{$aline}
+	<tr>
+	<tr class="auto">
+		<td rowspan="2">备注</td>
+		<td rowspan="2" colspan="5">
+		<textarea name='td30' rows="2" cols="40">{$arow['td30']}</textarea></td>
+		<td rowspan="2">空白</td>
+		<td><input type="text" name="td19" size="5" class="inputl" value="{$arow['td19']}" onblur="btgs()" /></td>
+		<td colspan="2">平均值：<input type="text" name="td20" size="5" class="noinputc" value="{$arow['td20']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td><input type="text" name="td21" size="5" class="inputl" value="{$arow['td21']}" onblur="btgs()" /></td>
+		<td colspan="2">相对偏差（％）<input type="text" name="td22" size="5" class="noinputc" value="{$arow['td22']}" /></td>
+	</tr>
+</table>
+<script type="text/javascript">
+function btgs()
+{
+	var td19=$("input[name=td19]").val();
+	var td21=$("input[name=td21]").val();
+	if($.isNumeric(td19)&&parseInt(td19)!=td19)
+		ws=(td19.split("."))[1].length;
+	else
+		ws=0;
+	if($.isNumeric(td19)&&$.isNumeric(td21))
+	{
+		var td20=roundjs(accDiv(accAdd(td19,td21),2),ws);
+		var td22=roundjs((accsub(td19,td21)/accAdd(td19,td21)),2);
+	}
+	else
+	{
+		td20=td22='';
+	}
+	$("input[name=td20]").attr("value",td20);
+	$("input[name=td22]").attr("value",td22);
+}
+</script>

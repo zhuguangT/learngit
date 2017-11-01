@@ -1,0 +1,97 @@
+<h1>总氮检验记录</h1>
+{$hjtj_bt}
+<table  class="single">
+  <tr class="noborder">
+    <td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td>
+    <td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+    <td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+  </tr>
+  <tr>
+    <td colspan="1">检验地点</td>
+    <td colspan="3"><input type="text" name="td7" value="$arow[td7]" /></td>
+    <td colspan="1">检验方法</td>
+    <td colspan="7">{$arow['td1']}</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">方法依据</td>
+    <td colspan="3">{$arow['td2']}</td>
+    <td>仪器型号</td>
+    <td colspan="3">{$arow['td5']}</td>
+    <td nowrap="nowrap">仪器编号</td>
+    <td colspan="3">{$arow['yq_bh']}</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">仪器条件</td>
+    <td colspan="1">波长</td>
+    <td colspan="2"><input type="text" name="td8" value="$arow[td8]" /></td>
+    <td>比色皿</td>
+    <td colspan="3"><input type="text" name="td9" value="$arow[td9]" /></td>
+    <td nowrap="nowrap">参比溶液</td>
+    <td colspan="3"><input type="text" name="td10" value="$arow[td10]" /></td>
+  </tr>
+  <tr>
+    <td class="change_qx blue_a" title="点击选择曲线">回归方程</td>
+    <td colspan="11">
+      {$arow['quxian']}
+      &nbsp;&nbsp;&nbsp;&nbsp;截距a={$arow['CA']} 斜率b={$arow['CB']} 相关系数r={$arow['CR']}
+      <input type="hidden" name = "CA" id="qa" value="$arow[CA]" />
+      <input type="hidden" name = "CB" id="qb" value="$arow[CB]" /> <span class="view_qx blue_a">曲线范围</span>：{$arow['qx_xx']} - {$arow['qx_sx']}</td>
+  </tr>
+  <tr>
+    <td>计算公式</td>
+    <td colspan="11">总氮（N，mg/L）= b×[(A<sub>220</sub>-2A<sub>275</sub>)-(A<sub>220空</sub>-2<sub>A275空</sub>)]+a</td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td colspan="2">{$zhanming}</td>
+    <td>样品体积<br />（mL）</td>
+    <td>水样吸光度A<sub>220</sub></td>
+    <td>水样吸光度A<sub>275</sub></td>
+    <td>空白吸光度A<sub>220空</sub></td>
+    <td>空白吸光度A<sub>275空</sub></td>
+    <td>（A<sub>220</sub>-2A<sub>275</sub>）-<br />（A<sub>220空白</sub>-2A<sub>275空白</sub>）</td>
+    <td>样品浓度（{$arow['unit']}）</td>
+    <td>平均值（{$arow['unit']}）</td>
+    <td>质控结果（%）</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="11"><textarea name="td30" >{$arow['td30']}</textarea></td>
+  </tr>
+  
+</table>
+<script type="text/javascript">
+function jsgs(){
+      //运算函数在lib.js
+      var vid = '{$arow['vid']}';
+      var sc_unit = '$arow[sc_unit]';
+      if(sc_unit.split('/').length == 2 || sc_unit=='度'){
+        var qy_v = 1;
+      }else{
+        var qy_v = parseFloat(vs['vd1']);
+      }
+      var vd3_split = String(vs['vd3']).split('.');
+      if(vd3_split.length==2){
+        var diding_ws = vd3_split[1].length;
+      }else{
+        var diding_ws = 3;
+      }
+      if( $.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4'])&&$.isNumeric(vs['vd5']) && $.isNumeric(vs['vd6']) ){
+        var vd3 = parseFloat(vs['vd3']);
+        var vd4 = parseFloat(vs['vd4']);
+        var vd5 = parseFloat(vs['vd5']);
+        var vd6 = parseFloat(vs['vd6']);
+        var A  = accsub(vd3,accMul(vd4,2));
+        var A0 = accsub(vd5,accMul(vd6,2));
+        var vd7= vs['vd7'] =roundjs(accsub(A,A0),diding_ws);
+        var CA  = parseFloat($('#qa').val());
+        var CB  = parseFloat($('#qb').val());
+        var han1  = accMul(vd7,CB); //计算公式
+        var jg  = accAdd(han1,CA);
+        vs['vd0'] = jsws(accDiv(jg,qy_v));
+      }else{
+        vs['vd7']=vs['vd0']='';
+      }
+}
+</script>

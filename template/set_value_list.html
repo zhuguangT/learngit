@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <title></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <style type="text/css" title="default" media="screen">
+  <!--
+  	#main{width:80%;margin:0 auto;margin-top:20px;}
+  	.proxy-dd { position:absolute;z-index:99999;border:2px dotted #666;}
+	.proxy-rectselector{ position:absolute;z-index:99999;border:1px dotted #666;overflow:hidden;}
+	.proxy-layoutPosition{ position:absolute;z-index:99999;background:red;height:2px;width:20px;overflow:hidden;}
+  	.section-ctn {border:1px solid #3d3; padding:5px;margin:0 auto;width:1270px;height:800px;zoom:1;}
+    .inlineModuleCtn {width:600px;height:680px;margin:10px; float:left;border:solid black 1px;overflow-y: auto;  }
+    .draggable {border:solid black 1px;float:left;width:125px;height:20px;background-color:#C0E0E0;margin:5px;zoom:1;cursor:move;font-size: 12px;line-height:20px;overflow: hidden;}
+    /*cursor:pointer*/
+  -->
+  </style>
+ <script type="text/javascript">
+//切换模板
+	function choose_mb(t){
+		location.href="$rooturl/system_settings/auto_set_value/set_value_list.php?xm_px_id="+t.value;
+	}
+//删除模板
+	function del_mb(t){
+		if(t!=''){
+			if(confirm("确定要删除吗？")){
+				location.href="$rooturl/system_settings/auto_set_value/set_value_list.php?del_id="+t;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}
+//增加模板名称
+	function add_mb(){
+		var newname=$("#newname").val();
+		if(newname!=""&&newname!=null){
+			$.get("set_value_list.php",{add_name:newname},function(data){
+				if(data!="存在"){
+					if(data){
+						alert("添加成功！");
+						$("#newname").val("");
+						$("#xm_px_id").prepend("<option value="+data+" selected='selected'>"+newname+"</option>"); 
+						$("#yxz").empty();
+						$("#delmb").attr('onclick',"del_mb("+data+")");
+					}else{
+						alert("添加失败，请联系管理员！");
+						$("#newname").val("");
+					}
+				}else{
+					$("#newname").val("");
+					alert("该模板已经存在！无法添加！");
+				}
+			},'html');
+			//location.href="$rooturl/system_settings/auto_set_value/set_value_list.php?add_name="+c;
+		}else{
+			alert("请填写模板名称!");
+		}
+		
+	}
+//修改模板名称
+	function update_mb(){
+		var newname=$("#newname").val();
+		if(newname!=""&&newname!=null){
+			var oldname=$("#xm_px_id").find("option:selected").text();
+			if(newname==oldname){
+				alert("模版名称不能相同！");
+			}else{
+				var count=$("#xm_px_id option").length;
+				for(var i=0;i<count;i++){ 
+					if($("#xm_px_id").get(0).options[i].text == newname){
+						alert("该模板已经存在！无法修改！");
+						return false;
+						break;
+					}
+				} 
+				var update_id=$("#xm_px_id").val();
+				location.href="$rooturl/system_settings/auto_set_value/set_value_list.php?update_name="+newname+"&update_id="+update_id;
+			}
+		}else{
+			alert("请填写模板名称!");
+		}
+	}
+ </script>
+</head>
+<body>
+
+<div id='main'>
+	<h3 align="center">常用化验模板:化验项目的排序</h3>
+<div class="section-ctn">
+<form method = 'post' name="xm_px" action='auto_set_value_save.php' id="xm_px">
+<table >
+	<tr align="center">
+    <td style='border:1px solid white!important;'>选择模板:</td>
+    <td style='border:1px solid white!important;'><select name="xm_px_id" id='xm_px_id' onchange="choose_mb(this)">
+	{$option_px_mb}
+	</select> 
+	<input type="hidden" name="mbname" value="$_GET[mbname]"></td>
+    <td style='border:1px solid white!important;line-height:40px'>新模板名称:<textarea name="newname" id="newname" style="width:200px;height:40px" onKeyUp="value=value.replace(/[^\da-zA-Z\u4E00-\u9FA5]/g,'')"></textarea></td>
+    <td nowrap='nowrap' style='border:1px solid white!important;'><input  class="btn btn-xs btn-primary" type="button" value="添加模板名称" onclick="add_mb()">&nbsp;<input class="btn btn-xs btn-primary"  type="button" value="修改当前模板名称" onclick='update_mb()'>&nbsp;<input class="btn btn-xs btn-primary" name="delmb" id="delmb" type="button" onclick="del_mb($_GET[xm_px_id])" value="删除当前模板"></td>
+	</tr>
+</table>
+  <div class="inlineModuleCtn yxz" id="yxz">
+		{$select_value}
+  	<input type="hidden" id="yxz_count" name="yxz" value={$yxz_count} />
+  </div>
+</form>
+  <div class="inlineModuleCtn wxz">
+		{$no_select_value}
+  </div>
+</div>
+<center style="clear:both"><button type="button" class="btn btn-xs btn-primary" style="width:100px;height:30px;" onclick="sub_form()">保存</button>
+</div>
+</body>
+<script type="text/javascript" src="../../js/lims/tuo_dong/apps/core_dom_pure.js"></script>
+<script type="text/javascript">
+function initModuleLayoutDrag2()
+{
+  var containers=QW.NodeH.query(0,".inlineModuleCtn");
+  var objs=QW.NodeH.query(0,".draggable");
+  var siblings=objs;
+  for(var i=0;i<objs.length;i++)
+  {
+    var obj=objs[i];
+    var d=new QW.LayoutDrag({oSrc:obj,hdlObj:obj,siblings:siblings,containers:containers,isInline:true,needAnim:true});
+  }
+}
+function resetOrder(){
+  var containers=QW.NodeH.query(0,".inlineModuleCtn");
+  var objs=QW.NodeH.query(0,".draggable");
+  for(var i=0;i<objs.length;)
+  {
+    var obj=objs[i];
+    obj.style.backgroundColor="#C0E0E0";
+    obj.innerHTML=obj.innerHTML.replace(/\【\d{0,}\】/,'【'+(++i)+'】');
+  }
+  //记录选择区选择了几个项目
+  xm_px.yxz.value=QW.NodeH.query(0,".yxz .draggable").length;
+}
+resetOrder();
+initModuleLayoutDrag2();
+function sub_form(){
+	$("#xm_px").submit();
+}
+</script>
+<html>

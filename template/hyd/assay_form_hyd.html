@@ -1,0 +1,41 @@
+<!-- 化验单开始 -->
+<div class="assay_form" id="assay_form_{$tid}" data="{$tid}" style="width:{$zongheng};">
+	
+	<div class="accordion-style1 panel-group" id="accordion_{$tid}">
+		{$accordion}
+	</div>
+	<div class="huayandan">
+	  <form name="as_form_{$tid}">
+		<!-- 化验单id -->
+		<input type="hidden" name="tid" value="{$arow['id']}" />
+		<!-- 化验单vid -->
+		<input type="hidden" name="vid" value="{$arow['vid']}" />
+		<!-- 化验单cyd_id -->
+		<input type="hidden" name="cyd_id" value="{$arow['cyd_id']}" />
+		<!-- 数据提交后跳转的路径 -->
+		<input type="hidden" name="goto_url" value="" />
+		<!-- 修改理由 -->
+		<input type="hidden" name="yuanYin" value="" />
+		<!-- 提交标识 -->
+		<input type="hidden" name="submit_flag" value="normal" />
+		<!-- 提交令牌 -->
+		<input type="hidden" name="token_key" value="{$_SESSION['token_key']['hyd'][$tid]}" />
+		<div class="dwname">
+			<!-- {$dwname} -->
+			<!-- <div class="file_code">{$arow['file_code']}</div> -->
+		</div>
+		{$plan}
+		<div style="padding:5px">{$assay_modi_submit}</div>
+	  </form>
+	  <!-- 化验单签字表单 -->
+	  {$assay_sign_form}
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		if( typeof($.fn.assay_form) == "function" ){
+			$("#assay_form_{$tid}").assay_form({$arow_json});
+		}
+	});
+</script>
+<!-- 化验单结束 -->

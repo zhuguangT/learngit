@@ -1,0 +1,36 @@
+<!-- 电化学探头法原始分析记录表单-->
+<h1>{$arow['assay_element']}分析原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+  <tr>
+    <td nowrap="nowrap" >分析项目</td>
+    <td colspan="2">{$arow['assay_element']}</td>
+    <td nowrap='nowrap'>检测依据</td>
+    <td colspan="2">{$arow['td2']}</td>
+    <td nowrap='nowrap'>检出限({$arow['unit']})</td>
+    <td nowrap='nowrap'>{$arow['td3']}
+      <input type="hidden" name="td3" value="{$arow['td3']}" />
+      <input type="hidden" name="unit" value="{$arow['unit']}" />
+    </td>
+  </tr>
+  <tr>    
+    <td nowrap='nowrap'>仪器名称/型号</td>
+    <td colspan="2"> {$arow['td4']}{$arow['td5']} </td>
+    <td nowrap='nowrap' >测量范围</td>
+    <td colspan="2"><input type="text" name="td8" value="{$arow['td6']}"   size="8" /></td>
+    <td nowrap='nowrap' >分辨率</td>
+    <td colspan="2"><input type="text" name="td9" value="{$arow['td7']}"   size="4" /></td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td colspan="3">{$zhanming}</td>
+    <td colspan="2" nowrap='nowrap'>含量({$arow['unit']})</td>
+    <td>平均值/理论浓度({$arow['unit']})</td>
+    <td>相对偏差/加标回收率(%)</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="7"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>

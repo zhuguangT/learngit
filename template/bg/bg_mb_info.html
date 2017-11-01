@@ -1,0 +1,23 @@
+<div style="width:600px;height:400px">
+	<form action="bg_mb_modi.php" method="post" >
+		<table class="table table-striped table-bordered table-hover "  width="500px" > 
+		<tr>
+			<td colspan="2">
+				<input type="radio" name="state" value="1"  $sta1 /> 使用<input type="radio" name="state" value="0" $sta /> 弃用（弃用后不再报告列表中显示）
+			</td>
+		</tr>
+		<tr><td>修改模板名称</td><td><input type="text" name ="mbname" value="$mbname"/></td></tr>
+		<tr><td >首页数据行数</td><td><input type="text" name ="hang1" value="$hang1"/></td></tr>
+		<tr><td >每页显示数据行数</td><td><input type="text" name ="hang2" value="$hang2"/></td></tr>
+		<tr><td colspan="2" >1封面 2表头信息 3数据页 4审核签名 5说明页 </td></tr>
+		<tr>
+			<td>说明页显示位置</td>
+			<td>
+				<select name="sm_mb_order"><option value="5" {$selected2}>5</option><option value="2" {$selected1}>2</option></select>
+			</td>
+		</tr>
+		<tr align="center"><td colspan="2"> <input type="submit" value="提交保存"/></td></tr>
+		<input type="hidden" value={$mbid} name="mbid">
+		</table>
+	<form>
+</div>

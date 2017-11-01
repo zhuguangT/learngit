@@ -1,0 +1,91 @@
+<h1>分光光度法检验记录</h1>
+{$hjtj_bt}
+<table  class="single">
+  <tr class="noborder">
+    <td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:11%"></td><td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+  </tr>
+  <tr>
+    <td>检验项目</td>
+    <td colspan="2">{$arow['assay_element']}</td>
+    <td>检验地点</td>
+    <td colspan="2"><input type="text" name="td7" value="$arow[td7]" /></td>
+    <td colspan="1">检验方法</td>
+    <td colspan="3">{$arow['td1']}</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">方法依据</td>
+    <td colspan="2">{$arow['td2']}</td>
+    <td>仪器型号</td>
+    <td colspan="2">{$arow['td5']}</td>
+    <td nowrap="nowrap">仪器编号</td>
+    <td colspan="3">{$arow['yq_bh']}</td>
+  </tr>
+  <tr>
+    <td colspan="10">仪器条件</td>
+  </tr>
+  <tr>
+    <td colspan="2">波长（nm）</td>
+    <td colspan="3"><input type="text" name="td8" value="$arow[td8]" /></td>
+    <td colspan="2">适应范围</td>
+    <td colspan="3"><input type="text" name="td9" value="$arow[td9]" /></td>
+  </tr>
+  <tr>
+    <td colspan="2">比色皿（cm）</td>
+    <td colspan="3"><input type="text" name="td10" value="$arow[td10]" /></td>
+    <td colspan="2">参比溶液</td>
+    <td colspan="3"><input type="text" name="td11" value="$arow[td11]" /></td>
+  </tr>
+  <tr>
+    <td>计算公式</td>
+    <td colspan="9">检验浓度 = 100×△A/f×b×v</td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>{$zhanming}</td>
+    <td class="qy_v_{$tid}">样品体积<br />（mL）</td>
+    <td>稀释倍数</td>
+    <td>吸光度A</td>
+    <td>空白吸光度A<sub>0</sub></td>
+    <td>△A</td>
+    <td>检验浓度（{$arow['unit']}）</td>
+    <td>平均值（{$arow['unit']}）</td>
+    <td>质控结果（%）</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="9"><textarea name="td30" >{$arow['td30']}</textarea></td>
+  </tr>
+  
+</table>
+<script type="text/javascript">
+//聚氯化铝单子修改
+if($.inArray('{$arow['vid']}',['617','619'])){
+  //$(".qy_v_{$tid}").html('样品体积V（g）');
+  $(".yp_c_{$tid}").html('{$arow['assay_element']}（{$arow['unit']}）');
+}
+function jsgs(){
+      //运算函数在lib.js
+      var vid = '{$arow['vid']}';
+      var sc_unit = '$arow[sc_unit]';
+      if(sc_unit.split('/').length == 2 || sc_unit=='度'){
+        var qy_v = 1;
+      }else{
+        var qy_v = vs['vd1'];
+      }
+      var vd3_split = String(vs['vd3']).split('.');
+      if(vd3_split.length==2){
+        var diding_ws = vd3_split[1].length;
+      }else{
+        var diding_ws = 3;
+      }
+      if( $.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4']) ){
+        var vd3 = parseFloat(vs['vd3']);//E₀
+        var vd4 = parseFloat(vs['vd4']);//E
+        var vd2 = parseFloat(vs['vd2']);//稀释倍数
+        var gmd = vs['vd5'] = roundjs(accsub(vd4,vd3),diding_ws);//获取回归方程中Y的值，即(A)-(A0)的值
+      }
+}
+</script>

@@ -1,0 +1,206 @@
+<script type="text/javascript" src="$rooturl/js/jquery.date_input.js"></script>
+<link rel="stylesheet" type="text/css" href="$rooturl/js/date_input.css">
+<style>
+.width-auto{width:100% !important;}
+form{text-align:center;}
+</style>
+<form method="post" name="sjqm" id="sq" onsubmit="return check()" action="sjqm.php?type=$type">
+	$title
+<table class="table table-striped table-bordered table-hover center" style="max-width:1000px;">
+	<tr align="center">
+		<td width="80">名称</td>
+		<td width="200"><input type="text" style="width:95%;" name="name" value="$r[name]"  required placeholder='请输入物品名称（必填）'/><span style="margin-left:5px;color:red;font-weight:blod;">*</span></td>
+		<td width="130">
+			<div style="position:relative;">      
+		      <span style="margin-left:100px;width:18px;overflow:hidden;position: absolute;left:84px;top:-14px;">     
+		        <select style="width:118px;margin-left:-100px;display:black" onchange="sele();" id='type'  name='type'>     
+		          $type_select
+		        </select>
+		      </span>
+		      <span style="width:60%;;height: 29px;position:absolute;left:-40px;top:-10px;">类型:</span>
+		      <input name="type" style="width:60%;;height: 29px;position:absolute;left:60px;top:-14px" value="$r[type]" placeholder="选择类型或直接输入" onclick="show_type(this);"/>  
+		     </div> 
+	    </td>
+	    <input type="hidden" name="old_type" value="$_GET[wz_type]">
+		<td width="130">别名 &nbsp;&nbsp;&nbsp;&nbsp; <input type="text" style="width:70%" name="nice_name" value="$r[nice_name]" ></td>
+	</tr>
+	$fenzishi
+	<tr align="center">
+		<td>级别</td>
+		<td><input type="text" class="width-auto" name="jibie" value="$r[jibie]" /></td>
+		<td>规格</td>
+		<td><input type="text" class="width-auto" name="guige" value="$r[guige]" /></td>
+	</tr>
+	<tr align="center">
+		<td>单价</td>
+		<td><input type="text" class="width-auto" name="danjia" value="$r[danjia]" autocomplete="off" placeholder="请输入单价（必选）" required/></td>
+		<td>单位</td>
+		<td> $danwei <input type="text" size="13" name="danwei" value="$r[danwei]" /></td>
+	</tr>
+	<tr align="center">
+		<td>库存</td>
+		<td><input type="text" style="width:95%;" name="kucun" value="$r[kucun]" placeholder="请填写正整数" required/><span style="margin-left:5px;color:red;font-weight:blod;">*</span></td>
+		<td>余量提醒</td>
+		<td><input type="text" class="width-auto" name="KCtixing" value="$r[KCtixing]" placeholder="库存最小提醒值" /></td>
+	</tr>
+	<tr align="center">
+		<td>生产批号</td>
+		<td><input type="text" class="width-auto" name="pihao" value="$r[pihao]" /></td>
+		<td>生产厂家</td>
+		<td><input type="text" class="width-auto" name="changjia" value="$r[changjia]" /></td>
+	</tr>
+	<tr align="center">
+		<td>有效期</td>
+		<td><input type="text"  class="date_input width-auto"  name="youxiaoqi" value="$r[youxiaoqi]" /></td>
+		<td>过期提醒</td>
+		<td><input type="text" class="width-auto" name="GQtixing" value="$r[GQtixing]"  placeholder="有效期提前提醒天数" /></td>
+	</tr>
+	<tr align="center">
+		<td>备注</td>
+		<td>
+			<textarea class="width-auto" name="beizhu" rows="2" cols="18">$r[beizhu]</textarea>
+		</td>
+		<td>管理员</td>
+		<td>
+			<select name="user" style="min-width:160px;">
+				$user_select
+				$u[useralllist]
+			</select>
+		</td>
+	</tr>
+$count_type
+</table>
+<br>
+
+	$hidid
+	$sub
+</form>
+<script type="text/javascript">
+//查看类型总数，如果超过规定数量就将输入框变为 readyonly
+$(window).ready(function(){
+	var count_type_num = $("input[name='count_type']").val();
+	if(count_type_num > 6){
+		$('input[name="type"]').attr('readonly' , 'readonly');
+	}
+});
+
+$($.date_input .initialize);
+onload=function(){
+	var len = sjqm.length -1;
+	for(var i=0;i<len;i++){
+		sjqm[i].onblur=function(){
+				var str = this.value;
+			str= str.replace(/'/g,"‘");
+			str= str.replace(/"/g,"“");
+			this.value = str.replace(/;/g,"；");	
+		}
+	}
+}
+function change_danwei(obj){
+	sjqm.danwei.value=obj.value;
+	if(obj.value == ''){
+		//sjqm.danwei.disabled=false;
+		sjqm.danwei.focus();
+	}else{
+		//sjqm.danwei.disabled=true;
+	}
+}
+function check(){
+	var reg = /^\d+$/;
+	var rqreg = /^\d{4}-\d{1,2}-\d{1,2}$/;
+	var djreg = /^\d+(\.\d+)?$/;
+	var rq = sjqm.youxiaoqi.value;
+	var sl = sjqm.kucun.value;
+	var mc = sjqm.name.value;
+	var dj = sjqm.danjia.value;
+	if(mc==''){
+		sjqm.name.focus();
+		alert('名称不能为空');
+		return false;
+	}
+	if(sl == ''){
+		sjqm.kucun.focus();
+		alert('库存不能为空');
+		return false;
+	}else if(!reg.test(sl)){
+		sjqm.kucun.focus();
+		alert('库存数量必须为整数');
+		return false;
+	}else if(sl <= 0){
+		sjqm.kucun.focus();
+		alert('库存不能低于1');
+		return false;
+	}else if(!djreg.test(dj)){
+		sjqm.danjia.focus();
+		alert('单价格式不正确');
+		return false;
+	}
+	if(rq!='' && !rqreg.test(rq)){
+		sjqm.youxiaoqi.focus();
+		alert('日期格式必须为1111-11-11');
+		return false;
+	}
+}
+$(function(){
+	$("#sub,#sup").click(function(){
+		var defaultLength = 63;//线的最小长度是10
+        	var length = $("#fenzi_shi").val().length;
+		if(length>=170)defaultLength = 170;
+		else if(length > defaultLength)defaultLength = length;
+        	$('#fenzi_shi').attr('size', defaultLength);
+	})
+	$("#fenzi_shi").keydown(function(){
+        	var defaultLength = 63;//线的最小长度是10
+        	var length = $("#fenzi_shi").val().length;
+	 	if(length>=170)defaultLength = 170;
+		else if(length > defaultLength)defaultLength = length;
+        	$('#fenzi_shi').attr('size', defaultLength);
+	});
+})
+//获取需要设置光标位置的相关信息
+function cursorInput(inputId){
+	var ctrl      = document.getElementById(inputId);
+	var txtLength = ctrl.value.length;
+	setCursorPosition(ctrl,txtLength-6);
+}
+//设置光标位置函数 
+function setCursorPosition(ctrl, pos){ 
+	if(ctrl.setSelectionRange){
+		ctrl.focus(); 
+		ctrl.setSelectionRange(pos,pos); 
+	} 
+	else if (ctrl.createTextRange) {
+		var range = ctrl.createTextRange(); 
+		range.collapse(true); 
+		range.moveEnd('character', pos); 
+		range.moveStart('character', pos); 
+		range.select(); 
+	} 
+}
+//显示分子式
+function show_label(){
+	var fzs = $("input[name='fenzi_shi']").val();
+	if($("input[name='fenzi_shi']").next('span').val()!=''){
+		$("input[name='fenzi_shi']").after("<span>"+fzs+"</span>");
+	}else{
+		$("input[name='fenzi_shi']").next("span").empty();
+		$("input[name='fenzi_shi']").after("<span>"+fzs+"</span>");
+	}	
+}
+
+//下拉框同步到input
+function sele(){
+  var content=$("#type option:selected").text();
+  $("input[name='type']").val(content);
+}
+//点击输入框显示类型
+function show_type(){
+  var count_type_num = $("input[name='count_type']").val();
+  if(count_type_num>=6){
+  	alert("已超过准许添加的最大数量！请在右侧下拉框选择类型！");
+  	return false;
+  }else{
+  	$("#type").click();
+  }  
+}
+</script>

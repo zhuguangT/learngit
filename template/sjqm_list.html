@@ -1,0 +1,198 @@
+<script type="text/javascript">
+//如果分类总宽度大于页面宽度，就将每个减小，多出部分隐藏，来节省空间
+	$(window).ready(function(){
+		var table_width = $('.table').width();
+		var types_width = 0;
+		var i = 1;
+	    $('.types').each(function(){
+	    	types_width += $(this).width();
+	    	i = i+1;
+	    });
+	    var w = types_width + i*5;
+	    if(w > table_width){
+	    	var percent = table_width / w;
+	    	$('.types').each(function(){
+	    		var width = $(this).width();
+	    		var new_width = width * percent;
+	    		var new_width = new_width+'px';
+	    		$(this).removeAttr('style');
+	    		$(this).css({'width' : new_width , 'overflow' : 'hidden'});
+	    	});
+	    }
+	});
+
+	function find_jibie(obj){
+		var val = $(obj).val();
+		$("td[name='label_jibie']").each(function(){
+			var td_val = $(this).text();
+			if(val!='全部'){
+				if(val = '无级别'){
+					val = '';
+				}
+				if(val == td_val){
+					$(this).parent().show();
+				}else{
+					$(this).parent().hide();
+				}
+			}else{
+				$(this).parent().show();
+			}
+		});
+	}
+
+	function find_name(obj){
+		var val = $(obj).val();
+		$("td[name='label_name']").each(function(){
+			var td_val = $(this).text();
+			if(val!='全部'){
+				if(val == td_val){
+					$(this).parent().show();
+				}else{
+					$(this).parent().hide();
+				}
+			}else{
+				$(this).parent().show();
+			}
+		});
+	}
+	// //ajax实现入库
+	// function ruku(obj , id){
+	// 	$.get('sjqm_rck.php' , {'id' : id , 'action' : 'ru'} , function(data){
+	// 		alert(data);
+	// 	});
+	// }
+</script>
+<div style="width:100%;margin:0 auto;">
+  <h3  class="header smaller center title">库房管理</h3>
+  <div id="tabs" style="width:100%;margin:0 auto;padding:0;" class="center" >
+  <ul class='ul'>
+    $label
+  </ul>
+  </div>
+</div>
+<form name="bzwz_list" action="#" method="get" autocomplete="on">
+<div class="widget-header header-color-blue4 center qx_show_hidden" >
+	<div class="widget-toolbar">
+		<center>
+		<!-- {$_GET[type]}名称：
+		<select name='test_name' class="chosen-select" onchange="find_name(this);" style="min-width:200px;">
+			<option value='全部'>全部</option>
+			$flstrn
+		</select>
+		{$_GET[type]}级别：
+		<select name='test_jibie' onchange="find_jibie(this);" class="chosen-select">
+			<option value='全部'>全部</option>
+			$jibie_select
+		</select> -->
+			<!-- {$_GET[type]}名称：<select class="chosen-select" style="min-width:200px;" name='wz_name' onchange="location='sjqm_list.php?'+get_url();">
+				<option value=''>全部</option>
+				$flstrn
+            </select>&nbsp;&nbsp;
+            {$_GET[type]}级别：
+            <select name='jibie' onchange="location='sjqm_list.php?'+jb_url(this);">
+            	<option>全部</option>
+            	$jibie_select
+            </select> -->
+            {$_GET[type]}名称：<select class="chosen-select" style="min-width:200px;" name='wz_name' onchange="location='sjqm_list.php?'+get_url();">
+				<option value=''>全部</option>
+				$flstrn
+            </select>&nbsp;&nbsp;
+            {$_GET[type]}级别：
+            <select name='jibie' onchange="location='sjqm_list.php?'+jb_url(this);">
+            	<option>全部</option>
+            	$jibie_select
+            </select>
+			<input type=button class="btn btn-xs btn-primary" value="新增$types" onclick="location='sjqm.php?action=new_sjqm&type=$_GET[type]';">
+			<input type=button class="btn btn-xs btn-primary" value='一览表' onclick="window.open('sjqm_jz.php?biao=1&'+get_url())">
+			<input type=button class="btn btn-xs btn-primary" value='打印台帐' onclick="window.open('sjqm_jz.php?biao=2&'+get_url())">
+			<input type=button class="btn btn-xs btn-primary" value='领用记录' onclick="window.open('sjqm_jz.php?biao=3&'+get_url())">
+			<input type=button class="btn btn-xs btn-primary" value='确认申请' onclick="window.open('sjqm_rck.php?action=queren')">
+		</center>
+	</div>
+</div>
+<table  class="table table-striped table-bordered table-hover center">
+<tr align=center>
+	<th>序号</th>
+	<th>名称</th>
+	$type_label
+	<th>级别</th>
+	<th>规格</th>
+	<th>单价</th>
+	<th>单位</th>
+	<th>库存</th>
+	<th>有效期</th>
+	<th>备注</th>
+	<th class='qx_show_hidden'>操作</th>
+</tr>
+$lines
+</table>
+</form>
+<input type='hidden' name='typeed' value="{$_GET['type']}"/>
+
+<script type="text/javascript">
+  $( "#tabs" ).tabs();
+function xiuxuhao(aa){
+  var jiu = $(aa).html();
+  var xuhao = prompt('请输入新的序号',jiu);
+  var bdid=$(aa).attr('bd_id');
+  //xuhao = xuhao.replace(/\s+/g,"");
+  if(xuhao){
+    $.get("bz_ajax.php?ajax=1",{act:'xiuxuhao',bdid:bdid,xuhao:xuhao,jiu:jiu},function(data){
+      if(data!='ok'){
+        alert('修改失败，请重试');
+      }else{
+        $(aa).html(xuhao);
+      }
+    },'html');
+  }
+}
+$(document).ready(function() {
+  $(".chosen-select").chosen();
+  load_height();  
+});
+</script>
+<script type="text/javascript">
+	$(function(){
+		$(".chosen-select").chosen();
+	});
+	function get_url(){
+		var url = 'name='+bzwz_list.wz_name.value+'&type=$_GET[type]';
+		return url;
+	}
+	function jb_url(obj){
+		var url = 'jibie='+$(obj).val()+"&type=$_GET[type]";
+		return url;
+	}
+	$("select[name='jibie']").select2();
+	$(window).ready(function(){
+		var val = $("input[name='typeed']").val();
+		var matching = new RegExp(val);
+		$(".ul").children('li').each(function(){
+			var label_val = $(this).text();
+			if(matching.test(label_val)){
+				$(this).addClass('ui-tabs-active ui-tabs-active');
+			}else{
+				$(this).removeClass('ui-tabs-active ui-tabs-active');
+			}
+		});	
+		//判断查看人 如果有库房管理权限 那么显示操作选项，如果没有智能查看列表
+		var qx = $("#qx").val();
+		if(qx == '0'){
+			$(".qx_show_hidden").each(function(){
+				$(this).hide();
+			});
+		}else{
+			$(".qx_show_hidden").each(function(){
+				$(this).show();
+			});
+		}
+	});
+</script>
+<style type="text/css">
+.bianse{color:red;}
+</style>
+
+
+
+
+

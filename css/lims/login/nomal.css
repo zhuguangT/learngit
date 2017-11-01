@@ -1,0 +1,102 @@
+
+
+*{
+    margin:0px;
+    padding:0px;
+}
+.title{
+    width: 94%;
+    height: 65px;
+    /*background: red;*/
+    margin: 20px auto;
+    color: #394E69;
+    font-size: 26px;
+	font-weight:bold;
+	
+}
+.title img{
+	float:left;
+	width:65px;
+	margin-right:10px;
+	vertical-align:middle;
+	background: url(../../images/login6.jpg) 100%  no-repeat;
+}
+.title p{
+	font-size:10px;
+	letter-spacing:2px;
+}
+.login{
+    width: 100%;
+    min-height:450px;
+	max-height:600px;
+    background: url(../../images/login6.jpg) 100%  no-repeat;
+    background-size: 100% 100%;
+    position:absolute;
+}
+.login_login{
+    width:360px;
+    height: 340px;
+    background: #fff;
+	right:4%;
+	bottom:75px;
+    position:absolute;
+    border-radius: 8px;
+    box-shadow: 0px 0px 30px #1C7CAF;
+}
+.login_one{
+    font-size: 30px;
+    color: #394E69;
+    width:90%;
+    margin:16px auto;
+	font-weight:bold;
+}
+.login_one p{
+	font-size:13px
+}
+.login_two{
+	position:absolute;
+	right:10%;
+	left:10%;
+	top:40px;
+    color: #394E69;
+    font-size:28px;
+	text-align:center;
+	font-weight:bold;
+}
+.login_two p{
+	font-size:13.5px;
+}
+.login_input{
+    display: block;
+    width: 80%;
+    height: 35px;
+    margin:0px auto;
+    border:1px solid #e6eaec;
+    float: right;
+}
+.login_user{
+    display: block;
+    width: 91%;
+    height: 37px;
+    margin:0px auto;
+    background: #e6eaec;
+    color: #787d80;
+    font-size: 14px;
+    line-height: 37px;
+    text-indent: 4%;
+    margin-top: 20px;
+}
+
+.submit{
+    width: 90%;
+    height: 35px;
+    background: #438eb9;
+    border:0px;
+    color: #fff;
+    margin: 0 auto;
+    display: block;
+    margin-top: 20px;
+}
+.box_login{
+	width:100%;
+}

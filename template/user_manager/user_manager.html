@@ -1,0 +1,208 @@
+<!-- 显示人员页面 -->
+<script>
+function s_confirm(url){
+  if(confirm('确定删除实验室人员吗？')){
+      location.href = url;
+  }
+}
+</script>
+<script>   
+        function px(obj,s_px){
+                var html = '',lock = $(obj).html();
+                if(lock.indexOf('type') == -1){
+                        var old = $(obj).text();
+                        html = '<input type="text" size=2 class="inputc" style="height:26px;" value="'+ old +'">';
+                        $(obj).html(html);
+                        $(obj).children('input').focus().select();
+                        $(obj).children('input').blur(function(){
+                                var jid = $(obj).prev().val();
+                                var fzx = $(obj).prev().attr('fzx');
+                                var px_id = $(this).val();
+								if(px_id ==s_px){
+                                         $(obj).html(px_id);
+                                        return;
+								}
+								$.post('./sdpx.php',{'jid':jid,'px_id':px_id,'s_px':s_px,'fzx':fzx},function(data){
+										if(data == 'ok'){
+										  location.reload();//改为js的方式，会更快
+										}else{
+										  $(obj).html(px_id);
+                                        }
+								});
+						});
+                }
+        }
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#zz,#fzx,#sex,#zc,#gw,#education").change(function(){
+		var zz = $("#zz").val();//获取查看的在职状态
+		var fzx= $("#fzx").val();
+        var sex = $("#sex").val();
+        var zc = $("#zc").val();
+        var gw = $("#gw").val();
+        var xl = $("#education").val();
+		if(fzx){
+			location.href = "hn_usermanager.php?zz=" + zz +"&fzx="+fzx+"&sex="+sex+"&zc="+zc+"&gw="+gw+"&xl="+xl;
+		}else{
+			location.href = "hn_usermanager.php?zz=" + zz+"&sex="+sex+"&zc="+zc+"&gw="+gw+"&xl="+xl;
+		}
+	});
+});
+</script>
+<h1 align="center">实验室人员一览表 $total</h1>
+<form>
+<div style=" width:80%; margin:0 auto; height:80px; line-height:40px; text-align:center;position:relative;">
+	在职状态：<select id="zz">
+    			<option value="全部">全部</option>
+                <option value="在职" {$zz_sel}>在职</option>
+                <option value="离职" {$lz_sel}>离职</option>
+    		</select>
+    性别：<select id='sex'>
+            $sex_selected
+            <option value="全部" >全部</option>
+            <option value="男">男</option>
+            <option value="女">女</option>
+          </select>
+    学历：<select id='education'>
+                $education_selected
+                <option value="全部">全部</option>
+                <option value='高中'>高中</option>
+                <option value='中专'>中专</option>
+                <option value='大专'>大专</option>
+                <option value='大学'>大学</option>
+                <option value='硕士'>硕士</option>
+                <option value='博士'>博士</option>
+                <option value='其他'>其他</option>
+            </select>
+    $zc_select
+    工龄：<select id='gl' onchange="find_gl(this);">
+             $gzny_select
+            <option value="全部" name="op_all">全部</option>
+          </select>
+    <br/>
+    $gw_select
+    $fzx_list
+
+            <!--<input type="button" value="查看" class="btn btn-xs btn-primary" id="button" />-->
+	<input type='button' class='btn btn-xs btn-primary no-print' style="position:absolute;right:160px; margin-top:10px;" value='新建用户' onclick="location='./user_manage_user_new.php?oldurl=renyuan'" />
+
+    <input type='button' class='btn btn-xs btn-primary no-print' style="position:absolute;right:80px; margin-top:10px;" value='打印一览表' onclick="window.open('./hn_usermanager.php?zz={$_GET['zz']}&fzx={$_GET['fzx']}&sex={$_GET['sex']}&gw={$_GET['gw']}&zc={$_GET['zc']}&xl={$_GET['xl']}&print=1');" />
+    <input type='button' class='btn btn-xs btn-primary no-print' style="position:absolute;right:0px; margin-top:10px;" value='下载一览表' onclick="window.open('./hn_usermanager.php?zz={$_GET['zz']}&fzx={$_GET['fzx']}&sex={$_GET['sex']}&gw={$_GET['gw']}&zc={$_GET['zc']}&xl={$_GET['xl']}&print=2');" />
+</div>
+ $table_str
+</form>
+
+<script>
+//筛选工龄放入下拉框
+$(window).ready(function(){
+    $("td[name='gl']").each(function(){
+        var gl_years = $(this).text();
+        var i = 0;
+        if(i > 0 && gl_years != ''){
+            var select_html = select_html + "<option value='"+gl_years+"'>"+gl_years+"</option>";
+        }else if( gl_years != ''){
+            var select_html ="<option value='"+gl_years+"'>"+gl_years+"</option>";
+            i = i+1;
+        }
+        // if( gl_years == ''){
+        //     return false;
+        // }
+        $("#gl").append(select_html);
+    });
+});
+//去除下拉框重复项
+$(window).ready(function(){
+    $("#gl option").each(function(){
+        text = $(this).text();
+        if($("#gl option:contains("+text+")").length > 1){
+            $("#gl option:contains("+text+"):gt(0)").remove();
+        }
+    });
+});
+//工龄筛选
+function find_gl(obj){
+    var gl_val = $(obj).val();
+    if($("#fzx").val() == '全部'){
+        if(gl_val == '全部'){
+            window.location = 'hn_usermanager.php';
+        }else{
+            window.location="hn_usermanager.php?gl="+gl_val+"&fzx=全部&zz=全部&gzny_select=sele";
+        }        
+    }else{
+        $("td[name='gl']").each(function(){
+            if($(this).text() != gl_val){
+                $(this).parent().hide();
+            }else{
+                $(this).parent().show();
+            }
+        });
+        if(gl_val == '全部'){
+            $("td[name='gl']").each(function(){
+                $(this).parent().show();
+            });
+        }
+    }
+    
+    
+}
+//计算本岗位年限
+$(window).ready(function(){
+    var date_obj = new Date();
+    var year = date_obj.getFullYear();
+    $("td[data='gwsj']").each(function(){
+        if($(this).text() != ''){
+             var vals = $(this).text();
+             var val_arr = vals.split('/');
+             var arr_count = val_arr.length;
+             for(var i in val_arr){
+                if(i == '0'){
+                    var text = (val_arr[i*1+1]-val_arr[i]);
+                }else if(i != '0' && i < arr_count*1-1){
+                    var text = text + '年/' +(val_arr[i*1+1]-val_arr[i]);
+                }else{
+                    if(year-val_arr[i] == '0'){
+                        var last_year = '1';
+                    }else{
+                        var last_year = year-val_arr[i];
+                    }
+
+                     var text = text + '年/' +(last_year)+'年';
+                }      
+             }
+            $(this).html(text);
+        }
+    });
+});
+//在筛选的情况下动态检查出人数
+$(window).ready(function(){
+    var gw_val = $("#gw").val();
+    var zz_val = $("#zz").val();
+    var gl_val = $("#gl").val();
+    var zc_val = $("#zc").val();
+    var sex_val = $("#sex").val();
+    var xl_val = $("education").val();
+
+    if(gw_val != '全部' || gl_val != '全部' || zz_val != '全部' || zc_val != '全部' || sex_val != '全部' || xl_val !='全部'){
+        i=0;
+        $('tr[name=num]').each(function(){
+            i=i+1;
+            $(this).children("td").eq(0).text(i);
+        });
+        if(gw_val != '全部'){
+           text = gw_val;
+        }else if(zz_val != '全部'){
+            text = zz_val;
+        }else if(gl_val != '全部'){
+             text = '工龄'+gl_val;
+         }else if(zc_val != '全部'){
+            text = zc_val;
+         }else if(sex_val != '全部'){
+            text = sex_val;
+         }else if(xl_val !='全部'){
+            text = xl_val;
+         }
+        $("p[name=man_total]").text(text+"（ 共"+i+'人 ） ');
+    }
+});
+</script>

@@ -1,0 +1,42 @@
+<h1>{$arow['assay_element']}分析原始记录表</h1>
+{$hjtj_bt}
+<table class='single'>
+	 <tr class="noborder">
+	 	<td style="width:8%"></td>
+		<td style="width:10%"></td>
+	 	<td style="width:18%"></td>
+	 	<td style="width:18%"></td>
+	 	<td style="width:18%"></td>
+	 	<td style="width:18%"></td>
+	 	<td style="width:10%"></td>
+  	</tr>
+  	<tr>
+  		<td rowspan='4'>序号</td>
+  		<td rowspan='4'>样品编号</td>
+  		<td colspan="4">粪大肠菌群检测条件</td>
+  		<td rowspan='4'>粪大肠菌群({$arow['unit']})</td>
+  	</tr>
+  	<tr>
+  		<td colspan="1" >检测方法：{$arow['td2']}</td>
+  		<td colspan="1">培养基名称:</td>
+  		<td colspan="1"><input type="text" name="td12" value="{$arow['td12']}" /></td>
+  		<td colspan="1">培养设备:{$arow['td4']}</td>
+  	</tr>
+  	<tr>
+  		<td >稀释度：10ml×3</td>
+  		<td >稀释度：1ml×3</td>
+  		<td >稀释度：0.1ml×3</td>
+  		<td >稀释度：0.01ml×3</td>
+  	</tr>
+  	<tr>
+  		<td >证实为粪大肠阳性管数</td>
+  		<td >证实为粪大肠阳性管数</td>
+  		<td >证实为粪大肠阳性管数</td>
+  		<td >证实为粪大肠阳性管数</td>
+  	</tr>
+  	{$aline}
+  	<tr>
+	<td>备注</td>
+	 <td colspan="6"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>

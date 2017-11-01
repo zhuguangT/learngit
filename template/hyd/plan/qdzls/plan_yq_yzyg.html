@@ -1,0 +1,63 @@
+<!-- 原子荧光 -->
+<h1>原子荧光光度法检验{$arow['assay_element']}原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:16%"></td>
+    <td style="width:18%"></td>
+    <td style="width:16%"></td>
+    <td style="width:16%"></td>
+    <td style="width:16%"></td>
+    <td style="width:9%"></td>
+    <td style="width:9%"></td>
+  </tr>
+  <tr>
+    <td>检验方法依据</td>
+    <td colspan="3">{$arow['td2']}</td>
+    <td>检出限（{$arow['unit']}）</td>
+    <td colspan="2">{$arow['td3']}</td>
+  </tr>
+  <tr>
+    <td>仪器型号</td>
+    <td>{$arow['td5']}</td>
+    <td>仪器编号</td>
+    <td>{$arow['yq_bh']}</td>
+    <td>灯电流（mA）</td>
+    <td colspan="2"><input type="text" class="inputc" name="td11" value="{$arow['td11']}" /></td>
+  </tr>
+  <tr>
+    <td>读数时间（s）</td>
+    <td><input type="text" class="inputc" name="td12" value="{$arow['td12']}" /></td>
+    <td>负高压（V）</td>
+    <td><input type="text" class="inputc" name="td13" value="{$arow['td13']}" /></td>
+    <td>延迟时间（s）</td>
+    <td colspan="2"><input type="text" class="inputc" name="td14" value="{$arow['td14']}" /></td>
+  </tr>
+  <tr>
+    <td>原子化器<br />高度（nm）</td>
+    <td><input type="text" class="inputc" name="td15" value="{$arow['td15']}" /></td>
+    <td>仪器空白</td>
+    <td><input type="text" class="inputc" name="td16" value="{$arow['td16']}" /></td>
+    <td>载气流量<br />（mL/min）</td>
+    <td colspan="2"><input type="text" class="inputc" name="td17" value="{$arow['td17']}" /></td>
+  </tr>
+  <tr>
+    <td>计算公式</td>
+    <td class="noborder right"> C =</td>
+    <td class="noborder">（E-E<sub>0</sub>）-a<hr />b</td>
+    <td class="noleft" colspan="4"></td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>{$zhanming}</td>
+    <td>荧光强度 E-E<sub>0</sub></td>
+    <td colspan="2">样品浓度（{$arow['unit']}）</td>
+    <td>平均值/<br />理论浓度<br />（{$arow['unit']}）</td>
+    <td>相对偏差<br />/回收率<br />(％)</td>
+  </tr>
+    {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="6"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>

@@ -1,0 +1,53 @@
+<h1 align="center">上岗项目统计</h1>
+{$sel}
+<table class='table table-striped table-bordered table-hover center'  style="width:18cm;text-align: center">
+<tr>
+	<td class=noborder style='text-align:right'>检测项目</td>
+	<td class=noborder><input type=text id='c1' list="xm" name="xxm" size=10 value="$xmm"/></td>
+		<datalist  id='xm'>
+			$xms
+		</datalist>
+	<td class=noborder style='text-align:right'>检测方法</td>
+	<td class=noborder><input type=text list="ff" name="ffs" size=10 id='c2' value='$ffx'/></td>
+		<datalist  id='ff'>
+			$ffs
+		</datalist>
+	<td class=noborder style='text-align:left' ><input class='btn btn-xs btn-primary' type="button" value='查询' onclick = "show()">$new</td>
+</tr>
+<tr align=center>
+<td>序号</td>
+<td>姓名</td>
+<td>项目</td>
+<td>化验方法</td>
+<td>上岗证过期日期</td>
+<!--<td colspan=2>操作</td>-->
+</tr>
+$line_search
+</table>
+<div align="center">
+<input class='btn btn-xs btn-primary' type=button value=返回 onClick="location.href='hw_userwoke.php'">
+</div>
+<script>
+$('#c1').blur(function(){
+	var item = $(this).val();
+	item = $.trim(item);
+	if(item != ''){
+		$.get('hw_userwoke.php?m=datalist&item='+item,function(datalist){
+			if(datalist){
+				data = $.parseJSON(datalist);
+				$('#ff').empty().html(data);
+			}
+		});
+	}
+});
+function show(){
+	var xiangmu = $('#c1').val();
+	var fangfa = $('#c2').val();
+	 var fzx = $('#dayin').val();
+	location.href="hw_userwoke.php?fzx="+fzx+"&xmm="+xiangmu+'&ffx='+fangfa;
+}
+function cfzx(ab){
+    var fzx = $(ab).val();
+    location = "?fzx="+fzx;
+}
+</script>

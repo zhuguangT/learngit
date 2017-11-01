@@ -1,0 +1,169 @@
+
+<script type="text/javascript" language="javascript">
+$(document).ready(function(){
+	// $("#bianhao").focus();//文件加载是让输入框获得焦点
+	$("span.dayin,h1.dayin").click(function(){//点击"打印"或者标题(扫描结果列表)时,切换输入框及"打印--->清空表" 的 隐藏和显示
+		$("#formSaoMiao").toggle();
+		$("p.dayin").toggle();
+		// setTimeout('$("#bianhao").focus()', 1);
+	});
+	if(document.getElementById("single").rows.length<=1){//加载网页时 表的 隐藏和显示
+		$(".xianshi").hide();
+	}else{
+		$(".xianshi").show();
+	}
+	$("#bianhao").blur(function(){
+		// setTimeout('$("#bianhao").focus()', 1);
+	});
+/*	$("#cydh").change(function(){
+		$("#bianhao").focus();
+	})
+*/
+});
+//扫描枪扫描编号后 调用的方法（对编号完成率的判断）
+function saomiao(){
+	$.getJSON("saomiao.php",{bh:bianhao.value},
+	function(json){
+		if(json.jg==1){
+			var changdu = document.getElementById("single").rows.length;//获取已经有多少行
+			var tb      = document.getElementById("single").insertRow(1);//在第二行的地方 添加 新行
+			tb.insertCell(0).innerHTML=""+json.site_name;
+			tb.insertCell(1).innerHTML=""+json.ypbh;//行内 第一个td要添加的内容...........以此类摧
+			tb.insertCell(2).innerHTML=""+json.group_name;
+			tb.insertCell(3).innerHTML=""+json.cy_date;
+			tb.insertCell(4).innerHTML=""+json.site_name;
+			tb.insertCell(5).innerHTML=""+json.cy_dept;
+			tb.insertCell(6).innerHTML=""+json.finish;
+			tb.insertCell(7).innerHTML=""+json.win;
+			$(tb).find("td:eq(3)").css('overflow' , 'hidden');
+			if((changdu%23)===0){//每页23行，换行时添加表头信息
+				document.getElementById("single").rows[23].className = 'huanHang';
+				if(changdu>23){
+					var biaotou = document.getElementById("single").insertRow(24);
+					biaotou.insertCell(0).innerHTML="站点名称";//行内 第一个td要添加的内容...........以此类摧
+                        		biaotou.insertCell(1).innerHTML="样品编号";
+                        		biaotou.insertCell(2).innerHTML="批次名称";
+                        		biaotou.insertCell(3).innerHTML="采样日期";
+                        		biaotou.insertCell(4).innerHTML="检测报告";
+                        		biaotou.insertCell(5).innerHTML="委托单位名称";
+                        		biaotou.insertCell(6).innerHTML="完成率";
+                        		biaotou.insertCell(7).innerHTML="完成状况";
+				}
+			}
+			if(document.getElementById("single").rows.length<1){//提交数据后,表的信息的显示和隐藏
+				$(".xianshi").hide();
+			}
+			else{
+				$(".xianshi").show();
+			}
+		}
+		document.getElementById("audio").src = "$rooturl/img/"+json.src;//加载声音文件
+	}
+	);
+	document.getElementById("bianhao").value='';
+	document.getElementById("bianhao").focus();
+	return false;
+}
+ window.onbeforeunload = qingkong('sx');//刷新页面时 清空session全局变量
+//用户点击 清空表执行的方法（清空session全局变量 并客户端刷新页面）
+function qingkong(zt){
+	$.getJSON("saomiao.php",{zt:"qingkong"},
+	function(json){
+		if(zt=="qk"){
+			location=location;//客户端刷新页面
+		}
+	}
+	);
+}
+//输入样品编号时，出现提示
+function find_bh(obj){
+	//如果值为空，则不检测样品编号
+	if($(obj).val() == ''){
+		$("#find_bh_content").empty();
+		$("#find_bh_content").hide('slow');
+		return false;
+	}
+	if($("#find_bh_content").css("display") == 'none'){
+		$("#find_bh_content").show('slow');
+	}
+	$("#find_bh_content span").each(function(){
+		$(this).next('br').remove();
+		$(this).remove();
+	});
+	var value = $(obj).val();
+	$.post("saomiao.php" , {'handle' : "find_bh" , 'value' : value} , function(data){
+		var arr = new Array();
+		arr = data.split(",");
+		for(var value in arr){
+			$("#find_bh_content").append("<span onmouseover='mouse_over(this);' style='background-color:;cursor:pointer; ' >"+arr[value]+"</span><br>");
+		}
+		// alert(arr);
+	}); 
+}
+function mouse_over(obj){
+	$(obj).css('background-color','yellow');
+	$(obj).mouseout(function(){
+		$(this).css('background-color' , '');
+	});
+	$(obj).click(function(){
+		var bh = $(this).text();
+		$(obj).parent("#find_bh_content").prev().val(bh);
+		$(obj).parent("#find_bh_content").empty();
+		$("#find_bh_content").hide('slow');
+		saomiao();
+		return false;
+	});
+}
+$("html").click(function(){
+	if($("#find_bh_content").css('display') == 'block'){
+		$("#find_bh_content").empty();
+		$("#find_bh_content").hide('slow');
+	}
+});
+//通过样品编号直接进入相应化验单列表
+function to_hyd_list(obj , year , month){
+	var bh = $(obj).text();
+	window.location.href = "$rooturl/huayan/ahlims.php?app=pay_list&search="+bh+"&year="+year+"&month="+month;
+}
+
+</script>
+<style>
+.huanHang{page-break-after:always;}
+table{margin:0 auto;}
+table td{border:0.5px solid black;}
+table tr{border:none;}
+</style>
+</head>
+<body bgcolor="#FFFFFF" text="#000000" link="#FF9966" vlink="#FF9966" alink="#FFCC99" >
+<audio id="audio" src="" autoplay></audio>
+<form action="#" method="post" name="formSaoMiao" id="formSaoMiao" style="text-align:center;" onsubmit="return saomiao();">
+<span style="position:relative;">
+  <input type="text" name="bianhao" id="bianhao" style="border-style:solid;border-width:1px;border-color:#3D7BAD #A4C9E3 #B7D9ED #B5CFE7;" placeholder="请用扫描枪对准条形码"  required="required" onkeyup="find_bh(this);" />
+  <div style="height:200px;background-color:white;width:200px;position:absolute;top:25px;left:0px;overflow:hidden;display:none;" id='find_bh_content'>
+  </div>
+</span>  
+  <input type="submit" name="sub" value="继续扫描" />
+</form>
+<div class="xianshi">
+	<p align=center class="dayin">
+		<span class="dayin" style="cursor:pointer;">打印&lt;----------</span>|
+		<span id="clear" style="cursor:pointer;" onclick="qingkong('qk');">----------&gt;清空表</span>
+	</p>
+	<div class="smje" style="text-align:center;">
+		<h1 class="dayin" title="点击切换 输入模式/打印模式" style="cursor:pointer;">扫描结果列表</h1>
+		<table id="single" class="single" style="text-align:center;width:90%;baoder:none;table-layout:fixed;"  cellspacing="0" cellpadding="0">
+			<tr>
+				<td style="width:10%;">站点名称</td>
+				<!-- <td>河名</td> -->
+				<td style="width:19%;">样品编号</td>
+				<td style="width:10%;">批次名称</td>
+				<td style="width:20%;">采样日期</td>
+				<td style="width:10%;">检测报告</td>
+				<td style="width:15%;">委托单位名称</td>
+				<!-- <td>站点地址</td> -->
+				<td style="width:8%;">完成率</td>
+				<td style="width:8%;">完成状况</td>
+			</tr>
+		</table>
+	</div>
+</div>

@@ -1,0 +1,116 @@
+<h1>气相色谱检验记录</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:11%"></td><td style="width:10%"></td><td style="width:9%"></td><td style="width:9%"></td>
+		<td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td>
+		<td style="width:9%"></td><td style="width:9%"></td><td style="width:9%"></td>
+	</tr>
+	<tr align="center">
+		<td colspan="1">检验项目</td>
+		<td colspan="5">{$arow['assay_element']}</td>
+		<td colspan="1">检验地点</td>
+		<td colspan="4"><input type="text" name="td7" class="inputc" value="{$arow['td7']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="1">检验方法</td>
+		<td colspan="5">{$arow['td1']}</td>
+		<td colspan="1">方法依据</td>
+		<td colspan="4">{$arow['td2']}</td>
+	</tr>
+	<tr>
+		<td colspan="1">仪器型号</td>
+		<td colspan="5">{$arow['td5']}</td>
+		<td colspan="1">仪器编号</td>
+		<td colspan="4">{$arow['yq_bh']}</td>
+	</tr>
+	<tr>
+		<td colspan="11">仪器条件</td>
+	</tr>
+	<tr>
+		<td colspan="1">气体流量</td>
+		<td colspan="3"><input type="text" name="td21" class="inputc" value="{$arow['td21']}" /></td>
+		<td colspan="1">进样口温度℃</td>
+		<td colspan="2"><input type="text" name="td10" class="inputc" value="{$arow['td10']}" /></td>
+		<td colspan="1">分流比</td>
+		<td colspan="3"><input type="text" name="td26" class="inputc" value="{$arow['td26']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="1">柱流量（ml/min）</td>
+		<td colspan="3"><input type="text" name="td13" class="inputc" value="{$arow['td13']}" /></td>
+		<td colspan="1">色谱柱</td>
+		<td colspan="2"><input type="text" name="td9" class="inputc" value="{$arow['td9']}" /></td>
+		<td colspan="1">尾吹 mL/min</td>
+		<td colspan="3"><input type="text" name="td20" class="inputc" value="{$arow['td20']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="1">检测器温度（℃）</td>
+		<td colspan="3"><input type="text" name="td11" class="inputc" value="{$arow['td11']}" /></td>
+		<td colspan="1">检测器</td>
+		<td colspan="2"><input type="text" name="td8" class="inputc" value="{$arow['td8']}" /></td>
+		<td colspan="1">柱箱温度（℃）</td>
+		<td colspan="3"><input type="text" name="td12" class="inputc" value="{$arow['td12']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">计算公式</td>
+		<td colspan="9">C(三氯乙醛，mg/L)=C(加碱后三氯甲烷量，mg/L)-C(原水样三氯甲烷量,mg/L)</td>
+	</tr>
+	<tr>
+		<td colspan="11">样品处理</td>
+	</tr>
+	<tr>
+		<td colspan="1">样品处理方式</td>
+		<td colspan="3"><input type="text" name="td14" class="inputc" value="{$arow['td14']}" /></td>
+		<td colspan="1">定量方法</td>
+		<td colspan="2"><input type="text" name="td15" class="inputc" value="{$arow['td15']}" /></td>
+		<td colspan="1">进样方式</td>
+		<td colspan="3"><input type="text" name="td27" class="inputc" value="{$arow['td27']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="1">取样体积（mL）</td>
+		<td colspan="3"><input type="text" name="td16" class="inputc" value="{$arow['td16']}" /></td>
+		<td colspan="1">进样体积（μL）</td>
+		<td colspan="2"><input type="text" name="td19" class="inputc" value="{$arow['td19']}" /></td>
+		<td colspan="1">萃取液体积 V2（mL）</td>
+		<td colspan="3"><input type="text" name="td22" class="inputc" value="{$arow['td22']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="1">内标物名称</td>
+		<td colspan="3"><input type="text" name="td23" class="inputc" value="{$arow['td23']}" /></td>
+		<td colspan="1">内标浓度（mg/L）</td>
+		<td colspan="2"><input type="text" name="td24" class="inputc" value="{$arow['td24']}" /></td>
+		<td colspan="1">内标加入量（mL）</td>
+		<td colspan="3"><input type="text" name="td25" class="inputc" value="{$arow['td25']}" /></td>
+	</tr>
+
+	<tr align="center">
+		<td>序号</td>
+		<td colspan="2">{$zhanming}</td>
+		<td>仪器编号</td>
+		<td>原水样三氯甲烷量<br />（mg/L）</td>
+		<td>仪器编号</td>
+		<td>加碱后三氯甲烷量<br />（mg/L）</td>
+		<td>稀释倍数</td>
+		<td>样品浓度<br/>({$arow['unit']})</td>
+		<td>平均值<br/>({$arow['unit']})</td>
+		<td>质控结果（%）</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td align="center">备注</td>
+		<td colspan="10"><textarea name="td30">$arow[td30]</textarea></td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+function jsgs(){
+	var vd2=$.isNumeric(vs['vd2'])?parseFloat(vs['vd2']):1;
+	var vd27=$.isNumeric(vs['vd27'])?parseFloat(vs['vd27']):0;
+	if($.isNumeric(vd2)&&$.isNumeric(vd27)&&$.isNumeric(vs['vd26'])){
+		vs['vd0'] =accMul(parseFloat(vd2),accsub(parseFloat(vs['vd26']),parseFloat(vd27)));
+	}
+	else{
+		vs['vd0'] = '';
+	}
+}
+</script> 

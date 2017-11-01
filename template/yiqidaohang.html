@@ -1,0 +1,22 @@
+<style type="text/css">   
+<!--                     
+.font{color:#EA0000}          
+-->                      
+</style>
+
+<form method="GET" action="$rooturl/yiqigl/yiqidh.php" ><p align="center"><a  href='$rooturl/yiqigl/yiqidanan.php'>添加新仪器 </a>  &nbsp;&nbsp;检定类型;<select name="jdlx" onchange="form.submit()"> <option value="$_GET[jdlx]">$_GET[jdlx]</option><option value="自检">自检</option>
+        <option value="强检">强检</option></select></p></from>
+
+<table width="640"  class='single' >
+  <tr>
+    <td colspan="5" align="center" style="font-size:16px">$_GET[jdlx]仪器管理</td>
+  </tr>
+  <tr align="center">
+    <td  width="90" >序号</td>
+    <td>仪器名称</td>
+    <td>仪器编号</td>
+    <td width="90">鉴定历史</td>
+    <td width="90">添加鉴定</td>
+  </tr>
+$dhline
+</table>

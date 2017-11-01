@@ -1,0 +1,81 @@
+<!-- 本页面是给水样类型增加小的分类 -->
+<script>
+ function validate_required(field,alerttxt)
+{
+	with (field)
+	  {
+
+		if (value==null||value=="" )
+		{
+			alert(alerttxt);
+			return false
+		}
+		else 
+		{
+			return true
+		}
+	  }
+}
+function validate_form(thisform)
+{
+	with (thisform)
+	  {
+		 if (validate_required(type_name,"增加样品类型名称必须填写!")==false)
+		 {
+			type_name.focus();
+			return false
+		 }
+	  }
+}
+
+function validate_form2(thisform)
+{
+	with (thisform)
+	  {
+		 if (validate_required(sample_type_name,"修改样品类型名称必须填写!")==false)
+		 {
+			sample_type_name.focus();
+			return false
+		 }
+	  }
+}
+</script>
+
+<form method="GET" action="./sample_type_config.php?lxid=$_GET[lxid]"  onsubmit="return validate_form(this)"  >
+	<table style="width:70%;" class="table table-striped table-bordered table-hover center" id="tab"> 
+		<input name="type" type="hidden" value="insert" />
+		  <h3 class="header smaller center title">样品类型初始化</h3>
+		  <tr><td colspan=4>查询标准和类型</td></tr>
+		  <tr   >
+			  <td  >样品类型</td>
+			  <td  >
+			  <select name="lxid"  id="lx1" onchange='gotourl("./sample_type_config.php?type=select&lxid="+this.value+"&value=mo");'>$lxlist</select>
+			  </td>
+			  <td>样品子类</td>
+			  <td > $lxlist2</td>
+		  </tr>
+		   
+		  <tr>
+			  <td> 增加类型名称 </td>
+		      <td> <input type="text" size="12"  name="type_name"   />  </td>
+			  <td colspan="2"><input class="btn btn-xs btn-primary" type="submit"  value="增加类型" /></td>
+		  </tr>
+	</table>
+</form>
+<form method="GET" action="./sample_type_config.php?lxid=$_GET[lxid]"  onsubmit="return validate_form2(this)"> 
+<input name="type" type="hidden" value="update" />
+<input name="sample_type_id" type="hidden" value="$sample_type_id" />
+<input name="lxid" type="hidden" value="$_GET[lxid]" />
+			 <table  style="width:70%;" class="table table-striped table-bordered table-hover center" > 	   
+				 <tr> 
+				 <td >修改类型名称 </td>
+				 <td > <input type='text' size='12'  value="$sample_type_name"  name="sample_type_name"/> </td>
+				 <td > <input class="btn btn-xs btn-primary" type="submit"  value="修改类型" /></td>
+				 </tr>
+			  </table>
+</form>
+<script>
+
+</script>
+
+

@@ -1,0 +1,75 @@
+<!--用户组修改页面-->
+<script type="text/javascript">
+$(function(){
+	$("#g_name").keyup(function(){
+                this.value    = this.value.replace(/[\'"\\\<> ]/g,'');
+		if(this.value.length<'10'){
+                        $("#g_name_tixing").text('');
+                }
+        }).keydown(function(){
+                if(this.value.length>='10'){
+                        $("#g_name_tixing").text(' *最多只能输入10个字符');
+                }else{
+                        $("#g_name_tixing").text('');
+                }
+        });
+    //class='no_modify'的checkbox不能被取消选中
+    $("input.no_modify").click(function(){
+        alert("当前用户组内成员为最后拥有“权限管理”权限的用户，不允许取消此权限");
+        $(this).prop("checked",true);
+        $(this).parent("label").css({"color":"#008000","font-weight":"bold","cursor":"pointer"});
+    });
+	$(".bianse").mouseover(function(){
+		$(this).css({"color":"#008000","font-weight":"bold","cursor":"pointer"});
+	}).mouseout(function(){
+		if(!$(this).children("input:checked").val()){
+			$(this).css({"color":"#000","font-weight":"nomal"});
+		}
+		
+	});
+	//ajax验证 用户组重名的情况
+	$("#g_name").blur(function(){
+		var gr_name	= $(this).val();
+		var gr_id	= $("input[name='uid']").val();
+		if(gr_name){
+			$.getJSON("$rooturl/user_manage/user_manage_group_save.php?action=ajax&ajax=1",
+                        {gr_name:gr_name,gr_id:gr_id},
+                        function(json){
+                                $("#g_name_tixing").text(json.tixing);
+                        });
+		}
+	});
+});
+</script>
+<form name='aa' method="POST" action=user_manage_group_save.php style="margin:0 auto;text-align:center;"> 
+<h3 class="header smaller center title">用户组信息修改页面</h1>
+<input type="hidden" name='fzx_id' value="$rs_group[fzx_id]" />
+<input type="hidden" name='uid' value="$rs_group[id]" />
+<input type="hidden" name="old_name" value="$rs_group[userid]" />
+<input type="hidden" name="old_qx" value="$old_qx" />
+<table class="table table-bordered   center " style="width:80%;text-align:left;">
+  <tr>
+	<td nowrap align='right'>用户组名称</td>
+	<td align="left">
+		<span style="position:relative;">
+			<input name='g_name' id="g_name" class=inputl value='$rs_group[userid]' maxLength="10" placeholder='不能为空' required />
+			<span id="g_name_tixing" style="color:red;position:absolute;left:160px;width:200px;text-align:left;height:25px;line-height:25px;"></span>
+		</span>
+	</td>
+  </tr>
+  <tr>
+	<td align='right' nowrap>组内成员</td>
+	<td align="left">
+		$checkboxUser
+	</td>
+  </tr>
+  <tr>
+	<td align='right' nowrap>用户组权限</td>
+	<td align="left">
+		$checkboxQx
+	</td>
+  </tr>
+</table>
+<input class="btn btn-xs btn-primary" type="submit" name='submit' value="修改" style="width:100px;height:30px;" />&nbsp;&nbsp;&nbsp;
+<input class="btn btn-xs btn-primary" type="button" value="删除用户组{{$rs_group['userid']}}" style="height:30px;" onclick="if(confirm('确认要删除用户组{{$rs_group[userid]}}吗？'))location.href='user_manage_group_save.php?zt=delete&uid=$rs_group[id]&old_qx=$old_qx'" />
+</form>

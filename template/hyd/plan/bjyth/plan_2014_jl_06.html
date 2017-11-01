@@ -1,0 +1,56 @@
+<h1>电导率原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+    <tr class="noborder">
+        <td style="width:10%"></td>
+        <td style="width:18%"></td>
+        <td style="width:12%"></td>
+        <td style="width:12%"></td>
+        <td style="width:12%"></td>
+        <td style="width:12%"></td>
+        <td style="width:12%"></td>
+        <td style="width:12%"></td>
+    </tr>
+    <tr class="auto">
+        <td class="left" colspan="4">分析方法：{$arow['td2']}</td>
+        <td class="left" colspan="4">
+            分析日期：<input class="date_Ymd" size="15" type="text" name="td31" value="{$arow['td31']}" /></td>
+    </tr>
+    <tr>
+        <td class="left" colspan="3">样品类别：{$arow['water_type']}</td>
+        <td class="left" colspan="5">仪器名称及编号：{$arow['td4']} {$arow['yq_bh']}</td>
+    </tr>
+    <tr class="auto">
+        <td class="left" colspan="4">
+            电导池常数（C）：<input type="text" name="td9" class="inputl" value="{$arow['td9']}" /></td>
+        <td class="left" colspan="4">
+            测定范围： <input type="text" name="td10" class="inputl" value="{$arow['td10']}" /></td>
+    </tr>
+    <tr>
+        <td class="left" colspan="8">计算公式：电导率（μS/cm）= 直读</td>
+    </tr>
+    <tr>
+        <td>序号</td>
+        <td>{$zhanming}</td>
+        <td>水温 t<br />（℃）</td>
+        <td>量程<br />（μS/cm）</td>
+        <td>仪器显示<br />（μS/cm）</td>
+        <td>电导率<br />（μS/cm）</td>
+        <td>平均值<br />（μS/cm）</td>
+        <td>相对偏差<br/>（％）</td>
+    </tr>
+    {$aline}
+    <tr>
+        <td>备注</td>
+        <td colspan="7"><textarea name="td30">{$arow['td30']}</textarea></td>
+    </tr>
+</table>
+<script type="text/javascript">
+    function jsgs(){
+    	if($.isNumeric(vs['vd27'])){
+        	vs['vd0'] = vs['vd27'];
+      	}else{
+            vs['vd0'] = '';
+        }
+    }
+</script>

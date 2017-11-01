@@ -1,0 +1,10 @@
+<input type="hidden" name="mission[]" value="{$row['id']}">
+<tr>
+<td>{$i}</td>
+<td>{$row['site_name']}</td>
+<td><input type="text" class='inputc hyd' name="vd1[{$c}]" value="{$row['vd1']}" onclick="_aItem(this)" /></td>
+<td><input type="text" class='inputc hyd' name="vd3[{$c}]" value="{$row['vd3']}" /></td>
+<td><input type="text" class='noinputc'   name="vd0[{$c}]" value="{$row['vd0']}" title="原始结果: {$row['_vd0']}" /></td>
+<td><input type="text" class='inputc hyd' name="vd4[{$c}]" value="{$row['vd4']}" /></td>
+<td><input type="text" class='noinputc'   name="vd5[{$c}]" value="{$row['vd5']}" title='原始结果: {$row['vd6']}'  /></td>
+<tr>

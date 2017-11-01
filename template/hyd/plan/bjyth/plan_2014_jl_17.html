@@ -1,0 +1,75 @@
+<h1>重量分析法原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:5%"></td>
+		<td style="width:9%"></td><td style="width:7%"></td><td style="width:7%"></td>
+		<td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td>
+		<td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="5">分析项目：{$arow['assay_element']}</td>
+		<td class="left" colspan="5">分析方法：{$arow['td2']}</td>
+		<td class="left" colspan="5">分析日期：<input type="text" class="date_Ymd" name="td31" class="inputl" size="10" value="{$arow['td31']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="2">样品类别：{$arow['water_type']}</td>
+		<td class="left" colspan="8">仪器名称及编号：{$arow['td4']} {$arow['yq_bh']}</td>
+		<td class="left" colspan="3">容器恒重日期：<input class="month_day" type="text" name="td10" size="10" value="{$arow['td10']}" /></td>
+	</tr>
+	<tr class="auto">
+		<td class="left" colspan="3">样品烘干温度：<input type="text" name="td11" size="6" class="inputl" value="{$arow['td11']}" /> ℃</td>
+		<td class="left" colspan="3">烘干时间：<input type="text" name="td12" size="6" class="inputl" value="{$arow['td12']}" /> 时</td>
+		<td class="left" colspan="2">冷却时间：<input type="text" name="td13" size=3 class="inputl" value="{$arow['td13']}" /> 时</td>
+		<td class="left" colspan="5">计算公式： C（mg/L） = （W-W₀）×10<sup>6</sup>/ V </td>
+	</tr>
+	<tr>
+		<td rowspan="2">序号</td>
+		<td rowspan="2">{$zhanming}</td>
+		<td colspan="3">容器重W₀（g）</td>
+		<td colspan="3">容器+残渣重W（g）</td>
+		<td rowspan="2">W-W₀<br/>（g）</td>
+		<td rowspan="2">取样体积V（mL）</td>
+		<td rowspan="2">含量C（{$arow['unit']}） </td>
+		<td rowspan="2">平均值（{$arow['unit']}） </td>
+		<td rowspan="2">相对偏差（％）</td>
+	</tr>
+	<tr>
+		<td>第一次</td>
+		<td>第二次</td>
+		<td>平均</td>
+		<td>第一次</td>
+		<td>第二次</td>
+		<td>平均</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td>备注</td>
+		<td colspan="12"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	function jsgs()
+	{
+		var vd_split = String(vs['vd3']).split('.');
+		if(vd_split.length==2){
+			var diding_ws = vd_split[1].length;
+		}else{
+			var diding_ws = 2;
+		}
+		if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd4'])){
+			vs['vd5'] = jsws(accAdd(vs['vd3'],vs['vd4'])/2,diding_ws);
+		}
+		if($.isNumeric(vs['vd6'])&&$.isNumeric(vs['vd7'])){
+			vs['vd8'] = jsws(accAdd(vs['vd4'],vs['vd5'])/2,diding_ws);
+		}
+		if($.isNumeric(vs['vd5'])&&$.isNumeric(vs['vd8'])){
+			vs['vd9'] = jsws(vs['vd8']-vs['vd5'],diding_ws);
+		}
+		if($.isNumeric(vs['vd9'])&&$.isNumeric(vs['vd1'])){
+			vs['vd0'] = jsws(vs['vd7']*1000000/vs['vd1']);
+		}else{
+			vs['vd0'] = '';
+		}
+	}
+</script>

@@ -1,0 +1,85 @@
+<h1>动植物油原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:14%"></td><td style="width:14%"></td><td style="width:16%"></td>
+		<td style="width:14%"></td><td style="width:14%"></td><td style="width:14%"></td>
+		<td style="width:14%"></td>
+	</tr>
+	<tr class="auto">        
+		<td colspan="2" class="left">分析项目：{$arow['assay_element']}</td>
+		<td colspan="3" class="left">分析方法：{$arow['td2']}</td>
+		<td colspan="2" class="left">分析日期：<input type="text" size="10" name="td31" value="{$arow['td31']}" class="inputl" /></td>
+	</tr>
+	<tr>
+		<td colspan="2" class="left">样品类别：{$arow['water_type']}</td>
+		<td colspan="3" class="left">仪器型号及编号：{$arow['td4']} {$arow['yq_bh']}</td>
+		<td colspan="2" class="left">检出限：{$arow['td3']} mg/L</td>
+	</tr>
+	<tr class="auto">
+		<td colspan="2" class="left">取样体积：<input type="text" name="td6" size="5" class="inputl" value="{$arow['td6']}" /> mL</td>
+		<td colspan="3" class="left">萃取溶剂名称：<input type="text" name="td9"class="inputl" value="{$arow['td9']}" /></td>
+		<td colspan="2" class="left">萃取体积：<input type="text" name="td10" size="5" class="inputl" value="{$arow['td10']}" /> mL</td>
+	</tr>
+	<tr class="auto">
+		<td colspan="2" class="left">标准工作液浓度：<input type="text" name="td11" size="7" class="inputl" value="{$arow['td11']}" /></td>
+		<td colspan="3" class="left">调零方法：<input type="text" name="td12" size="15" class="inputl" value="{$arow['td12']}" /></td>
+		<td colspan="2" class="left">曲线上限：<input type="text" name="td13" size="10" class="inputl" value="{$arow['td13']}" /></td>
+	</tr>
+	<tr  class="auto">
+		<td colspan="4" class="left">曲线编号：<input type="text" name="td14" size="12" class="inputl" value="{$arow['td15']}" />　率定日期：<input type="text" name="td14" size="12" class="inputl" value="{$arow['td15']}" /></td>
+		<td colspan="3" class="left">计算公式：C（mg/L） = C<sub>1</sub>-C<sub>2</sub></td>
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td>{$zhanming}</td>
+		<td>总萃取物量<br />仪器示值<br />C1（mg/L）</td>
+		<td>石油类<br />仪器示值<br />C2（mg/L）</td>
+		<td>含量<br />C（{$arow['unit']}）</td>
+		<td>平均值<br />（{$arow['unit']}）</td>
+		<td>相对偏差<br />（％）</td>
+	</tr>
+	{$aline}
+	<tr class="auto">
+		<td class="left">空白试验</td>
+		<td>1：<input type="text" name="td23" size="5" class="inputl" value="{$arow['td23']}" onblur="btgs()"></td>
+		<td>2：<input type="text" name="td24" size="5" class="inputl" value="{$arow['td24']}" onblur="btgs()"></td>
+		<td colspan="2" class="left">平均值：<input type="text" name='td25' size="5" class="noinputc" value="{$arow['td25']}"></td>
+		<td colspan="2" class="left">相对偏差（％）=<input type="text" name="td26" size="5" class="noinputc" value="{$arow['td26']}" /></td>
+	</tr>
+	<tr>
+		<td>备注</td>
+		<td colspan="6"><textarea name="td30" rows="2" cols="80">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	function jsgs(){
+		if($.isNumeric(vs['vd4']) && $.isNumeric(vs['vd5'])){
+			vs['vd0'] = accsub(vs['vd4'],vs['vd5']);
+		}
+		else{
+			vs['vd0']='';
+		}
+	}
+	function btgs()
+	{
+		var td23=$("input[name=td23]").val();
+		var td24=$("input[name=td24]").val();
+		if($.isNumeric(td23)&&parseInt(td23)!=td23)
+			ws=(td23.split("."))[1].length;
+		else
+			ws=0;
+		if($.isNumeric(td23)&&$.isNumeric(td24))
+		{
+			var td25=roundjs(accDiv(accAdd(td23,td24),2),ws);
+			var td26=roundjs((accsub(td23,td24)/accAdd(td23,td24)),2);
+		}
+		else
+		{
+			td25='';
+			td26='';
+		}
+		$("input[name=td25]").attr("value",td25);
+		$("input[name=td26]").attr("value",td26);
+	}
+</script>

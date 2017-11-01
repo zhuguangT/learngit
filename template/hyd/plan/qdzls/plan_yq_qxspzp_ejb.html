@@ -1,0 +1,135 @@
+<!-- 气相色谱质谱联用法 二甲苯（总量）-->
+<h1>气相色谱质谱联用法检测原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:13%"></td><td style="width:20%"></td><td style="width:13%"></td>
+    <td style="width:13%"></td><td style="width:14%"></td><td style="width:13%"></td>
+    <td style="width:13%"></td></td>
+  </tr>
+  <tr>
+    <td>分析项目</td>
+    <td>{$arow['assay_element']}</td>
+    <td>检验方法依据</td>
+    <td colspan="2">{$arow['td2']}</td>
+    <td colspan="2">检出限:{$arow['td3']}（{$arow['unit']}）</td>
+  </tr>
+  <tr >
+    <td>仪器型号</td>
+    <td>{$arow['td5']}</td>
+    <td>仪器编号</td>
+    <td>{$arow['yq_bh']}</td>
+    <td>色谱柱</td>
+    <td colspan="2"><input type="text" class="inputc" name="td11"   value="{$arow['td11']}" /></td>
+  </tr>
+  <tr>
+    <td>进样口温度<br />（℃）</td>
+    <td><input type="text" class="inputc" name="td12"   value="{$arow['td12']}" /></td>
+    <td>柱箱温度<br />（℃）</td>
+    <td colspan="4">40（3min）——10/min→100（0min）——25/min→225（3min）</td>
+  </tr>
+  <tr> 
+    <td>分流比</td>
+    <td><input type="text" class="inputc" name="td13" value="{$arow['td13']}" /></td>
+    <td>检测器温度<br />（℃）</td>
+    <td><input type="text" class="inputc" name="td14" value="{$arow['td14']}" /></td>
+    <td>载气流速（mL/min）</td>
+    <td colspan="2"><input type="text" class="inputc" name="td15" value="{$arow['td15']}" /></td>
+  </tr>
+  <tr class="bt_hidden">
+    <td>分量检出限设置</td>
+    <td>间，对-二甲苯</td>
+    <td colspan="2"><input type="text" class="inputc" placeholder="0.01" name="td16" value="{$arow['td16']}" /> mg/L</td>
+    <td>邻-二甲苯</td>
+    <td colspan="2"><input type="text" class="inputc" placeholder="0.005" name="td17" value="{$arow['td17']}" /> mg/L</td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>{$zhanming}</td>
+    <td>间，对-二甲苯</td>
+    <td>邻-二甲苯</td>
+    <td>{$arow['assay_element']}({$arow['unit']})</td>
+    <td nowrap="nowrap">平均值/<br />理论浓度<br />（{$arow['unit']}）</td>
+    <td nowrap="nowrap">相对偏差/<br />回收率<br />（％）</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="6"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+//检出限默认
+var jcx_650 = parseFloat('{$arow['td16']}');//间，对-二甲苯
+var jcx_320 = parseFloat('{$arow['td17']}');//邻-二甲苯
+$.isNumeric(jcx_650) || (jcx_650='0.0050');
+$.isNumeric(jcx_320) || (jcx_320='0.0050');
+    // alert(jcx_650);
+$(document).ready(function(){
+  //第一次载入的时候
+  $("#assay_form_{$tid} .hyd[value='']").trigger('blur');
+})
+function jsgs () {
+  var fl_arr = [650,320];
+  try{
+    if(''==vs['vd27']){
+      var zl_obj = {};
+    }else{
+      var zl_obj = $.parseJSON(vs['vd27']);//总量
+    }
+  }catch(e){
+    vs['vd0'] = '';
+    return false;
+  }
+  var i = 3;      //存储数值的vd
+  var jg = 0;     //结果值
+  var zl_arr = {};//重定义分量的json数据
+  var isNumeric = true;
+  var xy_jcx_All = true;
+  for( var k=0; k<fl_arr.length;k++){
+    var vid = fl_arr[k];
+    if(undefined == zl_obj[vid]){
+      zl_obj[vid] = '';
+    }
+    //初始化存储分量结果的变量
+    eval("var e_"+vid+" = '';");
+    //输入的数据为数值格式
+    var a = eval("$.isNumeric(vs['vd"+i+"'])");
+    //输入的数据不是小于检出限的形式
+    var b = eval("'<'!=parseFloat(vs['vd"+i+"'])");
+    //载入的原始数据与记录的原始数据一致时说明并没有重新进行数据载入操作
+    var c = eval("!$.isNumeric(vs['vd"+(i+1)+"']) || parseFloat(vs['vd"+(i+1)+"'])==parseFloat(zl_obj["+vid+"])");
+    if( a && b && c ){
+      //符合条件则说明是化验员在化验单上对数据手动做了修改
+      eval("zl_obj["+vid+"]=vs['vd"+i+"']");
+    }
+    //重定义分量的json数据
+    zl_arr[vid] = parseFloat(zl_obj[vid]);
+    if(!$.isNumeric(zl_obj[vid])){
+      //如果分量不是数值则清空数据
+      eval("e_"+vid+" = vs['vd"+i+"'] = vs['vd"+(i+1)+"'] = '';");
+    }else{
+      //将分量计算值，显示值，原始值分别进行存储
+      var nsbs = $.isNumeric($('.nsbs_{$tid}').val()) ? $('.nsbs_{$tid}').val() : 1;
+      eval("e_"+vid+" = vs['vd"+i+"'] = vs['vd"+(i+1)+"'] = parseFloat(zl_obj["+vid+"])/nsbs;");
+      //小于检出限的使用检出限的一半
+      eval("if(e_"+vid+"<jcx_"+vid+"){e_"+vid+"=jcx_"+vid+"/2;vs['vd"+i+"'] = '<'+jcx_"+vid+";}else{xy_jcx_All=false;}");
+    }
+    i += 2;
+    if(isNumeric && eval("$.isNumeric(e_"+vid+")")){
+      //总量等于分量求和
+      eval("jg += parseFloat(e_"+vid+");");
+    }else{
+      //如果有一个分量的数值没有则不再进行计算
+      isNumeric = false;
+    }
+  }
+  //重定义分量的json数据
+  vs['vd27'] = JSON.stringify(zl_arr);
+  if(isNumeric){
+    vs['vd0'] = (xy_jcx_All==true) ? '<{$arow['td3']}' : jsws(jg);
+  }else{
+    vs['vd0'] = '';
+  }
+}
+</script>

@@ -1,0 +1,15 @@
+<table class="table table-striped table-bordered table-hover center">
+	{loop $hyd_config $module_key $data}
+		<tr>
+			<td colspan="2">{$module_key}</td>
+		</tr>
+		{loop $data $conf_key $row}
+		<tr>
+			{if !is_array($row)}
+			<td>{$conf_key}</td>
+			<td>{$row}</td>
+			{/if}
+		</tr>
+		{/loop}
+	{/loop}
+</table>

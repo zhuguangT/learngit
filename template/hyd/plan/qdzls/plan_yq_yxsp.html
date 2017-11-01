@@ -1,0 +1,82 @@
+<!-- 液相色谱 -->
+<h1>液相色谱检测{$arow['assay_element']}原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:16%"></td>
+    <td style="width:18%"></td>
+    <td style="width:16%"></td>
+    <td style="width:17%"></td>
+    <td style="width:16%"></td>
+    <td style="width:17%"></td>
+  </tr>
+  <tr>
+    <td>检验方法依据</td>
+    <td colspan="2">{$arow['td2']}</td>
+    <td>仪器型号/编号</td>
+    <td colspan="2">{$arow['td5']}/{$arow['yq_bh']}</td>
+  </tr>
+  <tr>
+    <td>色谱柱</td>
+    <td><input type="text" class="inputc" name="td12" value="{$arow['td12']}" /></td>
+    <td>流动相</td>
+    <td><input type="text" class="inputc" name="td13" value="{$arow['td13']}" /></td>
+    <td>检测器</td>
+    <td><input type="text" class="inputc" name="td14" value="{$arow['td14']}" /></td>
+  </tr>
+  <tr>
+    <td>柱温度（℃）</td>
+    <td><input type="text" class="inputc" name="td15" value="{$arow['td15']}" /></td>
+    <td>流速<br />（mL/min）</td>
+    <td><input type="text" class="inputc" name="td16" value="{$arow['td16']}" /></td>
+    <td>检测器波长<br />（mL/min）</td>
+    <td><input type="text" class="inputc" name="td17" value="{$arow['td17']}" /></td>
+  </tr>
+  <tr>
+    <td>进样体积（μL）</td>
+    <td><input type="text" class="inputc" name="td18" value="{$arow['td18']}" /></td>
+    <td>取样体积<br />（mL）</td>
+    <td><input type="text" class="inputc" name="td19" value="{$arow['td19']}" /></td>
+    <td>浓缩倍数</td>
+    <td><input type="text" class="inputc nsbs_{$tid}" name="td20" value="{$arow['td20']}" /></td>
+  </tr>
+  <tr>
+    <td>氧化剂流速（mL/min）</td>
+    <td><input type="text" class="inputc" name="td21" value="{$arow['td21']}" /></td>
+    <td>标记液流速<br />（mL/min）</td>
+    <td><input type="text" class="inputc" name="td22" value="{$arow['td22']}" /></td>
+    <td>反应线圈温度<br />（℃n）</td>
+    <td><input type="text" class="inputc" name="td23" value="{$arow['td23']}" /></td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td colspan="2">{$zhanming}</td>
+    <td>样品浓度（{$arow['unit']}）</td>
+    <td>平均值/<br />理论浓度<br />（{$arow['unit']}）</td>
+    <td>相对偏差<br />/回收率<br />(％)</td>
+  </tr>
+    {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="5"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+  var default_nsbs = '{$arow['td20']}';
+  function jsgs () {
+    var nsbs = $(".nsbs_{$tid}").val();
+    nsbs = ($.isNumeric(nsbs)) ? nsbs : 1;
+    var a = $.isNumeric(vs['vd0']);
+    var b = nsbs != default_nsbs;
+    var c = parseFloat(vs['vd27']) != parseFloat(vs['vd0']);
+
+    if( a && ( b || c) ){
+      vs['vd0'] = vs['vd27'] = jsws(vs['vd0']/nsbs);
+      var td30 = $("textarea").val();
+      //var _gs = '样品浓度 = 仪器读数 × 浓缩倍数';
+      //$("textarea").val(td30.replace(_gs,'')+_gs);
+    }else{
+      vs['vd27'] = vs['vd0'];
+    }
+  }
+</script>

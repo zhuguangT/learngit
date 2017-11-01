@@ -1,0 +1,107 @@
+<tr class="auto">
+    <td colspan="9">
+      筛分记录
+      <input name="vd0[$c]" type="hidden" value='$row[vd0]' />
+      <input type="hidden" name='mission[$c]' value='$row[id]' />
+      <input type="hidden" name="vd27[{$c}]" value='{$row['vd27']}' />
+    </td>
+</tr>
+<tr>
+  <td colspan="2">样品编号</td>
+  <td colspan="7" class="site_name">{$row['bar_code']}</td>
+</tr>
+<tr>
+    <td colspan="2">序号</td><td>1</td><td>2</td>
+    <td>3</td><td>4</td><td>5</td><td>6</td><td>7</td>
+</tr>
+<tr>
+  <td colspan="2">筛孔径（mm）</td>
+  <td><input class="inputc hyd" name="vd33[$c]" type="text" value="$row[vd33]" /></td>
+  <td><input class="inputc hyd" name="vd34[$c]" type="text" value="$row[vd34]" /></td>
+  <td><input class="inputc hyd" name="vd35[$c]" type="text" value="$row[vd35]" /></td>
+  <td><input class="inputc hyd" name="vd36[$c]" type="text" value="$row[vd36]" /></td>
+  <td><input class="inputc hyd" name="vd37[$c]" type="text" value="$row[vd37]" /></td>
+  <td><input class="inputc hyd" name="vd38[$c]" type="text" value="$row[vd38]" /></td>
+  <td><input class="inputc hyd" name="vd39[$c]" type="text" value="$row[vd39]" /></td>
+</tr>
+<tr>
+  <td colspan="2">样品+杯的质量（g）</td>
+  <td><input class="inputc hyd" name="vd43[$c]" type="text" value="$row[vd43]" /></td>
+  <td><input class="inputc hyd" name="vd44[$c]" type="text" value="$row[vd44]" /></td>
+  <td><input class="inputc hyd" name="vd45[$c]" type="text" value="$row[vd45]" /></td>
+  <td><input class="inputc hyd" name="vd46[$c]" type="text" value="$row[vd46]" /></td>
+  <td><input class="inputc hyd" name="vd47[$c]" type="text" value="$row[vd47]" /></td>
+  <td><input class="inputc hyd" name="vd48[$c]" type="text" value="$row[vd48]" /></td>
+  <td><input class="inputc hyd" name="vd49[$c]" type="text" value="$row[vd49]" /></td>
+</tr>
+<tr>
+  <td colspan="2">空杯质量（g）</td>
+  <td><input class="inputc hyd" name="vd53[$c]" type="text" value="$row[vd53]" /></td>
+  <td><input class="inputc hyd" name="vd54[$c]" type="text" value="$row[vd54]" /></td>
+  <td><input class="inputc hyd" name="vd55[$c]" type="text" value="$row[vd55]" /></td>
+  <td><input class="inputc hyd" name="vd56[$c]" type="text" value="$row[vd56]" /></td>
+  <td><input class="inputc hyd" name="vd57[$c]" type="text" value="$row[vd57]" /></td>
+  <td><input class="inputc hyd" name="vd58[$c]" type="text" value="$row[vd58]" /></td>
+  <td><input class="inputc hyd" name="vd59[$c]" type="text" value="$row[vd59]" /></td>
+</tr>
+<tr>
+  <td colspan="2">截留样品的质量（g）</td>
+  <td><input class="noinputc" name="vd63[$c]" type="text" value="$row[vd63]" /></td>
+  <td><input class="noinputc" name="vd64[$c]" type="text" value="$row[vd64]" /></td>
+  <td><input class="noinputc" name="vd65[$c]" type="text" value="$row[vd65]" /></td>
+  <td><input class="noinputc" name="vd66[$c]" type="text" value="$row[vd66]" /></td>
+  <td><input class="noinputc" name="vd67[$c]" type="text" value="$row[vd67]" /></td>
+  <td><input class="noinputc" name="vd68[$c]" type="text" value="$row[vd68]" /></td>
+  <td><input class="noinputc" name="vd69[$c]" type="text" value="$row[vd69]" /></td>
+</tr>
+<tr>
+  <td colspan="2">样品的总质量 W（g）</td>
+  <td colspan="7">
+    <input class="noinputc" name="vd73[$c]" type="text" value="$row[vd73]" />
+  </td>
+</tr>
+<tr>
+  <td colspan="2">通过样品的质量 G（g）</td>
+  <td><input class="noinputc" name="vd83[$c]" type="text" value="/" /></td>
+  <td><input class="noinputc" name="vd84[$c]" type="text" value="$row[vd84]" /></td>
+  <td><input class="noinputc" name="vd85[$c]" type="text" value="$row[vd85]" /></td>
+  <td><input class="noinputc" name="vd86[$c]" type="text" value="$row[vd86]" /></td>
+  <td><input class="noinputc" name="vd87[$c]" type="text" value="$row[vd87]" /></td>
+  <td><input class="noinputc" name="vd88[$c]" type="text" value="$row[vd88]" /></td>
+  <td><input class="noinputc" name="vd89[$c]" type="text" value="$row[vd89]" /></td>
+</tr>
+<tr>
+  <td colspan="2">通过样品（{$arow['unit']}）</td>
+  <td><input class="noinputc" name="vd93[$c]" type="text" value="/" /></td>
+  <td><input class="noinputc" name="vd94[$c]" type="text" value="$row[vd94]" /></td>
+  <td><input class="noinputc" name="vd95[$c]" type="text" value="$row[vd95]" /></td>
+  <td><input class="noinputc" name="vd96[$c]" type="text" value="$row[vd96]" /></td>
+  <td><input class="noinputc" name="vd97[$c]" type="text" value="$row[vd97]" /></td>
+  <td><input class="noinputc" name="vd98[$c]" type="text" value="$row[vd98]" /></td>
+  <td><input class="noinputc" name="vd99[$c]" type="text" value="$row[vd99]" /></td>
+</tr>
+<tr>
+<tr class="auto">
+    <td colspan="9">有效粒径（%）</td>
+</tr>
+<tr>
+    <td colspan="3">&lt; <span class="min_radius">{$arow['td10']}</span> mm</td>
+    <td colspan="2"><input class="noinputc" type="text" size="4" name="vd3[$c]" value="{$row['vd3']}"></td>
+    <td colspan="2">d80</td>
+    <td colspan="2"><input class="noinputc" type="text" size="4" name="vd6[$c]" value="{$row['vd6']}"></td>
+</tr>
+<tr>
+    <td colspan="3">&gt; <span class="max_radius">{$arow['td11']}</span> mm</td>
+    <td colspan="2"><input class="noinputc" type="text" size="4" name="vd4[$c]" value="{$row['vd4']}"></td>
+    <td colspan="2">d10</td>
+    <td colspan="2"><input class="noinputc" type="text" size="4" name="vd7[$c]" value="{$row['vd7']}"></td>
+</tr>
+<tr>
+    <td colspan="3">
+        <span class="min_radius">{$arow['td10']}</span> ～
+        <span class="max_radius">{$arow['td11']}</span> mm
+    </td>
+    <td colspan="2"><input class="noinputc" type="text" size="4" name="vd5[$c]" value="{$row['vd5']}"></td>
+    <td colspan="2">k80</td>
+    <td colspan="2"><input class="noinputc" type="text" size="4" name="vd8[$c]" value="{$row['vd8']}"></td>
+</tr>

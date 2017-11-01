@@ -1,0 +1,57 @@
+<!-- 辅助仪器管理页面 -->
+<script>
+function select_sj(yq_mingcheng,yq_chucangbh,yq_state,yq_baoguanren){
+    
+     var a=document.form2.yq_fenlei.value;
+     var b=document.form2.yq_anzhuangdidian.value;
+     var c=document.form2.yq_state.value;
+     var d=document.form2.yq_guanliren.value;
+        
+     if(yq_mingcheng!="" || yq_chucangbh!="" || yq_state!="" || yq_baoguanren!=""){
+
+      document.form2.action="hn_fuzhuyiqimanager.php?a="+a+"&b="+b+"&c="+c+"&d="+d;
+    }
+}
+function tiao(){
+     gotourl('fuzhuyiqi_save.php');
+}
+</script>
+
+<h1>计量辅助仪器设备一览表</h1>
+<form name="form2" action="" method="post" >
+           <center>
+              <tr>
+               <td>分类:<input type="text" class=inputc name="yq_fenlei"  size="10" value="" /></td>
+               <td>安装地点：<input type="text" class=inputc name="yq_anzhuangdidian"  size="8" value="" /></td>
+               <td>状态：<select name="yq_state"  value="$yq_state"> 
+           <option  >全部</option>
+             <option  value=1>合格</option>
+             <option  value=2>准用</option>
+             <option value=3>停用</option>
+                   
+                </select></td>
+               <td>管理人：<input type="text" class=inputc name="yq_guanliren"  size="8" value="" /></td>
+               <td ><input type="submit" value="查询" onclick="select_sj()"></td>
+
+               <td ><input type="button" value="新增" onclick="tiao()"></td>
+
+               </tr>
+           </center>
+           <table  class=single style="width:18cm" >
+<tr></br>
+</tr>
+  <tr align=center >
+    <td>序号</td>
+    <td>分类</td>
+    <td>设备名称</td>
+    <td>安装使用地点</td>
+    <td>器具编号</td>
+    <td>管理人</td>
+    <td>仪器状态</td>
+
+    <td colspan=2>操作</td>
+  </tr>
+   $lines
+
+      </table>
+</form >

@@ -1,0 +1,347 @@
+<style>
+span.select2-arrow b::before{
+	left:0px !important;
+}
+a.select2-choice{
+	line-height: 23px !important;
+}
+#site_value_form button,#site_value_form input{
+	border-radius: 6px !important;
+	-moz-border-radius:6px !important;
+}
+#search{
+	width:166px;
+	padding-right:18px;
+	position:inherit;
+	font-size:14px;
+}
+.icon-search{margin-left: -18px;}
+.no_show_tishi td{
+	text-align: center !important;
+	color:#AFADAD;
+	font-size: 16px;
+}
+table.chose_site tr:first-child{
+	height:48px;
+	line-height: 48px;
+	vertical-align:middle;
+}
+table.chose_site tr[site_group='yes'] td{
+	text-align:left;
+	background-color: #EAEAEA !important;
+}
+table.chose_site td{
+	text-align:left;
+	background-color: #FFF !important;
+}
+table.chose_site tr:first-child th{
+	text-align: center;
+}
+table.chose_site tr:first-child input,table.chose_site tr:first-child button,table.chose_site tr:first-child i,table.chose_site tr:first-child span{
+	line-height: 22px;
+	vertical-align:middle;
+	font-size:13px;
+}
+#sites_num,#xm_num{
+	font-weight: bold;
+	color:blue;
+}
+label.checked-label{
+	background-color: #A7FAAA;
+}
+</style>
+<h3 class="header smaller center title">{$_POST['title']}</h3>
+<form name='site_value_form' id="site_value_form">
+<input type='hidden' id='ajax_field_name' value="{$field_name}"/>
+<div class="widget-box no-border">
+	<div class="widget-header header-color-blue4 center">
+		<div class="widget-toolbar">
+			<div style="{$site_display}">
+				任务类型: <select id="site_type" name="site_type" >{$site_type_str}</select>
+				水样类型: <select id="water_type" name="water_type" ><option value="全部" selected="selected">全部</option>{$lxlist}</select>
+				站点分批: <select id="group_name" name="group_name" class="select2"><option value="">全部</option>{$group_name_str}</select>  
+				统计参数: <select id="tjcs" name="tjcs" ><option value="">全部</option>{$tjcs_str}</select>
+				
+			</div>
+			<div style="{$value_display}">
+				项目选择模板：
+					<select class='chosen' onchange="quan(this)" name="xmmb" id='mb1'>
+					<option value="$xm_values">----请选择----</option>
+					$xmmb_options
+					</select>
+			</div>
+		</div>
+	</div>
+	<div class="widget-body">
+		<table  style="margin-top:20px;margin-bottom:35px;{$site_display}" class="table table-striped table-bordered table-hover chose_site">
+			<tr search="no_search">
+				<th colspan="{$line_nums}" align='center'>
+					<input type="text" name="" value="" id='search' onkeyup="input_search(this);" placeholder="批次、站点名称搜索" /><i class="icon-search" onclick='$()'></i>&nbsp;&nbsp;
+					<input id="site_qx_button" type="button" class="btn btn-xs btn-primary" value="取消已选" >
+					<span>已选站点（&nbsp;<span id='sites_num'>0</span>&nbsp;）个</span>
+				</th>
+			</tr>
+			$group_site_str
+		</table>
+		<table  style="margin-top:20px;margin-bottom:35px;{$value_display}" class="table table-striped table-bordered table-hover chose_xm">
+			<tr>
+				<td colspan="{$line_nums}" align='center'>
+					<input type="button" value="项目全选" class="btn btn-xs btn-primary" onclick="qx(this,'vid[]')">
+					<span>已选项目（&nbsp;<span id='xm_num'>0</span>&nbsp;）项</span>
+				</td>
+			</tr>
+			$vid_str
+		</table>
+		<div style="text-align:center;position:fixed;bottom:0;width:80%;heigth:40px;background:rgba(120,120,120,0.5);">
+			<button class="btn btn-xs btn-primary" style="height:35px;min-width:60px;" id='site_value_save' type='button'>保存</button>&nbsp;&nbsp;&nbsp;
+			<button class="btn btn-xs btn-primary" style="height:35px;min-width:60px;" id='site_value_reset' type='button'>取消</button>
+		</div>
+	</div>
+</div>
+</form>
+<script type="text/javascript">
+$(function(){
+	$(".select2").select2();//启用可搜索下拉菜单
+	count_checked_num('.chose_site','sites[','sites_num');//统计站点数量
+	count_checked_num('.chose_xm','vid[]','xm_num');//统计站点数量
+	//判断按钮显示文字
+	var sites_num	= $("#sites_num").html();
+	if(sites_num > 0){
+		$("#site_qx_button").val('取消已选');
+	}else{
+		$("#site_qx_button").val('全选');
+	}
+	$("table.chose_xm input:checked").parent('label').addClass('checked-label');
+	//下达菜单动态搜索
+	$("#site_type,#water_type,#group_name,#tjcs").change(function(){
+		//$("#con").html('<center style="font-weight:bold;font-size:18px;">页面加载中......</center>');
+		var action	= "{$_POST['action']}";
+		var set_id	= "{$_POST['set_id']}";
+		var title	= "{$_POST['title']}";
+		var site_type	= $("#site_type").val();
+		var water_type	= $("#water_type").val();
+		var group_name	= $("#group_name").val();
+		var tjcs		= $("#tjcs").val();
+		$.post("ajax_choose_site_value.php",{"action":action,'set_id':set_id,"title":title,"site_type":site_type,"water_type":water_type,"group_name":group_name,"tjcs":tjcs,"ajax":'1'},function(data){
+			$("#con").html(data);
+		},'html')
+		$("#cover").show();
+		$("body").css({"overflow":"hidden"});
+	});
+	//站点全选，取消选择
+	$("#site_qx_button").click(function(){
+		var button_value	= $(this).val();
+		if(button_value == '取消已选'){
+			//取消所有已选项
+			$("table.chose_site input:checked").prop("checked",false).attr('is_checked','no').parent('label').removeClass('checked-label');
+			$(this).val('全选');
+			count_checked_num('.chose_site','sites[','sites_num');//统计站点数量
+		}else{
+			//全选显示的内容
+			$("table.chose_site input[name='group_name[]']:visible,table.chose_site input[name*='sites[']:visible").prop("checked",true).attr('is_checked','yes').parent('label').addClass('checked-label');
+			$(this).val('取消已选');
+			count_checked_num('.chose_site','sites[','sites_num');//统计站点数量
+		}
+	})
+	//选择项目更新项目数量
+	$("table.chose_xm input[name='vid[]']").click(function(){
+		count_checked_num('.chose_xm','vid[]','xm_num');
+		if($(this).is(':checked')){
+			$(this).parent('label').addClass('checked-label');
+		}else{
+			$(this).parent('label').removeClass('checked-label');
+		}
+	});
+	//保存
+	$("#site_value_save").click(function(){
+		var baogao_list_id	= $("#set_id").val();//baogao_list表的id
+		var modify_field	= 'result_set';//baogao_list表中 result_set的修改还是 gx_set的修改
+		var del	= 'replace';//是删除此元素还是更改此元素
+		var field_name	= $("#ajax_field_name").val();//'alone_sites[]';
+		var field_value	= '';
+		var group_value	= 'no';
+		if(field_name	== 'alone_sites[]'){
+			$("form[name='site_value_form'] input[name*='sites[']:checked").each(function(i){
+				//field_name	= this.name;
+				field_value	+= $(this).attr('gr_id')+",";//this.value+",";
+				group_value	= 'yes';
+			});
+		}else if(field_name	== 'alone_vid[]'){
+			$("form[name='site_value_form'] input[name*='vid[]']:checked").each(function(i){
+				//field_name	= this.name;
+				field_value	+= this.value+",";
+				group_value	= 'yes';
+			});
+		}
+		
+		$.post('result_set_ajax.php',{"id":baogao_list_id,"name":field_name,"value":field_value,"modify_field":modify_field,"del":del,"group_value":group_value,"ajax":'1'},function(data){
+			if(data.zt=='no'){
+				alert('修改失败');
+			}
+			location.reload();
+		},'json');
+		//$("#cover").hide();
+		//$("body").css({"overflow":"auto"});
+	});
+	//取消
+	$("#site_value_reset").click(function(){
+		if(confirm("取消后本页面的修改将丢弃，确定取消？")){
+			$("#cover").hide();
+			$("body").css({"overflow":"auto"});
+		}
+	});
+})
+//项目的全选或者取消全选
+function qx(aButton,aItem){
+    with(aButton.form){
+        var v=$(aButton.form).find("input[name*='"+aItem+"']");
+		if(aItem=='sites[]'){
+			var v2=$("input[name*='group_name[]']");
+			for(i=0;i<v2.length;i++){
+				v2[i].checked=(aButton.value!='全选') ? false :true;
+				//获得目前批次的对象
+				var v3=$("input[name='sites["+v2[i].value+"][]']");
+				for(j=0;j<v3.length;j++){
+					v3[j].checked=(aButton.value!='全选') ? false :true;
+				}
+			}
+			aButton.value=(aButton.value=='全选') ? '取消已选' : '全选' ;
+			count_checked_num('sites[','sites_num');//统计站点数量
+		}else{
+			for(i=0;i<v.length;i++) {
+				v[i].checked=(aButton.value!='项目全选') ? false :true;
+			}
+			aButton.value=(aButton.value=='项目全选') ? '取消已选' : '项目全选' ;
+			$("table.chose_xm input[name='vid[]']").parent('label').removeClass('checked-label');
+			$("table.chose_xm input:checked").parent('label').addClass('checked-label');
+			count_checked_num('.chose_xm','vid[]','xm_num');//统计站点数量
+		}
+    }
+}
+//根据项目模板选中项目
+function quan(th){
+	with(th.form){ 
+		var im=xmmb.value;
+		var t=im.split(",");
+		var	v=elements['vid[]'];
+		for(var i=0;i<v.length;i++) 
+		{
+			if(in_array(v[i].value,t)){
+				v[i].checked=true;
+			}else{
+				v[i].checked=false;
+			}
+		}   
+	}
+	$("table.chose_xm input[name='vid[]']").parent('label').removeClass('checked-label');
+	$("table.chose_xm input:checked").parent('label').addClass('checked-label');
+	count_checked_num('.chose_xm','vid[]','xm_num');//统计站点数量
+}
+//搜索(支持空格多项搜索)，应当排除按钮里的文字
+function input_search(search_input){
+	var search_val	= search_input.value;
+	//不能搜索特殊字符
+	var bbb	= /[()<>.+*?^$|\\\[\]]/;
+	if(bbb.test(search_val)){
+		alert('不能输入一下特殊符号:\\r\\n()<>.+*?^$|\[]');//+bbb.source
+		search_input.value=search_val.substr(0,-1);
+		search_input.focus();
+		return false;
+	}
+	//去除首尾的空格和中间多余的空格
+	search_val	= search_val.replace(/(^\s*)|(\s*$)/g, "").replace(/ {2,}/g,' ');
+	//清除掉为了突出提醒而增加的html标签
+	$("table.chose_site td.js_add").each(function(i){
+		var old_html	= $(this).html().replace(/(<b class="js_add" style="color:red;">(.+?)<\/b>)/g,'$2');
+		$(this).html(old_html).removeClass('js_add');
+	});
+	$("table.chose_site tr").show();//搜索前先把所有待搜索内容显示出来
+	$("tr.no_show_tishi").remove();//删除提示内容
+	//搜索内容不为空时再进行搜索
+	if(search_val){
+		var search_arr	= search_val.split(' ');
+		//定义搜索内容
+		if(search_arr.length >1){
+			var jquery_search	= ":contains("+search_arr.join("):contains(")+")";
+		}else{
+			var jquery_search	= ":contains("+search_val+")";
+		}
+		//逐行开始检索
+		$("table.chose_site tr[search!='no_search']").hide().each(function(i){
+			//查找是否有包含搜索内容的td，包含内容的将tr显示，没有的隐藏
+			var find_td	= $(this).find("td[search!='no_search']"+jquery_search);
+			if(find_td.length > 0){
+				$(this).show();//显示本行
+				var gr_tr_id	= $(this).attr('gr_tr_id');
+				$("tr[gr_tr_id='"+gr_tr_id+"']").show();//将本批内的相关站点全部显示出来
+				//对每个td里的搜索内容 变红加粗显示
+				$(this).find("td[search!='no_search']"+jquery_search).each(function(i){
+					$(this).addClass('js_add');//增加一个class，去掉该标签时容易识别
+					//for (var w = 0; w < search_arr.length; w++) {
+						setHeightKeyWord($(this),search_val);
+					//}
+				});
+			}
+		});
+	}else{
+		$("table.chose_site tr").show();
+	}
+	$("table.chose_site td input[is_checked='yes']").prop("checked",true);//html重新生成后会清空手动点击选中的内容，此处将已经选中的元素重新选中
+	$("table.chose_site td input[is_checked='no']").prop("checked",false);
+	//没有搜索内容时，增加提示
+	var show_tr_num	= $("table.chose_site tr:visible").length;
+	if(show_tr_num =='1'){
+		var colspan_num	= $("table.chose_site tr:eq(0) td").attr("colspan");
+		$("table.chose_site").append("<tr class='no_show_tishi'><td colspan="+colspan_num+" >没有搜索到相关批次或站点!</td></tr>");
+	}
+}
+//搜索到的东西变个颜色突出显示
+function setHeightKeyWord(id, keyword) {
+	if (keyword == "" || keyword==' ')
+		return;
+	var tempHTML = id.html();
+	//把html标签特殊标记出来，防止后面匹配时匹配到
+	var htmlReg = new RegExp("\<.*?\>", "i");
+	var arrA = new Array();
+	for (var i = 0; true; i++) {
+		var m = htmlReg.exec(tempHTML);
+		if (m) {
+			arrA[i] = m;
+		}else {
+			break;
+		}
+		tempHTML = tempHTML.replace(m, "&#&%" + i + "%&#&");
+	}
+	//根据传入参数决定将搜索到的内容如何处理
+	var replaceText = "<b class='js_add' style='color:red;'>$1</b>";
+	//可以根据空格进行多次并列搜索
+	var arrayWord = keyword.split(' ');
+	for (var w = 0; w < arrayWord.length; w++) {
+		var ts_zf	= arrayWord[w].replace(/[(){}.+*?^$|\\\[\]]/g, "\\$&");
+		//将js的特殊字符转义一下,并注意注意不要匹配到特殊标记的 html标签//bug 特殊字符的转义失败导致不能搜索特殊字符
+		var r 		= new RegExp("("+ts_zf+")", "ig");
+		//解决 纯数字搜索时会匹配到特殊标记的html标签的bug
+		var str_key	= tempHTML.match(/&#&%[0-9]+?%&#&/g);//记录下所有特殊标记的html标签
+		if(!isNaN(arrayWord[w]) && str_key){//如果搜索的纯数字走这里
+			var str_arr = tempHTML.split(/&#&%[0-9]+?%&#&/);//根据特殊html标记 将字符串分解成数组
+			var finist_str	= '';
+			for (var i = 0; i<str_arr.length; i++) {
+				finist_str += str_arr[i].replace(r, replaceText);
+				if(str_key[i]){
+					finist_str += str_key[i];
+				}
+			}
+			tempHTML	= finist_str;
+		}else{
+			var r = new RegExp("((?!&#&%)" + ts_zf + "(?!%&#&))", "ig");
+			tempHTML = tempHTML.replace(r, replaceText);
+		}
+	}
+	//把被搜索内容中转换的html标签恢复
+	for (var i = 0; i < arrA.length; i++) {
+		tempHTML = tempHTML.replace("&#&%" + i + "%&#&", arrA[i]);
+	}
+	//将改变后的html写回原标签
+	id.html(tempHTML);
+} 
+</script>

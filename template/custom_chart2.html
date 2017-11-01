@@ -1,0 +1,63 @@
+<script src="$rooturl/js/lims/echarts-all.js"></script>
+
+
+
+<script src="$rooturl/js/date-time/moment.min.js"></script>
+<script src="$rooturl/js/date-time/daterangepicker.min.js"></script>
+<link rel="stylesheet" href="$rooturl/css/daterangepicker.css" />
+<h3 class="header smaller center title">$title</h3>
+<!--<div class="widget-header header-color-blue4 center">-->
+<!--	<div class="widget-toolbar">-->
+<!--		选择日期：<input  name="date-range-picker" id="id-date-range-picker-1" type="text" style="width:186px" />-->
+<!--		选择站点：<input type="button" value="选择站点"> -->
+<!--		选择项目: <input type="button" value="选择项目">-->
+<!--		查看方式: <select id="tjcs" name="tjcs" onchange="redirect()"><option value="">请选择</option><option value="vid_show">按照项目分类</option><option value="site_show">按照站点分类</option></select>-->
+<!--		搜索历史：<select name="group_name" onchange="redirect()" class="chosen-select"><option value="">请选择</option></select>  -->
+<!--	</div>-->
+<!--</div>-->
+<form  action="$rooturl/data_chart/custom_chart2.php" method="post" onsubmit="return(verify(this))">
+<div class="widget-header header-color-blue4 center">
+	<div class="widget-toolbar">
+		<input type="button" class="btn btn-xs btn-primary" value="重新筛选条件" onclick="location.href='{$rooturl}/data_statistics/result_set.php?set_id={$_GET[set_id]}&action=chart&bg=nianbao';"> &nbsp;&nbsp;  <input type="submit" name="how_show" class="btn btn-xs btn-primary" value="按照站点分类查看"> &nbsp;&nbsp;<input type="submit" name="how_show" class="btn btn-xs btn-primary" value="按照项目分类查看"> 
+	</div>
+</div>
+<input type="hidden" name="sub" value="查看趋势图"/>
+
+<table  style="width:100%;">
+	<tr>
+		<td style="width:10%;min-width:70px;text-align:center;">起止日期:</td>
+		<td id="star_stop_date">
+			$begin_date ~ $end_date
+			<input type="hidden" name="begin_date" value="{$begin_date}" /><input type="hidden" name="end_date" value="{$end_date}" />
+		</td>
+	</tr>
+	<tr>
+		<td style="width:10%;min-width:70px;text-align:center;">选中站点:</td>
+		<td>$html_site</td>
+	</tr>
+	<tr>
+		<td style="width:10%;min-width:70px;text-align:center;">选中项目:</td>
+		<td>$html_vid</td>
+	</tr>
+</table>
+</form>
+<script type="text/javascript">
+//多月份选择框
+$('#id-date-range-picker-1').daterangepicker({
+	locale : {
+		applyLabel: 'Choisir',
+		clearLabel: 'Nettoyer',
+		fromLabel: 'Dès',
+		toLabel: 'Vers',
+		weekLabel: 'W',
+		customRangeLabel: 'Plage personnalisée',
+		daysOfWeek: moment()._lang._weekdaysMin,
+		monthNames: moment()._lang._monthsShort,
+		firstDay: 0
+	}
+});
+</script>
+$html_canvas
+<script type="text/javascript">
+	$html_script
+</script>

@@ -1,0 +1,13 @@
+<tr align="center" style="background:$bgc;border: 1px solid #DDDDDD;" onMouseOver="style.backgroundColor='#F5F5F5'" onmouseout="style.backgroundColor='$bgc'">
+<td width='30%' align="left" colspan="2" class="action-buttons">
+　　<label><input type="checkbox" name="site[]" $site_checked value="{$site['id']}" onclick="_check(this)"><label>
+	<a href="$rooturl/site/site_info.php?site_id={$site['id']}&group_name={$group_name}" title='点击修改该站点'>{$site['site_name']}</a>({$site['site_code']})
+	<a class="red icon-remove bigger-140" href="#" onclick="gotoif('$rooturl/site/site_delete.php?sid={$site['id']}&sgname={$group_name}','确定删除 {$site['site_name']} 吗?');" title="删除 {$site['site_name']}"></a>
+</td>
+<td>
+总计:$xmsum 个:$xms
+</td>
+<td>
+    <input type="text" style="text-align:center" size="4" name="sort[]" value="{$site['sort']}" />
+</td>
+</tr>

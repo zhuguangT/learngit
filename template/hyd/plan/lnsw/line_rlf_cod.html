@@ -1,0 +1,17 @@
+<input type=hidden name='mission[$c]' value='$row[id]'>  
+<tr align="center">
+    <td colspan="1">$i</td>
+    <td colspan="1">{$row['site_name']}</td>
+    <td colspan="1">
+        <input class="inputc hyd" name="vd1[$c]" onclick="_aItem(this)" type="text" value="$row[vd1]" /></td>
+    <td colspan="2"><input class="inputc hyd" name="vd3[$c]" type="text" value="$row[vd3]" /></td>
+    <td colspan="2"><input class="inputc hyd" name="vd4[$c]" type="text" value="$row[vd4]" /></td>
+    <td colspan="2"><input class="noinputc"   name="vd5[$c]" type="text" value="$row[vd5]" /></td>
+    <!--标液浓度-->
+    <td colspan="1">
+        <input class="inputc hyd" name="vd11[$c]" type="text" value="$row[vd11]" /></td>
+    <td colspan="2" title='原始结果: $row[_vd0]'>
+        <input class="noinputc" name="vd0[$c]" type="text" value="$row[vd0]" /></td>
+    <td colspan="2">$_ping_jun</td>
+    <td colspan="2">$_xdpc</td>
+</tr>

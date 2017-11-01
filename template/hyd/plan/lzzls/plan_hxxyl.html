@@ -1,0 +1,73 @@
+<h1>化学需氧量检验记录</h1>
+{$hjtj_bt}
+<table  class="single">
+  <tr class="noborder">
+    <td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:11%"></td><td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+  </tr>
+  <tr>
+    <td colspan="1">检验地点</td>
+    <td colspan="3"><input type="text" name="td7" value="$arow[td7]" /></td>
+    <td colspan="1">检验方法</td>
+    <td colspan="7">{$arow['td1']}</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">方法依据</td>
+    <td colspan="3">{$arow['td2']}</td>
+    <td><span class="blue_a change_bd">标准溶液名称</span></td>
+    <td colspan="7">{$arow['bzry_name']}</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">标准溶液浓度C</td>
+    <input type='hidden' name='bd' value="11">
+    <td colspan="3">{$arow['bzry_nongdu']} mol/L</td>
+    <td>计算公式</td>
+    <td colspan="7">化学需氧量（以O<sub>2</sub>计,mg/L）=C[(NH<sub>4</sub>)<sub>2</sub>Fe(SO<sub>4</sub>)<sub>2</sub>]×(V<SUB>0</SUB>-V<sub>耗</sub>)×8×1000/V<sub>样</sub></td>
+  </tr>
+  <tr>
+    <td rowspan="2">序号</td>
+    <td rowspan="2">{$zhanming}</td>
+    <td rowspan="2">水样体积 V<sub>样</sub><br />（mL）</td>
+    <td rowspan="2">滴定空白体积<br />V<sub>0</sub>（mL）</td>
+    <td colspan="3">滴定体积</td>
+    <td rowspan="2">样品浓度（{$arow['unit']}）</td>
+    <td rowspan="2">平均值<br />（{$arow['unit']}）</td>
+    <td rowspan="2">质控结果<br />（％）</td>
+  </tr>
+  <tr>
+    <td>V<sub>终</sub><br />（mL）</td>
+    <td>V<sub>起</sub><br />（mL）</td>
+    <td>V<sub>耗</sub><br />（mL）</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="9"><textarea name="td30" >{$arow['td30']}</textarea></td>
+  </tr>
+  
+</table>
+<script type="text/javascript">
+function jsgs(){
+      //运算函数在lib.js
+      var vd5_split = String(vs['vd5']).split('.');
+      if(vd5_split.length==2){
+        var diding_ws = vd5_split[1].length;
+      }else{
+        var diding_ws = 3;
+      }
+      var nd="{$arow['bzry_nongdu']}";
+      if( $.isNumeric(vs['vd4']) && $.isNumeric(vs['vd5'])&& $.isNumeric(vs['vd1']) ){
+        var vd4 = parseFloat(vs['vd4']);
+        var vd5 = parseFloat(vs['vd5']);
+        var vd3 = parseFloat(vs['vd3']);
+        var vd1 = parseFloat(vs['vd1']);
+        var gmd = vs['vd6'] = roundjs(accsub(vd5,vd4),diding_ws);
+        var han1  = accMul(nd,accsub(vd3,vs['vd6']));
+        var han2  = accMul(accMul(han1,8),1000);
+        vs['vd0'] = jsws(accDiv(han2,vd1));
+      }else{
+        vs['vd5']=vs['vd0']='';
+      }
+}
+</script>

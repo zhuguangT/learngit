@@ -1,0 +1,175 @@
+<!-- 容量法检测五日生化需氧量原始记录表 -->
+<h1>{$arow['assay_element']}分析原始记录表</h1>
+<table style="width:100%">  
+  <tr>
+  <td style="width:50%;text-align:left;padding-left:10px;">
+    分析日期：<input type="text" class="date_Ymd" name="td31" id="td31" value="{$arow['td31']}" size="12" />
+  </td>
+<!--   <td style="width:50%;text-align:right;padding-right:10px;">采样日期: {$arow['cy_date']}</td> -->
+  </tr>
+</table>
+<table class="single">
+  <tr class="noborder">
+    <td style="width:6%"></td><td style="width:8%"></td>
+    <td style="width:5%"></td><td style="width:5%"></td><td style="width:6%"></td>
+    <td style="width:6%"></td><td style="width:6%"></td><td style="width:6%"></td>
+    <td style="width:6%"></td><td style="width:6%"></td><td style="width:6%"></td>
+    <td style="width:6%"></td><td style="width:6%"></td><td style="width:6%"></td>
+    <td style="width:6%"></td><td style="width:6%"></td><td style="width:6%"></td>
+  </tr>
+  <tr>
+    <td>检测项目</td>
+    <td colspan="2">{$arow['assay_element']}</td>
+    <td colspan="2">检测依据</td>
+    <td colspan="3">{$arow['td2']}</td>
+    <td colspan="2">检出限({$arow['unit']})</td>
+    <td colspan="2">{$arow['td3']}</td>
+    <td colspan="3">指示剂名称</td>
+    <td colspan="2"><input type="text" name="td8" value="{$arow['td8']}" /></td>
+  </tr>
+  <tr>
+    <td>滴定管规格</td>
+    <td colspan="1"><input type="text" name="td9" value="{$arow['td9']}" /></td>
+    <td colspan="1">颜色</td>
+    <td colspan="2"><input type="text" name="td10" value="{$arow['td10']}" /></td>
+    <td colspan="3">标准溶液名称</td>
+    <td colspan="4"><input type="text" name="td11" value="{$arow['td11']}" /></td>
+    <td colspan="3">标准溶液浓度(mol/L)</td>
+    <td colspan="2"><input type="text" name="td12" value="{$arow['td12']}" /></td>
+  </tr>
+  <tr class="auto">
+    <td>培养前</td>
+    <td nowrap colspan="4">
+    日期：<input type="text" class="date_Ymd" name="td13" value="{$arow['td13']}" size="10" />
+    时间：<div class="input-group bootstrap-timepicker" style="display:inline">
+          <input type="text" class="timepicker1" name="td14" value="{$arow['td14']}" size="8" /></div>
+    </td>
+    <td colspan="1">培养后</td>
+    <td nowrap colspan="6">
+    日期：<input type="text" class="date_Ymd" name="td18" value="{$arow['td18']}" size="10" />
+    时间：<div class="input-group bootstrap-timepicker" style="display:inline">
+          <input type="text" class="timepicker1" name="td19" value="{$arow['td19']}" size="8" /></div>
+    </td>
+    <td colspan="3">稀释水溶解氧ρ3({$arow['unit']})</td>
+    <!--  -->
+    <td colspan="2"><input type="text" name="td17" style="width:100%" value="{$arow['td17']}" class="kongbai_rjy" /></td>
+  </tr>
+  <tr>
+    <td>计算公式</td>
+    <td colspan="1">
+    f<sub>1</sub> = (Vt-Ve)/Vt</td>
+    <td colspan="2">
+    f<sub>2</sub> = Ve/Vt</td>
+    <td colspan="8">
+      ρ = [(ρ<sub>1</sub>-ρ<sub>2</sub>)-f<sub>1</sub>*(ρ<sub>3</sub>-ρ<sub>4</sub>)]/f<sub>2</sub>
+    </td>
+    <td colspan="3">稀释水溶解氧ρ4({$arow['unit']})</td>
+    <!--  -->
+    <td colspan="2"><input type="text" name="td22" style="width:100%" value="{$arow['td22']}" class="kongbai_rjy" /></td>
+  </tr>  
+
+  <tr>
+    <td rowspan="2">序号</td>
+    <td rowspan="2">{$zhanming}</td>
+    <td rowspan="2">取样体积<br />Ve (mL)</td>
+    <td rowspan="2">定容体积<br />Vt (mL)</td>
+    <td colspan="3">培养前滴定 (mL)</td>
+    <td rowspan="2">培养前<br />溶解氧<br />ρ1({$arow['unit']})</td>
+    <td colspan="3">培养后滴定 (mL)</td>
+    <td rowspan="2">培养后<br />溶解氧<br />ρ2({$arow['unit']})</td>
+    <td rowspan="2" colspan="2">BOD<sub>5</sub><br />ρ({$arow['unit']})</td>
+    <td colspan="1" rowspan="2">平均值({$arow['unit']})</td>
+    <td colspan="1" rowspan="2">相对偏差(%)</td>
+    <td rowspan="2">水温℃</td>
+  </tr>
+  <tr>
+    <td>始读</td>
+    <td>终读</td>
+    <td>用量</td>
+    <td>始读</td>
+    <td>终读</td>
+    <td>用量</td>
+  </tr>
+    {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="16"><textarea name="td29">{$arow['td29']}</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+function jsgs(){
+  get_kb();
+	//运算函数在lib.js
+  //加 accAdd 减 accsub 乘 accMul 除 accDiv
+  var bzyr = parseFloat($("input[name=td12]").val());
+  if(''==bzyr || isNaN(bzyr)){
+    $("input[name=td12]").val('');
+    $("input[name=td12]").focus();
+    return false;
+  }
+  var vd5_split = String(vs['vd5']).split('.');
+  if(vd5_split.length==2){
+    var diding_ws = vd5_split[1].length;
+  }else{
+    var diding_ws = 2;
+  }
+  var Ve = parseFloat(vs['vd1']);
+  var Vt = parseFloat(vs['vd3']);
+  if($.isNumeric(vs['vd5']) && $.isNumeric(vs['vd6'])){
+    vs['vd7'] = parseFloat(accsub(parseFloat(vs['vd5']),parseFloat(vs['vd6']))).toFixed(diding_ws);
+    vs['vd8']= roundjs(accMul(accMul(8000/(Vt-3),bzyr),vs['vd7']),4);
+  }
+  if($.isNumeric(vs['vd9']) && $.isNumeric(vs['vd10'])){
+    vs['vd11'] = parseFloat(accsub(parseFloat(vs['vd9']),parseFloat(vs['vd10']))).toFixed(diding_ws);
+    vs['vd12']= roundjs(accMul(accMul(8000/(Vt-3),bzyr),vs['vd11']),4);
+  }
+  if($.isNumeric(vs['vd1']) && $.isNumeric(vs['vd3'])){
+    //f1 = (Vt-Ve)/Vt
+    var f1 = accDiv(accsub(Vt,Ve),Vt);
+    //f2 = Ve/Vt
+    var f2 = accDiv(Ve,Vt);
+    if(vs['vd1'] != vs['vd3']){
+      var p3 = parseFloat($("input[name=td17]").val());
+      var p4 = parseFloat($("input[name=td22]").val());
+      if(''==p3 || isNaN(p3)){
+        $("input[name=td17]").focus();return false;
+      }else if(''==p4 || isNaN(p4)){
+        $("input[name=td22]").focus();return false;
+      }
+      //f1*(p3-p4)  稀释水的溶解氧
+      var f1_3_4 = accMul(f1,accsub(p3,p4));
+    }else{
+      var f1_3_4 = 0;
+    }
+    //p1-p2
+    var p1_p2  = accsub(parseFloat(vs['vd8']),parseFloat(vs['vd12']));
+    //(p1_p2-f1_3_4)/f2
+    var jg = accDiv(accsub(p1_p2,f1_3_4),f2);
+    vs['vd0'] = jsws(jg);
+  }else{
+    vs['vd0'] = "";
+  }
+}
+
+function get_kb(){
+  var td17 = $("input[name=td17]").val();
+  var td22 = $("input[name=td22]").val();
+  if($.isNumeric(td17)&&$.isNumeric(td22)) return true;
+  var kb_obj = $("span.hydzk[data-zk='-2']");
+  if(kb_obj.length==1){
+    var kb_3 = kb_obj.parent().parent().find("input[name*='vd8[']").val();
+    var kb_4 = kb_obj.parent().parent().find("input[name*='vd12[']").val();
+  }else if(kb_obj.length==2){
+    var kb_3_0 = kb_obj.eq(0).parent().parent().find("input[name*='vd8[']").val();
+    var kb_3_1 = kb_obj.eq(1).parent().parent().find("input[name*='vd8[']").val();
+    var kb_4_0 = kb_obj.eq(0).parent().parent().find("input[name*='vd12[']").val();
+    var kb_4_1 = kb_obj.eq(1).parent().parent().find("input[name*='vd12[']").val();
+    var kb_3 = accDiv(accAdd(parseFloat(kb_3_0),parseFloat(kb_3_1)),2);
+    var kb_4 = accDiv(accAdd(parseFloat(kb_4_0),parseFloat(kb_4_1)),2);
+  }
+  if($.isNumeric(kb_3)&&$.isNumeric(kb_4)){
+    $("input[name=td17]").val(roundjs(parseFloat(kb_3),2));
+    $("input[name=td22]").val(roundjs(parseFloat(kb_4),2));
+  }
+}
+</script>  

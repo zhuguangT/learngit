@@ -1,0 +1,127 @@
+<h1>重量法检验记录（工艺）</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:8%"></td><td style="width:12%"></td><td style="width:8%"></td><td style="width:8%"></td>
+		<td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+		<td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+	</tr>
+	<tr align="center">
+		<td>样品名称</td>
+		<td colspan="3"><input type="text" name="td8" class="inputc" value="{$arow['td8']}" /></td>
+		<td>检验项目</td>
+		<td colspan="3">{$arow['assay_element']}</td>
+		<td>检验地点</td>
+		<td colspan="3"><input type="text" name="td7" class="inputc" value="{$arow['td7']}" /></td>
+	</tr>
+	<tr>
+		<td >方法依据</td>
+		<td colspan="3">{$arow['td2']}</td>
+		<td>天平型号</td>
+		<td colspan="3">{$arow['td5']}</td>
+		<td>天平编号</td>
+		<td colspan="3">{$arow['yq_bh']}</td>
+	</tr>
+	<tr>
+		<td>计算公式</td>
+		<td class="noright right"  colspan="4">W(%)=</td>
+		<td class="noborder">m<sub>1</sub>-m<sub>2</sub><hr />m<sub>1</sub>-m</td>
+		<td class="noborder" style="text-align:left">×100</td>
+		<td colspan="5" class="noleft"></td>
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td colspan="2">{$zhanming}</td>
+		<td>原试样加称量瓶的质量m<sub>1</sub>（g）</td>
+		<td colspan="2">干燥试样家称量瓶的质量m<sub>2</sub>（g）</td>
+		<td>干燥试样加称量瓶的质量m<sub>2</sub>平均（g）</td>
+		<td>称量瓶的质量m（g）</td>
+		<td>m<sub>1</sub>-m<sub>2</sub>（g）</td>
+		<td>m<sub>1</sub>-m（g）</td>
+		<td>检验结果<br/>({$arow['unit']})</td>
+		<td>报告结果<br/>({$arow['unit']})</td>
+	</tr>
+	$aline
+	<tr>
+		<td>备注</td>
+		<td colspan="11"><textarea name="td30">$arow[td30]</textarea></td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+function jsgs(){
+	var vd_split = String(vs['vd4']).split('.');
+	if(vd_split.length==2){
+		var diding_ws = vd_split[1].length;
+	}else{
+		var diding_ws = 2;
+	}
+	if($.isNumeric(vs['vd4'])&&$.isNumeric(vs['vd5'])){
+		vs['vd6'] =roundjs(accDiv(accAdd(vs['vd4'],vs['vd5']),2),diding_ws);
+	}
+	else
+	{
+		vs['vd6'] ='';
+	}
+	if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd6'])){
+		vs['vd8'] = accsub(vs['vd3'],vs['vd6']);
+	}
+	else{
+		vs['vd8'] = '';
+	}
+	if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd7'])){
+		vs['vd9'] = accsub(vs['vd3'],vs['vd7']);
+	}
+	else{
+		vs['vd9'] = '';
+	}
+	if($.isNumeric(vs['vd8'])&&$.isNumeric(vs['vd9']))
+	{
+		vs['vd10']=roundjs(accMul(accDiv(vs['vd8'],vs['vd9']),100),3);
+	}
+	else
+	{
+		vs['vd10']='';
+	}
+
+	if($.isNumeric(vs['vd14'])&&$.isNumeric(vs['vd15'])){
+		vs['vd16'] =roundjs(accDiv(accAdd(vs['vd14'],vs['vd15']),2),diding_ws);
+	}
+	else
+	{
+		vs['vd16'] ='';
+	}
+	if($.isNumeric(vs['vd13'])&&$.isNumeric(vs['vd16'])){
+		vs['vd18'] = accsub(vs['vd13'],vs['vd16']);
+	}
+	else{
+		vs['vd18'] = '';
+	}
+	if($.isNumeric(vs['vd13'])&&$.isNumeric(vs['vd17'])){
+		vs['vd19'] = accsub(vs['vd13'],vs['vd17']);
+	}
+	else{
+		vs['vd19'] = '';
+	}
+	if($.isNumeric(vs['vd18'])&&$.isNumeric(vs['vd19']))
+	{
+		vs['vd20']=roundjs(accMul(accDiv(vs['vd18'],vs['vd19']),100),3);
+	}
+	else
+	{
+		vs['vd20']='';
+	}
+	if($.isNumeric(vs['vd10'])&&$.isNumeric(vs['vd20']))
+	{
+		vs['vd0'] = accDiv(accAdd(vs['vd10'],vs['vd20']),2);
+
+	}else if($.isNumeric(vs['vd10'])&&!$.isNumeric(vs['vd20']))
+	{
+		vs['vd0'] =vs['vd10'];
+	}
+	else{
+		vs['vd0'] = '';
+	}
+
+}
+</script> 

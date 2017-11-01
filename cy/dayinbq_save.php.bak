@@ -1,0 +1,139 @@
+<?php
+/**
+* 标签打印  根据 有效样品列表（mission_list.php） 页面的信息 打印相应的标签 
+*  标签格式为 A2009120058  打印为： A0058  是标签的字母 加  编号的后4位数
+*/
+
+
+/*
+*
+*FR"SSFMT000"
+?
+A1388
+A1388
+A1389
+A1389
+A1390
+A1390
+P1
+N
+*
+*/
+include "../temp/config.php";
+if($u[userid] == '') nologin();
+include "../site_type.php";
+
+$tou='I8,E
+ZN
+q823
+S3
+O
+JF
+ZT
+Q160,25
+FK"SSFMT000"
+FS"SSFMT000"
+V00,99,N,""
+V01,73,N,""
+V02,99,N,""
+B800,143,2,3,2,5,85,N,V00
+A778,51,2,5,1,1,N,V00
+B515,143,2,3,2,5,85,N,V01
+A507,51,2,5,1,1,N,V01
+B245,143,2,3,2,5,85,N,V02
+A237,51,2,5,1,1,N,V02
+FE
+N';
+$cyd_id=$_POST['cyd_id'];
+$asy=$_POST[bq];
+$ges=$_POST[geshu];
+$sum=0;
+while(list($key,$va) = each($asy)) {
+for($i=1;$i<=$ges[$key];$i++)
+{
+$items[]=$va;  //得到 所以的打印标签
+}
+
+}
+//循环 得到标签 打印的文件
+$ta= array("0" =>'AnHeng',"1" =>'XiTong',"2" =>'DaXing');
+while(list($key,$val) = each($items)) {
+
+if($key>1 and $key%3==0)
+{
+$txta.='
+FR"SSFMT000"
+?
+'.$ta[0]
+.'
+'.$ta[1]
+.'
+'.$ta[2]
+.'
+P1';
+$ta= array("0" =>'AnHeng',"1" =>'XT',"2" =>'DX');
+}
+
+$ta[$key%3]="$val";
+}
+$txta.='
+FR"SSFMT000"
+?'."
+$ta[0]
+$ta[1]
+$ta[2]"
+.'
+P1
+FK"SSFMT000"
+FR"SSFMT000"
+
+';
+$ta= array("0" =>'AnHeng',"1" =>'XiTong',"2" =>'DaXing');
+
+//很怪的事情  打印标签 打印 就会把最后一行的三个标签不打印
+//$txta.=temp(label_dy);  //这里不能用 模板  模板会多出一些东西  如 <!--index1.html结束.....
+if(count($items)>3)
+$txta.='FR"SSFMT000"
+?'."
+$ta[0]
+$ta[1]
+$ta[2]"
+.'
+P1
+FK"SSFMT000"
+
+';
+
+$dayin=$tou.$txta;
+
+$stream = fopen("/tmp/dy.txt", "w+"); //保留最后一次打印数据
+fwrite($stream, $dayin);
+//判断 是否定义ip 地址（独立的打印服务器） 如果没有就是访问页面的机器
+if($gx_dayinip!='')
+$ip=$gx_dayinip;
+else
+$ip=$_SERVER[REMOTE_ADDR];
+print_remote($dayin,$ip);
+
+function print_remote($str,$ip)
+{
+global $cyd_id,$gx_duankou,$rooturl;
+if($gx_duankou!='')
+$duankou=$gx_duankou;
+else
+$duankou=23128;
+$fp=@fsockopen($ip,$duankou, $errno, $errstr, 30);
+
+if (!$fp) {   
+gotourl("$rooturl/caiyang/dayin_biaoqian.php?cyd_id=$cyd_id",'连接打印机失败');
+ }
+else
+{
+fwrite($fp,$str);
+gotourl("$rooturl/caiyang/dayin_biaoqian.php?cyd_id=$cyd_id",'已经连接打印机正在打印，请等待！');
+
+fclose($fp);
+}
+}
+
+?>

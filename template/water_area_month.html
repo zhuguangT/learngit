@@ -1,0 +1,29 @@
+<script>
+function redirect(){
+	if(v('fzx_id')){
+		var fid=v('fzx_id');
+	}
+   var url = "?&year=" + v( 'year') +"&month="+v('month')+"&fzx_id="+fid;
+    location = url;
+}
+</script>
+<h3 class="header smaller center title">成果月报表</h3>
+<div class="widget-box no-border">
+  <div class="widget-header header-color-blue4 center">
+	<div class="widget-toolbar">
+		年份选择:<select id="year"      onchange="redirect()">$year_list</select>
+		月份选择:<select id="month"      onchange="redirect()">$month_list</select>
+		$fzx_select
+	</div>
+  </div>
+  <div class="widget-body">
+<table class="table table-striped table-bordered table-hover center" style='table-layout:fixed'>
+<tr align="center">
+    <td width="10%">序号</td>
+	<td width="30%">统计参数</td>
+	<td width="60%">操作</td>
+</tr>
+$water_area_lines
+</table>
+</div>
+</div>

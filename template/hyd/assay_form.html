@@ -1,0 +1,134 @@
+<link href="$rooturl/css/boxy.css" rel="stylesheet" type="text/css" />
+<link href="$rooturl/css/lims/hyd.css?v={$global['hyd']['v']}" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="$rooturl/js/boxy.js"></script>
+<script type="text/javascript" src="$rooturl/js/lims/hyd.js?v={$global['hyd']['v']}"></script>
+<script type="text/javascript" src="$rooturl/js/lims/zhikong.js?v={$global['hyd']['v']}"></script>
+<div style="width:100%;margin:0 auto;">
+	<div id="hyd_tabs_{$tid}" style="width:90%;margin:0 auto;padding:0;">
+		<ul>
+			<li><a class="tabs_1" href="#hyd_shuju_{$tid}">数据录入</a></li>
+			<li><a class="tabs_2 hide" href="#hyd_btSet_{$tid}">表头设置</a></li>
+			<li><a class="tabs_3" href="#hyd_suyuan_{$tid}">数据溯源</a></li>
+			<li><a class="tabs_4" href="#xmfa_set">检验方法设置</a></li>
+			<p style="margin:0;padding-top:8px;">{$arow['xmfb_msg']}</p>
+		</ul>
+		<div id="hyd_shuju_{$tid}" style="border-left:none;border-right:none;">
+			{$assay_form}<!-- 化验单数据表格 -->
+		</div>
+		<div id="hyd_btSet_{$tid}" style="border-left:none;border-right:none;"></div>
+		<div id="hyd_suyuan_{$tid}" style="border-left:none;border-right:none;"></div>
+		<div id="xmfa_set" style="border-left:none;border-right:none;" >
+			<iframe style="border:none;height:100%;width:100%;" src="ahlims.php?app=jcxm&act=jcxm_set&ajax=1&leixing=全部&vid={$arow['vid']}" ></iframe>
+		</div>
+		<div class="alert alert-danger" style="display:none;">
+			<strong><i class="icon-remove"></i> </strong>你请求的 <strong>{$tid}</strong> 号化验单不存在！
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+//初始化标签页
+$("#hyd_tabs_{$tid}").tabs();
+//错误提示
+if(''=='{$arow['id']}'){
+	$(".alert.alert-danger").show();
+}
+$("#hyd_tabs_{$tid} .tabs_3").click(function(){
+	$.get("$rooturl/huayan/assay_shuyuan.php?tid={$tid}&ajax=1",function(data){
+		$("#hyd_suyuan_{$tid}").html(data);
+	});
+});
+var height = $(window).height() - $('#hyd_tabs_{$tid} ul').outerHeight(true);
+$("#xmfa_set").height(height);
+</script>
+<!-- 质控操作 -->
+<div id="modal_zhikong" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-draggable="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3 class="zhikong_title"></h3>
+			</div>
+			<form name="form_zhikong">
+			<input type="hidden" name="tid" value="" />
+			<input type="hidden" name="flag" value="" />
+			<input type="hidden" name="action" value="" />
+			<input type="hidden" name="data-orid" value="" />
+			<input type="hidden" name="data-type" value="" />
+			<!-- 错误提醒 -->
+			<div class="modal-body ui-state-error center"></div>
+			<!-- 空白信号值 -->
+			<div class="modal-body" data-type="kongbai">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-3 col-md-offset-2 right">信号值 ：</div>
+						<div class="col-md-7"><input type="text" autofocus="autofocus" size="10" name="xhz" value="" /></div>
+					</div>
+				</div>
+			</div><!-- End -->
+			<!-- 自控样（单点标液） -->
+			<div class="modal-body" data-type="zky">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-3 col-md-offset-2 right">批号 ：</div>
+						<div class="col-md-7"><input type="text" autofocus="autofocus" size="10" name="piHao" value="" /></div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-md-offset-2 right">标准值 <b class="red">*</b>：</div>
+						<div class="col-md-7"><input type="text" size="10" name="bzz" value="" />
+							<select name="bzzdw">
+								<option value="mg/L">mg/L</option>
+								<option value="µg/L">µg/L</option>
+								<option value="mol/L">mol/L</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-md-offset-2 right">允许误差范围 <b class="red">*</b>：</div>
+						<div class="col-md-7"><input type="text" size="10" name="bqdd" value="" />
+							<select name="bqdddw">
+								<option value="%">%</option>
+								<option value="mg/L">mg/L</option>
+								<option value="µg/L">µg/L</option>
+								<option value="mol/L">mol/L</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div><!-- End -->
+			<!-- 加标回收 -->
+			<div class="modal-body" data-type="jiabiao">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-3 col-md-offset-2 right">原水样体积 <b class="red">*</b>：</div>
+						<div class="col-md-7"><input type="text" autofocus="autofocus" size="10" name="qyv" value="" /> mL</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-md-offset-2 right">标液浓度 <b class="red">*</b>：</div>
+						<div class="col-md-7"><input type="text" size="10" name="byc" value="" />
+							<select name="bycdw">
+								<option value="mg/L">mg/L</option>
+								<option value="mg/mL">mg/mL</option>
+								<option value="µg/mL">µg/mL</option>
+								<option value="mol/L">mol/L</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-md-offset-2 right">标液体积 <b class="red">*</b>：</div>
+						<div class="col-md-7"><input type="text" size="10" name="byv" value="" />
+							<select name="byvdw">
+								<option value="mL">mL</option>
+								<option value="L">L</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div><!-- End -->
+			</form>
+			<div class="modal-footer">
+				<a href="javascript:void(0)" class="btn btn-primary btn-sm" id="zhikong_modal_submit">确定</a>
+				<a href="#" class="btn btn-sm" data-dismiss="modal">取消</a>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,56 @@
+<h1>pH值原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+<tr class="noborder">
+  <td style="width:10%"></td>
+  <td style="width:15%"></td>
+  <td style="width:15%"></td>
+  <td style="width:15%"></td>
+  <td style="width:15%"></td>
+  <td style="width:15%"></td>
+  <td style="width:15%"></td>
+</tr>
+<tr>
+  <td colspan="3">分析方法：{$arow['td2']}</td>
+  <td colspan="4">分析日期：<input type="text" class="date_Ymd" name="td31" value="{$arow['td31']}" size="12" /></td>
+  </tr>
+  <tr class='left'>
+  <td colspan="2">样品类别:{$arow['water_type']}</td>
+  <td colspan="2">仪器名称及编号:{$arow['td4']} {$arow['yq_bh']}</td>
+  <td>校准日期</td><td colspan="2"><input type="text" name="td9" size="12" class="inputl" value="{$arow['td9']}"></td>
+</tr>
+<tr class='left'>
+  <td colspan="4" class="auto" >标准缓冲液PH值:&nbsp;&nbsp; pH(1)=<input type="text" name="td10" size="4" class="inputc" value="{$arow['td10']}">
+  &nbsp;pH(2)=<input type="text" name="td11" size="4" class="inputc" value="{$arow['td11']}"></td>
+  <td>配制日期</td><td colspan="2"><input type="text" name="td12" size="12" class="inputl" value="{$arow['td12']}"></td>
+</tr>
+<tr class='left'>
+  <td colspan="7">计算公式: PH值=仪器显示 </td>
+</tr>
+<tr  >
+  <td>序号</td>
+  <td >{$zhanming}</td>
+  <td >水温<br />℃</td>
+  <td >仪器显示</td>
+  <td >pH值</td>
+  <td>平均值</td>
+  <td>相对偏差<br />(%)</td>
+</tr>
+{$aline}
+<tr>
+  <td>备注</td>
+  <td colspan="6"><textarea name="td30"  rows="2" cols="80">{$arow['td30']}</textarea></td>
+</tr>
+</table>
+<script type="text/javascript">
+  function jsgs()
+  {
+  	if($.isNumeric(vs['vd3'])){
+      		vs['vd0'] = vs['vd3'];
+    	}
+      else
+      {
+        vs['vd0']=vs['_vd0'];
+      }
+  }
+</script>

@@ -1,0 +1,254 @@
+<style type="text/css">
+    form{min-width: 10cm;max-width: 18cm;margin: 0 auto;}
+    input{ text-align: center;}
+    center select{
+        min-width: 200px;
+    }
+</style>
+$print
+<form name="bzry" action="bzry_modi.php" method="POST" onSubmit="return(verify(this))">
+  <h1 class="center">标准溶液标定原始记录表</h1>
+  <center>
+    <select $display onchange="location.href='$current_url&table_type='+this.value">
+        <option {$table_type_01} value="01">切换表格一</option>
+        <option {$table_type_02} value="02">切换表格二</option>
+    </select>
+    {$tuihui_button}
+  </center>
+  <div class="accordion-style1 panel-group" id="accordion_{$tid}">
+   {$huiTuiShow}
+   </div>
+  <br />
+  <input type="hidden" name="bd_id" value="$r[id]">
+  <input type="hidden" name="action" value="$_GET[action]">
+  <input type="hidden" name="fx_user" value="$r[fx_user]">
+  <input type="hidden" name="table_type" value="02">
+  <table class="single center" style="width:18cm;">
+    <tr class="noborder">
+        <td style="width:15%"></td><td style="width:20%"></td>
+        <td style="width:16%"></td><td style="width:20%"></td>
+        <td style="width:12%"></td><td style="width:17%"></td>
+    </tr>
+    <tr>
+        <td>分析项目</td>
+        <td>$print_data[xm]
+            <select $display name='vid' style="width:100%">$xm_list</select></td>
+        <td>检测依据</td>
+        <td><input type="text" name="jcyj" value="$r[jcyj]" /></td>
+        <td>标定日期</td>
+        <td><input type="text" class="date-picker" name="bzry_bdrq" value="$r[bzry_bdrq]" /></td>
+    </tr>
+    <input type="hidden" name="bzry_id" value="$r[bzry_id]" />
+    <tr>
+        <td>标准溶液名称</td>
+        <td>
+            $print_data[bzry_name]
+            <input type="hidden" name="bzry_name" value="$r[bzry_name]" />
+            <select $display name="bzry_sel" style="width:100%">
+                <option value="$r[bzry_name]">$r[bzry_name]</option>
+            </select>
+        </td>
+        <td>配制日期</td>
+        <td><input type="text" class="disable" name="bzry_pzrq" value="$r[bzry_pzrq]" /></td>
+        <td>近似浓度</td>
+        <td><input type="text" class="disable" name="bzry_pznd" value="$r[bzry_pznd]" /></td>
+    </tr>
+    <tr>
+        <td>基准溶液名称</td>
+        <td colspan="2"><input type="text" name="jzry_name" value="$r[jzry_name]" /></td>
+        <td>指示剂名称</td>
+        <td colspan="2"><input type="text" name="zsj_name" value="$r[zsj_name]" /></td>
+    </tr>
+    <tr>
+        <td>计算公式</td>
+        <td colspan="5">
+            C=(W×1000)/(V×<input style="width:auto" type="text" name="mol_m" size="7" value="$r[mol_m]">)
+        </td>
+    </tr>
+    <tr><td colspan="6">标定方法</td></tr>
+    <tr>
+        <td colspan="6"><textarea name="bzry_bdff" >$r[bzry_bdff]</textarea></td>
+    </tr>
+    <tr>
+        <td colspan="6">标定记录</td>
+    </tr>
+    <tr>
+        <td>始点(mL)</td>
+        <td>终点(mL)</td>
+        <td>用量 V (mL)</td>
+        <td>W(g)</td>
+        <td colspan="2" id="jzry_nddw">标定浓度(mol/L)</td>
+        <input type="hidden" name="jzry_nddw" value="mol/L" />
+    </tr>
+    $line
+    <tr>
+        <td>空白</td>
+        <td><input type="text" class="inputc hyd" name="kb_sd" value="$r[kb_sd]" /></td>
+        <td>空白</td>
+        <td><input type="text" class="inputc hyd" name="kb_zd" value="$r[kb_zd]" /></td>
+        <td>空白用量(mL)</td>
+        <td>$r[kb_yl]</td>
+    </tr>
+    <tr>
+        <td colspan="1">标准溶液浓度</td>
+        <td colspan="1" class="noright">$r[bzry_nongdu] $dw</td>
+        <td colspan="4" class="noleft"></td>
+    </tr>
+    <tr class="auto">
+        <td>备注</td>
+        <td colspan="5"><textarea $readonly></textarea></td>
+    </tr>
+  </table>
+  <h3 class="center"> $save_button </h3>
+</form>
+<form name="shehe" method="POST" action=bzry_sh.php>
+  <input type="hidden" name="bzry_id" value="$r[id]">
+  <input type="hidden" name="vid" value="$r[vid]">
+ <table style="width:18cm;">
+    <tr>
+        <td width="33%">分析人员:$sign_01<input type="hidden" name="fx_user" value="$r[fx_user]" /></td>
+        <td width="34%">校核:$jh_user<input type="hidden" name="jh_user" value="$r[jh_user]" /></td>
+        <td width="33%">复核:$fh_user<input type="hidden" name="fh_user" value="$r[fh_user]" /></td>
+        <!-- <td>审核:$sh_user<input type="hidden" name="sh_user" value="$r[sh_user]" /></td> -->
+    </tr>
+    <tr>
+        <td>$r[fx_qz_date]</td>
+        <td>$r[jh_qz_date]</td>
+        <td>$r[fh_qz_date]</td>
+        <!-- <td>$r[sh_qz_date]<input type="hidden" name="sh_qz_date" value="$r[sh_qz_date]" /></td> -->
+    </tr>
+ </table>
+</form>
+<script type="text/javascript">
+$(document).ready(function(){
+    //按钮样式
+    $("input[type=submit],input[type=button]").addClass('btn btn-xs btn-primary');
+    $(".tui_Hui_{$r['id']}").unbind("click").click(function(){
+        $.prompt({
+            title: '标定记录退回',
+            placeholder: '请输入退回原因',
+            errorText: '退回原因不能为空！',
+            confirm: function(back_reason){
+                $.ajax({
+                    type: 'post',dataType:'json',
+                    data: {id:'{$r['id']}',action:'bd',ajax:1,yuanYin:back_reason},
+                    url: trade_global.rooturl+'/huayan/hyd_huitui.php?id={$r['id']}',
+                    success: function(data){
+                        if('0'==data.error){
+                            document.location.reload();
+                        }else{
+                            return alert(data.content);
+                        }
+                    },error: function(data){
+                        return alert(data.responseText);
+                    }
+                });
+            }
+        });
+    });
+    $("[type=button][name=fx_qz]").unbind("click").click(function(){
+        $.prompt({
+            title: '修改理由',
+            errorText: '修改理由不能为空！',
+            placeholder: '标定记录经过退回，请输入修改理由',
+            confirm: function(modi_reason){
+                $.ajax({
+                    type: 'post',dataType:'json',
+                    data: {id:'{$r['id']}',action:'bd_modify',ajax:1,yuanYin:modi_reason},
+                    url: trade_global.rooturl+'/huayan/hyd_huitui.php?id={$r['id']}',
+                    success: function(data){
+                        if('0'==data.error){
+                            document.location.reload();
+                        }else{
+                            return alert(data.content);
+                        }
+                    },error: function(data){
+                        return alert(data.responseText);
+                    }
+                });
+            }
+        });
+    });
+    if('$edit_able'=='0'){
+        return false;
+    }
+	//日期插件
+	$('.date-picker').datepicker({autoclose:true}).next().on(ace.click_event, function(){
+		$(this).prev().focus();});
+	//
+	var vid = '{$r[vid]}';
+    loading_mol (vid);//给项目添加默认的当量值
+	$("select[name=vid] option[value="+vid+"]").attr('selected',true);
+	$("input.disable").attr('title','不可编辑');
+	$("input.disable").focus(function(){
+		$(this).attr("disabled","disabled");
+		$(this).blur();
+		$(this).attr("disabled",false);
+	});
+	$("select[name=vid]").change(function(){
+        if(1=='{$edit_able}'||'add'=='$_GET[action]'){
+            //return false;
+        }
+		var xmid = $(this).val();
+        var bzry_id = $("form[name=bzry] input[name=bzry_id]").val();
+		$.getJSON('bzry_bd_getdata.php?ajax=1',{vid:xmid,bzry_id:bzry_id},function(data){
+            //检测依据
+            bzry.jcyj.value=data.jcyj;
+            //标准溶液
+            $("select[name=bzry_sel]").html(data.bzry);
+            //解决默认显示第一个option数据的问题
+            $("select[name=bzry_sel] option[value*='#"+bzry_id+"#']").attr('selected',true);
+            loading_bzry();
+			//默认填充上次的内容
+			bzry.mol_m.value=(undefined==data.last.mol_m)?'':data.last.mol_m;
+            bzry.jzry_name.value=(undefined==data.last.jzry_name)?'':data.last.jzry_name;
+            bzry.zsj_name.value=(undefined==data.last.zsj_name)?'':data.last.zsj_name;
+			bzry.bzry_bdff.innerHTML=(undefined==data.last.bzry_bdff)?'':data.last.bzry_bdff;
+            //给项目添加默认的当量值
+            loading_mol(xmid);
+		});
+	});
+    //调出相关的标液和基准溶液提供选择
+    $("select[name=vid]").trigger('change');
+    $("select[name=bzry_sel]").change(function(){
+        loading_bzry();
+    });
+	$("input[name='tj[]']").focus(function(){
+		if($(this).val()==''){
+			var mr_v= $("input[name='tj[]']:first").val();
+			_data = prompt( "请输入有效数据:", mr_v );
+			$("input[name='tj[]']").each(function(){
+				if($(this).val()==''){
+					$(this).val(_data);
+				}
+			});
+		}
+	})
+})
+function jsgs(){}
+function loading_bzry(){
+    if(''!=$("select[name=bzry_sel]").val()){
+        var bzry_data = $("select[name=bzry_sel]").val().split('**');
+    }else{
+        var bzry_data = new Array('','','','');
+    }
+    bzry.bzry_id.value  = bzry_data[0];
+    bzry.bzry_name.value= bzry_data[1];
+    bzry.bzry_pzrq.value= bzry_data[2];
+    bzry.bzry_pznd.value= bzry_data[3];
+}
+function loading_mol (vid) {
+    if('127'==vid){
+        if(''==bzry.mol_m.value){
+            bzry.mol_m.value = '204.22';
+        }
+    }
+}
+function verify(para){
+    aaa='';
+    for(i=0;i<para.length;i++)
+        if(para.elements[i].name.charCodeAt(0)>127 && para.elements[i].value=='')
+            aaa+='数据项"'+para.elements[i].name+'"不许为空n';
+    if(aaa!=''){alert(aaa);return false;} else return true;
+}
+</script>

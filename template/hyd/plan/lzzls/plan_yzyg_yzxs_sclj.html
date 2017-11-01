@@ -1,0 +1,138 @@
+<h1>原子吸收、原子荧光检验记录</h1>
+<h1>（饮用水化学处理剂评价）</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:7%"></td><td style="width:7%"></td>
+		<td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td>
+		<td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td>
+		<td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td><td style="width:9%"></td>
+	</tr>
+	<tr>
+		<td colspan="2">检验项目</td>
+		<td colspan="2">{$arow['assay_element']}</td>
+		<td colspan="2">检验方法</td>
+		<td colspan="3">{$arow['td1']}</td>
+		<td colspan="2">检验地点</td>
+		<td colspan="3"><input type="text" name="td7" class="inputl" value="{$arow['td7']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">仪器名称</td>
+		<td colspan="2">{$arow['td4']}</td>
+		<td colspan="2">仪器型号</td>
+		<td colspan="3">{$arow['td5']}</td>
+		<td colspan="2">仪器编号</td>
+		<td colspan="3">{$arow['yq_bh']}</td>
+	</tr>
+	<tr>
+		<td colspan="2">方法依据</td>
+		<td colspan="12">{$arow['td2']}</td>
+	</tr>
+	<tr>
+		<td colspan="2">标准物质</td>
+		<td colspan="4"><input type="text" name="td8" class="inputl" value="{$arow['td8']}" /></td>
+		<td colspan="2">编号</td>
+		<td colspan="2"><input type="text" name="td9" class="inputl" value="{$arow['td9']}" /></td>
+		<td colspan="2">浓度</td>
+		<td colspan="2"><input type="text" name="td10" class="inputl" value="{$arow['td10']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">稀释倍数</td>
+		<td colspan="4"><input type="text" name="td8" class="inputl" value="{$arow['td8']}" /></td>
+		<td colspan="3">标准使用液浓度</td>
+		<td colspan="5"><input type="text" name="td9" class="inputl" value="{$arow['td9']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">测定条件</td>
+		<td colspan="4"><input type="text" name="td8" class="inputl" value="{$arow['td8']}" /></td>
+		<td colspan="3">水样前处理方式</td>
+		<td colspan="5"><input type="text" name="td9" class="inputl" value="{$arow['td9']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="14">标 准 曲 线</td>
+	</tr>
+	<tr>
+		<td colspan="2">标准溶液C<br />(ug/L)</td>
+		<td>0.000</td>
+		<td>0.100</td>
+		<td>0.200</td>
+		<td>0.400</td>
+		<td>0.600</td>
+		<td>0.800</td>
+		<td>1.000</td>
+	</tr>
+	<tr>
+		<td colspan="2">荧光强度<br />(If)</td>
+		<td><input type="text" name="td10" class="inputl" value="{$arow['td10']}" /></td>
+		<td><input type="text" name="td11" class="inputl" value="{$arow['td11']}" /></td>
+		<td><input type="text" name="td12" class="inputl" value="{$arow['td12']}" /></td>
+		<td><input type="text" name="td13" class="inputl" value="{$arow['td13']}" /></td>
+		<td><input type="text" name="td14" class="inputl" value="{$arow['td14']}" /></td>
+		<td><input type="text" name="td15" class="inputl" value="{$arow['td15']}" /></td>
+		<td><input type="text" name="td16" class="inputl" value="{$arow['td16']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">曲线</td>
+		<td colspan="12" class="auto">If=<input type="text" name="td17" size="30" class="inputl" value="{$arow['td17']}" />       r=<input type="text" name="td18" size="10" class="inputl" value="{$arow['td18']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2" rowspan="2">两点加标浓度<br />(ug/L)</td>
+		<td colspan="2">加标1</td>
+		<td colspan="2"><input type="text" name="td19" class="inputl" value="{$arow['td19']}" /></td>
+		<td colspan="2" rowspan="2">实测浓度<br /> 平均(ug/L)</td>
+		<td colspan="2" rowspan="2"><input type="text" name="td21" class="inputl" value="{$arow['td21']}" /></td>
+		<td colspan="2" rowspan="2">相对误差<br /> 平均(%)</td>
+		<td colspan="2" rowspan="2"><input type="text" name="td22" class="inputl" value="{$arow['td22']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">加标1</td>
+		<td colspan="2"><input type="text" name="td20" class="inputl" value="{$arow['td20']}" /></td>
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td>仪器水样号</td>
+		<td colspan="2">样品编号</td>
+		<td>样品类型</td>
+		<td>样品质量m(g)</td>
+		<td>溶液体积(mL)</td>
+		<td>检验浓度1(ug/L)</td>
+		<td>检验浓度2(ug/L)</td>
+		<td>平均浓度(ug/L)</td>
+		<td>稀释倍数</td>
+		<td>样品中硒的含量(ug/g)</td>
+		<td>饮用水化学处理剂建议评价计量(mg/L)</td>
+		<td>硒被带入饮用水中的评价计量(mg/L)</td>
+	</tr>
+		{$aline}
+	<tr>
+		<td align="center">备注</td>
+		<td colspan="13"><textarea name="td30">$arow[td30]</textarea></td>
+	</tr>
+</table>   
+<script type="text/javascript">
+function jsgs(){
+	if($.isNumeric(vs['vd7'])&&$.isNumeric(vs['vd8']))
+	{
+		vs['vd9'] = accDiv(accAdd(parseFloat(vs['vd7']),parseFloat(vs['vd8'])),2);
+	}
+	else
+	{
+		vs['vd9'] = '';
+	}
+	if($.isNumeric(vs['vd9'])&&$.isNumeric(vs['vd1'])&&$.isNumeric(vs['vd10'])&&$.isNumeric(vs['vd5'])){
+		vs['vd11'] =accDiv(accMul(accMul(parseFloat(vs['vd9']),parseFloat(vs['vd1'])),parseFloat(vs['vd10'])),parseFloat(vs['vd5']));
+	}
+	else
+	{
+		vs['vd11'] ='';
+	}
+	if($.isNumeric(vs['vd11'])&&$.isNumeric(vs['vd26']))
+	{
+		vs['vd0']=accMul(accMul(parseFloat(vs['vd11']),0.001),parseFloat(vs['vd26']));
+	}
+	else
+	{
+		vs['vd0']='';
+	}
+}
+</script>

@@ -1,0 +1,74 @@
+<!-- 仪器档案 的修改 页面 -->
+<form method="GET" action="$rooturl/yiqigl/yiqidanan_g.php" >
+<h1 align="center" >仪器档案信息</h1>
+<table width="750" border="1" cellspacing="0" cellpadding="0">
+  <tr align="center">
+    <td width="90" height="34" >名称</td>
+    <td ><input type="text" name="name"  value="$r[name]" /></td>
+    <td width="80" >设备编号</td>
+    <td><input type="text" name="sbbh"  value="$r[sbbh]" /> </td>
+  </tr>
+  <tr align="center">
+    <td width="90" height="34" >型号</td>
+    <td><input type="text" name="sbxh"  value="$r[sbxh]" /></td>
+    <td>国别</td>
+    <td><input type="text" name="guobie"  value="$r[guobie]" /><td>
+  </tr>
+  <tr align="center">
+    <td width="90" height="34" >使用单位</td>
+    <td><input type="text" name="sydw"  value="$r[sydw]" /></td>
+    <td>鉴定类型</td>
+    <td>  <select name="jdlx" >
+    <option value="$r[jdlx]">$r[jdlx]</option>
+    <option value="强检">强检</option>
+    <option value="自检">自检</option>
+  </select><td>
+  </tr>
+  <tr align="center">
+    <td width="90" height="34" >制造厂</td>
+    <td ><input type="text" name="zhizhao"  value="$r[zhizhao]"  /></td>
+    <td >出厂编号</td>
+    <td><input type="text" name="ccbh" value="$r[ccbh]" /></td>
+  </tr>
+  <tr align="center">
+    <td  width="90" height="34" align="center">制造日期</td>
+    <td align="center"><input type="text" name="zzdate" value="$r[zzdate]" /></td>
+    <td align="center">价格</td>
+    <td><input type="text" name="jiage" value="$r[jiage]" /></td>
+  </tr>
+  <tr align="center">
+    <td  width="90" height="34" align="center">来源</td>
+    <td align="center"><input type="text" name="laiyuan" value="$r[laiyuan]" /></td>
+    <td align="center">调购日期</td>
+    <td><input type="text" name="diaodate" value="$r[diaodate]" /></td>
+  </tr>
+  <tr align="center">
+    <td width="90" height="34" >新旧程度</td>
+    <td ><input type="text" name="xinjiu" value="$r[xinjiu]" /></td>
+    <td >起用日期</td>
+    <td><input type="text" name="qiydate" value="$r[qiydate]" /></td>
+  </tr>
+  <tr>
+    <td  align="center"  height="90">规格精度</td>
+    <td colspan="3"><textarea name="guige" cols="60" rows="5"  >$r[guige]</textarea></td>
+  </tr>
+<tr >
+  <td  colspan="4" align="center">
+<input type="hidden" name="yid" value="$_GET[yid]" />
+      <input type="submit" name="tijiao" value="修改" /></td>
+    </tr>
+</table>
+</from>
+
+<table width="350" border="1" cellspacing="0" cellpadding="0">
+  <tr  align="center">
+    <td  colspan="3">附件及备品配件</td>
+
+  </tr>
+  <tr align="center">
+    <td>名称</td>
+    <td  width="50">数量</td>
+    <td>删除</td>
+ </tr>
+$fjline
+</table>

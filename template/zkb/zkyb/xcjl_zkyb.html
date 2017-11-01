@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>$tltle</title>
+<link href="$rooturl/css/ace.min.css" rel="stylesheet" />
+<link href="$rooturl/css/bootstrap.min.css" rel="stylesheet" />
+<link href="$rooturl/css/lims/print.css" rel="stylesheet" /> 
+<style type="text/css">
+	*{text-align: center;}
+	table{margin: 0 auto; min-width: 17cm; max-width: 28cm;text-align: center;}
+	table.single td{ height:40px; min-width: 30px;}
+	table.single td input[type='text']{ width: 100%;}
+	table.single textarea{width: 100%; height: 100%;}
+	.padding_0 td{ padding:0;margin:0;line-height:15px;height:30px;}
+	table.single tr.line:hover{ background-color:#ccc;}
+</style>
+</head>
+<body>
+<link href="$rooturl/css/lims/buttons.css" rel="stylesheet" type="text/css" />
+$bts
+
+<form name="form1" action="#?line={$line_per_page}" method="post" target="_blank" >
+	<input type="hidden" name="data" value='$excel_json' />
+	<!-- <a onclick="form1.submit()" style="position:fixed;right:0px;bottom:50px;" class="button blue">下载报告</a> -->
+</form>
+</body>
+</html>

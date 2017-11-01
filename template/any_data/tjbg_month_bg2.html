@@ -1,0 +1,79 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+<title>
+	水质月报公报
+</title>
+		
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name></x:Name><x:WorksheetOptions><x:Selected/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
+    <style type="text/css">
+    	tr{height: 31px;}
+        .td1
+        {
+            width: {$area_width}px;
+        }
+		.td2{
+			width:{$wt_width}px;
+		}
+		.td3{
+			width:{$vid_width}px
+		}
+        .gdtjContainer .tb tr
+        {
+            text-align: center;
+            vertical-align: middle;
+			font-family:宋体;
+        }
+        .gdtjContainer .tb td
+        {
+			white-space : normal;
+			border:0.5pt solid;
+            text-align: center;
+			font-family:宋体;
+            font-weight: normal;
+            font-size: 10pt;
+			mso-height-source:auto;}
+		.gdtjContainer .tb .bz td{
+			mso-height-source:auto;
+			font-size:10pt;
+		}
+		 .gdtjContainer .no_border td
+		{
+			border:0pt;
+		}
+    </style>
+</head>
+<body>
+    <div class="gdtjContainer">
+        <table class="tb"  style="margin:0 auto;width:1000px;border-collapse:collapse;">
+            <colgroup>
+				<col class="td1"/>
+				<col class="td2" />
+				<col  class="td3" span="{$cols1}" />
+               
+            </colgroup>
+			<thead style="display:table-header-group;" >
+				<tr>
+					<td align="center" style="font-weight:bold;font-size:14pt;border:0px;" colspan={$z_cols} >$title</td>
+				</tr> 
+				<tr style="height:2cm;">
+					<td align="left" style="font-size:10pt;text-align:left;border:0px;height:2cm;" colspan={$z_cols}>&nbsp;&nbsp;&nbsp;&nbsp;{$cy_date_fw}，青岛市城市管理局对我市四市六区城市供水水质进行了抽检，现将抽检结果公报如下：<br  style="mso-data-placement:same-cell;"/>&nbsp;&nbsp;&nbsp;本次共抽检13个水厂出厂水水样和36个管网水水样。所有受检出厂水的9项常规指标和管网水的7项常规指标全部符合《生活饮用水卫生标准》（GB5749-2006），出厂水和管网水受检水样合格率均为100%。</td>
+				</tr>
+				<tr align="center" style="height:2cm"><td>区&nbsp;&nbsp;市</td><td>水样类型</td>{$xm_name_td}</tr>
+			</thead>
+			{$week_bg_line}
+			<tr align="center" class="bz"  style="mso-height-source:auto;">
+				<td colspan="2">国家标准<br style="mso-data-placement:same-cell;"/>（GB5749-2006)</td>{$xz_td}
+			</tr>
+			<tr class="no_border">
+				<td>备注：</td><td  colspan={$bz_cols} style="text-align:left;">1、管网水抽检浑浊度、色度、余氯、细菌总数、总大肠菌群、耗氧量、嗅和味共7项指标。</td>
+			</tr>
+			<tr class="no_border">
+				<td></td><td   colspan={$bz_cols} style="text-align:left;">2、出厂水除上述7项指标外，还包括耐热大肠菌群、肉眼可见物2项，共9项指标。</td>
+			</tr>
+        </table>
+
+    </div>
+</body>
+</html>

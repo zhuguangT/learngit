@@ -1,0 +1,133 @@
+<h1>碱度及碳酸盐、重碳酸盐分析原始记录表</h1>
+{$hjtj_bt}
+<table class="single">
+	<tr class="noborder">
+		<td style="width:5%"></td><td style="width:9%"></td><td style="width:5%"></td><td style="width:6%"></td>
+		<td style="width:7%"></td><td style="width:6%"></td><td style="width:6%"></td><td style="width:6%"></td>
+		<td style="width:7%"></td><td style="width:6%"></td><td style="width:6%"></td><td style="width:6%"></td>
+		<td style="width:7%"></td><td style="width:6%"></td><td style="width:6%"></td><td style="width:6%"></td>
+	</tr>
+	<tr>
+		<td colspan="1" nowrap="">检测项目</td>
+		<td colspan="2">{$arow['assay_element']}</td>
+		<td colspan="2">检测依据</td>
+		<td colspan="2">{$arow['td2']}</td>
+		<td colspan="2">检出限({$arow['unit']})</td>
+		<td colspan="2">{$arow['td3']}</td>
+		<td colspan="2">指示剂名称</td>
+		<td colspan="3"><input type="text" name="td8" value="{$arow['td8']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="1">滴定管<br />规格</td>
+		<td colspan="2"><input type="text" name="td9" value="{$arow['td9']}" /></td>
+		<td colspan="2">颜色</td>
+		<td colspan="2"><input type="text" name="td10" value="{$arow['td10']}" /></td>
+		<td colspan="2">标准溶液名称</td>
+		<td colspan="2"><input type="text" name="td11" value="{$arow['td11']}" /></td>
+		<td colspan="2">标准溶液浓度 C(mmol/L)</td>
+		<td colspan="3"><input type="text" name="td12" id="by_c_{$tid}" value="{$arow['td12']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="16">
+			<table><tr class="noborder">
+			<td nowrap="">计算公式：</td>
+				<!-- <td nowrap="" class="right">当P&gt;M C<sub>1</sub>=&nbsp;</td>
+				<td nowrap="">2C×M×30.01<hr />V</td>
+				<td nowrap="" class="right">当P≤M C<sub>1</sub>=&nbsp;</td>
+				<td nowrap="">2C×P×30.01<hr />V</td> -->
+				<td nowrap="" class="right">当P≥M A<sub>2</sub>=</td>
+				<td nowrap="">2C×P×50.05<hr />V</td>
+				<td nowrap="" class="right">当P&lt;M A<sub>2</sub>=</td>
+				<td nowrap="">2C×M×50.05<hr />V</td>
+				<td nowrap="" class="right">当P&lt;M或P=0 C<sub>2</sub>=&nbsp;</td>
+				<td nowrap="">C×(M-P)×61.02<hr />V</td>
+				<td nowrap="" class="right">A<sub>3</sub>=</td>
+				<td nowrap="" class="noleft">C×(M-P)×50.05<hr />V</td>
+				<td nowrap="" class="right">A=&nbsp;</td>
+				<td nowrap="">C×(P+M)×50.05<hr />V</td>
+			</tr></table>
+		</td>
+	</tr>
+	<tr class="hyd_tr_{$tid}">
+		<td rowspan="2">序号</td>
+		<td rowspan="2" colspan="2">样品编码</td>
+		<td rowspan="2" nowrap="">取样体积<br />（mL）</td>
+		<td colspan="3">P（mL）</td>
+		<td colspan="3" >M（mL）</td>
+		<td rowspan="2">碳酸盐<br />碱度A₂ （mg/L）</td>
+		<td rowspan="2">重碳酸盐<br />碱度A₃（mg/L）</td>
+		<td rowspan="2">重碳酸盐<br />浓度C₂ （mg/L）</td>
+		<td rowspan="2">总碱度A（mg/L）</td>
+		<td rowspan="2">平均值（mg/L）</td>
+		<td rowspan="2">相对<br />偏差<br />（％）</td>
+	</tr>
+	<tr>
+		<td>始点</td>
+		<td>终点</td>
+		<td>用量</td>
+		<td>始点</td>
+		<td>终点</td>
+		<td>用量</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td align="center" colspan="2" >备注</td>
+		<td colspan="17"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+<input type="hidden" name="round_columns[]" value="vd15" />
+<script type="text/javascript">
+$(document).ready(function(){
+	//填写浓度后进行计算
+	$("#by_c_{$tid}").blur(function(){
+		$("input[name*='vd1']").each(function (i) {
+			$(this).blur();
+		});
+	})
+})
+function jsgs(){
+	var C = parseFloat($("#by_c_{$tid}").val());
+	if(''==C || isNaN(C)){
+		$("#by_c_{$tid}").focus();return false;
+	}
+	var A,A1,A2,A3,C1,C2,f,T,P,M;
+	var vd2_split = String(vs['vd2']).split('.');
+	var vd5_split = String(vs['vd5']).split('.');
+	if(2==vd2_split.length){
+		var diding_ws = vd2_split[1].length;
+	}else if(2==vd5_split.length){
+		var diding_ws = vd5_split[1].length;
+	}else{
+		var diding_ws = 0;
+	}
+	if($.isNumeric(vs['vd2']) && $.isNumeric(vs['vd3'])){
+		vs['vd4'] = P = parseFloat(accsub(parseFloat(vs['vd3']),parseFloat(vs['vd2']))).toFixed(diding_ws);
+	}else{vs['vd4']=''}
+		if($.isNumeric(vs['vd5']) && $.isNumeric(vs['vd6'])){
+		vs['vd7'] = M = parseFloat(accsub(parseFloat(vs['vd6']),parseFloat(vs['vd5']))).toFixed(diding_ws);
+	}else{
+		vs['vd7']='';
+	}
+	if( P > 0 || M > 0 ){
+		var vd1 = parseFloat(vs['vd1']);
+		var T   = parseFloat(vs['vd4']+vs['vd7']);
+		var f   = parseFloat(50.05/vd1);
+		// 575氢氧化物
+		vs['vd8'] = vs['vd9'] = A1 = natural_number(parseFloat(C*(P-M)*f));
+		// 188碳酸盐
+		vs['vd10'] = vs['vd11'] = A2	= natural_number(parseFloat(2*C*(parseFloat(P)<parseFloat(M)?parseFloat(P):parseFloat(M))*f));
+		vs['vd12'] = C1 = natural_number(parseFloat(2*C*(parseFloat(P)>parseFloat(M)?parseFloat(M):parseFloat(P))*30.01/vd1));
+		// 189重碳酸盐
+		vs['vd14'] = vs['vd14'] = A3	= natural_number(parseFloat(C*(M-P)*f));
+		vs['vd15'] = C2	= natural_number(parseFloat(C*(M-P)*61.02/vd1));
+		// 125总碱度
+		vs['vd16'] = vs['vd17'] = A = natural_number(parseFloat(C*(accAdd(P,M))*f));
+	}else{
+		vs['vd9']=vs['vd11']=vs['vd12']=vs['vd15']=vs['vd16']='';
+	}
+}
+function natural_number(num){
+	var num=parseFloat(num);
+	return jsws(((num<0)?0:num));
+}
+</script>

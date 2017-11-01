@@ -1,0 +1,15 @@
+<!-- 这是心做的仪器接口上传 的界面 -->
+<form action="$rooturl/autoload/yiqiauto.php" method="post" enctype="multipart/form-data">
+    <table border=0 cellPadding=3 width=30%>
+      <tr>
+      
+<input type="hidden" name="tid" value="$_GET[tid]" />
+<input type="hidden" name="xid" value="$_GET[xid]" />
+<input type="hidden" name="yqid" value="$xmfa[yiqi]" />
+<input type="hidden" name="fid" value="$_GET[fid]" />
+       <td><input name="src" type="file" /></td>
+     
+       <td colSpan=2 align=center><input type="submit" value="上传"></td>
+      </tr>
+    </table>
+    </form>

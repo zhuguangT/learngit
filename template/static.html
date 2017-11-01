@@ -1,0 +1,94 @@
+<script>
+function redirect() {    
+    url = "?year=" + v('year') + "&month=" + v('month') + "&site_type=" + v('site_type')+ "&cyd_bh=" + v('cyd_bh')+ "&dw_qk=" + v('dw_qk');
+ location = url;
+}
+
+$(window).ready(function(){
+	$('.juli').each(function(){
+		if(!isNaN($(this).text())){
+			var jingdu = $(this).attr('data_jingdu');
+			var weidu = $(this).attr('data_weidu');
+			var y_jingdu = $(this).attr('y_jingdu');
+			var y_weidu = $(this).attr('y_weidu');
+			if(jingdu != '' && weidu !=''){
+				var num = $(this).children('span').attr('num');
+				var gpsPoint = new BMap.Point(jingdu,weidu);
+				//地图初始化
+				var bm = new BMap.Map("juli_"+num);
+				bm.centerAndZoom(gpsPoint, 15);
+				bm.addControl(new BMap.NavigationControl());
+
+				//添加谷歌marker和label
+				var markergps = new BMap.Marker(gpsPoint);
+				bm.addOverlay(markergps); //添加GPS标注
+				var labelgps = new BMap.Label("我是GPS标注哦",{offset:new BMap.Size(20,-10)});
+				markergps.setLabel(labelgps); //添加GPS标注
+
+				//坐标转换完之后的回调函数
+				translateCallback = function (point){
+				    var marker = new BMap.Marker(point);
+				    bm.addOverlay(marker);
+				    var label = new BMap.Label("我是百度标注哦",{offset:new BMap.Size(20,-10)});
+				    marker.setLabel(label); //添加百度label
+				    bm.setCenter(point);
+				    $.post('static.php' , {'handle' : 'up_juli' , 'jingdu' : point.lng , 'weidu' : point.lat , 'y_jingdu' : y_jingdu , 'y_weidu' : y_weidu} , function(data){
+				    	$("#juli_"+num).prev().text(data);
+				    });
+				    // alert("转化为百度坐标为："+point.lng + "," + point.lat);
+				}
+
+				    BMap.Convertor.translate(gpsPoint,0,translateCallback);     //真实经纬度转成百度坐标
+			}				
+		}
+	});
+	function change_juli_color(){
+		$(".juli").each(function(){
+			if(parseInt($(this).prev().text()) >= parseInt($(this).text())){
+				$(this).css({'color':'black'});
+			}else{
+				$(this).css({'color':'red'});
+			}
+		});
+		clearInterval(iCount);
+	}
+	 iCount = setInterval(change_juli_color,"2000");
+});
+</script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=MR70zkPyp1KqFjF7c15ZAGfWbyzKYvcB"></script>
+<script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
+<h3 class="header smaller center title">采样到位监督统计列表</h3>
+<p class="center">
+<div class="widget-header header-color-blue4 center" style="width:24cm;margin:0 auto;padding:0;">
+	<div class="widget-toolbar">
+	任务性质:
+	<select name="site_type" id="site_type" onchange="redirect()">
+		$site_type_list
+	</select>
+	年份选择:
+	<select name="year" id="year" onchange="redirect()">
+		$year_list
+	</select>
+	月份选择:
+	<select name="month" id="month" onchange="redirect()">
+		$month_list 
+	</select>
+
+	采样单号:
+	<select name="cyd_bh" id="cyd_bh" onchange="redirect()"  >
+		$cyd_bh_list 
+	</select>
+
+         到位情况:
+	<select name="dw_qk" id="dw_qk" onchange="redirect()"   >
+                $dw_qk_list  $opt
+	</select>
+	</div>
+</div>
+</p>
+
+<table  class="table table-striped table-bordered table-hover center" align="center" style="width:24cm">
+
+$lines
+</table>
+   

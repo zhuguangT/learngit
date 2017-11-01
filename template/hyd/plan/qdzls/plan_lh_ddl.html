@@ -1,0 +1,39 @@
+<!-- 电导率 -->
+<h1>电导率检验原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:16%"></td>
+    <td style="width:18%"></td>
+    <td style="width:17%"></td>
+    <td style="width:17%"></td>
+    <td style="width:16%"></td>
+    <td style="width:16%"></td>
+  </tr>
+  <tr>
+    <td>仪器型号</td>
+    <td colspan="2">{$arow['td5']}</td>
+    <td>仪器编号</td>
+    <td colspan="2">{$arow['yq_bh']}</td>
+  </tr>
+  <tr>
+    <td>电极型号</td>
+    <td><input type="text" class="inputc" name="td11" value="{$arow['td11']}" /></td>
+    <td>电极常数</td>
+    <td><input type="text" class="inputc" name="td12" value="{$arow['td12']}" /></td>
+    <td>量程</td>
+    <td><input type="text" class="inputc" name="td13" value="{$arow['td13']}" /></td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>{$zhanming}</td>
+    <td colspan="2">电导率（{$arow['unit']}）（25℃）</td>
+    <td>平均值（{$arow['unit']}）</td>
+    <td>相对偏差（％）</td>
+  </tr>
+    {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="5"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>

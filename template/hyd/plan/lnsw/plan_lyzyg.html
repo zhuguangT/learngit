@@ -1,0 +1,77 @@
+<!-- 冷原子荧光 -->
+<h1>{$arow['assay_element']}测定原始记录</h1>
+$hjtj_bt
+<table  class="single">
+  <tr class="noborder">
+  	<td style="width:15%"></td><td style="width:23%"></td>
+    <td style="width:15%"></td><td style="width:15%"></td>
+    <td style="width:13%"></td><td style="width:9%"></td><td style="width:9%"></td>
+  </tr>
+  <tr>
+  	<td>检测项目</td>
+  	<td>{$arow['assay_element']}</td>
+  	<td>检测依据</td>
+  	<td>{$arow['td2']}</td>
+    <td>检出限({$arow['unit']})</td>
+    <td colspan="2">{$arow['td3']}</td>
+  </tr>
+  <tr>
+  	<td>仪器名称</td>
+  	<td><input type="text" name="td4" value="$arow[td4]" /></td>
+    <td>仪器型号</td>
+    <td><input type="text" name="td5" value="$arow[td5]" /></td>
+    <td>取样体积(mL)</td>
+    <td colspan="2"><input type="text" name="td6" value="$arow[td6]"/></td>
+  </tr>
+  <tr>
+    <td>屏蔽气流量(mL/min)</td>
+    <td><input type="text" name="td8" value="$arow[td8]" /></td>
+    <td>载气流量(mL/min)</td>
+    <td ><input type="text" name="td9" value="$arow[td9]" /></td>
+  	<td>负高压(伏)</td>
+  	<td colspan="2"><input type="text" name="td10" value="{$arow['td10']}" /></td>
+  </tr>
+  <tr>
+    <td>标准溶液名称</td>
+    <td><input type=text name='td11'value='$arow[td11]' /></td> 
+    <td>标准溶液浓度</td>
+    <td><input type="text" name="td12"   value="$arow[td12]"/></td>
+    <td class="change_qx blue_a"  title="点击选择曲线">回归方程</td>
+    <td colspan="2">{$arow['quxian']}
+      <input type="hidden" name = "CA" id="qa" value="1" />
+      <input type="hidden" name = "CB" id="qb" value="2" /></td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>站名</td>
+    <td>取样体积V(mL)</td>
+    <td colspan="2">含量({$arow['unit']})</td>
+    <td>平均值/理论浓度({$arow['unit']})</td>
+    <td>相对偏差/加标回收率(%)</td>
+    </tr>
+  $aline
+  <tr>
+  	<td>备注</td>
+  	<td colspan="6"><textarea name="td30" >{$arow['td30']}</textarea></td>
+  </tr>
+  
+</table>
+<script type="text/javascript">
+function jsgs(){
+	return false;
+      //运算函数在lib.js
+      var vid = $arow[vid];
+      if( $.isNumeric(vs['vd3'])){
+        var gmd = parseFloat(vs['vd3']);
+        var vd2 = 1//parseFloat($("input[name=td6]").val()/vs['vd1']);//稀释倍数
+        var CA  = parseFloat($('#qa').val());
+        var CB  = parseFloat($('#qb').val());
+        var han1  = accsub(gmd,CA); //计算公式
+        var han2  = accDiv(han1,CB);
+        var jg    = parseFloat(accMul(han2,vd2));
+        vs['vd0'] = vs['_vd0']= jsws(jg);
+      }else{
+        vs['vd0']=vs['_vd0']='';
+      }
+}
+</script>

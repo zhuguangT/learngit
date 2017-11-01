@@ -1,0 +1,96 @@
+<h1>分光光度法检验{$arow['assay_element']}原始记录</h1>
+{$hjtj_bt}
+<table  class="single">
+  <tr class="noborder">
+    <td style="width:11%"></td>
+    <td style="width:12%"></td><td style="width:11%"></td><td style="width:11%"></td><td style="width:11%"></td>
+    <td style="width:11%"></td><td style="width:11%"></td><td style="width:11%"></td><td style="width:11%"></td>
+  </tr>
+  <tr>
+    <td>检验方法依据</td>
+    <td colspan="2">{$arow['td2']}</td>
+    <td>检验方法</td>
+    <td colspan="2">{$arow['td1']}</td>
+    <td colspan="2">检出限（{$arow['unit']}）</td>
+    <td>{$arow['td3']}</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">仪器型号</td>
+    <td colspan="2">{$arow['td5']}</td>
+    <td nowrap="nowrap">仪器编号</td>
+    <td colspan="2">{$arow['yq_bh']}</td>
+    <td>取样体积V</td>
+    <td colspan="2"><input type="text" name="td9" value="{$arow['td9']}" /></td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap" >波长（nm）</td>
+    <td colspan="2"><input type="text" name="td11" value="{$arow['td11']}" /></td> 
+    <td nowrap="nowrap">比色皿规格</td>
+    <td colspan="2"><input type="text" name="td12" value="{$arow['td12']}" /></td>
+    <td>调零介质</td>
+    <td colspan="2"><input type="text" name="td13" value="{$arow['td13']}" /></td>
+  </tr>
+  <tr>
+    <td class="change_qx blue_a" title="点击选择曲线">标准曲线</td>
+    <td colspan="4">
+      {$arow['quxian']}
+      &nbsp;&nbsp;&nbsp;&nbsp;截距a={$arow['CA']} 斜率b={$arow['CB']} 相关系数r={$arow['CR']}
+      <input type="hidden" name = "CA" id="qa" value="$arow[CA]" />
+      <input type="hidden" name = "CB" id="qb" value="$arow[CB]" /></td>
+    <td colspan="2" class="view_qx blue_a" title="查看曲线">绘制日期</td>
+    <td colspan="3">{$arow['sc_ldrq']}</td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>站名</td>
+    <td>样品体积V（mL）</td>
+    <td>220nm吸光度E</td>
+    <td>275nm吸光度E<sub>0</sub></td>
+    <td>E-2E<sub>0</sub></td>
+    <td>样品浓度（{$arow['unit']}）</td>
+    <td>平均值/<br />理论浓度<br />（{$arow['unit']}）</td>
+    <td>相对偏差<br />/加标回收率<br />（％）</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="8"><textarea name="td30" >{$arow['td30']}</textarea></td>
+  </tr>
+  
+</table>
+<script type="text/javascript">
+//单点标液
+$(".ddby").blur(function(){
+
+});
+function jsgs(){
+      //运算函数在lib.js
+      var vid = $arow[vid];
+      var sc_unit = '$arow[sc_unit]';
+      if(sc_unit.split('/').length == 2){
+        var qy_v = 1;
+      }else{
+        var qy_v = parseFloat($("input[name=td9]").val());
+      }
+      var vd3_split = String(vs['vd3']).split('.');
+      if(vd3_split.length==2){
+        var diding_ws = vd3_split[1].length;
+      }else{
+        var diding_ws = 2;
+      }
+      if( $.isNumeric(vs['vd3']) && $.isNumeric(vs['vd4']) ){
+        var vd3 = parseFloat(vs['vd3']);//220E
+        var vd4 = parseFloat(vs['vd4']);//275E₀
+        var vd2 = parseFloat($("input[name=td9]").val()/vs['vd1']);//稀释倍数
+        var gmd = vs['vd5'] = roundjs(accsub(vd3,2*vd4),diding_ws);//获取回归方程中Y的值，即(A)-(A0)的值
+        var CA  = parseFloat($('#qa').val());
+        var CB  = parseFloat($('#qb').val());
+        var han1  = accMul(gmd,CB); //计算公式
+        var han2  = accAdd(han1,CA);
+        var jg    = parseFloat(accMul(han2,vd2));
+        vs['vd0'] = vs['_vd0']= jsws(accDiv(jg,qy_v));
+      }else{
+        vs['vd5']=vs['vd0']=vs['_vd0']='';
+      }
+}
+</script>

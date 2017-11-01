@@ -1,0 +1,74 @@
+<!-- 破磨碎率 -->
+<h1>重量法检验记录（工艺）</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:10%"></td><td style="width:15%"></td><td style="width:10%"></td>
+		<td style="width:11%"></td><td style="width:12%"></td><td style="width:12%"></td>
+		<td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+	</tr>
+	<tr align="center">
+		<td>样品名称</td>
+		<td colspan="2"><input type="text" name="td8" class="inputc" value="{$arow['td8']}" /></td>
+		<td>检验项目</td>
+		<td colspan="2">{$arow['assay_element']}</td>
+		<td>检验地点</td>
+		<td colspan="2"><input type="text" name="td7" class="inputc" value="{$arow['td7']}" /></td>
+	</tr>
+	<tr>
+		<td >方法依据</td>
+		<td colspan="2">{$arow['td2']}</td>
+		<td>天平型号</td>
+		<td colspan="2">{$arow['td5']}</td>
+		<td>天平编号</td>
+		<td colspan="2">{$arow['yq_bh']}</td>
+	</tr>
+	<tr>
+		<td>计算公式</td>
+		<td class="noright right">破碎率（%）=</td>
+		<td class="noborder">G<sub>1</sub><hr />G</td>
+		<td class="noborder" style="text-align:left">×100</td>
+		<td colspan="2" class="noborder right">磨损率（%）=</td>
+		<td class="noborder">G<sub>2</sub><hr />G</td>
+		<td colspan="2" class="noleft" style="text-align:left">×100</td>
+	</tr>
+	<tr>
+		<td>序号</td>
+		<td>{$zhanming}</td>
+		<td>粒径（mm）</td>
+		<td>样品总质量（G）g</td>
+		<td>0.25mm &lt; G<sub>1</sub> ≤ 0.5mm</td>
+		<td>G<sub>2</sub> &lt; 0.25mm</td>
+		<td>破碎率{$arow['unit']}</td>
+		<td>磨损率{$arow['unit']}</td>
+		<td>破碎率与磨损率之和{$arow['unit']}</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td>备注</td>
+		<td colspan="8"><textarea name="td30">{$arow['td30']}</textarea></td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+function jsgs(){
+	if($.isNumeric(vs['vd5'])&&$.isNumeric(vs['vd4'])){
+		vs['vd7'] = vs['vd5']*100/vs['vd4'];
+	}
+	else{
+		vs['vd7'] = '';
+	}
+	if($.isNumeric(vs['vd6'])&&$.isNumeric(vs['vd4'])){
+		vs['vd8'] = vs['vd6']*100/vs['vd4'];
+	}
+	else{
+		vs['vd8'] = '';
+	}
+	if($.isNumeric(vs['vd7'])&&$.isNumeric(vs['vd8'])){
+		vs['vd9'] = vs['vd7']+vs['vd8'];
+	}
+	else{
+		vs['vd9'] = '';
+	}
+}
+</script> 

@@ -1,0 +1,42 @@
+<h1>分光光度法检验{$arow['assay_element']}原始记录</h1>
+{$hjtj_bt}
+<table  class="single">
+  <tr>
+    <td>检验方法依据</td>
+    <td>{$arow['td2']}</td>
+    <td>检验方法</td>
+    <td>{$arow['td1']}</td>
+    <td>检出限（{$arow['unit']}）</td>
+    <td>{$arow['td3']}</td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">仪器型号</td>
+    <td>{$arow['td5']}</td>
+    <td nowrap="nowrap">仪器编号</td>
+    <td>{$arow['yq_bh']}</td>
+    <td>取样体积V</td>
+    <td><input type="text" name="td9" value="{$arow['td9']}" /></td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap" >波长（nm）</td>
+    <td><input type="text" name="td11" value="{$arow['td11']}" /></td> 
+    <td nowrap="nowrap">比色皿规格</td>
+    <td><input type="text" name="td12" value="{$arow['td12']}" /></td>
+    <td>调零介质</td>
+    <td><input type="text" name="td13" value="{$arow['td13']}" /></td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>站名</td>
+    <td>样品体积V（mL）</td>
+    <td>样品浓度（{$arow['unit']}）</td>
+    <td>平均值/<br />理论浓度<br />（{$arow['unit']}）</td>
+    <td>相对偏差<br />/加标回收率<br />（％）</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="5"><textarea name="td30" >{$arow['td30']}</textarea></td>
+  </tr>
+  
+</table>

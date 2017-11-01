@@ -1,0 +1,233 @@
+<form name="shhe_set" action="#" method="post" >
+<h3 class="headerH3 center">&nbsp;</h3>
+<div class="alert alert-info center" style="margin-bottom:0;">
+	<!-- 审核人姓名及审核项目数 -->
+		切换配置人：{echo PublicApp::get_select('uid',$this->get_fx_users(),true,false);}
+		切换任务类型：{echo PublicApp::get_select('shh_type',$sh_list,true,false);}
+</div>
+<div class="accordion-style1 panel-group" id="shhe_set_accordion">
+	<div class="panel panel-default jc hide">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a href="#shhe_set_collapse_jc" data-parent="#shhe_set_accordion" data-toggle="collapse" class="accordion-toggle collapsed">
+					<i data-icon-show="icon-angle-right" data-icon-hide="icon-angle-down" class="bigger-110 icon-angle-right"></i>
+					&nbsp;<span style="font-size:15px;">尚未配置<strong class="red">化验人员</strong>的检测项目（<span class="total"></span>）：</span>
+				</a>
+			</h4>
+		</div>
+		<div id="shhe_set_collapse_jc" class="panel-collapse collapse" style="height: 0px;">
+			<div class="panel-body"></div>
+		</div>
+	</div>
+	<div class="panel panel-default jh hide">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a href="#shhe_set_collapse_jh" data-parent="#shhe_set_accordion" data-toggle="collapse" class="accordion-toggle collapsed">
+					<i data-icon-show="icon-angle-right" data-icon-hide="icon-angle-down" class="bigger-110 icon-angle-right"></i>
+					&nbsp;<span style="font-size:15px;">尚未配置<strong class="red">校核任务</strong>的检测项目（<span class="total"></span>）：</span>
+				</a>
+			</h4>
+		</div>
+		<div id="shhe_set_collapse_jh" class="panel-collapse collapse" style="height: 0px;">
+			<div class="panel-body"></div>
+		</div>
+	</div>
+	<div class="panel panel-default fh hide">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a href="#shhe_set_collapse_fh" data-parent="#shhe_set_accordion" data-toggle="collapse" class="accordion-toggle collapsed">
+					<i data-icon-show="icon-angle-right" data-icon-hide="icon-angle-down" class="bigger-110 icon-angle-right"></i>
+					&nbsp;<span style="font-size:15px;">尚未配置<strong class="red">复核任务</strong>的检测项目（<span class="total"></span>）：</span>
+				</a>
+			</h4>
+		</div>
+		<div id="shhe_set_collapse_fh" class="panel-collapse collapse" style="height: 0px;">
+			<div class="panel-body"></div>
+		</div>
+	</div>
+	<div class="panel panel-default sh hide">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a href="#shhe_set_collapse_sh" data-parent="#shhe_set_accordion" data-toggle="collapse" class="accordion-toggle collapsed">
+					<i data-icon-show="icon-angle-right" data-icon-hide="icon-angle-down" class="bigger-110 icon-angle-right"></i>
+					&nbsp;<span style="font-size:15px;">尚未配置<strong class="red">审核任务</strong>的检测项目（<span class="total"></span>）：</span>
+				</a>
+			</h4>
+		</div>
+		<div id="shhe_set_collapse_sh" class="panel-collapse collapse" style="height: 0px;">
+			<div class="panel-body"></div>
+		</div>
+	</div>
+</div>
+<table id="bsTableShheSet" class="table center"></table>
+<div class="fixed_button_box">
+	<div class="fixed_button_bg_box"></div>
+	<div class="fixed_button">
+		<input class="btn btn-primary btn-sm" type="submit" value="保存配置信息" />
+	</div>
+</div>
+</form>
+<script type="text/javascript">
+//审核设置数据提交
+$("#shhe_set form[name=shhe_set]").submit(function(){
+	var uid = $("#shhe_set select[name='uid']").val();
+	var shh_type = $("#shhe_set select[name='shh_type']").val();
+	$(this).ajaxSubmit({
+		type: 'post',dataType:'json',data: {'ajax': 1,'uid': uid,'shh_type:': shh_type},
+		url: trade_global.rooturl+'/huayan/ahlims.php?app=jcxm&act=shhe_set_save',
+		success: function(data) {
+			if(data.error == '0'){
+				shheSetTable.bootstrapTable("refresh");
+			}else{
+				alert_error(data.content);
+			}
+		},
+		error: function(data){
+			alert_error(data.responseText);
+		}
+	});
+	return false; //阻止表单自动提交事件
+});
+//审核设置初始化，包括统计已审核项目数，初始化已选中项目和化验员的选中样式
+var shhe_set_init = function(){
+	var userid = $("#shhe_set select[name='uid'] option:checked").html();
+	var checked_arr = [];
+	$("#shhe_set .jcxm:checked").each(function(i){
+		checked_arr[i] = $(this).val();
+	});
+	if( typeof unique == "function" ){
+		checked_arr = unique(checked_arr);
+	}
+	var shh_type = $("#shhe_set select[name=shh_type] option:selected").html();
+	$("#shhe_set .headerH3").html(''+userid+'&nbsp;'+shh_type+'任务设置<span class="jcxm_total" style="font-size:16px;">（已设置'+checked_arr.length+'项）</span>');
+	$("#shhe_set").find(".fx_user,.jcxm").parents("td").next("td").find(".jcxm:checked").parents("label").addClass("bg_success");
+	$("#shhe_set").find(".fx_user,.jcxm").parents("td").next("td").find(".jcxm").not(":checked").parents("label").removeClass("bg_success");
+};
+var get_sh_set_height = function(){
+	var height = $(window).height() - $('#shhe_set .fixed-table-toolbar').outerHeight(true) - $(".fixed.nav-fixed").height() - $("#shhe_set_accordion").height() - 20;
+	return height < 300 ? 300 : height;
+}
+//使用js激活bootstrapTable样式
+window.shheSetTable = $('#bsTableShheSet').bootstrapTable({
+	url: 'ahlims.php?ajax=1&app=jcxm&act=shhe_set_list'
+			+ '&uid=' + $("#shhe_set select[name='uid']").val()
+			+ '&shh_type=' + $("#shhe_set select[name='shh_type']").val(),
+	cache: false,
+	classes: 'table',
+	height: get_sh_set_height(),
+	columns: [
+		{
+			field: 'xuhao',
+			title: '序号',
+			width: "60px"
+		},
+		{
+			field: 'fx_user',
+			title: '化验员',
+			width: "120px",
+			cellStyle: function(){
+				return {css: {"white-space":"nowrap"}};
+			}
+		},
+		{
+			field: 'jcxm',
+			align: 'left',
+			title: '检测项目'
+		},
+		{
+			field: 'option',
+			title: '项目分配',
+			formatter: function(value, row, index) {
+				return '<button class="btn btn-xs btn-primary edit_'+row.uid+'" type="button"><i class="icon-edit"></i>项目分配</button>';
+			},
+			cellStyle: function cellStyle(value, row, index) {
+				return {
+					css: {width:"100px;"},
+					classes: 'visible-md visible-lg hidden-sm hidden-xs action-buttons'
+				};
+			},
+			events: {
+				'click button[class*=edit_]': function (e, value, row, index) {
+					// 隐藏审核页面底部的保存按钮
+					$("#shhe_set .fixed_button_box").hide();
+					//检测项目分配初始化程序
+					var jcxm_dis_box_init = function(){
+						//已分配项目数统计
+						jcxm_set_total('#jcxm_dis_box');
+						var jcxm_total = $("#jcxm_dis_box label").find("[type=hidden],[type=checkbox]:checked").length;
+						$("#jcxm_dis_box .modal-header h3 .jcxm_total").html(jcxm_total);
+					}
+					$.get("ahlims.php?app=jcxm&act=jcxm_dis_box&uid="+row.uid+"&ajax=1",function(data){
+						$("#jcxm_dis_box").html(data);
+						$("#jcxm_dis_box .modal-header h3").html(row.userid+'检测项目分配<span style="font-size:16px;">（已分配<span class="jcxm_total"></span>项）</span>');
+						//项目分配初始化
+						jcxm_dis_box_init();
+						//全选，取消 按钮功能初始化
+						jcxm_set_init('#jcxm_dis_box');
+						//为提交按钮绑定点击提交事件
+						$("#jcxm_dis_box .form_submit").click(function(){
+							$("#jcxm_dis_box form[name=jcxm_dis]").submit();
+						});
+						//显示模态框
+						$("#jcxm_dis_box").modal("show");
+						//每次打开时都从顶部开始查看,由于有插件，所以需要延迟执行
+						setTimeout('$("#jcxm_dis_box").scrollTop(0);',200);
+						//为每个检测项目绑定点击事件，来更新已分配项目个数
+						$("#jcxm_dis_box").find("input[type=checkbox],.sel_click").click(function(){
+							jcxm_dis_box_init();
+						});
+					});
+				}
+			}
+		}
+	],
+	onLoadSuccess: function(data){
+		//更新所有提示信息
+		refresh_jcxm_all_msg(function(){
+			shhe_set_init();//审核设置初始化
+			shheSetTable.positionTop = [];//记录每一行的位置
+			$("#bsTableShheSet tr").each(function(){
+				var index = $(this).attr("data-index");
+				//记录每一行的位置，用于检索滚动至指定位置
+				shheSetTable.positionTop[index] = $(this).position().top;
+			}); 
+			//点击化验员旁边的复选框可以全选或者取消该化验员检测的项目
+			$("#shhe_set .fx_user").click(function(){
+				var checked = $(this).prop("checked");
+				$(this).parents("td").next("td").find(".jcxm").each(function(){
+					$(this).prop("checked",checked);
+					jcxm_checked_init($(this));
+				});
+				shhe_set_init();
+			});
+			//点击项目复选框后，相同项目进行同步选中或者取消操作
+			$("#shhe_set .jcxm").click(function(){
+				jcxm_checked_init($(this));
+				shhe_set_init();
+			});
+			var jcxm_checked_init = function(obj){
+				var checked = obj.prop("checked");
+				$("#shhe_set .jcxm[value="+obj.val()+"]").prop("checked",checked);
+				//根据每个化验员检测项目的选中情况来选中或者取消化验员复选框
+				$("#shhe_set .fx_user").each(function(){
+					//如果该化验员的一个检测项目都未选中则取消选中
+					var checked = $(this).parents("td").next("td").find(".jcxm:checked").length ? true : false;
+					$(this).prop("checked",checked);
+				});
+			}
+			//设置滚动条快速滑动。
+			$(window.parent.document.body).find("#full-top").click(function () {
+				shheSetTable.bootstrapTable('scrollTo', 0);
+			});
+			$(window.parent.document.body).find("#full-btm").click(function () {
+				shheSetTable.bootstrapTable('scrollTo', 'bottom');
+			});
+		});
+	}
+});
+$(window).resize(function () {
+	shheSetTable.bootstrapTable('resetView', {
+		height: get_sh_set_height()
+	});
+});
+</script>

@@ -1,0 +1,54 @@
+<!-- 气相色谱质谱联用法 -->
+<h1>气相色谱质谱联用法检测原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:16%"></td>
+    <td style="width:18%"></td>
+    <td style="width:16%"></td>
+    <td style="width:17%"></td>
+    <td style="width:17%"></td>
+    <td style="width:17%"></td>
+  </tr>
+  <tr>
+    <td>分析项目</td>
+    <td>{$arow['assay_element']}</td>
+    <td>检验方法依据</td>
+    <td colspan="2">{$arow['td2']}</td>
+    <td>检出限:{$arow['td3']}（{$arow['unit']}）</td>
+  </tr>
+  <tr >
+    <td>仪器型号</td>
+    <td>{$arow['td5']}</td>
+    <td>仪器编号</td>
+    <td>{$arow['yq_bh']}</td>
+    <td>色谱柱</td>
+    <td><input type="text" class="inputc" name="td11"   value="{$arow['td11']}" /></td>
+  </tr>
+  <tr >
+    <td>进样口温度<br />（℃）</td>
+    <td><input type="text" class="inputc" name="td12"   value="{$arow['td12']}" /></td>
+    <td>柱箱温度<br />（℃）</td>
+    <td colspan="3">40（3min）——10/min→100（0min）<br />——25/min→225（3min）</td>
+  </tr>
+  <tr> 
+    <td>分流比</td>
+    <td><input type="text" class="inputc" name="td13" value="{$arow['td13']}" /></td>
+    <td>检测器温度<br />（℃）</td>
+    <td><input type="text" class="inputc" name="td14" value="{$arow['td14']}" /></td>
+    <td>载气流速（mL/min）</td>
+    <td><input type="text" class="inputc" name="td15" value="{$arow['td15']}" /></td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td colspan="2">{$zhanming}</td>
+    <td>{$arow['assay_element']}({$arow['unit']})</td>
+    <td nowrap="nowrap">平均值/理论浓度<br />（{$arow['unit']}）</td>
+    <td nowrap="nowrap">相对偏差/回收率<br />（％）</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="5"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>

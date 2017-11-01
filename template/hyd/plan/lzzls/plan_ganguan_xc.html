@@ -1,0 +1,44 @@
+<!-- 生物 滤膜法 -->
+<h1>感官性状和现场检验项目记录</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:15%"></td>
+    <td style="width:25%"></td>
+    <td style="width:20%"></td>
+    <td style="width:20%"></td>
+    <td style="width:20%"></td>
+  </tr>
+  <tr>
+    <td>检测项目</td>
+    <td>{$arow['assay_element']}</td>
+    <td>检验地点</td>
+    <td colspan="2"><input type="text" class="inputc" name="td7"   value="{$arow['td7']}" /></td>
+  </tr>
+  <tr >
+    <td>检验方法依据</td>
+    <td>{$arow['td2']}</td>
+    <td>仪器编号</td>
+    <td colspan="2">{$arow['yq_bh']}</td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td colspan="2">{$zhanming}</td>
+    <td colspan="2">检验结果（{$arow['unit']}）</td>
+  </tr>
+    {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="5"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<script type="text/javascript">
+
+window.jsgs = function(){
+ 
+    // if(!$.isNumeric(vs['vd0']))
+    // {
+    //   vs['vd0']='无';
+    // }
+}
+</script> 

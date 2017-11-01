@@ -1,0 +1,72 @@
+<div style="width:100%;margin:0 auto;">
+  <h3 class="header blue lighter smaller"></h3>
+  <div id="tabs" style="width:90%;margin:0 auto;padding:0;" class="center">
+  <ul>
+    <li>
+      <a href="#tabs-1" onclick="location='bzwz_list.php?wz_type=标准溶液'+'#tabs-1'">标准溶液</a> 
+    </li>
+    <li>
+      <a href="#tabs-2" onclick="location='bzwz_list.php?wz_type=标准样品'+'#tabs-2'">标准样品</a>
+    </li>
+  </ul>
+  <div id="tabs-1">$tabs_1_bzry</div>
+  <div id="tabs-2">$tabs_2_bzyp</div>
+  </div>
+</div>
+<script type="text/javascript">
+  $( "#tabs" ).tabs();
+  function print_taizhang(form,lx) {
+      url = 'data/bzwz_taizhang_disp.php?wz_name=$wz_name&year=' + form.year.value;
+      if(form.wz_type.value == '标准样品') {
+          url += '&wz_type=bzyp';
+      } else {
+          url += '&wz_type=bzry';
+      }
+      if(lx=='打印台账')
+       url += '&lx=1';
+      else
+       url += '&lx=2';
+          window.open(url);
+  }
+  $(".delete").click(function(){
+      return (confirm('你真的要删除吗?\\n一经删除,无法恢复!')) ? true:false;
+  })
+  $("form[name=bzwz_list] select").change(function(){
+    location='bzwz_list.php?wz_name='+bzwz_list.wz_name.value+'&wz_type='+bzwz_list.wz_type.value+'&manufacturer='+bzwz_list.manufacturer.value+'&_wz_type='+bzwz_list._wz_type.value+'$tabs';
+  });
+
+function xiuxuhao(aa){
+  var jiu = $(aa).html();
+  var xuhao = prompt('请输入新的序号',jiu);
+  var bdid=$(aa).attr('bd_id');
+  //xuhao = xuhao.replace(/\s+/g,"");
+  if(xuhao){
+    $.get("bz_ajax.php?ajax=1",{act:'xiuxuhao',bdid:bdid,xuhao:xuhao,jiu:jiu},function(data){
+      if(data!='ok'){
+        alert('修改失败，请重试');
+      }else{
+        $(aa).html(xuhao);
+      }
+    },'html');
+  }
+}
+$(document).ready(function() {
+  $(".chosen-select").chosen();
+  load_height();  
+});
+</script>
+<script>
+  $(window).ready(function(){
+      $("#wz_type_subdivide").change(function(){
+          var wz_type_subdivide = $(this).val();
+          var wz_type =  $("input[name='wz_type']").val();
+          if(wz_type=='标准样品'){
+            var tabs = '#tabs-2';
+          }
+          if(wz_type=='标准溶液'){
+            var tabs = '#tabs-1';
+          }
+          window.location.href = "bzwz_list.php?wz_type="+wz_type+"&wz_type_subdivide="+wz_type_subdivide+tabs;
+      });
+  });
+</script>

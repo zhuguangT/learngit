@@ -1,0 +1,92 @@
+<h1>容量法检验记录（工艺）</h1>
+{$hjtj_bt}
+<input type="hidden" name="td6" value="$arow[td6]" />
+<table class="single" >
+	<tr  class="noborder">
+		<td style="width:10%"></td><td style="width:16%"></td><td style="width:11%"></td>
+		<td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+		<td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td><td style="width:8%"></td>
+	</tr>
+	<tr align="center">
+		<td colspan="2">检验项目</td>
+		<td colspan="4">{$arow['assay_element']}</td>
+		<td colspan="2">检验方法</td>
+		<td colspan="4">{$arow['td1']}</td>
+	</tr>
+	<tr>
+		<td colspan="2">检验地点</td>
+		<td colspan="4"><input type="text" name="td7" class="inputl" value="{$arow['td7']}" /></td>
+		<td colspan="2">方法依据</td>
+		<td colspan="4">{$arow['td2']}</td>
+	</tr>
+	<tr>
+		<td colspan="1">计算公式</td>
+		<td colspan="3" class="right noright">W= m<sub>1</sub>/[m×(V-V<sub>0</sub>)/500]×(M<sub>1</sub>/M<sub>2</sub>) ×100</td>
+	</tr>
+	<tr align="center">
+		<td>序号</td>
+		<td>{$zhanming}</td>
+		<td>样品类型</td>
+		<td>试样质量m （g）</td>
+		<td>草酸钠质量m<sub>1</sub> （g）</td>
+		<td>滴定草酸钠所消耗试剂溶液体积 V mL</td>
+		<td>空白试验所消耗试剂溶液体积 V<sub>0</sub> mL</td>
+		<td>V - V<sub>0</sub> mL</td>
+		<td>高锰酸钾的质量分数(%)</td>
+		<td colspan="2">报告结果<br/>({$arow['unit']})</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td align="center">备注</td>
+		<td colspan="10"><textarea name="td30">$arow[td30]</textarea></td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+//容量法的计算一般是：水样的含量=（标准溶液用量-空白）*标准溶液浓度 *  当量 / 取体积。
+function jsgs(){
+	if($.isNumeric(vs['vd6'])&&$.isNumeric(vs['vd7']))
+	{
+		vs['vd8'] = accsub(parseFloat(vs['vd6']),parseFloat(vs['vd7']));
+	}
+	else
+	{
+		vs['vd8'] = '';
+	}
+	if($.isNumeric(vs['vd4'])&&$.isNumeric(vs['vd5'])&&$.isNumeric(vs['vd8'])){
+		var jg =accDiv(parseFloat(vs['vd5']),accDiv(accMul(parseFloat(vs['vd4']),parseFloat(vs['vd8'])),500));
+		vs['vd9'] = accMul(accMul(jg,accDiv(31.60,67.00)),100);
+	}
+	else
+	{
+		vs['vd9'] ='';
+	}
+	if($.isNumeric(vs['vd16'])&&$.isNumeric(vs['vd17']))
+	{
+		vs['vd18'] = accsub(parseFloat(vs['vd16']),parseFloat(vs['vd17']));
+	}
+	else
+	{
+		vs['vd18'] = '';
+	}
+	if($.isNumeric(vs['vd14'])&&$.isNumeric(vs['vd15'])&&$.isNumeric(vs['vd18'])){
+		var jg1 =accDiv(parseFloat(vs['vd15']),accDiv(accMul(parseFloat(vs['vd14']),parseFloat(vs['vd18'])),500));
+		vs['vd19'] = accMul(accMul(jg1,accDiv(31.60,67.00)),100);
+	}
+	else
+	{
+		vs['vd19'] ='';
+	}
+	if($.isNumeric(vs['vd9'])&&$.isNumeric(vs['vd19']))
+	{
+		vs['vd0'] = accDiv(accAdd(vs['vd9'],vs['vd19']),2);
+
+	}else if($.isNumeric(vs['vd9'])&&!$.isNumeric(vs['vd19']))
+	{
+		vs['vd0'] =vs['vd9'];
+	}
+	else{
+		vs['vd0'] = '';
+	}
+}
+</script> 

@@ -1,0 +1,37 @@
+<h1>原子吸收检测{$arow['assay_element']}原始记录表</h1>
+$hjtj_bt
+<table class="single">
+  <tr class="noborder">
+    <td style="width:13%"></td><td style="width:21%"></td><td style="width:13%"></td>
+    <td style="width:20%"></td><td style="width:13%"></td><td style="width:20%"></td>
+  </tr>
+  <tr>
+    <td align="center">分析项目</td>
+    <td>{$arow['assay_element']}</td>
+    <td >方法依据</td>
+    <td>$arow[td2]</td>
+    <td align="center">检出限($arow[unit])</td>
+    <td >$arow[td3]</td>
+  </tr>
+  <tr>
+    <td align="center">仪器名称</td>
+    <td><input type=text name="td4" size="15px" class=inputl value="$arow[td4]" ></td>
+    <td align="center">仪器型号</td>
+    <td><input type=text name="td5" size="15px" class=inputl value="$arow[td5]" ></td>
+    <td align="center">取样体积(mL)</td>
+    <td ><input type=text name="td6" size="10px" class=inputl value="$arow[td6]" ></td>
+  </tr>
+  <tr align="center">
+    <td>序号</td>
+    <td>样品编号</td>
+    <td>稀释倍数</td>
+    <td>含量($arow[unit])</td>
+    <td>平均值/理论浓度({$arow['unit']})</td>
+    <td>相对偏差/加标回收率(%)</td>
+  </tr>
+  $aline
+  <tr>
+    <td>备注</td>
+    <td colspan="5"><textarea name="td30">$arow[td29]</textarea></td>
+  </tr>
+</table>

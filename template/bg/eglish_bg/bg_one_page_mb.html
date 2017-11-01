@@ -1,0 +1,63 @@
+<div style="background-color: #FFFFFF; width:20cm;margin:0 auto;" >
+<table style="border-color:#000;border-collapse:collapse;background-color: #FFFFFF; width:19cm;" align="center">
+<tbody>
+	<tr style="height:1cm">
+		<td colspan="7">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="7"><h2 align="center" style="background-color: #FFFFFF;font-family:Times New Roman;font-size:20pt;">Test&nbsp;&nbsp;&nbsp;&nbsp;report</h2></td>
+	</tr>
+	</tbody></table>
+<table style="border-color:#000;border-collapse:collapse; background-color: #FFFFFF; width:19cm; " align="center">
+	<tbody>
+		<tr class="firstRow" style="font-family:Times New Roman;">
+			<td colspan="3" style="word-break: break-all;font-size:14pt" width="68%" nowrap>Report number：（Water quality monitoring){$nian}（year）NO.{$bh}</td>
+			<td colspan="4" align="right" style="word-spacing:5px;font-size:10.5pt;font-weight:bold">Page {$page}  of  {$z_page} page</td>
+		</tr>
+	</tbody>
+</table>
+<table style="background-color:#FFFFFF;border-collapse:collapse;width:19cm;" align="center" border="1" cellpadding="4" class="td_border" >
+	<tbody>
+		<tr class="firstRow" style="height:0.8cm;font-family:Times New Roman;font-size:12pt">
+			<td colspan="2" style="width:33%">The contact：{$detail_rs['lx_user']}</td>
+			<td colspan="3" style="width:33%">Sample State：{$detail_rs['yp_zt']}</td>
+			<td colspan="2" style="width:33%">Sample number：{$ypbh}</td>
+		</tr>
+		<tr style="height:0.8cm;font-family:Times New Roman;font-size:12pt">
+			<td colspan="2" >Contact phone number：{$detail_rs['tel']}</td>
+			<td colspan="3" >Sample quantity：{$detail_rs['yp_sl']}</td>
+			<td colspan="2" >Inspection items：{$vid_nums}</td>
+		</tr>
+		<tr style="height:0.8cm;font-family:Times New Roman;font-size:12pt">
+			<td colspan="2" >{$date_lx}：{$detail_rs['sj_date']}</td>
+			<td colspan="3" >Kind of test：{$detail_rs['jy_lb']}</td>
+			<td colspan="2" >Sample name：{$yplb}</td>
+		</tr>	
+		<tr style="height:0.8cm;font-family:Times New Roman;font-size:12pt">
+			<td colspan="7" >Sampling locations：{$ypmc}</td>
+		</tr>
+		<tr style="height:0.8cm;font-family:Times New Roman;font-size:12pt">
+			<td colspan="7" style="font-weight:bold">Evaluation on the basis of：{$detail_rs['pj_yj']}</td>
+		</tr>	
+	</tbody>
+</table>
+<table style="border-collapse:collapse; background-color: #FFFFFF; width:19cm;" align="center" cellpadding="6">
+	<tbody>
+		<tr class="firstRow">
+			<td style="word-break: break-all;font-family:Times New Roman;font-size:16pt">Test results：</td>
+		</tr>
+	</tbody>
+</table>
+<table style="background-color: #FFFFFF;border-collapse:collapse; width:19cm;" cellpadding="0" cellspacing="0" align="center" border="1" class="td_border">
+	<tr class="firstRow" align="center" style="font-family:Times New Roman;font-size:14pt;">
+		<td>Number</td>
+		<td>Project</td>
+		<td>unit</td>
+		<td>Test results</td>
+		<td>The national<br/>standard</td>
+		<td>Test basis</td>
+		<td>Individual<br/>assessment</td>
+	</tr>
+	$bgline
+</table>
+</div>

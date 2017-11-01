@@ -1,0 +1,36 @@
+<!-- TOC 总有机碳 -->
+<h1>总有机碳分析仪检验原始记录</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:20%"></td>
+    <td style="width:25%"></td>
+    <td style="width:25%"></td>
+    <td style="width:15%"></td>
+    <td style="width:15%"></td>
+  </tr>
+  <tr>
+    <td colspan="1">方法依据</td>
+    <td colspan="1">{$arow['td2']}</td>
+    <td colspan="1">仪器编号</td>
+    <td colspan="2">{$arow['yq_bh']}</td>
+  </tr>
+  <tr>
+    <td colspan="1">分析项目</td>
+    <td colspan="1">{$arow['assay_element']}</td>
+    <td colspan="1">仪器型号</td>
+    <td colspan="2">{$arow['td5']}</td>
+  </tr>
+  <tr>
+    <td>序号</td>
+    <td>{$zhanming}</td>
+    <td>样品浓度（{$arow['unit']}）</td>
+    <td>平均值/<br />理论浓度<br />（{$arow['unit']}）</td>
+    <td>相对偏差/<br />加标回收率<br />（％）</td>
+  </tr>
+    {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="4"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>

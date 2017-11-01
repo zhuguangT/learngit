@@ -1,0 +1,106 @@
+
+
+
+
+<h1>$biaotuo</h1>
+<form name="myform" action="yiqi_save.php" method="post" onSubmit= "return check(this);">
+    <input name=yid type=hidden value='$yid'>
+
+  <table  class=single style="width:18cm">
+  <tr align="center" >
+    <td style="width:2cm;">仪器名称</td>
+    <td  style="width:7cm;">$yq_mingcheng</td>
+    <td style="width:2cm;">类别</td>
+    <td  >$yq_type</td>
+  </tr>
+  <tr align="center" >
+    <td style="width:2cm;">国家分类代码</td>
+    <td>yq_daima</td>
+    <td>型号</td>
+    <td>$yq_xinghao</td>
+  </tr>
+  <tr align="center" >
+    <td>出厂编号</td>
+    <td>$yq_chucangbh</td>
+    <td>设备编号</td>
+    <td>$yq_sbbianhao</td>
+  </tr>
+  <tr align="center" >
+    <td>状态</td>
+    <td>
+            <select name="yq_state"   > 
+                   <option >$yq_state</option>
+             <option >合格</option>
+             <option  >准用</option>
+             <option >停用</option>
+                </select>
+</td>
+    <td>分类</td>
+    <td>$yq_fenlei</td>
+  </tr>
+  <tr align="center" >
+    <td>设备存放地点</td>
+    <td>$yq_sbdidian</td>
+    <td>制造厂家</td>
+    <td>$yq_zzcangjia</td>
+  </tr>
+  <tr align="center" >
+    <td>购置日期</td>
+    <td>$yq_gouzhirq</td>
+    <td>安装日期</td>
+    <td>$yq_azriqi</td>
+  </tr>
+  <tr align="center" >
+    <td>检定周期(月)</td>
+    <td>$yq_jdriqi</td>
+    <td>操作规程链接</td>
+    <td>$yq_caozuo</td>
+  </tr>
+  <tr align="center" >
+    <td>设备保管人</td>
+    <td>$yq_baoguanren</td>
+    <td>接管时间</td>
+    <td>$yq_jgriqi</td>
+  </tr>
+
+
+
+  <tr align="center" >
+    <td>准确度等级</td>
+    <td>$yq_zhunquedu</td>
+    <td>测量范围</td>
+    <td>$yq_celiang</td>
+  </tr>
+  <tr align="center" >
+    <td>启用日期</td>
+    <td>$yq_qiyong</td>
+    <td>联系人</td>
+    <td>$yq_liangxiren</td>
+  </tr>
+  <tr align="center" >
+    <td>维修电话</td>
+    <td>$yq_weixiutel</td>
+    <td>运行日期</td>
+    <td>$yq_yunxingriqi</td>
+  </tr>
+  <tr align="center" >
+    <td>最近检定确定日期</td>
+    <td>$yq_jiandingriqi</td>
+    <td>第一次检定日期</td>
+    <td>$yq_firstjianding</td>
+  </tr>
+
+  <tr align="center" >
+    <td>提醒天数(天)</td>
+    <td>$yq_tixingriqi</td>
+    <td></td>
+    <td></td>
+  </tr>
+
+
+  <tr><td colspan="4"><center><input type="button"  onclick="window.location.href='hn_yiqimanager.php'" value="返回"></td></tr>
+
+
+
+
+  </table></form>

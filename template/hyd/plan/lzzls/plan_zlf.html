@@ -1,0 +1,92 @@
+<h1>重量法检验记录</h1>
+{$hjtj_bt}
+<table class="single" >
+	<tr class="noborder">
+		<td style="width:7%"></td><td style="width:9%"></td><td style="width:7%"></td><td style="width:7%"></td>
+		<td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td>
+		<td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td><td style="width:7%"></td>
+		<td style="width:7%"></td><td style="width:7%"></td>
+	</tr>
+	<tr align="center">
+		<td colspan="1">检验项目</td>
+		<td colspan="6">{$arow['assay_element']}</td>
+		<td colspan="1">检验地点</td>
+		<td colspan="6"><input type="text" name="td7" class="inputc" value="{$arow['td7']}" /></td>
+	</tr>
+	<tr>
+		<td colspan="1">检验方法</td>
+		<td colspan="6">{$arow['td1']}</td>
+		<td colspan="1">方法依据</td>
+		<td colspan="6">{$arow['td2']}</td>
+	</tr>
+		<tr>
+		<td colspan="1">仪器型号</td>
+		<td colspan="6">{$arow['td5']}</td>
+		<td colspan="1">仪器编号</td>
+		<td colspan="6">{$arow['yq_bh']}</td>
+	</tr>
+	<tr>
+		<td colspan="1">计算公式</td>
+		<td colspan="13" class="left">   C（mg/L）=(W<sub>2</sub>-W<sub>1</sub>)×1000×1000/V</td>
+	</tr>
+	<tr align="center">
+		<td rowspan="2">序号</td>
+		<td rowspan="2">{$zhanming}</td>
+		<td rowspan="2">样品体积V（mL）</td>
+		<td rowspan="2">容器序号</td>
+		<td colspan="3">容器称重W<sub>1</sub></td>
+		<td colspan="3">残渣+容器重量W<sub>2</sub></td>
+		<td rowspan="2">残渣重量W<sub>2</sub>-W<sub>1（g）</sub></td>
+		<td rowspan="2">检验结果<br/>({$arow['unit']})</td>
+		<td rowspan="2">平均值<br/>({$arow['unit']})</td>
+		<td rowspan="2">质控结果<br/>%</td>
+	</tr>
+	<tr>
+		<td>第一次<br />（g）</td>
+		<td>第二次<br />（g）</td>
+		<td>平均W<sub>1</sub><br />（g）</td>
+		<td>第一次<br />（g）</td>
+		<td>第二次<br />（g）</td>
+		<td>平均W<sub>2</sub><br />（g）</td>
+	</tr>
+	{$aline}
+	<tr>
+		<td align="center">备注</td>
+		<td colspan="13"><textarea name="td30">$arow[td30]</textarea></td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+function jsgs(){
+
+	var vd3_split = String(vs['vd3']).split('.');
+	if(vd3_split.length==2){
+		var diding_ws = vd3_split[1].length;
+	}else{
+		var diding_ws = 2;
+	}
+	console.log(diding_ws)
+	if($.isNumeric(vs['vd3'])&&$.isNumeric(vs['vd4'])){
+		vs['vd5'] =roundjs(accDiv(accAdd(parseFloat(vs['vd3']),parseFloat(vs['vd4'])),2),diding_ws);
+	}
+	else
+	{
+		vs['vd5'] ='';
+	}
+	if($.isNumeric(vs['vd6'])&&$.isNumeric(vs['vd7'])){
+		vs['vd8'] =roundjs(accDiv(accAdd(parseFloat(vs['vd6']),parseFloat(vs['vd7'])),2),diding_ws);
+	}
+	else
+	{
+		vs['vd8'] ='';
+	}
+	if($.isNumeric(vs['vd8'])&&$.isNumeric(vs['vd5'])&&$.isNumeric(vs['vd1'])){
+		vs['vd10']=roundjs(accsub(parseFloat(vs['vd8']),parseFloat(vs['vd5'])),diding_ws);
+		var pro =roundjs(accMul(accMul(vs['vd10'],1000),1000),diding_ws);
+		vs['vd0'] =accDiv(pro,parseFloat(vs['vd1']));
+	}
+	else{
+		vs['vd0'] = '';
+	}
+}
+</script> 

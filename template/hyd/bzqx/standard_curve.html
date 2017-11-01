@@ -1,0 +1,26 @@
+<!-- 标准曲线开始 -->
+<link href="{$rooturl}/css/lims/hyd.css?v={$global['hyd']['v']}" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{$rooturl}/js/lims/hyd.js?v={$global['hyd']['v']}"></script>
+
+<div style="width:100%;margin:0 auto;">
+	<div id="sc_tabs_{$sc_id}" style="width:90%;margin:0 auto;padding:0;" class="center">
+		<ul>
+			<li><a class="tabs_1" href="#sc_shuju_{$sc_id}">数据录入</a></li>
+			<!-- <li><a class="tabs_2" href="#"></a></li> -->
+			<li><a class="tabs_3" href="{$rooturl}/huayan/ahlims.php?app=quxian&act=scSuYuan&id={$sc_id}&ajax=1">数据溯源</a></li>
+		</ul>
+		<div id="sc_shuju_{$sc_id}" style="border-left:none;border-right:none;">
+			{$sc_form}<!-- 曲线数据表格 -->
+		</div>
+		<div class="alert alert-danger" style="display:none;">
+			<strong><i class="icon-remove"></i> </strong>你请求的 <strong>{$tid}</strong> 号曲线不存在！
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$("div[id^='sc_tabs_']").tabs();
+//错误提示
+if($("#quxian_form_{$sc_id}").length==0){
+	$(".alert.alert-danger").show();
+}
+</script>

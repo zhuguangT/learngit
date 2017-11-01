@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta charset="utf-8" />
+		<title>{$dwname} 水质样品管理系统 Ver{$mainversion} {$u['userid']} {$now}</title>
+		<meta name="keywords" content="LIMS" />
+		<meta name="description" content="LIMS" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- basic styles -->
+		<script type="text/javascript"> var trade_global = {$trade_global};</script>
+		<!-- <link href='{$rooturl}/css/lims/main.css' rel=stylesheet> -->
+		<link href="{$rooturl}/css/bootstrap.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="{$rooturl}/css/font-awesome.min.css" />
+		<!-- 此处添加公共css文件 -->
+		<link rel="stylesheet" href="{$rooturl}/css/jquery-ui-1.10.3.full.min.css" />
+		<link rel="stylesheet" href="{$rooturl}/css/chosen.css" />
+		<script type="text/javascript">
+			if(trade_global.css != undefined && trade_global.css.length>0){
+				for(var i in trade_global.css){
+					if(trade_global.css[i] != '')
+						document.write('<link rel="stylesheet" href="{$rooturl}/css/'+trade_global.css[i]+'" />');
+				}
+			}
+		</script>
+		<!-- <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" /> -->
+		<!-- ace styles -->
+		<link rel="stylesheet" href="{$rooturl}/css/ace.min.css" />
+		<link rel="stylesheet" href="{$rooturl}/css/ace-rtl.min.css" />
+		<link rel="stylesheet" href="{$rooturl}/css/ace-skins.min.css" />
+		<link rel="stylesheet" href="{$rooturl}/css/jquery.confirm.css" />
+		<link rel="stylesheet" href="{$rooturl}/css/select2.css" />
+	
+		<script type="text/javascript" src="{$rooturl}/js/ace-extra.min.js"></script>
+		<script type="text/javascript" src="{$rooturl}/js/jquery-2.1.0.js"></script>
+		<script type="text/javascript" src="{$rooturl}/js/lims/jquery.browser.js"></script>
+		<script type="text/javascript" src="{$rooturl}/js/jquery.form.js"></script>
+		<script type="text/javascript" src="{$rooturl}/js/lims/lib.js?v=1205"></script>
+		<script type="text/javascript" src="{$rooturl}/js/selecttodatalist.js"></script>
+		<script type="text/javascript" src="{$rooturl}/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="{$rooturl}/js/select2.min.js"></script>
+		
+		 
+		<!-- 此处添加公共js文件 -->
+		<script type="text/javascript" src="{$rooturl}/js/typeahead-bs2.min.js"></script>
+		<script type="text/javascript" src="{$rooturl}/js/jquery-ui-1.10.3.full.min.js"></script>
+		<script type="text/javascript" src="{$rooturl}/js/chosen.jquery.min.js"></script>
+		<script type="text/javascript">
+			if(trade_global.js != undefined && trade_global.js.length>0){
+				for(var i in trade_global.js){
+					if(trade_global.js[i] != '')
+						document.write("<script src='{$rooturl}/js/"+trade_global.js[i]+"'>"+"<"+"/script>");
+				}
+			}
+		</script>
+		<!-- ace scripts -->
+		<script type="text/javascript" src="{$rooturl}/js/ace.min.js"></script>
+		<script type="text/javascript" src="{$rooturl}/js/ace-elements.min.js"></script>
+		<script type="text/javascript" src="{$rooturl}/js/jquery.confirm.min.js?v=2.0"></script>
+		<script type="text/javascript" charset="utf-8">
+		//刷新框架高度和宽度
+		function load_height(){
+			//当本页面依赖于父级的iframe框架时执行
+			if(undefined!=window.parent.get_screen_height && window.parent.length){
+				var width  = $(window.parent.document).find('#page-content').width();
+				var height = window.parent.get_screen_height();
+				$('body').css("width","100%");
+				$(window.parent.document).find('iframe').height(height);
+			}
+		}
+		var c=Math.min(400,Math.max(100,parseInt($(document).scrollTop()/3)));
+		function fullTop(){ $('html, body').animate({scrollTop:0}, c);return false;}
+		function fullBtm(){ $('html, body').animate({scrollTop:$(document).height()}, c);return false;}
+		$(document).ready(function(){
+			if(window.parent != window){
+				var title = '{$dwname}';	//标题
+				//面包屑导航
+				var breadcrumb = (trade_global.daohang != undefined) ? trade_global.daohang : null;
+				//父级窗口
+				var par = $(window.parent.document.body);
+				//如果页面是ajax加载的不能改变原来页面导航的话就用 传递一个$_GET[no_daohang]即可
+				var no_daohang	= "{$_GET['no_daohang']}";
+				if(no_daohang==''){
+					//清除父级面包屑导航
+					par.find('ul.breadcrumb li').remove();
+					//var par_icon = $(window.parent.document).find('#sidebar .nav-list .open i').attr('class');
+					//var par_menu = $(window.parent.document).find('#sidebar .nav-list .open .menu-text').html();
+					//if(par_menu){
+						//par.find('ul.breadcrumb').append('<li><i class="'+par_icon+' icon-bold bigger-110"></i><a href="#" target="main">'+par_menu+'</a></li>');
+					//}
+					for(var i in breadcrumb){
+						if(breadcrumb[i].html == '') continue;
+						var href = breadcrumb[i].href=='' ? '#': breadcrumb[i].href;
+						var icon = breadcrumb[i].icon=='' ? '' : '<i class="'+breadcrumb[i].icon+'"></i>'
+						par.find('ul.breadcrumb').append('<li>'+icon+'<a href="'+href+'" target="main">'+breadcrumb[i].html+'</a></li>');
+						//title = title+'--'+breadcrumb[i].html;
+					}
+				}
+				$(window.parent.document).find('title').html(title);
+				//par.find('ul.breadcrumb').parent().after('<p style="height:300px;"> </p>');
+				//刷新框架高度
+				load_height();
+			}
+			// 超过15个选项的下拉表使用select2插件
+			// $("select[name]").not("[class*=chosen]").each(function(){
+			// 	var opt_length = $(this).find("option").length;
+			// 	if( opt_length > 15 ){
+			// 		$(this).select2();
+			// 	}
+			// });
+		});
+		</script>
+	</head>
+	<body style="background:#FFF">

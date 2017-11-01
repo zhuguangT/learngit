@@ -1,0 +1,195 @@
+<!-- 粒径 -->
+<h1>重量法检验记录（工艺）</h1>
+{$hjtj_bt}
+<table class="single" >
+  <tr class="noborder">
+    <td style="width:10%"></td><td style="width:15%"></td><td style="width:10%"></td>
+    <td style="width:11%"></td><td style="width:12%"></td><td style="width:12%"></td>
+    <td style="width:10%"></td><td style="width:10%"></td><td style="width:10%"></td>
+  </tr>
+  <tr align="center">
+    <td>样品名称</td>
+    <td colspan="2"><input type="text" name="td8" class="inputc" value="{$arow['td8']}" /></td>
+    <td>检验项目</td>
+    <td colspan="2">{$arow['assay_element']}</td>
+    <td>检验地点</td>
+    <td colspan="2"><input type="text" name="td7" class="inputc" value="{$arow['td7']}" /></td>
+  </tr>
+  <tr>
+    <td >方法依据</td>
+    <td colspan="2">{$arow['td2']}</td>
+    <td>天平型号</td>
+    <td colspan="2">{$arow['td5']}</td>
+    <td>天平编号</td>
+    <td colspan="2">{$arow['yq_bh']}</td>
+  </tr>
+  <tr class="auto">
+    <td class="left" colspan="3">
+          粒径范围（mm） : 
+          <input class="inputc" type="text" size="4" name="td10" value="{$arow['td10']}">
+          ～
+          <input class="inputc" type="text" size="4" name="td11" value="{$arow['td11']}">
+      </td>
+    <td>计算公式</td>
+    <td colspan="2" class="noright right">通过筛的样品（%）=</td>
+    <td class="noborder">G<hr />W</td>
+    <td colspan="2" class="noborder" style="text-align:left">×100</td>
+  </tr>
+  {$aline}
+  <tr>
+    <td>备注</td>
+    <td colspan="8"><textarea name="td30">{$arow['td30']}</textarea></td>
+  </tr>
+</table>
+<input type="hidden" name="has_zk7" value="1">
+<script type="text/template" class="extrajs_{$arow['id']}">
+<!--  -->
+</script>
+<script type="text/javascript">
+var as_form = $("#assay_form_{$arow['id']}");
+var min_radius = "{$arow['td10']}";
+var max_radius = "{$arow['td11']}";
+as_form.find("[name=td10],[name=td11]").blur(function(){
+  min_radius = as_form.find("[name=td10]").val();
+  max_radius = as_form.find("[name=td11]").val();
+  as_form.find(".min_radius").text(min_radius);
+  as_form.find(".max_radius").text(max_radius);
+});
+
+
+var form = $("#assay_form_{$arow['id']}");
+var vd27 = form.find("input[name^='vd27[']").val();
+if( typeof vd27 == "string" && vd27 ){
+  var vd27 = $.parseJSON(vd27);
+  for (var i = 33; i <= 99; i++) {
+    if( typeof vd27['vd'+i] != "undefined" ){
+      form.find("input[name^='vd"+i+"[']").val(vd27['vd'+i]);
+    }
+  }
+}else{
+  var vd27 = {};
+}
+
+// eval($(".extrajs_{$arow['id']}").html());
+
+function jsgs(key){
+  var as_form = $("#assay_form_{$arow['id']}");
+  var min_radius = as_form.find("[name=td10]").val();
+  var max_radius = as_form.find("[name=td11]").val();
+  as_form.find(".min_radius").text(min_radius);
+  as_form.find(".max_radius").text(max_radius);
+  var as_form = $("form[name=as_form_{$tid}]");
+  var vd_split = String(vs['vd43']).split('.');
+  if(vd_split.length==2){
+    var baoliu_ws = vd_split[1].length;
+  }else{
+    var baoliu_ws = 4;
+  }
+  var _min=0,_max=0,_d10=0,_d80=0;
+  var xy = {};
+  vs['vd73'] = 0;
+  for (var i = 3; i < 10; i++) {
+    // 筛孔径不填就跳出
+    if( !vs['vd3'+i] ){ break; }
+    // 计算截留样品质量
+    vs['vd6'+i] = !( $.isNumeric(vs['vd4'+i]) && $.isNumeric(vs['vd5'+i]) ) ? 
+                  '' : roundjs(vs['vd4'+i]-vs['vd5'+i], baoliu_ws);
+    vs['vd73']  = $.isNumeric(vs['vd6'+i]) ? 
+                  accAdd(vs['vd73'],vs['vd6'+i]) : vs['vd73'];
+    if( i == 3 ){
+      vs['vd83'] = 0;
+      continue;
+    }
+    // 通过样品的质量
+    vs['vd8'+i] = !( $.isNumeric(vs['vd8'+(i-1)]) && $.isNumeric(vs['vd6'+(i-1)]) ) ? 
+                  '' : roundjs(accAdd(vs['vd6'+(i-1)],vs['vd8'+(i-1)]),baoliu_ws);
+  }
+  vs['vd83'] = '/';
+  vs['vd93'] = '/';
+  for (var i = 4; i < 10; i++) {
+    // 通过率
+    vs['vd9'+i] = !( $.isNumeric(vs['vd8'+i]) && $.isNumeric(vs['vd73']) ) ? 
+                  '' : roundjs(accDiv(vs['vd8'+i],vs['vd73'])*100,2);
+    // 取出最大值和最小值的区间，
+    // 最小值筛孔径区间
+    if(parseFloat(vs['vd3'+i]) <= parseFloat(min_radius)){
+      _min = i;
+    }
+    // 最大值筛孔径区间
+    if(0==_max && parseFloat(vs['vd3'+accAdd(i,1)]) >= parseFloat(max_radius)){
+      _max = i;
+    }
+    // 取出d80和d10的区间
+    if(0==_d10 && parseFloat(vs['vd9'+accAdd(i,1)]) >= 10){
+      _d10 = i;
+    }
+    if(0==_d80 && parseFloat(vs['vd9'+accAdd(i,1)]) >= 80){
+      _d80 = i;
+    }
+    // 统计计算曲线需要的xy点
+    xy[i-1] = {};
+    var check_y = $.isNumeric(vs['vd3'+(i-1)]) && $.isNumeric(vs['vd3'+i]);
+    var check_x = $.isNumeric(vs['vd9'+(i-1)]) && $.isNumeric(vs['vd9'+i]);
+    if( !check_x || !check_y ){
+      xy[i-1]['x'] = [];
+      xy[i-1]['y'] = [];
+    }else{
+      xy[i-1]['x'] = [vs['vd3'+(i-1)],vs['vd3'+i]];
+      xy[i-1]['y'] = [vs['vd9'+(i-1)],vs['vd9'+i]];
+    }
+  }
+  // console.log(_min+'--'+_max+'--'+_d80+'--'+_d10)
+  // 计算曲线
+  $.ajax({
+    url: "{$rooturl}/huayan/ahlims.php?app=quxian&act=get_abrs&ajax=1",
+    type: "post",
+    data: {xy:xy}, 
+    dataType: 'json',
+    success: function(data){
+      if('0'==data.error){
+        var xy = data.content;
+        // < min_radius
+        //y=bx+a
+        var vd3 = roundjs(accAdd(xy[_min]['b']*min_radius,xy[_min]['a']),2);
+        as_form.find("[name^='vd3[']:eq("+key+")").val(vd3);
+        // > max_radius
+        var vd4 = roundjs(accsub(100,accAdd(xy[_max]['b']*max_radius,xy[_max]['a'])),2);
+        as_form.find("[name^='vd4[']:eq("+key+")").val(vd4);
+        var vd5 = roundjs( accsub(100,accAdd(vd3,vd4)),2);
+        as_form.find("[name^='vd5[']:eq("+key+")").val(vd5);
+        // 计算d10和d80
+        var vd6 = roundjs((80-xy[_d80]['a'])/xy[_d80]['b'],3);
+        as_form.find("[name^='vd6[']:eq("+key+")").val(vd6);
+        var vd7 = roundjs((10-xy[_d10]['a'])/xy[_d10]['b'],3);
+        as_form.find("[name^='vd7[']:eq("+key+")").val(vd7);
+        var vd8 = roundjs(vd6/vd7,2);
+        as_form.find("[name^='vd8[']:eq("+key+")").val(vd8);
+        // 检测结果
+        var vd0 = [
+          {
+            name:"<"+min_radius+"mm","value":vd3
+          },{
+            name:">"+max_radius+"mm","value":vd4
+          },{
+            name:min_radius+"～"+max_radius+"mm","value":vd5
+          },{
+            name:"d80mm","value":vd6
+          },{
+            name:"d10mm","value":vd7
+          },{
+            name:"k80mm","value":vd8
+          }
+        ];
+        as_form.find("[name^='vd0[']:eq("+key+")").val(JSON.stringify(vd0));
+      }else{
+        return false;
+      }
+    }
+  });
+  var vd27 = {};
+  for (var i = 33; i <= 99; i++) {
+    toString(vs['vd'+i]) && (vd27['vd'+i] = vs['vd'+i]);
+  }
+  vs['vd27'] = JSON.stringify(vd27);
+}
+</script>  

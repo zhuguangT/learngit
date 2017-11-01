@@ -1,0 +1,13 @@
+<tr align='center' title='化验单号:$row[tid]'>
+<td>$line_num</td>
+<td>$row[create_date]</td>
+<td>{$assayvalueC[$row['vid']]}</td>
+<td>{$row['userid']}</td>
+<td>$row[bar_code]</td>
+<td>$row[wz_bh] $row[by_id]</td>
+<td>{$row['consistence']}</td>
+<td>{$row['eligible_bound']}</td>
+<td style="color:blue;cursor:pointer" onclick="window.open('$rooturl/huayan/assay_form.php?tid={$row['tid']}')">$row[vd0]</td>
+<td>{$row['xiang_dui_pian_cha']}</td>
+<td>{$row['ping_jia']}</td>
+</tr>

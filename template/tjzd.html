@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+<style>
+.hand,.update{cursor:pointer;}
+table tr{height:25px;}
+.red{color:red;}
+table,table td{border:1px black solid;border-collapse: collapse;font-size:13px;}
+form{text-align:center;}
+</style>
+<script>
+$(document).ready(function() {
+	$(".chosen-select").chosen();});
+</script>
+<script language="javascript">
+$(function(){
+	//把默认的select信息，用js默认好。 不用php是因为 需要在php中写好多个循环
+	$("input[moren='selected']").each(function(i,v){
+		$("select[name='"+$(this).attr("biaozhi")+"'] option[value='"+v.value+"']").attr("selected","true");
+	});
+});
+function verify( form ){
+    msg = '';
+    if( !form.value_C.value )
+        msg += "未填写:项目名称\t";
+    if( !form.jcx.value )
+        msg += "未填写:检出限\t";
+    if( msg ){
+        alert( msg );
+        return false;
+    }
+    return true;
+}
+</script>
+ </head>
+
+ <body>
+<!-- 新建化验项目页面 assay_value_new.html-->
+<span><a href="./assay_method_edit.php?xmid=$x[xmid]&lxid=$x[lxid]&xmname=$x[value_C]">&lt;&lt;&lt;返回</a></span>
+
+<h3 class="header smaller center title">检测项目[$x[value_C]]的方法详细配置信息</h3>
+<div class="widget-box no-border">
+  <div class="widget-body">
+  <form method="POST" action="$rooturl/system_settings/assay_method/assay_method_edit_save.php" onsubmit="return verify(this);">
+	<input type="hidden" name="panduan" value="modify" title="assay_method_edit_save.php页面通过这个来判断是哪个页面的提交" />
+	<input type="hidden" name='xxxg' value='xg' />
+	<input type="hidden" name='id' value='$x[id]' />
+	<input type="hidden" name='xmid' value='$x[value_C]' />
+	<input type="hidden" name='lxid' value='$x[lxid]' />
+	<table class="table table-striped table-bordered table-hover center">
+		<thead>
+			<tr align='center'style="font-weight:bold;">
+			<td>参数名</td>
+			<td colspan="5">参数值</td>
+		</tr>
+		</thead>
+
+		<tbody>
+		<tr>
+			<td align="center">方法:</td>
+			<td colspan="5">
+			<select id="value_C" class="chosen-select" style="width:50%;" name='fangfa'><option value='$x[fid]'>$x[method_number][$x[method_name]]&nbsp;</option>$valueOption</select>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">模板名称:</td>
+			<td colspan="5">$bgline</td>
+		</tr>
+		<tr>
+             <td align="center">仪器:</td>
+			 <td colspan="5"><select id="value_yiqi" class="chosen-select" name='upyiqi'><option value='$x[yid]'>$x[yq_mingcheng]($x[yq_xinghao])&nbsp;</option>$valueyiqi</select>		
+             </td>
+        </tr>
+		<tr>
+             <td align="center">人员:</td>
+             <td colspan="5">
+             $userline
+              </td>
+        </tr>
+		<tr>
+             <td align="center">人员2:</td>
+             <td colspan="5">
+               $user2line
+              </td>
+        </tr>
+         <tr>
+              <td align="center">单位:</td>
+              <td colspan="5">
+				 $dwline
+			  </td>
+        </tr>
+		<tr>
+                        <td align="center">检出限:</td>
+                        <td colspan="5">
+						<input onkeyup="value=value.replace(/[^\d.]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d.]/g,''))" name="jcx" value="$x[jcx]" placeholder="不能为空" required> 
+						</td>
+        </tr>
+		<tr>
+			<td rowspan="2" align="center">默认修约位数<br />(结果值小数点后保留位数):</td>
+			<td>结果&lt;1</td>
+			<td>1&lt;结果&lt;10</td>
+    			<td>10&lt;结果&lt;100</td>
+			<td>100&lt;结果&lt;1000</td>
+			<td>结果&gt;1000</td>
+		</tr>
+		<tr>
+			<td>$mrw1line</td>
+			<td>$mrw2line</td>
+    		<td>$mrw3line</td>
+			<td>$mrw4line</td>
+			<td>$mrw5line</td>
+		</tr>
+		<!-- <tr>
+			<td align="center">设置默认:</td>
+			<td colspan="5">$rsValue[value_C]</td>
+		</tr>
+		<tr>
+			<td align="center">状态设置:</td>
+			<td colspan="5">$rsValue[value_C]</td>
+		</tr> -->
+		</tbody>
+	</table>
+	<tr>
+		<td>
+		<input type="submit" name="submit" value="修改" />
+		</td>
+		</tr>
+	</form>
+  </div>
+</div>
+ </body>
+</html>
