@@ -14,7 +14,7 @@ $dwname		= '国家城市供水水质监测网兰州监测站';
 $dw_biaozhi = 'qdzls';//根据此字段来识别包含那个个性配置文件
 $key		= '19kNTLlLtRHps';		//key
 $rootdir	= __DIR__ . '/../';
-$rooturl	= $_SERVER['HTTP_HOST'].'/newlims';
+$rooturl	= $_SERVER['HTTP_HOST'].'/lhz/limstest';
 $rooturl	= ($_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://').$rooturl;
 
 $set_jingdu	= '-';			//实验室经度
